@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "techguns:platecopper"
+  },
+  "result": {
+    "id": "techguns:ingotcopper"
+  },
+  "experience": 0,
+  "cookingtime": 200
+}

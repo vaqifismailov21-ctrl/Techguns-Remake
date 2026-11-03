@@ -1,4 +1,6 @@
 package techguns.client.particle;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,13 +13,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import techguns.Techguns;
 
-@Mod.EventBusSubscriber(modid=Techguns.MODID,value=Dist.CLIENT)
+@EventBusSubscriber(modid=Techguns.MODID,value=Dist.CLIENT)
 public final class BulletImpactEffects {
     private static Map<String,BulletImpactDefinition> definitions;
     private static final List<Emitter> emitters=new ArrayList<>();
@@ -40,9 +41,9 @@ public final class BulletImpactEffects {
         if(debris!=null) names.add(debris);
         for(var name:names) emitters.add(new Emitter(level,definitions().get(name),position,pitch,yaw));
     }
-    @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event) {
+    @SubscribeEvent public static void tick(ClientTickEvent.Post event) {
         var game=Minecraft.getInstance();
-        if(event.phase!=TickEvent.Phase.END || game.isPaused()) return;
+        if(false || game.isPaused()) return;
         emitters.removeIf(emitter -> emitter.level!=game.level || emitter.tick());
     }
     public static void reload() { definitions=null; emitters.clear(); }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ppp",
+    "sps",
+    "ppp"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/tin"
+    },
+    "s": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "techguns:metal_door_3x3",
+    "count": 2
+  }
+}

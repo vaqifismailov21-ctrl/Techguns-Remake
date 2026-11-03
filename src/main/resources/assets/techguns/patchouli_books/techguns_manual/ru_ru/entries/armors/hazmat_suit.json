@@ -10,7 +10,7 @@
     {
       "type": "patchouli:entity",
       "name": "Защитный костюм",
-      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:hazmat_boots'}, {Count:1,id:'techguns:hazmat_leggings'}, {Count:1,id:'techguns:hazmat_chestplate'}, {Count:1,id:'techguns:hazmat_helmet'}]}",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{count:1,id:'techguns:hazmat_boots'}, {count:1,id:'techguns:hazmat_leggings'}, {count:1,id:'techguns:hazmat_chestplate'}, {count:1,id:'techguns:hazmat_helmet'}]}",
       "text": ""
     },
     {

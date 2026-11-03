@@ -17,7 +17,7 @@ public final class FlamethrowerProjectile extends GenericProjectile {
     }
     @Override protected float inWaterUpdateBehaviour(float drag) {drag=super.inWaterUpdateBehaviour(drag);if(isInWaterRainOrBubble())discard();return drag;}
     @Override protected TGDamageSource getProjectileDamageSource() {var source=TGDamageSource.causeFireDamage(this,shooter,DeathType.DEFAULT);source.armorPenetration=penetration;source.setNoKnockback();return source;}
-    @Override protected void onHitEffect(LivingEntity target,HitResult hit) {target.setSecondsOnFire(3);}
+    @Override protected void onHitEffect(LivingEntity target,HitResult hit) {target.igniteForSeconds(3);}
     @Override protected void hitBlock(BlockHitResult hit) {
         if(blockdamage)burnBlocks(level(),hit,0.5);
         TGProjectilePackets.effect(this,"FlamethrowerImpact",hit.getLocation(),0,0);

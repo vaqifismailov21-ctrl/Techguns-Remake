@@ -27,12 +27,10 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 			if (targetEntity.isAttackable() && !targetEntity.isSpectator() && targetEntity.isAlive() && targetEntity.isPickable()) {
 				if (!targetEntity.skipAttackInteraction(player)) {
 					float f = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-					float f1;
-					if (targetEntity instanceof LivingEntity) {
-						f1 = EnchantmentHelper.getDamageBonus(player.getMainHandItem(), ((LivingEntity) targetEntity).getMobType());
-					} else {
-						f1 = EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED);
-					}
+					// 1.21.1: enchantment damage bonus is data driven (EnchantmentHelper.modifyDamage needs the server level).
+					var bonusSource = player.damageSources().playerAttack(player);
+					float f1 = player.level() instanceof net.minecraft.server.level.ServerLevel bonusLevel
+							? EnchantmentHelper.modifyDamage(bonusLevel, player.getMainHandItem(), targetEntity, bonusSource, f) - f : 0;
 					float f2 = player.getAttackStrengthScale(0.5F);
 					f = f * (0.2F + f2 * f2 * 0.8F);
 					f1 = f1 * f2;
@@ -41,7 +39,7 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 						boolean flag = f2 > 0.9F;
 						boolean flag1 = false;
 						int i = 0;
-						i = i + EnchantmentHelper.getKnockbackBonus(player);
+						i = i + (int) (player.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + (player.level() instanceof net.minecraft.server.level.ServerLevel kbLevel ? EnchantmentHelper.modifyKnockback(kbLevel, player.getMainHandItem(), targetEntity, bonusSource, 0) : 0));
 						if (player.isSprinting() && flag) {
 							player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK,
 									player.getSoundSource(), 1.0F, 1.0F);
@@ -64,12 +62,12 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 						}
 						float f4 = 0.0F;
 						boolean flag4 = false;
-						int j = EnchantmentHelper.getFireAspect(player);
+						int j = EnchantmentHelper.getItemEnchantmentLevel(techguns.util.TGItemNbt.enchantment(net.minecraft.world.item.enchantment.Enchantments.FIRE_ASPECT), player.getMainHandItem());
 						if (targetEntity instanceof LivingEntity) {
 							f4 = ((LivingEntity) targetEntity).getHealth();
 							if (j > 0 && !targetEntity.isOnFire()) {
 								flag4 = true;
-								targetEntity.setSecondsOnFire(1);
+								targetEntity.igniteForSeconds(1);
 							}
 						}
 						double d1 = targetEntity.getDeltaMovement().x;
@@ -94,7 +92,7 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 								player.setSprinting(false);
 							}
 							if (flag3) {
-								float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(player) * f;
+								float f3 = 1.0F + (float) player.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * f;
 								for (LivingEntity entitylivingbase : player.level().getEntitiesOfClass(LivingEntity.class,
 										targetEntity.getBoundingBox().inflate(1.0D, 0.25D, 1.0D))) {
 									if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isAlliedTo(entitylivingbase)
@@ -138,18 +136,15 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 								player.magicCrit(targetEntity);
 							}
 							player.setLastHurtMob(targetEntity);
-							if (targetEntity instanceof LivingEntity) {
-								EnchantmentHelper.doPostHurtEffects((LivingEntity) targetEntity, player);
-							}
-							EnchantmentHelper.doPostDamageEffects(player, targetEntity);
+							if (player.level() instanceof net.minecraft.server.level.ServerLevel postLevel) EnchantmentHelper.doPostAttackEffects(postLevel, targetEntity, src);
 							ItemStack itemstack1 = player.getMainHandItem();
 							Entity entity = targetEntity;
-							if(targetEntity instanceof net.minecraftforge.entity.PartEntity<?> part && part.getParent() instanceof LivingEntity) entity=part.getParent();
+							if(targetEntity instanceof net.neoforged.neoforge.entity.PartEntity<?> part && part.getParent() instanceof LivingEntity) entity=part.getParent();
 							if (!itemstack1.isEmpty() && entity instanceof LivingEntity) {
 								ItemStack beforeHitCopy = itemstack1.copy();
 								itemstack1.hurtEnemy((LivingEntity) entity, player);
 								if (itemstack1.isEmpty()) {
-									net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, beforeHitCopy, InteractionHand.MAIN_HAND);
+									net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player, beforeHitCopy, InteractionHand.MAIN_HAND);
 									player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 								}
 							}
@@ -157,7 +152,7 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 								float f5 = f4 - ((LivingEntity) targetEntity).getHealth();
 								player.awardStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
 								if (j > 0) {
-									targetEntity.setSecondsOnFire(j * 4);
+									targetEntity.igniteForSeconds(j * 4);
 								}
 								if (player.level() instanceof ServerLevel && f5 > 2.0F) {
 									int k = (int) ((double) f5 * 0.5D);

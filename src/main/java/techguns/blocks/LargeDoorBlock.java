@@ -13,17 +13,19 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
-import net.minecraftforge.network.NetworkHooks;
+import techguns.network.NetworkHooks;
 import techguns.*;
 import techguns.tileentities.LargeDoorEntity;
 public final class LargeDoorBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<LargeDoorBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public enum Phase implements StringRepresentable {CLOSED,OPENED,OPENING,CLOSING;public String getSerializedName(){return name().toLowerCase(java.util.Locale.ROOT);}public boolean open(){return this==OPENED||this==OPENING;}public boolean moving(){return this==OPENING||this==CLOSING;}}
     public static final BooleanProperty ZPLANE=BooleanProperty.create("zplane");
     public static final IntegerProperty ROW=IntegerProperty.create("row",0,2),COLUMN=IntegerProperty.create("column",0,2);
     public static final EnumProperty<Phase> PHASE=EnumProperty.create("phase",Phase.class);
     private static final Set<BlockPos> REMOVING=new HashSet<>(),CREATIVE=new HashSet<>();
     public final int variant;
-    public LargeDoorBlock(int variant){super(Properties.copy(Blocks.IRON_BLOCK).strength(6).noOcclusion().pushReaction(PushReaction.BLOCK));this.variant=variant;registerDefaultState(stateDefinition.any().setValue(ZPLANE,false).setValue(ROW,1).setValue(COLUMN,1).setValue(PHASE,Phase.CLOSED));}
+    public LargeDoorBlock(int variant){super(Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(6).noOcclusion().pushReaction(PushReaction.BLOCK));this.variant=variant;registerDefaultState(stateDefinition.any().setValue(ZPLANE,false).setValue(ROW,1).setValue(COLUMN,1).setValue(PHASE,Phase.CLOSED));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> b){b.add(ZPLANE,ROW,COLUMN,PHASE);}
     public static boolean master(BlockState state){return state.getValue(ROW)==1&&state.getValue(COLUMN)==1;}
     public static BlockPos masterPos(BlockPos pos,BlockState state){return state.getValue(ZPLANE)?pos.offset(0,1-state.getValue(ROW),1-state.getValue(COLUMN)):pos.offset(1-state.getValue(COLUMN),1-state.getValue(ROW),0);}
@@ -49,14 +51,15 @@ public final class LargeDoorBlock extends BaseEntityBlock {
         if(variant==1||column==1)return Shapes.empty();
         return z?Block.box(6,0,column==0?0:12,10,16,column==0?4:16):Block.box(column==0?0:12,0,6,column==0?4:16,16,10);
     }
-    @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack tgHeldStack,BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){return techguns.util.TGInteraction.item(legacyUse(state,level,pos,player,hand,hit));}
+    public InteractionResult legacyUse(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(level.getBlockEntity(masterPos(pos,state)) instanceof LargeDoorEntity door&&door.access.allows(player)){
             if(!level.isClientSide){if(player.isShiftKeyDown())NetworkHooks.openScreen((net.minecraft.server.level.ServerPlayer)player,door,door.getBlockPos());else if(door.mode==0)door.toggle(true);}
         }return InteractionResult.sidedSuccess(level.isClientSide);
     }
-    @Override public ItemStack getCloneItemStack(BlockGetter level,BlockPos pos,BlockState state){return TGDoors.ITEMS.get(variant).get().getDefaultInstance();}
+    @Override public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader level,BlockPos pos,BlockState state){return TGDoors.ITEMS.get(variant).get().getDefaultInstance();}
     @Override public java.util.List<ItemStack> getDrops(BlockState state,net.minecraft.world.level.storage.loot.LootParams.Builder builder){return java.util.List.of();}
-    @Override public void playerWillDestroy(Level level,BlockPos pos,BlockState state,Player player){if(player.isCreative())CREATIVE.add(masterPos(pos,state));super.playerWillDestroy(level,pos,state,player);}
+    @Override public BlockState playerWillDestroy(Level level,BlockPos pos,BlockState state,Player player){if(player.isCreative())CREATIVE.add(masterPos(pos,state));return super.playerWillDestroy(level,pos,state,player);}
     @Override public void onRemove(BlockState state,Level level,BlockPos pos,BlockState next,boolean moving){
         if(!state.is(next.getBlock())&&!level.isClientSide){BlockPos center=masterPos(pos,state);if(REMOVING.add(center)){boolean creative=CREATIVE.remove(center);try{
             for(int c=0;c<3;c++)for(int r=0;r<3;r++){BlockPos p=partPos(center,state.getValue(ZPLANE),c,r);BlockState part=level.getBlockState(p);if(!p.equals(pos)&&part.is(this)&&masterPos(p,part).equals(center))level.removeBlock(p,false);}

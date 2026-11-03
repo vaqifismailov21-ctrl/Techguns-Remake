@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import techguns.TGConfig;
 import techguns.oredrill.OreDrillMenu;
 import techguns.oredrill.OreDrillTileEntMaster;
@@ -55,7 +55,7 @@ public final class OreDrillScreen extends AbstractContainerScreen<OreDrillMenu> 
     }
 
     @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){
-        renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+        renderBackground(graphics, mouseX, mouseY, partial);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
         int mx=mouseX-leftPos,my=mouseY-topPos;
         boolean signal=minecraft.level!=null&&minecraft.level.hasNeighborSignal(tile.getBlockPos());
         List<Component> tooltip=poweredTooltip(mx,my,signal,tile.getRedstoneBehaviour(),tile.getSecurity(),tile.getOwner(),tile.energy.getEnergyStored(),tile.energy.getMaxEnergyStored());

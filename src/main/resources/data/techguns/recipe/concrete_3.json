@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "techguns:stairs_concrete"
+    }
+  ],
+  "result": {
+    "id": "techguns:concrete_grey_dark"
+  }
+}

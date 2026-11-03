@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rtr",
+    "tct",
+    "rtr"
+  ],
+  "key": {
+    "r": {
+      "tag": "c:sheets/plastic"
+    },
+    "c": {
+      "tag": "c:circuits/basic"
+    },
+    "t": {
+      "item": "techguns:tgx"
+    }
+  },
+  "result": {
+    "id": "techguns:advanced_charge",
+    "count": 4
+  }
+}

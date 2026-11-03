@@ -20,14 +20,16 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.common.ItemAbility;
+import techguns.network.NetworkHooks;
 import techguns.TGTurrets;
 import techguns.tileentities.TurretTileEnt;
 
 /** The original BasicMachine turret variant: an invisible block rendered by its tile renderer, owned and wrenchable. */
 public final class TurretBlock extends BaseEntityBlock {
-    public static final ToolAction WRENCH=ToolAction.get("wrench");
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<TurretBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
+    public static final ItemAbility WRENCH=ItemAbility.get("wrench");
     public TurretBlock(){super(Properties.of().strength(4.0f).sound(SoundType.METAL).noOcclusion());}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new TurretTileEnt(pos,state);}
@@ -43,10 +45,11 @@ public final class TurretBlock extends BaseEntityBlock {
         if(level.getBlockEntity(pos) instanceof TurretTileEnt tile){
             if(placer instanceof Player player)tile.setOwner(player);
             tile.onNeighborBlockChange();
-            var data=stack.getTagElement("BlockEntityTag");if(data!=null)tile.readNBTfromStackTag(data);
+            var data=techguns.util.TGItemNbt.element(stack,"BlockEntityTag");if(data!=null)tile.readNBTfromStackTag(data);
         }
     }
-    @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack tgHeldStack,BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){return techguns.util.TGInteraction.item(legacyUse(state,level,pos,player,hand,hit));}
+    public InteractionResult legacyUse(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(!(level.getBlockEntity(pos) instanceof TurretTileEnt tile))return InteractionResult.PASS;
         if(!tile.isUseableByPlayer(player)){player.displayClientMessage(Component.translatable("techguns.container.security.denied"),true);return InteractionResult.sidedSuccess(level.isClientSide);}
         ItemStack held=player.getItemInHand(hand);
@@ -63,7 +66,7 @@ public final class TurretBlock extends BaseEntityBlock {
     /** Original wrench dismantling: the block item keeps inventory and settings (not the owner), the base is emptied and removed. */
     private static void dismantle(Level level,BlockPos pos,TurretTileEnt tile){
         ItemStack item=new ItemStack(TGTurrets.ITEM.get());
-        item.getOrCreateTag().put("BlockEntityTag",tile.writeNBTforDismantling());
+        techguns.util.TGItemNbt.put(item, "BlockEntityTag",tile.writeNBTforDismantling());
         tile.emptyContent();
         level.removeBlock(pos,false);
         level.addFreshEntity(new ItemEntity(level,pos.getX()+.5d,pos.getY()+.5d,pos.getZ()+.5d,item));

@@ -1,19 +1,20 @@
 package techguns.client.render.item;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import techguns.Techguns;
 import techguns.api.guns.GunManager;
 
 /** Supplies the living holder that modern BEWLR does not receive in its render method. */
-@Mod.EventBusSubscriber(modid=Techguns.MODID,value=Dist.CLIENT)
+@EventBusSubscriber(modid=Techguns.MODID,value=Dist.CLIENT)
 public final class GunRenderContext {
     private static LivingEntity holder;
     @SubscribeEvent(priority=EventPriority.LOWEST) public static void before(RenderLivingEvent.Pre<?,?> event) { holder=event.getEntity(); }

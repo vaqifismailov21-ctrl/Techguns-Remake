@@ -1,5 +1,6 @@
 package techguns.world;
 
+import net.minecraft.core.registries.Registries;
 import java.util.*;
 import net.minecraft.core.*;
 import net.minecraft.resources.ResourceLocation;
@@ -32,9 +33,9 @@ public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfigura
         int roll=random.nextInt(total)+1,sum=0;for(var spawn:eligible){sum+=spawn.weight;if(roll<=sum)return spawn.id;}return null;
     }
     private static boolean tag(Holder<Biome> biome,String id){return biome.is(TagKey.create(net.minecraft.core.registries.Registries.BIOME,ResourceLocation.parse(id)));}
-    public static boolean desert(Holder<Biome> biome){return biome.is(Biomes.DESERT)||tag(biome,"forge:is_sandy")||tag(biome,"forge:is_wasteland");}
+    public static boolean desert(Holder<Biome> biome){return biome.is(Biomes.DESERT)||tag(biome,"c:is_sandy")||tag(biome,"c:is_wasteland");}
     public static int biomeColor(Holder<Biome> biome){
-        if(tag(biome,"forge:is_cold")||tag(biome,"forge:is_cold/overworld")||tag(biome,"forge:is_snowy")||biome.value().getBaseTemperature()<.15f)return 1;
+        if(tag(biome,"c:is_cold")||tag(biome,"c:is_cold/overworld")||tag(biome,"c:is_snowy")||biome.value().getBaseTemperature()<.15f)return 1;
         if(desert(biome)||biome.is(BiomeTags.IS_BEACH)||biome.is(BiomeTags.IS_BADLANDS))return 2;
         return biome.is(BiomeTags.IS_NETHER)?3:0;
     }

@@ -8,7 +8,9 @@ import net.minecraft.world.level.block.state.*;
 import net.minecraft.world.phys.shapes.*;
 /** Source metal ladders can stand without a backing block and have a two-pixel collision. */
 public final class DecorLadderBlock extends HorizontalDirectionalBlock {
-    public DecorLadderBlock(){super(Properties.copy(Blocks.IRON_BLOCK).strength(6).noOcclusion());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<DecorLadderBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
+    public DecorLadderBlock(){super(Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(6).noOcclusion());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> b){b.add(FACING);}
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){Direction facing=context.getClickedFace();if(facing.getAxis().isHorizontal())return defaultBlockState().setValue(FACING,facing);for(Direction vertical:new Direction[]{Direction.DOWN,Direction.UP}){var other=context.getLevel().getBlockState(context.getClickedPos().relative(vertical));if(other.getBlock() instanceof DecorLadderBlock)return defaultBlockState().setValue(FACING,other.getValue(FACING));}return defaultBlockState().setValue(FACING,context.getHorizontalDirection().getOpposite());}
     @Override public boolean isLadder(BlockState state,LevelReader level,BlockPos pos,LivingEntity entity){return true;}

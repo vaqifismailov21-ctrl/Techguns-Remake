@@ -1,49 +1,50 @@
 package techguns.items.armors;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.UUID;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.*;
-import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.event.*;
+import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.util.InventoryUtil;
 
 /** Original per-player armor bonuses and chest-powered suit distribution, outside NPC/world systems. */
-@Mod.EventBusSubscriber(modid="techguns")
+@EventBusSubscriber(modid="techguns")
 public final class EquipmentEvents {
-    private static UUID key(String name){return UUID.nameUUIDFromBytes(("techguns."+name).getBytes(java.nio.charset.StandardCharsets.UTF_8));}
-    private static void attribute(Player p,Attribute type,String name,float value,AttributeModifier.Operation operation){
+    private static net.minecraft.resources.ResourceLocation key(String name){return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("techguns",name);}
+    private static void attribute(Player p,net.minecraft.core.Holder<Attribute> type,String name,float value,AttributeModifier.Operation operation){
         var a=p.getAttribute(type);if(a==null)return;var id=key(name);var previous=a.getModifier(id);
-        if(previous!=null&&previous.getAmount()==value)return;
-        if(previous!=null)a.removeModifier(id);if(value>0)a.addTransientModifier(new AttributeModifier(id,name,value,operation));
+        if(previous!=null&&previous.amount()==value)return;
+        if(previous!=null)a.removeModifier(id);if(value>0)a.addTransientModifier(new AttributeModifier(id,value,operation));
     }
-    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){
-        if(event.phase!=TickEvent.Phase.END||!event.player.isAlive())return;var player=event.player;
+    @SubscribeEvent public static void tick(PlayerTickEvent.Post event){
+        if(false||!event.getEntity().isAlive())return;var player=event.getEntity();
         var state=TGExtendedPlayer.find(player).orElse(null);if(state==null)return;
         var back=state.tg_inventory.getItem(1);
         if(!(back.getItem() instanceof AccessoryItem device&&(device.kind==AccessoryItem.Kind.GLIDER||device.kind==AccessoryItem.Kind.JETPACK&&back.getDamageValue()<back.getMaxDamage())))state.isGliding=false;
         flight(player,state);
-        if(player.level().isClientSide){
-            float assist=TGEquipmentBonuses.getBonus(player,TGArmorBonus.STEPASSIST,false);
-            if(state.enableStepAssist&&assist>0)player.setMaxUpStep(Math.max(1.1F,player.maxUpStep()));else if(player.maxUpStep()==1.1F)player.setMaxUpStep(0.6F);
-            return;
-        }
+        if(player.level().isClientSide)return;
+        // 1.21.1: step height is an attribute (was Entity#setMaxUpStep 1.1 on the client): +0.5 over the default 0.6.
+        float assist=TGEquipmentBonuses.getBonus(player,TGArmorBonus.STEPASSIST,false);
+        attribute(player,Attributes.STEP_HEIGHT,"equipment_step_assist",state.enableStepAssist&&assist>0?0.5F:0,AttributeModifier.Operation.ADD_VALUE);
         distributePower(player);
         if(!(state.tg_inventory.getItem(0).getItem() instanceof AccessoryItem accessory&&accessory.kind==AccessoryItem.Kind.GAS_MASK)){
-            var resistance=player.getAttribute(techguns.api.radiation.TGRadiation.RADIATION_RESISTANCE.get());if(resistance!=null)resistance.removeModifier(UUID.fromString("1B428AAE-2ECA-42C6-A14F-0A8B3F507276"));
+            var resistance=player.getAttribute(techguns.api.radiation.TGRadiation.RADIATION_RESISTANCE);if(resistance!=null)resistance.removeModifier(key("radresist_faceslot"));
         }
         if(player.isOnFire()&&TGEquipmentBonuses.getBonus(player,TGArmorBonus.COOLING_SYSTEM,false)>=1)player.clearFire();
         float speed=TGEquipmentBonuses.getBonus(player,TGArmorBonus.SPEED,false);
         if(player.isInWater()||player.isInLava())speed+=TGEquipmentBonuses.getBonus(player,TGArmorBonus.SPEED_WATER,false);
         if(player.isSprinting())speed*=2;
-        attribute(player,Attributes.MOVEMENT_SPEED,"equipment_speed",speed,AttributeModifier.Operation.MULTIPLY_TOTAL);
-        attribute(player,Attributes.MAX_HEALTH,"equipment_health",TGEquipmentBonuses.getBonus(player,TGArmorBonus.EXTRA_HEART,false),AttributeModifier.Operation.ADDITION);
-        attribute(player,Attributes.KNOCKBACK_RESISTANCE,"equipment_knockback",TGEquipmentBonuses.getBonus(player,TGArmorBonus.KNOCKBACK_RESISTANCE,false),AttributeModifier.Operation.ADDITION);
+        attribute(player,Attributes.MOVEMENT_SPEED,"equipment_speed",speed,AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        attribute(player,Attributes.MAX_HEALTH,"equipment_health",TGEquipmentBonuses.getBonus(player,TGArmorBonus.EXTRA_HEART,false),AttributeModifier.Operation.ADD_VALUE);
+        attribute(player,Attributes.KNOCKBACK_RESISTANCE,"equipment_knockback",TGEquipmentBonuses.getBonus(player,TGArmorBonus.KNOCKBACK_RESISTANCE,false),AttributeModifier.Operation.ADD_VALUE);
         if(player.getHealth()>player.getMaxHealth())player.setHealth(player.getMaxHealth());
         if(state.enableNightVision&&TGEquipmentBonuses.getBonus(player,TGArmorBonus.NIGHTVISION,true)>0)player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION,220,0,false,false));
     }

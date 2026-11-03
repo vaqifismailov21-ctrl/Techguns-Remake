@@ -1,4 +1,5 @@
 package techguns;
+import net.minecraft.core.registries.BuiltInRegistries;
 import java.util.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -7,8 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.fluids.FluidStack;
 import techguns.world.*;
 /** Original TGOreClusters recipe weights; optional ores resolve from current Forge tags. */
 public final class TGOreClusters {
@@ -18,8 +18,8 @@ public final class TGOreClusters {
     private static void item(List<Entry> entries,ItemLikeValue item,int weight){entries.add(new Entry(item.stack(),FluidStack.EMPTY,weight));}
     @FunctionalInterface private interface ItemLikeValue {ItemStack stack();}
     private static void tag(List<Entry> entries,String id,int weight){
-        var values=ForgeRegistries.ITEMS.tags().getTag(TagKey.create(Registries.ITEM,ResourceLocation.parse("forge:ores/"+id)));
-        var first=values.iterator();if(first.hasNext()){var stack=new ItemStack(first.next());if(entries.stream().noneMatch(e->ItemStack.isSameItemSameTags(e.item,stack)))entries.add(new Entry(stack,FluidStack.EMPTY,weight));}
+        var values=BuiltInRegistries.ITEM.getTagOrEmpty(TagKey.create(Registries.ITEM,ResourceLocation.parse("c:ores/"+id)));
+        var first=values.iterator();if(first.hasNext()){var stack=new ItemStack(first.next().value());if(entries.stream().noneMatch(e->ItemStack.isSameItemSameComponents(e.item,stack)))entries.add(new Entry(stack,FluidStack.EMPTY,weight));}
     }
     public static List<Entry> entries(ClusterKind kind){
         var entries=new ArrayList<Entry>();
@@ -34,7 +34,7 @@ public final class TGOreClusters {
             case NETHER_CRYSTAL->{item(entries,()->new ItemStack(Blocks.NETHER_QUARTZ_ORE),50);item(entries,()->new ItemStack(Blocks.GLOWSTONE),40);item(entries,()->new ItemStack(Items.BLAZE_ROD),10);}
             case OIL->{
                 var oils=new ArrayList<net.minecraft.world.level.material.Fluid>();
-                for(String name:TGConfig.fluidListOilWorldspawn)for(var fluid:ForgeRegistries.FLUIDS.getValues())if(fluid.isSource(fluid.defaultFluidState())&&ForgeRegistries.FLUIDS.getKey(fluid).getPath().equals(name)&&fluid!=Fluids.EMPTY)oils.add(fluid);
+                for(String name:TGConfig.fluidListOilWorldspawn)for(var fluid:BuiltInRegistries.FLUID.stream().toList())if(fluid.isSource(fluid.defaultFluidState())&&BuiltInRegistries.FLUID.getKey(fluid).getPath().equals(name)&&fluid!=Fluids.EMPTY)oils.add(fluid);
                 var chosen=oils.stream().filter(f->!f.defaultFluidState().createLegacyBlock().isAir()).findFirst().orElse(oils.isEmpty()?null:oils.get(0));
                 if(chosen!=null)entries.add(new Entry(ItemStack.EMPTY,new FluidStack(chosen,1000),10));
             }
@@ -48,7 +48,7 @@ public final class TGOreClusters {
     }
     /** Original OIL_WORLDSPAWN only accepts a configured source fluid with a placeable world block. */
     public static net.minecraft.world.level.material.Fluid worldOil(){
-        for(String name:TGConfig.fluidListOilWorldspawn)for(var fluid:ForgeRegistries.FLUIDS.getValues())if(fluid!=Fluids.EMPTY&&fluid.isSource(fluid.defaultFluidState())&&ForgeRegistries.FLUIDS.getKey(fluid).getPath().equals(name)&&!fluid.defaultFluidState().createLegacyBlock().isAir())return fluid;return null;
+        for(String name:TGConfig.fluidListOilWorldspawn)for(var fluid:BuiltInRegistries.FLUID.stream().toList())if(fluid!=Fluids.EMPTY&&fluid.isSource(fluid.defaultFluidState())&&BuiltInRegistries.FLUID.getKey(fluid).getPath().equals(name)&&!fluid.defaultFluidState().createLegacyBlock().isAir())return fluid;return null;
     }
     public static int powerPerTick(double orePerHour,int radius,double powerMultiplier){return (int)(8*orePerHour*(1+Math.max(radius-1,0)*.2)*powerMultiplier*TGConfig.oreDrillMultiplierPower);}
     private TGOreClusters(){}

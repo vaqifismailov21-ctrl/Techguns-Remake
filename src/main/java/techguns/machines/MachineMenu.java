@@ -3,7 +3,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import techguns.TGMenuTypes;
 public final class MachineMenu extends AbstractContainerMenu {
     public final ProcessingMachine machine;

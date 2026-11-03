@@ -1,20 +1,22 @@
 package techguns.client;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 import techguns.TGWeaponPackets;
 import techguns.Techguns;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.items.guns.GenericGun;
 
-@Mod.EventBusSubscriber(modid = Techguns.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Techguns.MODID, value = Dist.CLIENT)
 public final class ClientWeaponEvents {
     private static boolean fireMain, fireOff;
     public static float muzzleJitterX, muzzleJitterY, muzzleJitterScale;
@@ -43,9 +45,9 @@ public final class ClientWeaponEvents {
         }
     }
     /** Original TGTickHandler: consume a semi-auto press once, even if pressed during cooldown. */
-    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.LOW) public static void shooting(TickEvent.PlayerTickEvent event) {
+    @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOW) public static void shooting(PlayerTickEvent.Pre event) {
         var game = Minecraft.getInstance();
-        if (event.phase != TickEvent.Phase.START || event.player != game.player) return;
+        if (false || event.getEntity() != game.player) return;
         if (game.screen != null || !game.mouseHandler.isMouseGrabbed() || game.player.isSpectator() || !game.player.isAlive()) {
             fireMain = fireOff = false; return;
         }
@@ -70,9 +72,9 @@ public final class ClientWeaponEvents {
             event.setCanceled(true); event.setSwingHand(false);
         }
     }
-    @SubscribeEvent public static void keys(TickEvent.ClientTickEvent event) {
+    @SubscribeEvent public static void keys(ClientTickEvent.Post event) {
         var game = Minecraft.getInstance();
-        if (event.phase != TickEvent.Phase.END || game.player == null || game.screen != null) return;
+        if (false || game.player == null || game.screen != null) return;
         while (ClientModEvents.RELOAD.consumeClick()) {
             for (var hand : InteractionHand.values()) if (game.player.getItemInHand(hand).getItem() instanceof GenericGun gun) {
                 TGWeaponPackets.request(hand, true);

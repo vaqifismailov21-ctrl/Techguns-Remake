@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:mac10"
+    },
+    {
+      "item": "techguns:smgmagazine_incendiary"
+    }
+  ],
+  "result": {
+    "id": "techguns:mac10",
+    "components": {
+      "minecraft:custom_data": "{ammo:32s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

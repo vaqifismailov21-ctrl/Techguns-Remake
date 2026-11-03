@@ -46,7 +46,7 @@ public final class TurretScreen extends AbstractContainerScreen<TurretMenu> {
     }
 
     @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){
-        renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+        renderBackground(graphics, mouseX, mouseY, partial);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
         int mx=mouseX-leftPos,my=mouseY-topPos;
         boolean signal=minecraft.level!=null&&minecraft.level.hasNeighborSignal(tile.getBlockPos());
         List<Component> tooltip=poweredTooltip(mx,my,signal,tile.redstoneBehaviour,tile.getSecurity(),tile.getOwner(),tile.energy.getEnergyStored(),tile.energy.getMaxEnergyStored());

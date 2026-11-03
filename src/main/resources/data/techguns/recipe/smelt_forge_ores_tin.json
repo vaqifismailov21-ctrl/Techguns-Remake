@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:ores/tin"
+  },
+  "result": {
+    "id": "techguns:ingottin"
+  },
+  "experience": 0.5,
+  "cookingtime": 200
+}

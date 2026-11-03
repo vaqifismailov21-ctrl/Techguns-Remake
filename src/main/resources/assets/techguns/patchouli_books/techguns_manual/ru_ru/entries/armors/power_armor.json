@@ -10,7 +10,7 @@
     {
       "type": "patchouli:entity",
       "name": "Силовая броня",
-      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t3_power_boots'}, {Count:1,id:'techguns:t3_power_leggings'}, {Count:1,id:'techguns:t3_power_chestplate'}, {Count:1,id:'techguns:t3_power_helmet'}]}",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{count:1,id:'techguns:t3_power_boots'}, {count:1,id:'techguns:t3_power_leggings'}, {count:1,id:'techguns:t3_power_chestplate'}, {count:1,id:'techguns:t3_power_helmet'}]}",
       "text": ""
     },
     {

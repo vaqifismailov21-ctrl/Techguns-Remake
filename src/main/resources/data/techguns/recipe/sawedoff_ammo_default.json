@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:sawedoff"
+    },
+    {
+      "item": "techguns:shotgunrounds"
+    }
+  ],
+  "result": {
+    "id": "techguns:sawedoff",
+    "components": {
+      "minecraft:custom_data": "{ammo:2s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

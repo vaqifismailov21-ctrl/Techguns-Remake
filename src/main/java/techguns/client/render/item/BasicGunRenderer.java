@@ -76,10 +76,10 @@ public final class BasicGunRenderer extends RenderItemBase {
             float x=left?0.56F:-0.56F,y=0.52F,h=scopeScale/2;
             var vertices=buffers.getBuffer(techguns.client.render.fx.LegacyFxRenderTypes.sprite(scopeTexture,false,true));
             var matrix=pose.last().pose();float top=scopeFlipY?0:1,bottom=1-top;
-            vertices.vertex(matrix,x-h,y+h,0).color(1F,1F,1F,1F).uv(0,top).endVertex();
-            vertices.vertex(matrix,x-h,y-h,0).color(1F,1F,1F,1F).uv(0,bottom).endVertex();
-            vertices.vertex(matrix,x+h,y-h,0).color(1F,1F,1F,1F).uv(1,bottom).endVertex();
-            vertices.vertex(matrix,x+h,y+h,0).color(1F,1F,1F,1F).uv(1,top).endVertex();
+            vertices.addVertex(matrix,x-h,y+h,0).setColor(1F,1F,1F,1F).setUv(0,top);
+            vertices.addVertex(matrix,x-h,y-h,0).setColor(1F,1F,1F,1F).setUv(0,bottom);
+            vertices.addVertex(matrix,x+h,y-h,0).setColor(1F,1F,1F,1F).setUv(1,bottom);
+            vertices.addVertex(matrix,x+h,y+h,0).setColor(1F,1F,1F,1F).setUv(1,top);
             pose.popPose();return;
         }
         render(context,pose,buffers,light,overlay);
@@ -91,7 +91,7 @@ public final class BasicGunRenderer extends RenderItemBase {
                 boolean offhand=left==(owner.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT);
                 pose.pushPose();pose.translate(0.5,0.5,0.5);
                 if(reload>0)(context.firstPerson()?reloadAnimation:reloadThirdAnimation).play(pose,reload,left,context.firstPerson()?reloadTranslation:reloadThirdTranslation,context.firstPerson()?reloadAngle:reloadThirdAngle);
-                techguns.client.particle.ItemWeaponEffects.render(owner,offhand?net.minecraft.world.InteractionHand.OFF_HAND:net.minecraft.world.InteractionHand.MAIN_HAND,pose,buffers,Minecraft.getInstance().getFrameTime(),third);
+                techguns.client.particle.ItemWeaponEffects.render(owner,offhand?net.minecraft.world.InteractionHand.OFF_HAND:net.minecraft.world.InteractionHand.MAIN_HAND,pose,buffers,Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false),third);
                 pose.popPose();
             }
         }
@@ -135,7 +135,7 @@ public final class BasicGunRenderer extends RenderItemBase {
         if(!preview) {
             fire=reload=muzzle=charge=0;
             if(entity instanceof techguns.entities.npcs.GenericNPC npc){
-                var gun=(GenericGun)stack.getItem();float partial=Minecraft.getInstance().getFrameTime();
+                var gun=(GenericGun)stack.getItem();float partial=Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
                 if(npc.weaponRecoilTicks>0&&gun.recoiltime>0)fire=Math.max(.001f,Math.min(1,1-(npc.weaponRecoilTicks-partial)/gun.recoiltime));
                 if(npc.weaponMuzzleTicks>0&&gun.getMuzzleFlashTicks()>0)muzzle=Math.max(.001f,Math.min(1,1-(npc.weaponMuzzleTicks-partial)/gun.getMuzzleFlashTicks()));
             }else if(entity instanceof Player player){

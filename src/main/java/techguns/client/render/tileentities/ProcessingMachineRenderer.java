@@ -10,6 +10,8 @@ import techguns.client.models.*;
 import techguns.client.models.machines.*;
 import techguns.machines.*;
 public final class ProcessingMachineRenderer implements BlockEntityRenderer<ProcessingMachine> {
+    /** 1.21.1: the render bounds moved from the block entity to its renderer. */
+    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(ProcessingMachine entity){return entity.getRenderBoundingBox();}
     private static final ModelMachine ammo=new ModelAmmoPress(),metal=new ModelMetalPress(),chem=new ModelChemLab();
     private static final ModelMachine fabricator=new ModelFabricator();
     private static final LegacyObjModel charger=new LegacyObjModel(true,false,"charging_station");

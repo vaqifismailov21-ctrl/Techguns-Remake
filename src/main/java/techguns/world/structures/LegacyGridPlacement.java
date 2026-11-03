@@ -19,7 +19,7 @@ import techguns.TGWorld;
  * asks getPotentialStructureChunk() for the site of each cell, so only real grid sites are checked.
  */
 public final class LegacyGridPlacement extends RandomSpreadStructurePlacement {
-    public static final Codec<LegacyGridPlacement> CODEC=RecordCodecBuilder.create(i->i.group(
+    public static final com.mojang.serialization.MapCodec<LegacyGridPlacement> CODEC=RecordCodecBuilder.mapCodec(i->i.group(
         Codec.STRING.fieldOf("grid").forGetter(p->p.grid),
         Codec.INT.fieldOf("salt").forGetter(LegacyGridPlacement::saltValue)
     ).apply(i,LegacyGridPlacement::new));

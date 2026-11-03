@@ -55,19 +55,19 @@ public final class PistolMuzzleFlash {
         if(spec.flipY) {float swap=v1;v1=v2;v2=swap;}
         var vertices = buffers.getBuffer(LegacyFxRenderTypes.sprite(spec.texture,!spec.texture.getPath().endsWith("/fireball_4x4_alpha.png"),!thirdPerson));
         var matrix = pose.last().pose();
-        vertices.vertex(matrix, x-half,y+half,z).color(spec.red,spec.green,spec.blue,alpha).uv(u1,v2).endVertex();
-        vertices.vertex(matrix, x-half,y-half,z).color(spec.red,spec.green,spec.blue,alpha).uv(u1,v1).endVertex();
-        vertices.vertex(matrix, x+half,y-half,z).color(spec.red,spec.green,spec.blue,alpha).uv(u2,v1).endVertex();
-        vertices.vertex(matrix, x+half,y+half,z).color(spec.red,spec.green,spec.blue,alpha).uv(u2,v2).endVertex();
+        vertices.addVertex(matrix, x-half,y+half,z).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u1,v2);
+        vertices.addVertex(matrix, x-half,y-half,z).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u1,v1);
+        vertices.addVertex(matrix, x+half,y-half,z).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u2,v1);
+        vertices.addVertex(matrix, x+half,y+half,z).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u2,v2);
         if (thirdPerson) {
-            vertices.vertex(matrix,x-half,y,z+half).color(spec.red,spec.green,spec.blue,alpha).uv(u1,v2).endVertex();
-            vertices.vertex(matrix,x-half,y,z-half).color(spec.red,spec.green,spec.blue,alpha).uv(u1,v1).endVertex();
-            vertices.vertex(matrix,x+half,y,z-half).color(spec.red,spec.green,spec.blue,alpha).uv(u2,v1).endVertex();
-            vertices.vertex(matrix,x+half,y,z+half).color(spec.red,spec.green,spec.blue,alpha).uv(u2,v2).endVertex();
-            vertices.vertex(matrix,x,y-half,z+half).color(spec.red,spec.green,spec.blue,alpha).uv(u1,v2).endVertex();
-            vertices.vertex(matrix,x,y-half,z-half).color(spec.red,spec.green,spec.blue,alpha).uv(u1,v1).endVertex();
-            vertices.vertex(matrix,x,y+half,z-half).color(spec.red,spec.green,spec.blue,alpha).uv(u2,v1).endVertex();
-            vertices.vertex(matrix,x,y+half,z+half).color(spec.red,spec.green,spec.blue,alpha).uv(u2,v2).endVertex();
+            vertices.addVertex(matrix,x-half,y,z+half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u1,v2);
+            vertices.addVertex(matrix,x-half,y,z-half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u1,v1);
+            vertices.addVertex(matrix,x+half,y,z-half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u2,v1);
+            vertices.addVertex(matrix,x+half,y,z+half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u2,v2);
+            vertices.addVertex(matrix,x,y-half,z+half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u1,v2);
+            vertices.addVertex(matrix,x,y-half,z-half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u1,v1);
+            vertices.addVertex(matrix,x,y+half,z-half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u2,v1);
+            vertices.addVertex(matrix,x,y+half,z+half).setColor(spec.red,spec.green,spec.blue,alpha).setUv(u2,v2);
         }
     }
     private PistolMuzzleFlash() {}

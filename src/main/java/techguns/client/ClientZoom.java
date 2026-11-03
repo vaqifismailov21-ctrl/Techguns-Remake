@@ -1,18 +1,19 @@
 package techguns.client;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ComputeFovModifierEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import techguns.Techguns;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.items.guns.GenericGun;
 
 /** Original sneak + right click toggle, hold-zoom mode, and reset on item change/reload. */
-@Mod.EventBusSubscriber(modid=Techguns.MODID,value=Dist.CLIENT)
+@EventBusSubscriber(modid=Techguns.MODID,value=Dist.CLIENT)
 public final class ClientZoom {
     private static final techguns.api.guns.WeaponAimState state=new techguns.api.guns.WeaponAimState();
     public static void toggle(GenericGun gun) {
@@ -25,8 +26,8 @@ public final class ClientZoom {
         return player!=null&&player==Minecraft.getInstance().player&&state.active(gun,player.getInventory().selected);
     }
     public static void reset() { state.reset(); }
-    @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event) {
-        if(event.phase!=TickEvent.Phase.START) return;
+    @SubscribeEvent public static void tick(ClientTickEvent.Pre event) {
+        if(false) return;
         var game=Minecraft.getInstance();var player=game.player;
         if(player==null || !player.isAlive() || player.isRemoved() || !(player.getMainHandItem().getItem() instanceof GenericGun gun) || !gun.canZoom()) { reset();return; }
         boolean reloading=TGExtendedPlayer.find(player).map(p->p.getAttackTime(false).getReloadTime()>System.currentTimeMillis()).orElse(true);

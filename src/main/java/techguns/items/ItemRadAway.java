@@ -17,13 +17,13 @@ import techguns.TGRadiationSystem;
 public final class ItemRadAway extends GenericItemConsumable {
     public ItemRadAway(Properties properties) { super(32, properties); }
     @Override protected void onConsumed(ItemStack stack, Level level, Player player) {
-        player.addEffect(new MobEffectInstance(TGRadiationSystem.REGENERATION.get(), 400, 14, false, false));
+        player.addEffect(new MobEffectInstance(TGRadiationSystem.REGENERATION, 400, 14, false, false));
         ItemStack bag = TGItems.INFUSION_BAG.get().getDefaultInstance();
         if (!player.getInventory().add(bag)) player.drop(bag, false);
     }
     @Override protected SoundEvent getConsumedSound() { return SoundEvents.PLAYER_BREATH; }
     @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.BOW; }
-    @Override public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flags) {
+    @Override public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext level, List<Component> tooltip, TooltipFlag flags) {
         super.appendHoverText(stack, level, tooltip, flags);
         tooltip.add(Component.translatable("techguns.radregeneration").append(" ")
                 .append(Component.translatable("potion.potency.9")).append(" (-300)").withStyle(ChatFormatting.BLUE));

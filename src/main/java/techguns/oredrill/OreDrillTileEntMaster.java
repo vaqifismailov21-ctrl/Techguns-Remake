@@ -24,18 +24,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.CommonHooks;
+import techguns.capabilities.compat.Capability;
+import techguns.capabilities.compat.Capabilities;
+import techguns.capabilities.compat.LazyOptional;
+import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import techguns.TGConfig;
 import techguns.TGItems;
 import techguns.TGOreClusters;
@@ -51,7 +50,7 @@ import techguns.world.ClusterKind;
  * slots, nine outputs, 16 bucket input and 32 bucket output tanks, an internal fuel buffer, and cluster operations
  * whose rate depends on cluster size, drill length, drill radius and mining levels.
  */
-public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
+public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider, techguns.capabilities.compat.ICapabilityHost{
     public static final float SOUND_VOLUME=0.5f;
     public static final int CAPACITY_INPUT_TANK=16*1000, CAPACITY_OUTPUT_TANK=32*1000;
     public static final int SLOT_DRILL=0, SLOT_FURNACE=1, SLOT_OUTPUT1=2, SLOT_OUTPUT_COUNT=9;
@@ -68,8 +67,8 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
     protected boolean contentsChanged=true;
     /** Original MachineOperation for the drill: one output item or one bucket of fluid, power per tick. */
     public record Operation(ItemStack item,FluidStack fluid,int powerPerTick){
-        CompoundTag save(){var tag=new CompoundTag();tag.put("item",item.save(new CompoundTag()));tag.put("fluid",fluid.writeToNBT(new CompoundTag()));tag.putInt("power",powerPerTick);return tag;}
-        static Operation load(CompoundTag tag){return new Operation(ItemStack.of(tag.getCompound("item")),FluidStack.loadFluidStackFromNBT(tag.getCompound("fluid")),tag.getInt("power"));}
+        CompoundTag save(){var tag=new CompoundTag();tag.put("item",techguns.util.TGItemNbt.save(item, techguns.util.TGItemNbt.registries()));tag.put("fluid",techguns.util.TGFluids2.save(fluid));tag.putInt("power",powerPerTick);return tag;}
+        static Operation load(CompoundTag tag){return new Operation(techguns.util.TGItemNbt.load(techguns.util.TGItemNbt.registries(), tag.getCompound("item")),techguns.util.TGFluids2.load(tag.getCompound("fluid")),tag.getInt("power"));}
     }
     public Operation currentOperation;
     public int totaltime, progress;
@@ -101,7 +100,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
     protected boolean isItemValidForSlot(int slot,ItemStack stack){
         if(stack.isEmpty())return false;
         if(slot==SLOT_DRILL&&stack.getItem() instanceof ITGSpecialSlot special){var type=special.getSlot(stack);return type==TGSlotType.DRILL_SMALL||type==TGSlotType.DRILL_MEDIUM||type==TGSlotType.DRILL_LARGE;}
-        if(slot==SLOT_FURNACE)return ForgeHooks.getBurnTime(stack,null)>0;
+        if(slot==SLOT_FURNACE)return stack.getBurnTime(null)>0;
         return false;
     }
     private IItemHandler createAutomation(){return new IItemHandler(){
@@ -184,14 +183,14 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
     public int getFuelBufferScaled(int limit){return currentFuelBufferMax>0?fuelBuffer*limit/currentFuelBufferMax:0;}
     public int getProgressScaled(int limit){return totaltime!=0?progress*limit/totaltime:0;}
 
-    @Override public AABB getRenderBoundingBox(){
+    public AABB getRenderBoundingBox(){
         if(formed&&drill_direction!=null){
             BlockPos rodEnd=worldPosition.relative(drill_direction,rods+engines+1);
             BlockPos other=rodEnd.relative(OreDrillDefinition.getSide1(drill_direction),radius+2).relative(OreDrillDefinition.getSide2(drill_direction),radius+1);
             BlockPos first=worldPosition.relative(OreDrillDefinition.getSide1(drill_direction),-(radius+2)).relative(OreDrillDefinition.getSide2(drill_direction),-(radius+1));
-            return new AABB(first,other);
+            return AABB.encapsulatingFullBlocks(first,other);
         }
-        return super.getRenderBoundingBox();
+        return net.minecraft.world.phys.AABB.unitCubeFromLowerCorner(net.minecraft.world.phys.Vec3.atLowerCornerOf(worldPosition));
     }
 
     // --- Power and fuel ------------------------------------------------------------------------------------------
@@ -201,7 +200,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
         if(fuelBuffer*factor>=amount){fuelBuffer-=Math.max(amount/factor,1);return true;}
         amount-=fuelBuffer*factor;fuelBuffer=0;currentFuelBufferMax=0;
         ItemStack fuel=inventory.getStackInSlot(SLOT_FURNACE);
-        int fuelValue=fuel.isEmpty()?0:ForgeHooks.getBurnTime(fuel,null);
+        int fuelValue=fuel.isEmpty()?0:fuel.getBurnTime(null);
         if(fuelValue>0){
             ItemStack container=fuel.getCraftingRemainingItem();
             if(!container.isEmpty()){
@@ -223,7 +222,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
         if(inputTank.isEmpty())return 0;
         var fluid=inputTank.getFluid().getFluid();
         if(fluid.isSame(Fluids.LAVA))return 20f;
-        var id=ForgeRegistries.FLUIDS.getKey(fluid);
+        var id=BuiltInRegistries.FLUID.getKey(fluid);
         if(id!=null)for(String name:TGConfig.fluidListFuel)if(id.getPath().equals(name))return TGConfig.oreDrillFuelValueFuel;
         return 0;
     }
@@ -320,7 +319,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
             for(int s=SLOT_OUTPUT1;s<SLOT_OUTPUT1+SLOT_OUTPUT_COUNT&&!output.isEmpty();s++){
                 var slot=inventory.getStackInSlot(s);
                 if(slot.isEmpty()){int n=Math.min(output.getCount(),output.getMaxStackSize());inventory.setStackInSlot(s,output.copyWithCount(n));output.shrink(n);}
-                else if(ItemStack.isSameItemSameTags(slot,output)){int n=Math.min(output.getCount(),slot.getMaxStackSize()-slot.getCount());if(n>0){inventory.setStackInSlot(s,slot.copyWithCount(slot.getCount()+n));output.shrink(n);}}
+                else if(ItemStack.isSameItemSameComponents(slot,output)){int n=Math.min(output.getCount(),slot.getMaxStackSize()-slot.getCount());if(n>0){inventory.setStackInSlot(s,slot.copyWithCount(slot.getCount()+n));output.shrink(n);}}
             }
             if(!output.isEmpty())level.addFreshEntity(new ItemEntity(level,worldPosition.getX()+.5d,worldPosition.getY()+.5d,worldPosition.getZ()+.5d,output));
         }
@@ -353,7 +352,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
             tags.putBoolean("haspower",hasPower);tags.putBoolean("hasDrill",hasDrill);tags.putByte("drillType",(byte)drillType);
         }
         tags.putInt("fuelBuffer",fuelBuffer);tags.putInt("fuelBufferMax",currentFuelBufferMax);
-        tags.put("inputTank",inputTank.writeToNBT(new CompoundTag()));tags.put("outputTank",outputTank.writeToNBT(new CompoundTag()));
+        tags.put("inputTank",inputTank.writeToNBT(techguns.util.TGItemNbt.registries(), new CompoundTag()));tags.put("outputTank",outputTank.writeToNBT(techguns.util.TGItemNbt.registries(), new CompoundTag()));
     }
     public void readClientData(CompoundTag tags){
         setEnergy(tags.getInt("powerStored"));
@@ -370,20 +369,20 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
             hasPower=tags.getBoolean("haspower");hasDrill=tags.getBoolean("hasDrill");drillType=tags.getByte("drillType");
         }
         fuelBuffer=tags.getInt("fuelBuffer");currentFuelBufferMax=tags.getInt("fuelBufferMax");
-        inputTank.readFromNBT(tags.getCompound("inputTank"));outputTank.readFromNBT(tags.getCompound("outputTank"));
+        inputTank.readFromNBT(techguns.util.TGItemNbt.registries(), tags.getCompound("inputTank"));outputTank.readFromNBT(techguns.util.TGItemNbt.registries(), tags.getCompound("outputTank"));
     }
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.put("inventory",inventory.serializeNBT());writeClientData(tag);}
-    @Override public void load(CompoundTag tag){super.load(tag);inventory.deserializeNBT(tag.getCompound("inventory"));readClientData(tag);}
-    @Override public CompoundTag getUpdateTag(){var tag=new CompoundTag();tag.put("inventory",inventory.serializeNBT());writeClientData(tag);return tag;}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));writeClientData(tag);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);inventory.deserializeNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("inventory"));readClientData(tag);}
+    @Override public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries){var tag=new CompoundTag();tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));writeClientData(tag);return tag;}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
 
     @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){
-        if(capability==ForgeCapabilities.ITEM_HANDLER)return automation.cast();
-        if(capability==ForgeCapabilities.ENERGY)return energyHandle.cast();
-        if(capability==ForgeCapabilities.FLUID_HANDLER)return fluidHandle.cast();
-        return super.getCapability(capability,side);
+        if(capability==Capabilities.ITEM_HANDLER)return automation.cast();
+        if(capability==Capabilities.ENERGY)return energyHandle.cast();
+        if(capability==Capabilities.FLUID_HANDLER)return fluidHandle.cast();
+        return LazyOptional.empty();
     }
-    @Override public void invalidateCaps(){super.invalidateCaps();automation.invalidate();energyHandle.invalidate();fluidHandle.invalidate();}
-    @Override public void reviveCaps(){super.reviveCaps();automation=LazyOptional.of(this::createAutomation);energyHandle=LazyOptional.of(()->energy);fluidHandle=LazyOptional.of(this::createFluidHandler);}
+    @Override public void invalidateCaps(){invalidateCapabilities();automation.invalidate();energyHandle.invalidate();fluidHandle.invalidate();}
+    @Override public void reviveCaps(){automation=LazyOptional.of(this::createAutomation);energyHandle=LazyOptional.of(()->energy);fluidHandle=LazyOptional.of(this::createFluidHandler);}
     static String fluidName(FluidStack stack){var id=BuiltInRegistries.FLUID.getKey(stack.getFluid());return id==null?"":id.toString();}
 }

@@ -1,0 +1,22 @@
+{
+  "type": "techguns:copy_nbt",
+  "pattern": [
+    "ggg",
+    "grg",
+    "ggg"
+  ],
+  "key": {
+    "r": {
+      "item": "techguns:revolver"
+    },
+    "g": {
+      "tag": "c:ingots/gold"
+    }
+  },
+  "result": {
+    "id": "techguns:goldenrevolver",
+    "components": {
+      "minecraft:custom_data": "{ammo:6s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

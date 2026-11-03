@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:vector"
+    },
+    {
+      "item": "techguns:smgmagazine"
+    }
+  ],
+  "result": {
+    "id": "techguns:vector",
+    "components": {
+      "minecraft:custom_data": "{ammo:25s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

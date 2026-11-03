@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "b  ",
+    "bb ",
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "item": "techguns:steelframe_dark"
+    }
+  },
+  "result": {
+    "id": "techguns:stairs_metal_2",
+    "count": 6
+  }
+}

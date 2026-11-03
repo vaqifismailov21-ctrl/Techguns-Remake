@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "prs",
+    "fm "
+  ],
+  "key": {
+    "p": {
+      "item": "techguns:pumpmechanism"
+    },
+    "r": {
+      "item": "techguns:ironreceiver"
+    },
+    "s": {
+      "item": "techguns:plasticstock"
+    },
+    "f": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "m": {
+      "item": "techguns:fueltank"
+    }
+  },
+  "result": {
+    "id": "techguns:flamethrower",
+    "components": {
+      "minecraft:custom_data": "{ammo:100s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

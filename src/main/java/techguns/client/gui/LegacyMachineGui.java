@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.common.UsernameCache;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.common.UsernameCache;
+import net.neoforged.neoforge.fluids.FluidStack;
 import techguns.TGConfig;
 
 /** Shared pieces of the original OwnedTileEntGui/RedstoneTileEntGui/PoweredTileEntGui/TGBaseGui layers. */
@@ -86,10 +86,10 @@ public final class LegacyMachineGui {
             int y0=y+height-offset-len,h=len;
             float v0=tex.getV0()+(tex.getV1()-tex.getV0())*(iconHeight-h)/(float)iconHeight;
             var buffer=graphics.bufferSource().getBuffer(net.minecraft.client.renderer.RenderType.text(InventoryMenu.BLOCK_ATLAS));
-            buffer.vertex(pose,x,y0+h,0).color(255,255,255,255).uv(tex.getU0(),tex.getV1()).uv2(0xF000F0).endVertex();
-            buffer.vertex(pose,x+width,y0+h,0).color(255,255,255,255).uv(tex.getU1(),tex.getV1()).uv2(0xF000F0).endVertex();
-            buffer.vertex(pose,x+width,y0,0).color(255,255,255,255).uv(tex.getU1(),v0).uv2(0xF000F0).endVertex();
-            buffer.vertex(pose,x,y0,0).color(255,255,255,255).uv(tex.getU0(),v0).uv2(0xF000F0).endVertex();
+            buffer.addVertex(pose,x,y0+h,0).setColor(255,255,255,255).setUv(tex.getU0(),tex.getV1()).setLight(0xF000F0);
+            buffer.addVertex(pose,x+width,y0+h,0).setColor(255,255,255,255).setUv(tex.getU1(),tex.getV1()).setLight(0xF000F0);
+            buffer.addVertex(pose,x+width,y0,0).setColor(255,255,255,255).setUv(tex.getU1(),v0).setLight(0xF000F0);
+            buffer.addVertex(pose,x,y0,0).setColor(255,255,255,255).setUv(tex.getU0(),v0).setLight(0xF000F0);
             offset+=iconHeight;
         }
         graphics.flush();

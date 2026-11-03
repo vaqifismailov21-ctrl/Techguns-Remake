@@ -66,7 +66,7 @@ public final class LegacyModelPart {
         model.pose.pushPose();
         model.pose.scale(factor, factor, factor);
         for (ModelPart.Cube cube : cubes) {
-            cube.compile(model.pose.last(), model.vertices, model.light, model.overlay, 1, 1, 1, 1);
+            cube.compile(model.pose.last(), model.vertices, model.light, model.overlay, -1);
         }
         model.pose.popPose();
         for(var child:children)child.render(scale);

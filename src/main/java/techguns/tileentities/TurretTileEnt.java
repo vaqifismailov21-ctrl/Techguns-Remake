@@ -18,13 +18,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import techguns.capabilities.compat.Capability;
+import techguns.capabilities.compat.Capabilities;
+import techguns.capabilities.compat.LazyOptional;
+import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import techguns.TGConfig;
 import techguns.TGItems;
 import techguns.TGTurrets;
@@ -38,7 +38,7 @@ import techguns.machines.TurretMenu;
  * Port of the original TurretTileEnt (BasicPoweredTileEnt, 5000 FE): 9 ammunition inputs, 9 empty-magazine outputs,
  * one gun and one turret-armor slot, repair after death, power-dependent activation and healing.
  */
-public class TurretTileEnt extends BlockEntity implements MenuProvider {
+public class TurretTileEnt extends BlockEntity implements MenuProvider, techguns.capabilities.compat.ICapabilityHost{
     public static final int SLOT_INPUT1=0, INPUTS_SIZE=9;
     public static final int SLOT_OUTPUT1=SLOT_INPUT1+INPUTS_SIZE, OUTPUTS_SIZE=9;
     public static final int SLOT_WEAPON=SLOT_OUTPUT1+OUTPUTS_SIZE, SLOT_ARMOR=SLOT_WEAPON+1;
@@ -312,20 +312,20 @@ public class TurretTileEnt extends BlockEntity implements MenuProvider {
         pvpsetting=tags.getByte("pvpsetting");
     }
     /** Original wrench dismantling tag: inventory plus client data, without the owner. */
-    public CompoundTag writeNBTforDismantling(){var tag=new CompoundTag();tag.put("inventory",inventory.serializeNBT());writeClientData(tag,false);tag.remove("owner");return tag;}
-    public void readNBTfromStackTag(CompoundTag tag){inventory.deserializeNBT(tag.getCompound("inventory"));UUID placer=owner;readClientData(tag);if(placer!=null&&!tag.contains("owner"))owner=placer;}
+    public CompoundTag writeNBTforDismantling(){var tag=new CompoundTag();tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));writeClientData(tag,false);tag.remove("owner");return tag;}
+    public void readNBTfromStackTag(CompoundTag tag){inventory.deserializeNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("inventory"));UUID placer=owner;readClientData(tag);if(placer!=null&&!tag.contains("owner"))owner=placer;}
 
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.put("inventory",inventory.serializeNBT());writeClientData(tag,false);}
-    @Override public void load(CompoundTag tag){super.load(tag);inventory.deserializeNBT(tag.getCompound("inventory"));readClientData(tag);if(level!=null&&level.isClientSide)tickClient();}
-    @Override public CompoundTag getUpdateTag(){var tag=new CompoundTag();tag.put("inventory",inventory.serializeNBT());writeClientData(tag,true);return tag;}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));writeClientData(tag,false);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);inventory.deserializeNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("inventory"));readClientData(tag);if(level!=null&&level.isClientSide)tickClient();}
+    @Override public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries){var tag=new CompoundTag();tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));writeClientData(tag,true);return tag;}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
 
     @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){
-        if(capability==ForgeCapabilities.ITEM_HANDLER)return automation.cast();
-        if(capability==ForgeCapabilities.ENERGY)return energyHandle.cast();
-        return super.getCapability(capability,side);
+        if(capability==Capabilities.ITEM_HANDLER)return automation.cast();
+        if(capability==Capabilities.ENERGY)return energyHandle.cast();
+        return LazyOptional.empty();
     }
-    @Override public void invalidateCaps(){super.invalidateCaps();automation.invalidate();energyHandle.invalidate();}
-    @Override public void reviveCaps(){super.reviveCaps();automation=LazyOptional.of(this::createAutomation);energyHandle=LazyOptional.of(()->energy);}
-    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(){return new net.minecraft.world.phys.AABB(worldPosition).inflate(1);}
+    @Override public void invalidateCaps(){invalidateCapabilities();automation.invalidate();energyHandle.invalidate();}
+    @Override public void reviveCaps(){automation=LazyOptional.of(this::createAutomation);energyHandle=LazyOptional.of(()->energy);}
+    public net.minecraft.world.phys.AABB getRenderBoundingBox(){return net.minecraft.world.phys.AABB.unitCubeFromLowerCorner(net.minecraft.world.phys.Vec3.atLowerCornerOf(worldPosition)).inflate(1);}
 }

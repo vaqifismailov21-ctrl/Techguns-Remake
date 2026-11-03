@@ -1,5 +1,6 @@
 package techguns.client.gui;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.items.armors.GenericShield;
 import techguns.items.armors.ICamoChangeable;
@@ -68,7 +68,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
                 graphics.blit(texture,k-45,l+6,178,0,45,84);
                 graphics.blit(texture,k-18,l+93,7,83,18,18);
                 graphics.enableScissor(k-42,l+9,k-3,l+86);
-                try{InventoryScreen.renderEntityInInventoryFollowsMouse(graphics,k-20,l+77,30,k-mouseX,l-mouseY,minecraft.player);}finally{graphics.disableScissor();}
+                try{techguns.client.gui.TGGuiCompat.renderEntity(graphics,k-20,l+77,30,k-mouseX,l-mouseY,minecraft.player);}finally{graphics.disableScissor();}
             }
             case UPGRADE->{
                 if(!menu.result.getItem(0).isEmpty()){
@@ -118,7 +118,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
     private static int camoNumber(ItemStack stack){return !stack.isEmpty()&&stack.getItem() instanceof ICamoChangeable camo?camo.getCurrentCamoIndex(stack)+1:0;}
     /** Original metadata of the sixteen-colour blocks handled by the plain camo bench recipes. */
     private static int dyeIndex(ItemStack stack){
-        var id=ForgeRegistries.ITEMS.getKey(stack.getItem());if(id==null||!id.getNamespace().equals("minecraft"))return -1;
+        var id=BuiltInRegistries.ITEM.getKey(stack.getItem());if(id==null||!id.getNamespace().equals("minecraft"))return -1;
         for(String family:DYE_FAMILIES)for(int i=0;i<COLORS.length;i++)if(id.getPath().equals(COLORS[i]+"_"+family))return i;
         return -1;
     }
@@ -150,7 +150,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
     }
 
     @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){
-        renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+        renderBackground(graphics, mouseX, mouseY, partial);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
         var tooltip=hoverTooltip(mouseX-leftPos,mouseY-topPos);if(tooltip!=null)graphics.renderComponentTooltip(font,tooltip,mouseX,mouseY);
     }
 }

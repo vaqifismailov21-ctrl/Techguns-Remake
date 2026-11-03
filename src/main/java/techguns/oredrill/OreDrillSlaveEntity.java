@@ -24,8 +24,8 @@ public final class OreDrillSlaveEntity extends BlockEntity {
     public void needUpdate(){setChanged();if(level!=null&&!level.isClientSide)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);}
     private void write(CompoundTag tag){tag.putBoolean("hasMaster",hasMaster);if(hasMaster){tag.putInt("masterX",masterX);tag.putInt("masterY",masterY);tag.putInt("masterZ",masterZ);tag.putByte("type",type);}}
     private void read(CompoundTag tag){hasMaster=tag.getBoolean("hasMaster");if(hasMaster){masterX=tag.getInt("masterX");masterY=tag.getInt("masterY");masterZ=tag.getInt("masterZ");type=tag.getByte("type");}else type=0;}
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);write(tag);}
-    @Override public void load(CompoundTag tag){super.load(tag);read(tag);}
-    @Override public CompoundTag getUpdateTag(){var tag=new CompoundTag();write(tag);return tag;}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);write(tag);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);read(tag);}
+    @Override public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries){var tag=new CompoundTag();write(tag);return tag;}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
 }

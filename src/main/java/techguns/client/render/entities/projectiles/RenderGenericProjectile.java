@@ -34,7 +34,7 @@ public final class RenderGenericProjectile<T extends GenericProjectile> extends 
         pose.popPose();
     }
     private static void vertex(VertexConsumer consumer, PoseStack pose, float x, float y, float u, float v) {
-        consumer.vertex(pose.last().pose(), x, y, 0).color(255, 255, 255, 255).uv(u, v)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(pose.last().normal(), 0, 0, 1).endVertex();
+        consumer.addVertex(pose.last().pose(), x, y, 0).setColor(255, 255, 255, 255).setUv(u, v)
+                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose.last(), 0, 0, 1);
     }
 }

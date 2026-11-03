@@ -29,7 +29,7 @@ public abstract class GenericItemConsumable extends Item {
         }
         return stack;
     }
-    @Override public int getUseDuration(ItemStack stack) { return itemUseDuration; }
+    @Override public int getUseDuration(ItemStack stack, LivingEntity tgUser) { return itemUseDuration; }
     @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.EAT; }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (player.canEat(ignoreHunger)) { player.startUsingItem(hand); return InteractionResultHolder.consume(player.getItemInHand(hand)); }

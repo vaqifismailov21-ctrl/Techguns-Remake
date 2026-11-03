@@ -3,10 +3,10 @@ package techguns;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import techguns.network.DistExecutor;
+import techguns.network.NetworkDirection;
+import techguns.network.PacketDistributor;
 
 /** Server-authored bullet impacts; clients cannot select a world position or trigger server effects. */
 public final class TGProjectilePackets {

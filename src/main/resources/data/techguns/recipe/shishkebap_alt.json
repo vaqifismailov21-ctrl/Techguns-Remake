@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p ",
+    "pm",
+    "sf"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/obsidian_steel"
+    },
+    "s": {
+      "tag": "c:sheets/plastic"
+    },
+    "f": {
+      "item": "techguns:fueltankempty"
+    },
+    "m": {
+      "item": "techguns:pumpmechanism"
+    }
+  },
+  "result": {
+    "id": "techguns:shishkebap",
+    "components": {
+      "minecraft:custom_data": "{ammo:0s,ammovariant:\"default\",camo:0b,miningHead:0}"
+    }
+  }
+}

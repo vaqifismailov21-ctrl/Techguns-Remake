@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " m ",
+    "spr",
+    " mc"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "r": {
+      "item": "techguns:ironreceiver"
+    },
+    "s": {
+      "tag": "c:plates/iron"
+    },
+    "c": {
+      "item": "techguns:compressedairtank"
+    },
+    "m": {
+      "item": "techguns:mechanicalpartsiron"
+    }
+  },
+  "result": {
+    "id": "techguns:powerhammer",
+    "components": {
+      "minecraft:custom_data": "{ammo:300s,ammovariant:\"default\",camo:0b,miningHead:0}"
+    }
+  }
+}

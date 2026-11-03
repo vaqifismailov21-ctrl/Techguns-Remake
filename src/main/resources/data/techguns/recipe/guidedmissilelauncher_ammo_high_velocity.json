@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:guidedmissilelauncher"
+    },
+    {
+      "item": "techguns:rocket_high_velocity"
+    }
+  ],
+  "result": {
+    "id": "techguns:guidedmissilelauncher",
+    "components": {
+      "minecraft:custom_data": "{ammo:1s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

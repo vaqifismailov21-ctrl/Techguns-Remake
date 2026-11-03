@@ -150,7 +150,7 @@ public class TGExplosion {
         int j2 = Mth.floor(this.z - (double)f3 - 1.0D);
         int j1 = Mth.floor(this.z + (double)f3 + 1.0D);
         List<Entity> list = this.world.getEntities(this.projectile, new AABB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
-        net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, explosionDummy, list, f3);
+        net.neoforged.neoforge.event.EventHooks.onExplosionDetonate(this.world, explosionDummy, list, f3);
         Vec3 vec3d = new Vec3(this.x, this.y, this.z);
         breakBlocks();
        
@@ -165,7 +165,7 @@ public class TGExplosion {
         {
             Entity entity = list.get(k2);
             
-            if (!entity.ignoreExplosion() && !entity.isSpectator() && entity.isAlive() && entity.isPickable())
+            if (!entity.ignoreExplosion(null) && !entity.isSpectator() && entity.isAlive() && entity.isPickable())
             {
 	            double damage;     
 	            
@@ -178,7 +178,7 @@ public class TGExplosion {
 	            if (damage > 0.0) {
 	            	Vec3 start = this.position;
 	            	Vec3 end = new Vec3(entity.getX(), entity.getY()+entity.getEyeHeight()*0.5, entity.getZ());
-	            	HitResult rtr = world.clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,projectile));
+	            	HitResult rtr = world.clip((projectile==null?new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,net.minecraft.world.phys.shapes.CollisionContext.empty()):new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,projectile)));
 	            	if (rtr != null && rtr.getType() == HitResult.Type.BLOCK) damage = 0.0;
 	            }
 	            

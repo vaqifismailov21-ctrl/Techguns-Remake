@@ -56,11 +56,11 @@ public final class BulletImpactParticle extends Particle {
         if(follow!=null) {var movement=follow.position().subtract(followPosition);setPos(x+movement.x,y+movement.y,z+movement.z);followPosition=follow.position();}
         // Original gravity is applied to this tick's movement, not accumulated into velY.
         var destination=new Vec3(x+xd,y+yd-definition.gravity,z+zd);
-        if(definition.removeOnGround&&level.clip(new net.minecraft.world.level.ClipContext(position(),destination,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,(net.minecraft.world.entity.Entity)null)).getType()!=net.minecraft.world.phys.HitResult.Type.MISS){remove();return;}
+        if(definition.removeOnGround&&level.clip(new net.minecraft.world.level.ClipContext(position(),destination,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,net.minecraft.world.phys.shapes.CollisionContext.empty())).getType()!=net.minecraft.world.phys.HitResult.Type.MISS){remove();return;}
         setPos(destination.x,destination.y,destination.z);
         xd*=velocityDamping; yd*=velocityDamping; zd*=velocityDamping;
         if(definition.ranges.containsKey("velocitydampingonground")){
-            var hit=level.clip(new net.minecraft.world.level.ClipContext(new Vec3(xo,yo,zo),destination,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,(net.minecraft.world.entity.Entity)null));
+            var hit=level.clip(new net.minecraft.world.level.ClipContext(new Vec3(xo,yo,zo),destination,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,net.minecraft.world.phys.shapes.CollisionContext.empty()));
             if(hit.getType()!=net.minecraft.world.phys.HitResult.Type.MISS){setPos(hit.getLocation().x,hit.getLocation().y+.001,hit.getLocation().z);xd*=groundDamping;yd*=groundDamping;zd*=groundDamping;}
         }
         size=Math.max(0,size+sizeRate); sizeRate*=sizeDamping;
@@ -81,7 +81,7 @@ public final class BulletImpactParticle extends Particle {
             var p=points[i];float px=(float)centre.x+p.x,py=(float)centre.y+p.y,pz=(float)centre.z+p.z;
             if(plane==1) {float swap=px;px=pz;pz=swap;}
             if(plane==2) {py=(float)centre.y;pz=-points[(i+1)%4].x+(float)centre.x;}
-            vertices.vertex(pose.last().pose(),px,py,pz).color((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).uv(uv[i][0],uv[i][1]).endVertex();
+            vertices.addVertex(pose.last().pose(),px,py,pz).setColor((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).setUv(uv[i][0],uv[i][1]);
         }
     }
     @Override public void render(VertexConsumer unused, Camera camera, float partial) {
@@ -115,13 +115,12 @@ public final class BulletImpactParticle extends Particle {
             var points=new Vec3[]{here.add(width.scale(radius)),here.subtract(width.scale(radius)),there.subtract(width.scale(oldRadius)),there.add(width.scale(oldRadius))};
             trail=new Vector3f[4];for(int i=0;i<4;i++)trail[i]=new Vector3f((float)points[i].x,(float)points[i].y,(float)points[i].z);
         }
-        var builder=Tesselator.getInstance().getBuilder();
         renderType.setupRenderState();
-        builder.begin(VertexFormat.Mode.QUADS,DefaultVertexFormat.POSITION_COLOR_TEX);
+        var builder=Tesselator.getInstance().begin(VertexFormat.Mode.QUADS,DefaultVertexFormat.POSITION_TEX_COLOR);
         for(int i=0;i<4;i++) {
             var p=trail==null?corners[i].rotate(quaternion).mul(radius).add(px,py,pz):trail[i];
-            builder.vertex(p.x,p.y,p.z).color((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).uv(uv[i][0],uv[i][1]).endVertex();
+            builder.addVertex(p.x,p.y,p.z).setColor((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).setUv(uv[i][0],uv[i][1]);
         }
-        BufferUploader.drawWithShader(builder.end()); renderType.clearRenderState();
+        BufferUploader.drawWithShader(builder.buildOrThrow()); renderType.clearRenderState();
     }
 }

@@ -45,7 +45,7 @@ public final class LegacyObjModel extends ModelMultipart {
         if(meshes==null)load();
         for(int i=0;i<meshes.size();i++) {
             pushMatrix();if(drum&&i==1) {translate(0,-2,0);rotate(60*fire,1,0,0);translate(0,2,0);}
-            for(var v:meshes.get(i))vertices.vertex(pose.last().pose(),v.x,v.y,v.z).color(255,255,255,255).uv(v.u,v.v).overlayCoords(overlay).uv2(light).normal(pose.last().normal(),v.nx,v.ny,v.nz).endVertex();
+            for(var v:meshes.get(i))vertices.addVertex(pose.last().pose(),v.x,v.y,v.z).setColor(255,255,255,255).setUv(v.u,v.v).setOverlay(overlay).setLight(light).setNormal(pose.last(),v.nx,v.ny,v.nz);
             popMatrix();
         }
     }

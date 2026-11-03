@@ -74,13 +74,13 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
     public static AttributeSupplier.Builder attributes(){
         return PathfinderMob.createMobAttributes().add(Attributes.MOVEMENT_SPEED,0).add(Attributes.KNOCKBACK_RESISTANCE,1).add(Attributes.MAX_HEALTH,30).add(Attributes.FOLLOW_RANGE,20);
     }
-    @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(TURRET_FACING,(byte)Direction.UP.get3DDataValue());}
+    @Override protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder){super.defineSynchedData(builder);builder.define(TURRET_FACING,(byte)Direction.UP.get3DDataValue());}
     @Override public void onSyncedDataUpdated(EntityDataAccessor<?> key){super.onSyncedDataUpdated(key);if(TURRET_FACING.equals(key))refreshDimensions();}
 
     public static ResourceLocation getTexture(int tier){return TEXTURES[tier];}
     public ResourceLocation getTexture(){var tile=getTile();return getTexture(tile==null?0:tile.getTurretTier());}
 
-    @Override protected float getStandingEyeHeight(Pose pose,EntityDimensions dimensions){return getTurretFacing()==Direction.DOWN?0.15f:0.75f;}
+    @Override public EntityDimensions getDefaultDimensions(Pose pose){return super.getDefaultDimensions(pose).withEyeHeight(getTurretFacing()==Direction.DOWN?0.15f:0.75f);}
 
     public Direction getTurretFacing(){return Direction.from3DDataValue(entityData.get(TURRET_FACING));}
     public void setTurretFacing(Direction facing){entityData.set(TURRET_FACING,(byte)facing.get3DDataValue());refreshDimensions();}
@@ -110,9 +110,9 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
 
     /** Original onDeath only informs the base: no loot, no experience, no equipment drop. */
     @Override public void die(DamageSource source){if(mountedTileEnt!=null)mountedTileEnt.onTurretDeath();}
-    @Override protected void dropCustomDeathLoot(DamageSource source,int looting,boolean recentlyHit){}
+    @Override protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel tgLevel,DamageSource source,boolean recentlyHit){}
     @Override protected void dropEquipment(){}
-    @Override public int getExperienceReward(){return 0;}
+    @Override protected int getBaseExperienceReward(){return 0;}
     @Override public boolean removeWhenFarAway(double distance){return false;}
 
     public void setTileEnt(TurretTileEnt tile){mountedTileEnt=tile;setCombatTask();}

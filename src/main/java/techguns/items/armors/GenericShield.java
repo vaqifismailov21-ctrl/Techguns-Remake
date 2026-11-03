@@ -1,5 +1,6 @@
 package techguns.items.armors;
 
+import net.minecraft.core.registries.Registries;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -17,13 +18,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.common.ItemAbilities;
 import techguns.api.damagesystem.DamageType;
 import techguns.damagesystem.ShieldStats;
 
-public class GenericShield extends ShieldItem implements ICamoChangeable {
+public class GenericShield extends ShieldItem implements ICamoChangeable, techguns.client.ext.ClientItemExtensible {
     private static final DecimalFormat FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
     private final String id;
     private final int camocount, repairMatCount;
@@ -42,8 +43,8 @@ public class GenericShield extends ShieldItem implements ICamoChangeable {
         return Component.translatable(index > 0 ? "item.techguns." + id + ".camoname." + index : "techguns.item.defaultcamo");
     }
     @Override public Component getName(ItemStack stack) { return Component.translatable("item.techguns." + id); }
-    @Override public boolean canPerformAction(ItemStack stack, ToolAction action) {
-        return stack.getDamageValue() < stack.getMaxDamage() && ToolActions.DEFAULT_SHIELD_ACTIONS.contains(action);
+    @Override public boolean canPerformAction(ItemStack stack, ItemAbility action) {
+        return stack.getDamageValue() < stack.getMaxDamage() && ItemAbilities.DEFAULT_SHIELD_ACTIONS.contains(action);
     }
     @Override public boolean isValidRepairItem(ItemStack stack, ItemStack ingredient) {
         return ingredient.is(repairMat) || super.isValidRepairItem(stack, ingredient);
@@ -59,7 +60,7 @@ public class GenericShield extends ShieldItem implements ICamoChangeable {
                 .ifPresent(holder -> result.add(new ItemStack(holder, count))));
         return result;
     }
-    @Override public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flags) {
+    @Override public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext level, List<Component> tooltip, TooltipFlag flags) {
         // Techguns shields do not use vanilla banner-pattern names/tooltips.
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("techguns.armorTooltip.durability").append(": " + (stack.getMaxDamage() - stack.getDamageValue()) + "/" + stack.getMaxDamage()));

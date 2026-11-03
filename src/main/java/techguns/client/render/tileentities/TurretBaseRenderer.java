@@ -14,6 +14,8 @@ import techguns.tileentities.TurretTileEnt;
 
 /** Original RenderTurret: the base model per mounting side, textured by the installed turret armor tier. */
 public final class TurretBaseRenderer implements BlockEntityRenderer<TurretTileEnt> {
+    /** 1.21.1: the render bounds moved from the block entity to its renderer. */
+    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(TurretTileEnt entity){return entity.getRenderBoundingBox();}
     public static final ResourceLocation DEFAULT_TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/turret_base.png");
     private static final ModelTurretBase MODEL=new ModelTurretBase();
     public TurretBaseRenderer(BlockEntityRendererProvider.Context context){}

@@ -1,9 +1,9 @@
 package techguns.client.audio;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 import techguns.TGWeaponPackets;
 
 public final class GunSounds {
@@ -23,7 +23,7 @@ public final class GunSounds {
         var entity = game.level.getEntity(message.entityId());
         // The firing player already predicted this sound. UUID guards entity-ID reuse.
         if (!(entity instanceof LivingEntity living) || living == game.player || !living.getUUID().equals(message.uuid())) return;
-        var sound = ForgeRegistries.SOUND_EVENTS.getValue(message.sound());
+        var sound = BuiltInRegistries.SOUND_EVENT.get(message.sound());
         if(sound!=null) {
             if(sound==techguns.TGSounds.BIOGUN_CHARGE.get()||sound==techguns.TGSounds.POWERHAMMER_CHARGE.get())playCharge(living,sound);
             else play(living,sound,message.reload());

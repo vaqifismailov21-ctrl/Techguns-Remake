@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "techguns:as50magazineempty"
+    },
+    {
+      "item": "techguns:sniperrounds_explosive"
+    },
+    {
+      "item": "techguns:sniperrounds_explosive"
+    }
+  ],
+  "result": {
+    "id": "techguns:as50magazine_explosive"
+  }
+}

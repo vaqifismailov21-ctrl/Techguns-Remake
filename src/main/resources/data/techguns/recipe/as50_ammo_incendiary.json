@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:as50"
+    },
+    {
+      "item": "techguns:as50magazine_incendiary"
+    }
+  ],
+  "result": {
+    "id": "techguns:as50",
+    "components": {
+      "minecraft:custom_data": "{ammo:10s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

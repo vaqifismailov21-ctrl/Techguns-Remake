@@ -1,4 +1,5 @@
 package techguns.world.structures.camp;
+import net.minecraft.core.registries.BuiltInRegistries;
 import java.util.*;
 import com.google.gson.*;
 import net.minecraft.core.Direction;
@@ -6,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.*;
-import net.minecraftforge.registries.ForgeRegistries;
 import techguns.world.ScannedStructure;
 
 public final class CampBlocks {
@@ -14,7 +14,7 @@ public final class CampBlocks {
     private static synchronized JsonObject source(){if(source==null)try(var input=CampBlocks.class.getResourceAsStream("/data/techguns/legacy_structures/military-camp-palette.json");var reader=new java.io.InputStreamReader(Objects.requireNonNull(input),java.nio.charset.StandardCharsets.UTF_8)){source=JsonParser.parseReader(reader).getAsJsonObject();}catch(java.io.IOException e){throw new IllegalStateException(e);}return source;}
     public static BlockState state(String id){return STATES.computeIfAbsent(id,key->ScannedStructure.sourceState(Objects.requireNonNull(source().getAsJsonObject(key),"Missing camp palette "+key)));}
     public static final CampBlock[] CRATES=java.util.stream.IntStream.range(0,9).mapToObj(i->new CampBlock(state("crate_"+i))).toArray(CampBlock[]::new);
-    public static BlockState camoTop(CampCamo type){return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse("techguns:camonet_top_"+type.name().toLowerCase(java.util.Locale.ROOT)))).defaultBlockState();}
+    public static BlockState camoTop(CampCamo type){return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(ResourceLocation.parse("techguns:camonet_top_"+type.name().toLowerCase(java.util.Locale.ROOT)))).defaultBlockState();}
     public static boolean isLamp(BlockState state){return state.getBlock() instanceof techguns.blocks.DecorLampBlock;}
     public static BlockState legacy(String id,int metadata){return switch(id){
         case "ladder"->Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING,Direction.from3DDataValue(metadata));

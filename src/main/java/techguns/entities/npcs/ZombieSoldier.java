@@ -58,8 +58,8 @@ public SoundEvent getDeathSound() {
 public SoundEvent getStepSound() {
 		return SoundEvents.ZOMBIE_STEP;
 	}
-protected ResourceLocation getDefaultLootTable() {
-		return LOOT;
+protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {
+		return net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, LOOT);
 	}
 protected boolean shouldBurnInDay() {
 		return false;

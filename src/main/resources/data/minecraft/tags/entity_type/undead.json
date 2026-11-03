@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "techguns:zombiesoldier",
+    "techguns:zombieminer",
+    "techguns:zombiefarmer",
+    "techguns:skeletonsoldier",
+    "techguns:cyberdemon",
+    "techguns:zombiepigmansoldier",
+    "techguns:zombiepoliceman"
+  ]
+}

@@ -1,5 +1,6 @@
 package techguns.power;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -7,16 +8,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
+import techguns.capabilities.compat.Capability;
+import techguns.capabilities.compat.Capabilities;
+import techguns.capabilities.compat.LazyOptional;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import techguns.TGConfig;
 
 /**
@@ -26,7 +26,7 @@ import techguns.TGConfig;
 public final class LiquidGeneratorEntity extends EnergySource {
     /** FE per mB: refined fuels, crude oil, lava. */
     public static int energyPerMb(Fluid fluid){
-        if(fluid==null||fluid==Fluids.EMPTY)return 0;var key=ForgeRegistries.FLUIDS.getKey(fluid);if(key==null)return 0;String name=key.getPath();
+        if(fluid==null||fluid==Fluids.EMPTY)return 0;var key=BuiltInRegistries.FLUID.getKey(fluid);if(key==null)return 0;String name=key.getPath();
         if(fluid.isSame(Fluids.LAVA))return 100;
         for(String fuel:TGConfig.fluidListFuel)if(fuel.equals(name))return 500;
         for(String oil:TGConfig.fluidListOil)if(oil.equals(name))return 200;
@@ -56,11 +56,11 @@ public final class LiquidGeneratorEntity extends EnergySource {
         if(burning!=wasBurning&&level!=null)level.setBlock(worldPosition,getBlockState().setValue(GeneratorBlock.LIT,burning),3);
     }
     @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){
-        if(capability==ForgeCapabilities.FLUID_HANDLER)return tankHandle.cast();if(capability==ForgeCapabilities.ITEM_HANDLER)return containerHandle.cast();
+        if(capability==Capabilities.FLUID_HANDLER)return tankHandle.cast();if(capability==Capabilities.ITEM_HANDLER)return containerHandle.cast();
         return super.getCapability(capability,side);
     }
-    @Override public void invalidateCaps(){super.invalidateCaps();tankHandle.invalidate();containerHandle.invalidate();}
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.put("Tank",tank.writeToNBT(new CompoundTag()));tag.put("Container",container.serializeNBT());tag.putInt("BurnEnergy",burnEnergy);}
-    @Override public void load(CompoundTag tag){super.load(tag);tank.readFromNBT(tag.getCompound("Tank"));container.deserializeNBT(tag.getCompound("Container"));burnEnergy=tag.getInt("BurnEnergy");}
+    @Override public void invalidateCaps(){invalidateCapabilities();tankHandle.invalidate();containerHandle.invalidate();}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);tag.put("Tank",tank.writeToNBT(techguns.util.TGItemNbt.registries(), new CompoundTag()));tag.put("Container",container.serializeNBT(techguns.util.TGItemNbt.registries()));tag.putInt("BurnEnergy",burnEnergy);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);tank.readFromNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("Tank"));container.deserializeNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("Container"));burnEnergy=tag.getInt("BurnEnergy");}
     public static FluidStack displayed(LiquidGeneratorEntity entity){return entity.tank.getFluid();}
 }

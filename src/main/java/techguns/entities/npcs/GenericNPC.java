@@ -42,8 +42,8 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
         goalSelector.addGoal(4,combatGoal);
     }
     @Override public void setItemSlot(EquipmentSlot slot,ItemStack stack){super.setItemSlot(slot,stack);if(slot==EquipmentSlot.MAINHAND)setCombatTask();}
-    @Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor level,DifficultyInstance difficulty,MobSpawnType reason,@Nullable SpawnGroupData data,@Nullable CompoundTag tag){
-        data=super.finalizeSpawn(level,difficulty,reason,data,tag);addRandomArmor(Math.round(difficulty.getSpecialMultiplier()*3));setCombatTask();setCanPickUpLoot(false);return data;
+    @Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor level,DifficultyInstance difficulty,MobSpawnType reason,@Nullable SpawnGroupData data){
+        data=super.finalizeSpawn(level,difficulty,reason,data);addRandomArmor(Math.round(difficulty.getSpecialMultiplier()*3));setCombatTask();setCanPickUpLoot(false);return data;
     }
     public void onSpawnByManager(int difficulty){setCanPickUpLoot(false);addRandomArmor(difficulty);setCombatTask();}
     protected void addRandomArmor(int difficulty){setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(TGuns.revolver.get()));}
@@ -69,6 +69,6 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
     @Override public void aiStep(){super.aiStep();if(weaponRecoilTicks>0)weaponRecoilTicks--;if(weaponMuzzleTicks>0)weaponMuzzleTicks--;}
     public boolean isSwingingArms(){return weaponRecoilTicks>0;}
     protected boolean shouldBurnInDay(){return false;}
-    public static ItemStack camo(Item item,int index){var stack=new ItemStack(item);stack.getOrCreateTag().putByte("camo",(byte)index);return stack;}
+    public static ItemStack camo(Item item,int index){var stack=new ItemStack(item);techguns.util.TGItemNbt.putByte(stack, "camo",(byte)index);return stack;}
     public int randomCamo(Item item){return item instanceof techguns.items.armors.ICamoChangeable c?random.nextInt(c.getCamoCount()):0;}
 }

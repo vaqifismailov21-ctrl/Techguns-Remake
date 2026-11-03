@@ -1,4 +1,5 @@
 package techguns.client;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -8,25 +9,25 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import techguns.Techguns;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.items.guns.GenericGun;
 import techguns.util.InventoryUtil;
 
 /** Pistol subset of original TGGuiEvents, using original sprites, spacing and coordinates. */
-@Mod.EventBusSubscriber(modid = Techguns.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Techguns.MODID, value = Dist.CLIENT)
 public final class WeaponHud {
     private static final ResourceLocation CROSSHAIRS = ResourceLocation.fromNamespaceAndPath("techguns", "textures/gui/tg_crosshairs.png");
     private static final ResourceLocation INVENTORY = techguns.client.gui.TGPlayerInventoryScreen.TEXTURE;
-    @SubscribeEvent public static void crosshair(RenderGuiOverlayEvent.Pre event) {
+    @SubscribeEvent public static void crosshair(RenderGuiLayerEvent.Pre event) {
         var game = Minecraft.getInstance();
-        if (!event.getOverlay().id().equals(VanillaGuiOverlay.CROSSHAIR.id()) || game.player == null || game.player.isSpectator()
+        if (!event.getName().equals(VanillaGuiLayers.CROSSHAIR) || game.player == null || game.player.isSpectator()
                 || !game.options.getCameraType().isFirstPerson() || !(game.player.getMainHandItem().getItem() instanceof GenericGun gun)) return;
         var style=gun.getCrossHairStyle();
         if(ClientZoom.isZoomed(game.player,gun)&&techguns.client.render.item.GunItemRenderer.get().hasScope(gun)) {event.setCanceled(true);return;}

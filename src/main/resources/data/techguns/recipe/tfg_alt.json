@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "t  ",
+    "bpr",
+    "tn "
+  ],
+  "key": {
+    "p": {
+      "item": "techguns:plasmagenerator"
+    },
+    "b": {
+      "item": "techguns:shieldedtitaniumbarrel"
+    },
+    "r": {
+      "item": "techguns:titaniumreceiver"
+    },
+    "t": {
+      "tag": "c:plates/titanium"
+    },
+    "n": {
+      "item": "techguns:nuclearpowercelldepleted"
+    }
+  },
+  "result": {
+    "id": "techguns:tfg",
+    "components": {
+      "minecraft:custom_data": "{ammo:0s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

@@ -29,7 +29,7 @@ public final class EntityRadiation extends Entity {
         this.strength = originalStrength = strength; this.outerStrength = originalOuterStrength = outerStrength;
         return this;
     }
-    @Override protected void defineSynchedData() {}
+    @Override protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {}
     @Override protected void readAdditionalSaveData(CompoundTag tag) {
         age = tag.getInt("Age"); duration = tag.getInt("Duration"); radius = tag.getFloat("radius"); innerRadius = tag.getFloat("inner_radius");
         strength = tag.getShort("strength"); outerStrength = tag.getShort("strength_outer");

@@ -11,7 +11,6 @@ import techguns.capabilities.TGExtendedPlayer;
 import techguns.keybind.TGKeybindsID;
 
 public final class TGGuiToggleButton extends AbstractButton {
-    private static final ResourceLocation WIDGETS = ResourceLocation.withDefaultNamespace("textures/gui/widgets.png");
     private static final byte[] KEYS = {TGKeybindsID.TOGGLE_HUD, TGKeybindsID.TOGGLE_NIGHTVISION,
             TGKeybindsID.TOGGLE_SAFEMODE, TGKeybindsID.TOGGLE_STEP_ASSIST, TGKeybindsID.TOGGLE_JETPACK};
     private static final String[] LABELS = {"togglehud", "togglenv", "togglesafe", "togglestep", "togglejetpack"};
@@ -30,7 +29,7 @@ public final class TGGuiToggleButton extends AbstractButton {
             case 0 -> data.showTGHudElements; case 1 -> data.enableNightVision; case 2 -> data.enableSafemode;
             case 3 -> data.enableStepAssist; default -> data.enableJetpack;
         };
-        graphics.blitNineSliced(WIDGETS, getX(), getY(), width, height, 2, 3, 2, 2, 200, 20, 0, 46 + (isHoveredOrFocused() ? 2 : 1) * 20);
+        graphics.blitSprite(net.minecraft.resources.ResourceLocation.withDefaultNamespace(isHoveredOrFocused() ? "widget/button_highlighted" : "widget/button"), getX(), getY(), width, height);
         int textureY = type * 7 + (type > 3 ? 14 : 0);
         graphics.blit(TGPlayerInventoryScreen.TEXTURE, getX() + 2, getY() + 2, 242 + (enabled ? 7 : 0), textureY, 7, 7);
         setTooltip(Tooltip.create(Component.translatable("techguns.tgguitooltip." + LABELS[type])

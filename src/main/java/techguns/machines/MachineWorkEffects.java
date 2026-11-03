@@ -4,7 +4,7 @@ import net.minecraft.core.particles.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.*;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
+import techguns.network.PacketDistributor;
 import techguns.*;
 /** Original work sounds and particle timings, emitted only when the server advances an operation. */
 public final class MachineWorkEffects {

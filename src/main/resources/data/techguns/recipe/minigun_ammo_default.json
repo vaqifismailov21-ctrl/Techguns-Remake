@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:minigun"
+    },
+    {
+      "item": "techguns:minigundrum"
+    }
+  ],
+  "result": {
+    "id": "techguns:minigun",
+    "components": {
+      "minecraft:custom_data": "{ammo:200s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

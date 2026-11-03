@@ -9,6 +9,8 @@ import net.minecraft.world.phys.shapes.*;
 import techguns.TGWeaponBlocks;
 import techguns.tileentities.BioBlobBlockEntity;
 public final class BioBlobBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<BioBlobBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public static final DirectionProperty FACING=BlockStateProperties.FACING;
     public static final IntegerProperty SIZE=IntegerProperty.create("size",0,2);
     public BioBlobBlock() {super(Properties.of().strength(2).sound(SoundType.SLIME_BLOCK).lightLevel(s->7).noOcclusion());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.DOWN).setValue(SIZE,0));}

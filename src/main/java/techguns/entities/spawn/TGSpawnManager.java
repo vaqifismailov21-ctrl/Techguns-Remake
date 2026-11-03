@@ -28,8 +28,8 @@ public final class TGSpawnManager {
     private static boolean tagged(Holder<Biome> biome,String id){return biome.is(TagKey.create(Registries.BIOME,ResourceLocation.parse(id)));}
     public static int biomeDanger(Holder<Biome> biome){
         if(tagged(biome,"minecraft:is_nether")||tagged(biome,"minecraft:is_end"))return 0;
-        for(String tag:new String[]{"forge:is_desert","forge:is_sandy","forge:is_snowy","forge:is_swamp","forge:is_spooky","forge:is_dead","forge:is_wasteland"})if(tagged(biome,tag))return 2;
-        for(String tag:new String[]{"forge:is_cold","forge:is_sparse","minecraft:is_savanna","forge:is_dry"})if(tagged(biome,tag))return 1;
+        for(String tag:new String[]{"c:is_desert","c:is_sandy","c:is_snowy","c:is_swamp","c:is_spooky","c:is_dead","c:is_wasteland"})if(tagged(biome,tag))return 2;
+        for(String tag:new String[]{"c:is_cold","c:is_sparse_vegetation","minecraft:is_savanna","c:is_dry"})if(tagged(biome,tag))return 1;
         return 0;
     }
     public static boolean blacklisted(Holder<Biome> biome){String id=biome.unwrapKey().map(k->k.location().toString()).orElse("");return Arrays.asList(TGConfig.biomeBlacklist).contains(id);}

@@ -36,8 +36,8 @@ public final class GuidedMissileProjectile extends RocketProjectile {
         }
         super.tick();
     }
-    @Override public void writeSpawnData(FriendlyByteBuf b) {super.writeSpawnData(b);b.writeBoolean(highVelocity);b.writeVarInt(target==null?-1:target.getId());}
-    @Override public void readSpawnData(FriendlyByteBuf b) {super.readSpawnData(b);highVelocity=b.readBoolean();target=level().getEntity(b.readVarInt());}
+    @Override public void writeSpawnData(net.minecraft.network.RegistryFriendlyByteBuf b) {super.writeSpawnData(b);b.writeBoolean(highVelocity);b.writeVarInt(target==null?-1:target.getId());}
+    @Override public void readSpawnData(net.minecraft.network.RegistryFriendlyByteBuf b) {super.readSpawnData(b);highVelocity=b.readBoolean();target=level().getEntity(b.readVarInt());}
     @Override protected void addAdditionalSaveData(CompoundTag tag) {super.addAdditionalSaveData(tag);tag.putBoolean("highVelocity",highVelocity);if(targetUuid!=null)tag.putUUID("target",targetUuid);}
     @Override protected void readAdditionalSaveData(CompoundTag tag) {super.readAdditionalSaveData(tag);highVelocity=tag.getBoolean("highVelocity");targetUuid=tag.hasUUID("target")?tag.getUUID("target"):null;}
 }

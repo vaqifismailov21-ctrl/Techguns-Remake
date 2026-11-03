@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:ak47"
+    },
+    {
+      "item": "techguns:assaultriflemagazine_incendiary"
+    }
+  ],
+  "result": {
+    "id": "techguns:ak47",
+    "components": {
+      "minecraft:custom_data": "{ammo:30s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

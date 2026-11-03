@@ -14,7 +14,7 @@ public final class RenderStoneBullet extends EntityRenderer<StoneBulletProjectil
         pose.pushPose();pose.mulPose(entityRenderDispatcher.cameraOrientation());pose.scale(0.1F,0.1F,0.1F);
         var v=buffers.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));var m=pose.last();
         float[][] points={{-0.5F,-0.25F,0,1},{0.5F,-0.25F,1,1},{0.5F,0.75F,1,0},{-0.5F,0.75F,0,0}};
-        for(var p:points)v.vertex(m.pose(),p[0],p[1],0).color(255,255,255,255).uv(p[2],p[3]).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(m.normal(),0,0,1).endVertex();
+        for(var p:points)v.addVertex(m.pose(),p[0],p[1],0).setColor(255,255,255,255).setUv(p[2],p[3]).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(m,0,0,1);
         pose.popPose();
     }
 }

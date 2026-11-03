@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "techguns:t1_combat_chestplate",
+    "techguns:t1_scout_chestplate",
+    "techguns:t1_miner_chestplate",
+    "techguns:steam_chestplate",
+    "techguns:hazmat_chestplate",
+    "techguns:t2_combat_chestplate",
+    "techguns:t2_commando_chestplate",
+    "techguns:t2_riot_chestplate",
+    "techguns:t3_combat_chestplate",
+    "techguns:t3_power_chestplate",
+    "techguns:t3_miner_chestplate",
+    "techguns:t3_exo_chestplate",
+    "techguns:t4_praetor_chestplate",
+    "techguns:t4_power_chestplate"
+  ]
+}

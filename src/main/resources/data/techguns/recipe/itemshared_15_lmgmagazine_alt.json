@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "techguns:lmgmagazineempty"
+    },
+    {
+      "item": "techguns:rifleroundsstack"
+    },
+    {
+      "item": "techguns:rifleroundsstack"
+    }
+  ],
+  "result": {
+    "id": "techguns:lmgmagazine"
+  }
+}

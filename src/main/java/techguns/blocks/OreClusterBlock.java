@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import techguns.world.ClusterKind;
 public final class OreClusterBlock extends Block {
     public final ClusterKind kind;
-    public OreClusterBlock(ClusterKind kind){super(BlockBehaviour.Properties.copy(Blocks.BEDROCK).strength(-1,3600000).noLootTable());this.kind=kind;}
-    @Override public void appendHoverText(ItemStack stack,@Nullable BlockGetter world,List<Component> lines,TooltipFlag flag){
+    public OreClusterBlock(ClusterKind kind){super(BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK).strength(-1,3600000).noLootTable());this.kind=kind;}
+    @Override public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext world,List<Component> lines,TooltipFlag flag){
         super.appendHoverText(stack,world,lines,flag);
         lines.add(Component.translatable("techguns.orecluster.mininglevel").append(": "+kind.miningLevel()));
         lines.add(Component.translatable("techguns.orecluster.powermult").append(": x"+String.format(java.util.Locale.ROOT,"%.1f",kind.powerMultiplier())));

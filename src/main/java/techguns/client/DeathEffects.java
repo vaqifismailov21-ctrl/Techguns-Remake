@@ -1,5 +1,8 @@
 package techguns.client;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import java.util.*;
 import java.lang.reflect.*;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,12 +18,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import techguns.TGConfig;
 import techguns.TGSounds;
 import techguns.client.models.MeshSnapshot;
@@ -29,7 +31,7 @@ import techguns.deatheffects.DeathEffectEvents.Death;
 import techguns.deatheffects.EntityDeathUtils.DeathType;
 
 /** Source death timing, texture overlays, sounds, particle systems and flying body geometry. */
-@Mod.EventBusSubscriber(modid="techguns",value=Dist.CLIENT)
+@EventBusSubscriber(modid="techguns",value=Dist.CLIENT)
 public final class DeathEffects {
     private record State(LivingEntity entity,DeathType type){}
     private static final Map<UUID,State> active=new HashMap<>();
@@ -45,8 +47,8 @@ public final class DeathEffects {
         else if(type==DeathType.BIO)WeaponEffects.spawnLegacy("biodeath",mc.level,position.x,position.y,position.z,motion.x,motion.y,motion.z);
         else gore(entity,motion);
     }
-    @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event){
-        if(event.phase!=TickEvent.Phase.END)return;var level=Minecraft.getInstance().level;
+    @SubscribeEvent public static void tick(ClientTickEvent.Post event){
+        if(false)return;var level=Minecraft.getInstance().level;
         active.values().removeIf(s->s.entity.level()!=level||s.entity.isRemoved()||s.entity.deathTime>=20||s.entity.isAlive()&&s.entity.tickCount>0&&s.entity.hurtTime==0);
     }
     @SuppressWarnings({"rawtypes","unchecked"})
@@ -66,13 +68,13 @@ public final class DeathEffects {
             if(state.type==DeathType.BIO){
                 var random=new Random(entity.getId());var parts=bodyMeshes(model,new PoseStack());
                 if(parts.isEmpty()){
-                    model.renderToBuffer(pose,buffers.getBuffer(RenderType.entityTranslucent(texture)),event.getPackedLight(),OverlayTexture.NO_OVERLAY,color,1,color,alpha);
-                    model.renderToBuffer(pose,buffers.getBuffer(RenderType.eyes(overlay)),0xf000f0,OverlayTexture.NO_OVERLAY,glow,glow,glow,1);
+                    model.renderToBuffer(pose,buffers.getBuffer(RenderType.entityTranslucent(texture)),event.getPackedLight(),OverlayTexture.NO_OVERLAY,net.minecraft.util.FastColor.ARGB32.colorFromFloat(alpha,color,1,color));
+                    model.renderToBuffer(pose,buffers.getBuffer(RenderType.eyes(overlay)),0xf000f0,OverlayTexture.NO_OVERLAY,net.minecraft.util.FastColor.ARGB32.colorFromFloat(1,glow,glow,glow));
                 }
                 for(var part:parts){pose.pushPose();float scale=1+random.nextFloat()*progress;pose.scale(scale,scale,scale);part.render(pose,buffers.getBuffer(RenderType.entityTranslucent(texture)),event.getPackedLight(),OverlayTexture.NO_OVERLAY,color,1,color,alpha);part.render(pose,buffers.getBuffer(RenderType.eyes(overlay)),0xf000f0,OverlayTexture.NO_OVERLAY,glow,glow,glow,1);pose.popPose();}
             }else{
-                model.renderToBuffer(pose,buffers.getBuffer(RenderType.entityTranslucent(texture)),event.getPackedLight(),OverlayTexture.NO_OVERLAY,1,color,color,alpha);
-                model.renderToBuffer(pose,buffers.getBuffer(RenderType.eyes(overlay)),0xf000f0,OverlayTexture.NO_OVERLAY,glow,glow,glow,1);
+                model.renderToBuffer(pose,buffers.getBuffer(RenderType.entityTranslucent(texture)),event.getPackedLight(),OverlayTexture.NO_OVERLAY,net.minecraft.util.FastColor.ARGB32.colorFromFloat(alpha,1,color,color));
+                model.renderToBuffer(pose,buffers.getBuffer(RenderType.eyes(overlay)),0xf000f0,OverlayTexture.NO_OVERLAY,net.minecraft.util.FastColor.ARGB32.colorFromFloat(1,glow,glow,glow));
             }
         }finally{pose.popPose();}
     }
@@ -96,7 +98,7 @@ public final class DeathEffects {
     @SuppressWarnings({"rawtypes","unchecked"}) private static void gore(LivingEntity entity,Vec3 motion){
         var mc=Minecraft.getInstance();var renderer=mc.getEntityRenderDispatcher().getRenderer(entity);if(!(renderer instanceof net.minecraft.client.renderer.entity.LivingEntityRenderer living))return;
         EntityModel model=living.getModel();model.young=entity.isBaby();model.prepareMobModel(entity,0,0,0);model.setupAnim(entity,0,0,entity.tickCount,0,entity.getXRot());
-        var id=net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).getPath();int color=bloodColor(id);float scale=entity.isBaby()?.5F:1;
+        var id=BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getPath();int color=bloodColor(id);float scale=entity.isBaby()?.5F:1;
         float fxScale=scale*(entity instanceof techguns.entities.npcs.SuperMutantBasic?1.2f:1);
         WeaponEffects.spawnColored("GoreFX_Blood",entity.position(),motion,fxScale,color);
         var texture=living.getTextureLocation(entity);var random=entity.getRandom();

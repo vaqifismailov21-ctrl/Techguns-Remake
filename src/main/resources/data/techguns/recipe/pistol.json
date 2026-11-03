@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bsp",
+    " fp",
+    "  m"
+  ],
+  "key": {
+    "p": {
+      "item": "techguns:plasticsheet"
+    },
+    "b": {
+      "item": "techguns:obsidiansteelbarrel"
+    },
+    "s": {
+      "tag": "c:plates/steel"
+    },
+    "f": {
+      "item": "techguns:mechanicalpartsobsidiansteel"
+    },
+    "m": {
+      "item": "techguns:pistolmagazine"
+    }
+  },
+  "result": {
+    "id": "techguns:pistol",
+    "components": {
+      "minecraft:custom_data": "{ammo:18s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

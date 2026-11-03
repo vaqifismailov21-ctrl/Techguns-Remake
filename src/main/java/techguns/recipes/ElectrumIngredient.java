@@ -1,19 +1,28 @@
 package techguns.recipes;
-import com.google.gson.*;
-import net.minecraft.core.registries.*;
-import net.minecraft.tags.TagKey;
-import net.minecraft.network.FriendlyByteBuf;
+
+import com.mojang.serialization.MapCodec;
+import java.util.Arrays;
+import java.util.stream.Stream;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.*;
+import net.neoforged.neoforge.common.crafting.ICustomIngredient;
+import net.neoforged.neoforge.common.crafting.IngredientType;
+
 /** Source ingredient requires electrum when present, falling back to gold in standalone Techguns. */
-public final class ElectrumIngredient extends AbstractIngredient {
+public final class ElectrumIngredient implements ICustomIngredient {
     public static final ResourceLocation ID=ResourceLocation.fromNamespaceAndPath("techguns","electrum_or_gold");
-    public static final Serializer SERIALIZER=new Serializer();
-    private static final TagKey<Item> ELECTRUM=TagKey.create(Registries.ITEM,ResourceLocation.fromNamespaceAndPath("forge","ingots/electrum"));
+    public static final ElectrumIngredient INSTANCE=new ElectrumIngredient();
+    public static final MapCodec<ElectrumIngredient> CODEC=MapCodec.unit(INSTANCE);
+    private static final TagKey<Item> ELECTRUM=TagKey.create(Registries.ITEM,ResourceLocation.fromNamespaceAndPath("c","ingots/electrum"));
     private static Ingredient selected(){return BuiltInRegistries.ITEM.getTagOrEmpty(ELECTRUM).iterator().hasNext()?Ingredient.of(ELECTRUM):Ingredient.of(Items.GOLD_INGOT);}
-    @Override public boolean test(ItemStack stack){return stack!=null&&selected().test(stack);}@Override public ItemStack[] getItems(){return selected().getItems();}@Override public boolean isSimple(){return false;}@Override public IIngredientSerializer<? extends Ingredient> getSerializer(){return SERIALIZER;}
-    @Override public JsonElement toJson(){var json=new JsonObject();json.addProperty("type",ID.toString());return json;}
-    public static final class Serializer implements IIngredientSerializer<ElectrumIngredient>{@Override public ElectrumIngredient parse(FriendlyByteBuf buffer){return new ElectrumIngredient();}@Override public ElectrumIngredient parse(JsonObject json){return new ElectrumIngredient();}@Override public void write(FriendlyByteBuf buffer,ElectrumIngredient ingredient){}}
+    @Override public boolean test(ItemStack stack){return stack!=null&&selected().test(stack);}
+    @Override public Stream<ItemStack> getItems(){return Arrays.stream(selected().getItems());}
+    @Override public boolean isSimple(){return false;}
+    @Override public IngredientType<?> getType(){return TGIngredients.ELECTRUM.get();}
 }

@@ -1,5 +1,5 @@
 {
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "model": "techguns:models/block/hangar_door_lower.obj",
   "flip_v": false,
   "automatic_culling": false

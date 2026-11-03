@@ -5,17 +5,17 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import techguns.*;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.entities.projectiles.*;
-public final class GenericGrenade extends Item {
+public final class GenericGrenade extends Item implements techguns.client.ext.ClientItemExtensible {
     public final float damage,innerRadius,minimum,outerRadius;
     public final float fullChargeTime=30;
     private final boolean frag;
     public GenericGrenade(boolean frag) {super(new Properties().stacksTo(16));this.frag=frag;damage=frag?12:10;innerRadius=frag?3.5F:3;minimum=frag?6:5;outerRadius=frag?7:5;}
-    @Override public int getUseDuration(ItemStack stack) {return 72000;}
-    @Override public void appendHoverText(ItemStack stack,Level level,java.util.List<net.minecraft.network.chat.Component> tooltip,TooltipFlag flags) {
+    @Override public int getUseDuration(ItemStack stack, LivingEntity tgUser) {return 72000;}
+    @Override public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext level,java.util.List<net.minecraft.network.chat.Component> tooltip,TooltipFlag flags) {
         tooltip.add(net.minecraft.network.chat.Component.translatable("techguns.gun.tooltip.damage").append(": "+damage));
         if(net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
             tooltip.add(net.minecraft.network.chat.Component.translatable("techguns.gun.tooltip.damageType").append(": ").append(techguns.api.damagesystem.DamageType.EXPLOSION.displayName()));
@@ -30,7 +30,7 @@ public final class GenericGrenade extends Item {
     }
     @Override public void releaseUsing(ItemStack stack,Level level,LivingEntity entity,int remaining) {
         if(!(entity instanceof Player player)||player.isSpectator())return;
-        float charge=Math.min(1,(getUseDuration(stack)-remaining)/fullChargeTime);
+        float charge=Math.min(1,(getUseDuration(stack, null)-remaining)/fullChargeTime);
         if(!player.getAbilities().instabuild)stack.shrink(1);
         if(!level.isClientSide) {
             boolean left=(player.getUsedItemHand()==InteractionHand.OFF_HAND)==(player.getMainArm()==HumanoidArm.RIGHT);

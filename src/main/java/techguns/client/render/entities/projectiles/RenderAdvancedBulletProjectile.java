@@ -20,5 +20,5 @@ public final class RenderAdvancedBulletProjectile extends EntityRenderer<Advance
         for(int i=0;i<4;i++){pose.mulPose(Axis.XP.rotationDegrees(90));vertex(vertices,pose,-16,-2,0,0);vertex(vertices,pose,16,-2,1,0);vertex(vertices,pose,16,2,1,1);vertex(vertices,pose,-16,2,0,1);}
         pose.popPose();
     }
-    private static void vertex(VertexConsumer vertices,PoseStack pose,float x,float y,float u,float v){vertices.vertex(pose.last().pose(),x,y,0).color(1F,1F,1F,1F).uv(u,v).endVertex();}
+    private static void vertex(VertexConsumer vertices,PoseStack pose,float x,float y,float u,float v){vertices.addVertex(pose.last().pose(),x,y,0).setColor(1F,1F,1F,1F).setUv(u,v);}
 }

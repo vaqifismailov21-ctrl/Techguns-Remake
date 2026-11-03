@@ -5,11 +5,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import techguns.tileentities.TurretTileEnt;
 
 /** Places the base, then mounts and spawns the turret on the clicked side (bottom face: hanging turret), as the original. */
-public final class TurretBlockItem extends BlockItem {
+public final class TurretBlockItem extends BlockItem implements techguns.client.ext.ClientItemExtensible {
     public TurretBlockItem(Block block){super(block,new Properties());}
     @Override public InteractionResult place(BlockPlaceContext context){
         var result=super.place(context);

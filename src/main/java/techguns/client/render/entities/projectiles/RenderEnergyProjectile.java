@@ -78,9 +78,9 @@ public final class RenderEnergyProjectile extends EntityRenderer<EnergyProjectil
         for(int i=0;i<=5;i++){
             float r=opacity*random.nextFloat(),g=opacity*random.nextFloat(),b=opacity*(0.5F+random.nextFloat()*0.5F),x=2.5F-i,size=d*(0.5F+random.nextFloat());
             var m=pose.last().pose();
-            v.vertex(m,x,-size,-size).color(r,g,b,opacity).uv(0,0).endVertex();v.vertex(m,x,-size,size).color(r,g,b,opacity).uv(0,1).endVertex();v.vertex(m,x,size,size).color(r,g,b,opacity).uv(1,1).endVertex();v.vertex(m,x,size,-size).color(r,g,b,opacity).uv(1,0).endVertex();
+            v.addVertex(m,x,-size,-size).setColor(r,g,b,opacity).setUv(0,0);v.addVertex(m,x,-size,size).setColor(r,g,b,opacity).setUv(0,1);v.addVertex(m,x,size,size).setColor(r,g,b,opacity).setUv(1,1);v.addVertex(m,x,size,-size).setColor(r,g,b,opacity).setUv(1,0);
         }
     }
     private static void quad(VertexConsumer v,PoseStack p,float start,float end,float width,float u1,float u2,float v1,float v2,float alpha){vertex(v,p,start,-width,0,u1,v1,alpha);vertex(v,p,start,width,0,u1,v2,alpha);vertex(v,p,end,width,0,u2,v2,alpha);vertex(v,p,end,-width,0,u2,v1,alpha);}
-    private static void vertex(VertexConsumer v,PoseStack p,double x,double y,double z,double u,double w,double alpha){v.vertex(p.last().pose(),(float)x,(float)y,(float)z).color(1F,1F,1F,(float)Math.max(0,Math.min(1,alpha))).uv((float)u,(float)w).endVertex();}
+    private static void vertex(VertexConsumer v,PoseStack p,double x,double y,double z,double u,double w,double alpha){v.addVertex(p.last().pose(),(float)x,(float)y,(float)z).setColor(1F,1F,1F,(float)Math.max(0,Math.min(1,alpha))).setUv((float)u,(float)w);}
 }

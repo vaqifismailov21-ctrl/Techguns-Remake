@@ -14,7 +14,7 @@ public final class InventoryUtil {
         ItemStack remaining = incoming.copy();
         for (int i = start; i < end && !remaining.isEmpty(); i++) {
             ItemStack existing = inventory.get(i);
-            if (!existing.isEmpty() && ItemStack.isSameItemSameTags(existing, remaining)) {
+            if (!existing.isEmpty() && ItemStack.isSameItemSameComponents(existing, remaining)) {
                 int count = Math.min(remaining.getCount(), Math.max(0, existing.getMaxStackSize() - existing.getCount()));
                 existing.grow(count); remaining.shrink(count);
             }
@@ -83,7 +83,7 @@ public final class InventoryUtil {
         return true;
     }
     public static ItemStack consumeFood(TGPlayerInventory inventory) {
-        for (int i = 3; i <= 5; i++) if (inventory.getItem(i).isEdible()) return inventory.removeItem(i, 1);
+        for (int i = 3; i <= 5; i++) if (inventory.getItem(i).has(net.minecraft.core.component.DataComponents.FOOD)) return inventory.removeItem(i, 1);
         return ItemStack.EMPTY;
     }
 }

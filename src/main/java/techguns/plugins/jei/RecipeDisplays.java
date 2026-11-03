@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import techguns.*;
 import techguns.items.armors.*;
 import techguns.machines.*;
@@ -58,7 +58,7 @@ public final class RecipeDisplays {
             add(result,new Display("upgrade_"+index++,Kind.UPGRADE,List.of(item(Role.INPUT,17,47,List.of(armor),null),item(Role.INPUT,53,47,List.of(upgrade.ingredient().getDefaultInstance()),null),output(116,47,applied.stack())),0,0,List.of(Component.translatable("techguns.gui.xpcost").append(": "+applied.xp()),Component.translatable("techguns.jei.upgrade_discount"))));
         }
         index=0;for(var registered:TGItems.ITEMS.getEntries()){
-            Item item=registered.get();if(item instanceof ICamoChangeable camo&&camo.getCamoCount()>1){var stack=item.getDefaultInstance();for(int i=0;i<camo.getCamoCount();i++){var before=stack.copy();var after=new ItemStack[]{stack.copy()};BenchMenu.change(after[0],false,s->after[0]=s);if(!ItemStack.isSameItemSameTags(before,after[0]))add(result,new Display("camo_"+index++,Kind.CAMO,List.of(item(Role.INPUT,17,18,List.of(before),null),output(130,18,after[0])),0,0,List.of(Component.translatable("techguns.jei.camo"))));stack=after[0];}}
+            Item item=registered.get();if(item instanceof ICamoChangeable camo&&camo.getCamoCount()>1){var stack=item.getDefaultInstance();for(int i=0;i<camo.getCamoCount();i++){var before=stack.copy();var after=new ItemStack[]{stack.copy()};BenchMenu.change(after[0],false,s->after[0]=s);if(!ItemStack.isSameItemSameComponents(before,after[0]))add(result,new Display("camo_"+index++,Kind.CAMO,List.of(item(Role.INPUT,17,18,List.of(before),null),output(130,18,after[0])),0,0,List.of(Component.translatable("techguns.jei.camo"))));stack=after[0];}}
             if(item instanceof TGSuitArmor||item instanceof GenericShield){var damaged=item.getDefaultInstance();damaged.setDamageValue(damaged.getMaxDamage()-1);var materials=item instanceof TGSuitArmor a?a.repairMaterials(damaged):((GenericShield)item).getRepairMats(damaged);if(materials.isEmpty())continue;var slots=new ArrayList<Slot>();slots.add(item(Role.INPUT,8,18,List.of(damaged),null));for(int i=0;i<materials.size();i++)slots.add(item(Role.INPUT,8+i*18,57,List.of(materials.get(i)),null));slots.add(output(116,18,item.getDefaultInstance()));add(result,new Display("repair_"+BuiltInRegistries.ITEM.getKey(item).getPath(),Kind.REPAIR,slots,0,0,List.of(Component.translatable("techguns.jei.repair_cost"))));}
         }
         for(String family:new String[]{"wool","concrete","concrete_powder","terracotta","stained_glass","stained_glass_pane","carpet"})for(var color:DyeColor.values()){
@@ -70,9 +70,9 @@ public final class RecipeDisplays {
     /** Original OreDrillJeiRecipe/OreDrillMachineRecipe: one display per cluster entry with its weight chance and power per ore. */
     private static void oreDrill(Map<Kind,List<Display>> result){
         var heads=java.util.stream.Stream.of(TGItems.OREDRILLHEAD_STEEL,TGItems.OREDRILLHEAD_OBSIDIANSTEEL,TGItems.OREDRILLHEAD_CARBON,TGItems.OREDRILLHEAD_MEDIUM_STEEL,TGItems.OREDRILLHEAD_MEDIUM_OBSIDIANSTEEL,TGItems.OREDRILLHEAD_MEDIUM_CARBON,TGItems.OREDRILLHEAD_LARGE_STEEL,TGItems.OREDRILLHEAD_LARGE_OBSIDIANSTEEL,TGItems.OREDRILLHEAD_LARGE_CARBON).map(r->r.get().getDefaultInstance()).toList();
-        var fuels=BuiltInRegistries.ITEM.stream().map(Item::getDefaultInstance).filter(stack->!stack.isEmpty()&&net.minecraftforge.common.ForgeHooks.getBurnTime(stack,null)>0).toList();
+        var fuels=BuiltInRegistries.ITEM.stream().map(Item::getDefaultInstance).filter(stack->!stack.isEmpty()&&stack.getBurnTime(null)>0).toList();
         FluidStack fuelFluid=FluidStack.EMPTY;
-        for(String name:TGConfig.fluidListFuel){for(var fluid:net.minecraftforge.registries.ForgeRegistries.FLUIDS.getValues()){var id=net.minecraftforge.registries.ForgeRegistries.FLUIDS.getKey(fluid);if(id!=null&&id.getPath().equals(name)&&fluid.isSource(fluid.defaultFluidState())){fuelFluid=new FluidStack(fluid,16000);break;}}if(!fuelFluid.isEmpty())break;}
+        for(String name:TGConfig.fluidListFuel){for(var fluid:BuiltInRegistries.FLUID.stream().toList()){var id=BuiltInRegistries.FLUID.getKey(fluid);if(id!=null&&id.getPath().equals(name)&&fluid.isSource(fluid.defaultFluidState())){fuelFluid=new net.neoforged.neoforge.fluids.FluidStack(fluid,16000);break;}}if(!fuelFluid.isEmpty())break;}
         int index=0;
         for(var cluster:techguns.world.ClusterKind.values()){
             var entries=TGOreClusters.entries(cluster);int total=entries.stream().mapToInt(TGOreClusters.Entry::weight).sum();

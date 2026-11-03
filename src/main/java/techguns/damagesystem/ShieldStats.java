@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import techguns.api.damagesystem.DamageMath;
 import techguns.TGSounds;
 import techguns.api.damagesystem.DamageType;
@@ -190,7 +190,7 @@ public class ShieldStats {
 	@Nullable
 	public static ShieldStats getStats(ItemStack stack, LivingEntity entity) {
 		ShieldStats s = null;
-	   	if(!stack.isEmpty() && stack.canPerformAction(ToolActions.SHIELD_BLOCK)) {
+	   	if(!stack.isEmpty() && stack.canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
     		s= ShieldStats.SHIELD_STATS.get(stack.getItem());
     		
     		if(s==null) {

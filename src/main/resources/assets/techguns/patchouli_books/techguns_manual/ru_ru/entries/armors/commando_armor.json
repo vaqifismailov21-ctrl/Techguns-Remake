@@ -10,7 +10,7 @@
     {
       "type": "patchouli:entity",
       "name": "Броня коммандос",
-      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t2_commando_boots'}, {Count:1,id:'techguns:t2_commando_leggings'}, {Count:1,id:'techguns:t2_commando_chestplate'}, {Count:1,id:'techguns:t2_commando_helmet'}]}",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{count:1,id:'techguns:t2_commando_boots'}, {count:1,id:'techguns:t2_commando_leggings'}, {count:1,id:'techguns:t2_commando_chestplate'}, {count:1,id:'techguns:t2_commando_helmet'}]}",
       "text": ""
     },
     {

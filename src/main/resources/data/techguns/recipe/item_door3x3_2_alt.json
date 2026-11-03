@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ppp",
+    "ppp",
+    "sps"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/tin"
+    },
+    "s": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "techguns:hangar_door_down",
+    "count": 2
+  }
+}

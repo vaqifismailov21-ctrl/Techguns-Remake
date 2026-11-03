@@ -24,7 +24,7 @@ public class GenericGunCharge extends GenericGun {
     public GenericGunCharge setChargeFireAnims(boolean value) {chargeFireAnims=value;return this;}
     public GenericGunCharge setChargeSound(Supplier<SoundEvent> sound) {chargeSound=sound;return this;}
     public GenericGunCharge setChargeFX(String name,float x,float y,float z) {chargeFX=name;chargeX=x;chargeY=y;chargeZ=z;return this;}
-    @Override public int getUseDuration(ItemStack stack) {return 288000;}
+    @Override public int getUseDuration(ItemStack stack, LivingEntity tgUser) {return 288000;}
     @Override public InteractionResultHolder<ItemStack> use(Level level,Player player,InteractionHand hand) {
         var stack=player.getItemInHand(hand);
         if(hand!=InteractionHand.MAIN_HAND || !player.isAlive()||player.isSpectator())return InteractionResultHolder.pass(stack);
@@ -34,11 +34,11 @@ public class GenericGunCharge extends GenericGun {
         state.setFireDelay(hand,minFiretime);player.startUsingItem(hand);state.setChargingWeapon(true);
         if(chargeFX!=null) {
             var offset=new net.minecraft.world.phys.Vec3(player.getMainArm()==HumanoidArm.RIGHT?chargeX:-chargeX,chargeY,chargeZ);
-            if(level.isClientSide)net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attachHead(chargeFX,player,offset,true));
+            if(level.isClientSide)techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attachHead(chargeFX,player,offset,true));
             else techguns.TGProjectilePackets.attach(player,chargeFX,offset,true);
         }
         if(chargeSound!=null) {
-            if(level.isClientSide)net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,()->()->techguns.client.audio.GunSounds.playCharge(player,chargeSound.get()));
+            if(level.isClientSide)techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,()->()->techguns.client.audio.GunSounds.playCharge(player,chargeSound.get()));
             else if(player instanceof net.minecraft.server.level.ServerPlayer server)techguns.TGWeaponPackets.sound(server,chargeSound.get(),false);
         }
         return InteractionResultHolder.consume(stack);
@@ -53,7 +53,7 @@ public class GenericGunCharge extends GenericGun {
     @Override public void releaseUsing(ItemStack stack,Level level,LivingEntity entity,int remaining) {
         if(!(entity instanceof Player player))return;
         TGExtendedPlayer.find(player).ifPresent(state->state.setChargingWeapon(false));
-        float charge=net.minecraft.util.Mth.clamp((getUseDuration(stack)-remaining)/fullChargeTime,0,1);
+        float charge=net.minecraft.util.Mth.clamp((getUseDuration(stack, null)-remaining)/fullChargeTime,0,1);
         int consumed=consumeAmmoCharge(stack,charge,player.getAbilities().instabuild);
         if(consumed<(int)Math.ceil(charge*ammoConsumedOnFullCharge))charge=consumed/(float)ammoConsumedOnFullCharge;
         if(!level.isClientSide) {

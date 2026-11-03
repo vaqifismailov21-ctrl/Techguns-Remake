@@ -19,7 +19,7 @@ public final class AttackHelicopter extends GenericFlyingMob {
     private int ambientSoundTick;
     public AttackHelicopter(EntityType<? extends AttackHelicopter> type,Level level){super(type,level);xpReward=5;}
     public static AttributeSupplier.Builder attributes(){return Mob.createMobAttributes().add(Attributes.MAX_HEALTH,100).add(Attributes.FOLLOW_RANGE,128).add(Attributes.ARMOR,16).add(Attributes.ARMOR_TOUGHNESS,5);}
-    @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(ATTACKING,false);}
+    @Override protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder){super.defineSynchedData(builder);builder.define(ATTACKING,false);}
     public boolean isAttacking(){return entityData.get(ATTACKING);}public void setAttacking(boolean value){entityData.set(ATTACKING,value);}
     @Override protected void registerGoals(){goalSelector.addGoal(5,new RandomFly(this));goalSelector.addGoal(7,new LookAround(this));goalSelector.addGoal(7,new HelicopterAttack(this));targetSelector.addGoal(1,new NearestAttackableTargetGoal<>(this,Player.class,true));}
     public static final class HelicopterAttack extends Goal {
@@ -42,12 +42,12 @@ public final class AttackHelicopter extends GenericFlyingMob {
     @Override protected void tickDeath(){
         if(deathTime==0)playSound(TGSounds.HELICOPTER_DEATH.get(),6,1);++deathTime;
         if(deathTime==MAX_DEATH_TIME){
-            if(!level().isClientSide){dropExperience();TGProjectilePackets.effect(this,"HelicopterDeathExplosion",position().add(0,-8,0),0,0);}
+            if(!level().isClientSide){dropExperience(null);TGProjectilePackets.effect(this,"HelicopterDeathExplosion",position().add(0,-8,0),0,0);}
             playSound(TGSounds.HELICOPTER_EXPLODE.get(),6,1);remove(RemovalReason.KILLED);
         }
     }
-    @Override protected float getStandingEyeHeight(Pose pose,EntityDimensions dimensions){return .5f;}
-    @Override protected ResourceLocation getDefaultLootTable(){return ResourceLocation.parse("techguns:entities/attackhelicopter");}
+    @Override public EntityDimensions getDefaultDimensions(Pose pose){return super.getDefaultDimensions(pose).withEyeHeight(.5f);}
+    @Override protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {return net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.parse("techguns:entities/attackhelicopter"));}
     @Override protected SoundEvent getHurtSound(DamageSource source){return TGSounds.HELICOPTER_HIT.get();}
     @Override protected SoundEvent getDeathSound(){return TGSounds.HELICOPTER_HIT.get();}
     @Override protected float getSoundVolume(){return 10;}

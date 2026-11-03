@@ -4,22 +4,21 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.slf4j.Logger;
 import techguns.items.guns.ammo.AmmoTypes;
 import techguns.items.guns.ammo.MagazineUnloading;
 import techguns.capabilities.TGExtendedPlayer;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import techguns.api.radiation.TGRadiation;
 
-/** Fresh 1.20.1 entry point. Only implemented systems are registered here. */
+/** 1.21.1 NeoForge entry point. Only implemented systems are registered here. */
 @Mod(Techguns.MODID)
 public final class Techguns {
     public static final String MODID = "techguns";
@@ -27,7 +26,7 @@ public final class Techguns {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-    public static final RegistryObject<CreativeModeTab> TAB = TABS.register("techguns", () ->
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = TABS.register("techguns", () ->
             CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.techguns"))
                     .icon(() -> TGItems.PISTOL_ROUNDS.get().getDefaultInstance())
@@ -56,8 +55,7 @@ public final class Techguns {
                     })
                     .build());
 
-    public Techguns() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    public Techguns(IEventBus bus, net.neoforged.fml.ModContainer container) {
         TGFluids.init(bus);
         TGArmors.init();
         TGuns.init();
@@ -77,36 +75,41 @@ public final class Techguns {
         TGOreDrill.init();
         techguns.power.PowerBlocks.init();
         bus.addListener(TGNpcs::attributes);
+        techguns.items.armors.TGArmorMaterial.REGISTER.register(bus);
+        techguns.capabilities.TGExtendedPlayerCapProvider.ATTACHMENTS.register(bus);
+        TGDataComponents.COMPONENTS.register(bus);
         TGItems.ITEMS.register(bus);
         TGSounds.SOUNDS.register(bus);
         TABS.register(bus);
         TGMenuTypes.MENUS.register(bus);
         TGRecipeSerializers.SERIALIZERS.register(bus);
+        techguns.recipes.TGIngredients.TYPES.register(bus);
         TGRadiation.ATTRIBUTES.register(bus);
         TGRadiationSystem.EFFECTS.register(bus);
         TGRadiationSystem.POTIONS.register(bus);
         TGEntities.ENTITIES.register(bus);
         TGWeaponBlocks.BLOCKS.register(bus);TGWeaponBlocks.BLOCK_ENTITIES.register(bus);
         TGPackets.register();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TGConfig.COMMON);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TGConfig.CLIENT);
+        TGPackets.NETWORK.registerOn(bus);
+        container.registerConfig(ModConfig.Type.COMMON, TGConfig.COMMON);
+        container.registerConfig(ModConfig.Type.CLIENT, TGConfig.CLIENT);
         bus.addListener(TGConfig::onConfigEvent);
         bus.addListener(this::commonSetup);
         bus.addListener(this::registerCapabilities);
-        LOGGER.info("Techguns fresh port: incomplete development build for Minecraft 1.20.1");
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(TGRadiationSystem::brewing);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(techguns.items.guns.MiningGun::onBreak);
+        LOGGER.info("Techguns Remake for Minecraft 1.21.1 (NeoForge)");
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             AmmoTypes.init();
             TGNpcGunSettings.setup();
-            net.minecraftforge.common.crafting.CraftingHelper.register(techguns.recipes.HardenedGlassIngredient.ID,techguns.recipes.HardenedGlassIngredient.SERIALIZER);
-            net.minecraftforge.common.crafting.CraftingHelper.register(techguns.recipes.ElectrumIngredient.ID,techguns.recipes.ElectrumIngredient.SERIALIZER);
             MagazineUnloading.init();
             TGRadiationSystem.setup();
             TGArmors.setup();
         });
     }
 
-    private void registerCapabilities(RegisterCapabilitiesEvent event) { event.register(TGExtendedPlayer.class); }
+    private void registerCapabilities(RegisterCapabilitiesEvent event) { techguns.capabilities.TGCapabilityRegistration.register(event); }
 }

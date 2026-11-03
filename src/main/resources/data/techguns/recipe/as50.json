@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "dpd",
+    "bbf",
+    " mt"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/obsidian_steel"
+    },
+    "b": {
+      "item": "techguns:obsidiansteelbarrel"
+    },
+    "t": {
+      "item": "techguns:plasticstock"
+    },
+    "d": {
+      "tag": "c:gems/diamond"
+    },
+    "f": {
+      "item": "techguns:obsidiansteelreceiver"
+    },
+    "m": {
+      "item": "techguns:as50magazine"
+    }
+  },
+  "result": {
+    "id": "techguns:as50",
+    "components": {
+      "minecraft:custom_data": "{ammo:10s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

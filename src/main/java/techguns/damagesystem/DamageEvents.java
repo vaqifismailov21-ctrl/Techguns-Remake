@@ -3,25 +3,25 @@ package techguns.damagesystem;
 import java.util.ArrayDeque;
 import java.lang.reflect.Field;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
-import net.minecraftforge.event.entity.living.ShieldBlockEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import techguns.Techguns;
 import techguns.api.npc.INpcTGDamageSystem;
 
-@Mod.EventBusSubscriber(modid = Techguns.MODID)
+@EventBusSubscriber(modid = Techguns.MODID)
 public final class DamageEvents {
     private record ActiveHit(LivingEntity target, TGDamageSource source) {}
     private static final ThreadLocal<ArrayDeque<ActiveHit>> HITS = ThreadLocal.withInitial(ArrayDeque::new);
-    private static final Field LAST_HURT = ObfuscationReflectionHelper.findField(LivingEntity.class, "f_20898_");
+    private static final Field LAST_HURT = ObfuscationReflectionHelper.findField(LivingEntity.class, "lastHurt");
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onAttack(LivingAttackEvent event) {
+    public static void onAttack(LivingIncomingDamageEvent event) {
         if (event.getEntity().level().isClientSide) return;
         var hits = HITS.get();
         if (!hits.isEmpty() && hits.peek().target == event.getEntity() && hits.peek().source == event.getSource()) return;
@@ -60,8 +60,9 @@ public final class DamageEvents {
         catch (IllegalAccessException error) { throw new IllegalStateException("Cannot restore original hurt cooldown state", error); }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onHurt(LivingHurtEvent event) {
+    /** 1.20.1 LivingHurtEvent: runs after onAttack (which cancels and re-enters hurt with the Techguns source). */
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onHurt(LivingIncomingDamageEvent event) {
         if (event.getSource() instanceof TGDamageSource source && source.usesNpcArmor()) {
             event.setAmount(DamageSystem.applyNpcArmor(event.getEntity(), source, event.getAmount(), source.originallyBypassesArmor()));
         }
@@ -69,7 +70,7 @@ public final class DamageEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onShieldBlock(ShieldBlockEvent event) {
+    public static void onShieldBlock(LivingShieldBlockEvent event) {
         if (event.getDamageSource() instanceof TGDamageSource source && !source.wasConverted) {
             float incoming = event.getOriginalBlockedDamage();
             event.setBlockedDamage(incoming - DamageSystem.calculateShieldDamage(event.getEntity(), incoming, source));

@@ -23,12 +23,12 @@ public final class AlienBug extends Spider implements ITGNpcTeam,INpcTGDamageSys
     private int attackTimer;
     public AlienBug(EntityType<? extends AlienBug> type,Level level){super(type,level);}
     public static AttributeSupplier.Builder attributes(){return Spider.createAttributes().add(Attributes.ATTACK_DAMAGE,4).add(Attributes.MAX_HEALTH,20).add(Attributes.MOVEMENT_SPEED,1);}
-    @Override protected ResourceLocation getDefaultLootTable(){return BuiltInLootTables.EMPTY;}
+    @Override protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {return BuiltInLootTables.EMPTY;}
     @Override protected void registerGoals(){
         goalSelector.addGoal(1,new FloatGoal(this));goalSelector.addGoal(3,new LeapAtTargetGoal(this,.4f));
         goalSelector.addGoal(4,new MeleeAttackGoal(this,1,true){
             @Override public boolean canContinueToUse(){if(mob.getLightLevelDependentMagicValue()>=.5f&&mob.getRandom().nextInt(100)==0){mob.setTarget(null);return false;}return super.canContinueToUse();}
-            @Override protected double getAttackReachSqr(LivingEntity target){return 4+target.getBbWidth();}
+            @Override protected boolean canPerformAttack(LivingEntity target){return isTimeToAttack()&&mob.distanceToSqr(target.getX(),target.getY(),target.getZ())<=4+target.getBbWidth()&&mob.getSensing().hasLineOfSight(target);}
         });
         goalSelector.addGoal(5,new WaterAvoidingRandomStrollGoal(this,.8));goalSelector.addGoal(6,new LookAtPlayerGoal(this,Player.class,8));goalSelector.addGoal(6,new RandomLookAroundGoal(this));
         targetSelector.addGoal(1,new HurtByTargetGoal(this));targetSelector.addGoal(2,new BugTarget<>(this,Player.class));targetSelector.addGoal(3,new BugTarget<>(this,IronGolem.class));

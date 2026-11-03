@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "mrs",
+    " p "
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/steel"
+    },
+    "r": {
+      "item": "techguns:steelreceiver"
+    },
+    "s": {
+      "item": "techguns:plasticstock"
+    },
+    "m": {
+      "item": "techguns:obsidiansteelbarrel"
+    }
+  },
+  "result": {
+    "id": "techguns:grenadelauncher",
+    "components": {
+      "minecraft:custom_data": "{ammo:0s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

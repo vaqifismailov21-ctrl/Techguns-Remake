@@ -10,16 +10,16 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.*;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.*;
-import net.minecraftforge.items.*;
-import net.minecraftforge.fluids.*;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import techguns.capabilities.compat.*;
+import techguns.capabilities.compat.LazyOptional;
+import net.neoforged.neoforge.energy.*;
+import net.neoforged.neoforge.items.*;
+import net.neoforged.neoforge.fluids.*;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import techguns.*;
 /** Server authoritative machine transaction, retained across power loss, redstone pause and save/reload. */
-public final class ProcessingMachine extends BlockEntity implements MenuProvider {
+public final class ProcessingMachine extends BlockEntity implements MenuProvider, techguns.capabilities.compat.ICapabilityHost {
     public final MachineKind kind;
     public final ItemStackHandler inventory;
     public final EnergyStorage energy;
@@ -29,7 +29,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     private LazyOptional<IFluidHandler> fluidHandle;
     public final ReactionControl reactor=new ReactionControl(this);
     long nextChargeSound;
-    public final FluidTank inputTank=new FluidTank(8000){@Override protected void onContentsChanged(){changed();}@Override public int fill(FluidStack resource,IFluidHandler.FluidAction action){if(kind==MachineKind.REACTION){int space=Math.max(0,reactor.liquidLevel*1000-getFluidAmount());if(space==0)return 0;resource=new FluidStack(resource,Math.min(resource.getAmount(),space));}return super.fill(resource,action);}};
+    public final FluidTank inputTank=new FluidTank(8000){@Override protected void onContentsChanged(){changed();}@Override public int fill(FluidStack resource,IFluidHandler.FluidAction action){if(kind==MachineKind.REACTION){int space=Math.max(0,reactor.liquidLevel*1000-getFluidAmount());if(space==0)return 0;resource=resource.copyWithAmount(Math.min(resource.getAmount(),space));}return super.fill(resource,action);}};
     public final FluidTank outputTank=new FluidTank(16000){@Override protected void onContentsChanged(){changed();}};
     private FluidStack pendingFluid=FluidStack.EMPTY;
     public boolean drainInput;
@@ -60,7 +60,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
         if(kind==MachineKind.CHEM_LAB)return ChemicalRecipes.accepts(slot,stack);
         if(kind==MachineKind.GRINDER)return slot==0&&GrindingRecipe.find(stack)!=null;
         if(kind==MachineKind.REACTION){boolean focus=stack.is(TGItems.RC_HEAT_RAY.get())||stack.is(TGItems.RC_UV_EMITTER.get());return slot==1?focus:slot==0&&!focus;}
-        if(kind==MachineKind.CHARGING_STATION&&slot==0&&stack.getCapability(ForgeCapabilities.ENERGY).isPresent())return true;
+        if(kind==MachineKind.CHARGING_STATION&&slot==0&&Capabilities.item(stack, Capabilities.ENERGY).isPresent())return true;
         return MachineRecipes.accepts(kind,slot,stack);
     }
     public boolean running(){return totalTime>0;}
@@ -77,7 +77,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     }
     private void split(){var a=inventory.getStackInSlot(0);var b=inventory.getStackInSlot(1);if(a.isEmpty()&&b.getCount()>1){int n=b.getCount()/2;inventory.setStackInSlot(0,b.copyWithCount(n));b.shrink(n);changed();}else if(b.isEmpty()&&a.getCount()>1){int n=a.getCount()/2;inventory.setStackInSlot(1,a.copyWithCount(n));a.shrink(n);changed();}}
     private boolean chargeItem(){
-        if(kind!=MachineKind.CHARGING_STATION)return false;var input=inventory.getStackInSlot(0);var handler=input.getCapability(ForgeCapabilities.ENERGY).orElse(null);if(handler==null)return false;
+        if(kind!=MachineKind.CHARGING_STATION)return false;var input=inventory.getStackInSlot(0);var handler=Capabilities.item(input, Capabilities.ENERGY).orElse(null);if(handler==null)return false;
         int received=handler.receiveEnergy(Math.min(1600,energy.getEnergyStored()),true);if(received>0){int actual=handler.receiveEnergy(received,false);energy.extractEnergy(actual,false);if(actual>0)MachineWorkEffects.charge(this);changed();}
         if(handler.getEnergyStored()>=handler.getMaxEnergyStored()&&fits(input)){inventory.setStackInSlot(kind.output,input.copy());inventory.setStackInSlot(0,ItemStack.EMPTY);}return true;
     }
@@ -86,7 +86,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
         if(kind==MachineKind.GRINDER){startGrinding();return;}
         var recipe=MachineRecipes.find(this);if(recipe==null)return;var amounts=recipe.match(inventory);if(amounts==null)return;
         int max=1+inventory.getStackInSlot(kind.upgrade).getCount();for(int i=0;i<amounts.length;i++)if(amounts[i]>0)max=Math.min(max,inventory.getStackInSlot(i).getCount()/amounts[i]);
-        var out=inventory.getStackInSlot(kind.output);if(!out.isEmpty()&&!ItemStack.isSameItemSameTags(out,recipe.result()))return;
+        var out=inventory.getStackInSlot(kind.output);if(!out.isEmpty()&&!ItemStack.isSameItemSameComponents(out,recipe.result()))return;
         max=Math.min(max,(recipe.result().getMaxStackSize()-out.getCount())/recipe.result().getCount());if(max<=0)return;
         pending=recipe.result().copyWithCount(recipe.result().getCount()*max);consumed.clear();for(int i=0;i<amounts.length;i++){var stack=inventory.getStackInSlot(i);consumed.add(stack.copyWithCount(amounts[i]*max));stack.shrink(amounts[i]*max);}
         totalTime=recipe.ticks();powerPerTick=recipe.power()*max;progress=0;changed();
@@ -96,15 +96,15 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
         for(int i=0;i<amounts.length;i++)if(amounts[i]>0)max=Math.min(max,inventory.getStackInSlot(i).getCount()/amounts[i]);
         if(!recipe.fluidInput().isEmpty())max=Math.min(max,inputTank.getFluidAmount()/recipe.fluidInput().getAmount());
         if(!recipe.output().isEmpty()){if(!fits(recipe.output()))return;var out=inventory.getStackInSlot(kind.output);max=Math.min(max,(recipe.output().getMaxStackSize()-out.getCount())/recipe.output().getCount());}
-        if(!recipe.fluidOutput().isEmpty())max=Math.min(max,outputTank.fill(new FluidStack(recipe.fluidOutput(),recipe.fluidOutput().getAmount()*max),IFluidHandler.FluidAction.SIMULATE)/recipe.fluidOutput().getAmount());
-        if(max<=0)return;pending=recipe.output().isEmpty()?ItemStack.EMPTY:recipe.output().copyWithCount(recipe.output().getCount()*max);pendingFluid=recipe.fluidOutput().isEmpty()?FluidStack.EMPTY:new FluidStack(recipe.fluidOutput(),recipe.fluidOutput().getAmount()*max);
+        if(!recipe.fluidOutput().isEmpty())max=Math.min(max,outputTank.fill(recipe.fluidOutput().copyWithAmount(recipe.fluidOutput().getAmount()*max),IFluidHandler.FluidAction.SIMULATE)/recipe.fluidOutput().getAmount());
+        if(max<=0)return;pending=recipe.output().isEmpty()?ItemStack.EMPTY:recipe.output().copyWithCount(recipe.output().getCount()*max);pendingFluid=recipe.fluidOutput().isEmpty()?FluidStack.EMPTY:recipe.fluidOutput().copyWithAmount(recipe.fluidOutput().getAmount()*max);
         consumed.clear();for(int i=0;i<amounts.length;i++){var stack=inventory.getStackInSlot(i);consumed.add(stack.copyWithCount(amounts[i]*max));stack.shrink(amounts[i]*max);}if(!recipe.fluidInput().isEmpty())inputTank.drain(recipe.fluidInput().getAmount()*max,IFluidHandler.FluidAction.EXECUTE);
         totalTime=100;powerPerTick=recipe.power()*max;progress=0;changed();
     }
-    private boolean fits(ItemStack stack){if(stack.isEmpty())return true;var out=inventory.getStackInSlot(kind.output);return out.isEmpty()||ItemStack.isSameItemSameTags(out,stack)&&out.getCount()+stack.getCount()<=out.getMaxStackSize();}
+    private boolean fits(ItemStack stack){if(stack.isEmpty())return true;var out=inventory.getStackInSlot(kind.output);return out.isEmpty()||ItemStack.isSameItemSameComponents(out,stack)&&out.getCount()+stack.getCount()<=out.getMaxStackSize();}
     private void startGrinding(){var input=inventory.getStackInSlot(0);var recipe=GrindingRecipe.find(input);if(recipe==null)return;int max=Math.min(input.getCount(),1+inventory.getStackInSlot(kind.upgrade).getCount());while(max>0&&mergeGrinding(recipe.maximum(max))==null)max--;if(max==0)return;pendingMultiple.clear();pendingMultiple.addAll(recipe.roll(level.random,max));consumed.clear();consumed.add(input.copyWithCount(max));input.shrink(max);progress=0;totalTime=100;powerPerTick=5*max;changed();}
     /** Plan the complete merge on copies. A changed output inventory can never partially commit a recipe. */
-    private List<ItemStack> mergeGrinding(List<ItemStack> outputs){var planned=new ArrayList<ItemStack>();for(int i=2;i<inventory.getSlots();i++)planned.add(inventory.getStackInSlot(i).copy());for(var output:outputs){int left=output.getCount();for(var stack:planned)if(ItemStack.isSameItemSameTags(stack,output)){int n=Math.min(left,stack.getMaxStackSize()-stack.getCount());stack.grow(n);left-=n;}for(int i=0;i<planned.size()&&left>0;i++)if(planned.get(i).isEmpty()){int n=Math.min(left,output.getMaxStackSize());planned.set(i,output.copyWithCount(n));left-=n;}if(left>0)return null;}return planned;}
+    private List<ItemStack> mergeGrinding(List<ItemStack> outputs){var planned=new ArrayList<ItemStack>();for(int i=2;i<inventory.getSlots();i++)planned.add(inventory.getStackInSlot(i).copy());for(var output:outputs){int left=output.getCount();for(var stack:planned)if(ItemStack.isSameItemSameComponents(stack,output)){int n=Math.min(left,stack.getMaxStackSize()-stack.getCount());stack.grow(n);left-=n;}for(int i=0;i<planned.size()&&left>0;i++)if(planned.get(i).isEmpty()){int n=Math.min(left,output.getMaxStackSize());planned.set(i,output.copyWithCount(n));left-=n;}if(left>0)return null;}return planned;}
     private void finish(){
         if(kind==MachineKind.GRINDER){var merged=mergeGrinding(pendingMultiple);if(merged==null)return;for(int i=0;i<merged.size();i++)inventory.setStackInSlot(i+2,merged.get(i));pendingMultiple.clear();}
         else {if(!fits(pending)||!pendingFluid.isEmpty()&&outputTank.fill(pendingFluid,IFluidHandler.FluidAction.SIMULATE)!=pendingFluid.getAmount())return;if(!pending.isEmpty()){var out=inventory.getStackInSlot(kind.output);inventory.setStackInSlot(kind.output,out.isEmpty()?pending.copy():out.copyWithCount(out.getCount()+pending.getCount()));}if(!pendingFluid.isEmpty())outputTank.fill(pendingFluid,IFluidHandler.FluidAction.EXECUTE);}
@@ -116,32 +116,32 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     private boolean structureValid(Map<BlockPos,Boolean> parts,boolean linked){for(var entry:parts.entrySet()){var pos=entry.getKey();if(!level.hasChunkAt(pos)||!(level.getBlockState(pos).getBlock() instanceof MachinePartBlock part)||part.glass!=entry.getValue()||part.reactor!=(kind==MachineKind.REACTION)||!(level.getBlockEntity(pos) instanceof MachinePartEntity entity)||(linked?!entity.linkedTo(worldPosition):entity.linked()))return false;}return true;}
     public boolean formStructure(Direction facing){if(!kind.multiblock()||formed||facing.getAxis().isVertical()||level==null)return false;if(kind==MachineKind.REACTION)facing=facing.getOpposite();var parts=structureParts(facing);if(!structureValid(parts,false))return false;formed=true;level.setBlock(worldPosition,getBlockState().setValue(MachineBlock.FORMED,true).setValue(MachineBlock.FACING,facing),3);for(var pos:parts.keySet())((MachinePartEntity)level.getBlockEntity(pos)).link(worldPosition);changed();return true;}
     public void unformStructure(){if(!formed||level==null)return;formed=false;for(var pos:structureParts(getBlockState().getValue(MachineBlock.FACING)).keySet())if(level.hasChunkAt(pos)&&level.getBlockEntity(pos) instanceof MachinePartEntity part&&part.linkedTo(worldPosition))part.link(null);if(level.getBlockState(worldPosition).getBlock() instanceof MachineBlock)level.setBlock(worldPosition,getBlockState().setValue(MachineBlock.FORMED,false),3);changed();}
-    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(){return kind.multiblock()&&formed?new net.minecraft.world.phys.AABB(worldPosition).inflate(4):super.getRenderBoundingBox();}
-    public void deliverReactionOutputs(List<ItemStack> outputs){for(var output:outputs){int remaining=output.getCount();for(int i=2;i<inventory.getSlots()&&remaining>0;i++){var slot=inventory.getStackInSlot(i);if(slot.isEmpty()){int n=Math.min(remaining,output.getMaxStackSize());inventory.setStackInSlot(i,output.copyWithCount(n));remaining-=n;}else if(ItemStack.isSameItemSameTags(slot,output)){int n=Math.min(remaining,slot.getMaxStackSize()-slot.getCount());slot.grow(n);remaining-=n;}}if(remaining>0)Containers.dropItemStack(level,worldPosition.getX()+0.5,worldPosition.getY()+0.5,worldPosition.getZ()+0.5,output.copyWithCount(remaining));}changed();}
+    public net.minecraft.world.phys.AABB getRenderBoundingBox(){return kind.multiblock()&&formed?net.minecraft.world.phys.AABB.unitCubeFromLowerCorner(net.minecraft.world.phys.Vec3.atLowerCornerOf(worldPosition)).inflate(4):net.minecraft.world.phys.AABB.unitCubeFromLowerCorner(net.minecraft.world.phys.Vec3.atLowerCornerOf(worldPosition));}
+    public void deliverReactionOutputs(List<ItemStack> outputs){for(var output:outputs){int remaining=output.getCount();for(int i=2;i<inventory.getSlots()&&remaining>0;i++){var slot=inventory.getStackInSlot(i);if(slot.isEmpty()){int n=Math.min(remaining,output.getMaxStackSize());inventory.setStackInSlot(i,output.copyWithCount(n));remaining-=n;}else if(ItemStack.isSameItemSameComponents(slot,output)){int n=Math.min(remaining,slot.getMaxStackSize()-slot.getCount());slot.grow(n);remaining-=n;}}if(remaining>0)Containers.dropItemStack(level,worldPosition.getX()+0.5,worldPosition.getY()+0.5,worldPosition.getZ()+0.5,output.copyWithCount(remaining));}changed();}
     public void button(int id){if(id==2)redstoneMode=(redstoneMode+1)%3;else if(kind==MachineKind.REACTION){reactor.button(id);}else if(kind==MachineKind.CHEM_LAB){if(id==3)inputTank.setFluid(FluidStack.EMPTY);else if(id==4)outputTank.setFluid(FluidStack.EMPTY);else if(id==5)drainInput=!drainInput;}else if(id==3&&kind==MachineKind.AMMO_PRESS)plan=(plan+1)%4;else if(id==4&&kind==MachineKind.AMMO_PRESS)plan=(plan+3)%4;else if(id==3&&kind==MachineKind.METAL_PRESS)autoSplitMode=(autoSplitMode+1)%2;changed();}
     public void setEnergy(int value){int old=energy.getEnergyStored();if(value>old)energy.receiveEnergy(value-old,false);else energy.extractEnergy(old-value,false);}
     public void dropContents(){if(level==null||level.isClientSide)return;for(int i=0;i<inventory.getSlots();i++){Containers.dropItemStack(level,worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),inventory.getStackInSlot(i));inventory.setStackInSlot(i,ItemStack.EMPTY);}for(var stack:consumed)Containers.dropItemStack(level,worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),stack);consumed.clear();if(reactor.running())Containers.dropItemStack(level,worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),reactor.input);pending=ItemStack.EMPTY;}
     public void changed(){setChanged();sync();}private void sync(){if(level!=null&&!level.isClientSide)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);}
-    @Override protected void saveAdditional(CompoundTag tag){
-        super.saveAdditional(tag);tag.put("inventory",inventory.serializeNBT());tag.putInt("energy",energy.getEnergyStored());tag.putInt("progress",progress);tag.putInt("total",totalTime);tag.putInt("power",powerPerTick);tag.putInt("plan",plan);tag.putInt("redstone",redstoneMode);tag.putInt("autoSplit",autoSplitMode);tag.put("pending",pending.save(new CompoundTag()));var list=new ListTag();for(var stack:consumed)list.add(stack.save(new CompoundTag()));tag.put("consumed",list);
-        tag.put("inputTank",inputTank.writeToNBT(new CompoundTag()));tag.put("outputTank",outputTank.writeToNBT(new CompoundTag()));tag.put("pendingFluid",pendingFluid.writeToNBT(new CompoundTag()));tag.putBoolean("drainInput",drainInput);
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){
+        super.saveAdditional(tag, registries);tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));tag.putInt("energy",energy.getEnergyStored());tag.putInt("progress",progress);tag.putInt("total",totalTime);tag.putInt("power",powerPerTick);tag.putInt("plan",plan);tag.putInt("redstone",redstoneMode);tag.putInt("autoSplit",autoSplitMode);tag.put("pending",techguns.util.TGItemNbt.save(pending, techguns.util.TGItemNbt.registries()));var list=new ListTag();for(var stack:consumed)list.add(techguns.util.TGItemNbt.save(stack, techguns.util.TGItemNbt.registries()));tag.put("consumed",list);
+        tag.put("inputTank",inputTank.writeToNBT(techguns.util.TGItemNbt.registries(), new CompoundTag()));tag.put("outputTank",outputTank.writeToNBT(techguns.util.TGItemNbt.registries(), new CompoundTag()));tag.put("pendingFluid",techguns.util.TGFluids2.save(pendingFluid));tag.putBoolean("drainInput",drainInput);
         access.save(tag);
         tag.putBoolean("formed",formed);
         reactor.save(tag);
-        var multiple=new ListTag();for(var stack:pendingMultiple)multiple.add(stack.save(new CompoundTag()));tag.put("pendingMultiple",multiple);
+        var multiple=new ListTag();for(var stack:pendingMultiple)multiple.add(techguns.util.TGItemNbt.save(stack, techguns.util.TGItemNbt.registries()));tag.put("pendingMultiple",multiple);
     }
-    @Override public void load(CompoundTag tag){
-        super.load(tag);inventory.deserializeNBT(tag.getCompound("inventory"));setEnergy(tag.getInt("energy"));progress=tag.getInt("progress");totalTime=tag.getInt("total");powerPerTick=tag.getInt("power");plan=Math.floorMod(tag.getInt("plan"),4);redstoneMode=Math.floorMod(tag.getInt("redstone"),3);autoSplitMode=Math.floorMod(tag.getInt("autoSplit"),2);pending=ItemStack.of(tag.getCompound("pending"));consumed.clear();for(var entry:tag.getList("consumed",Tag.TAG_COMPOUND))consumed.add(ItemStack.of((CompoundTag)entry));
-        inputTank.readFromNBT(tag.getCompound("inputTank"));outputTank.readFromNBT(tag.getCompound("outputTank"));pendingFluid=FluidStack.loadFluidStackFromNBT(tag.getCompound("pendingFluid"));drainInput=tag.getBoolean("drainInput");
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){
+        super.loadAdditional(tag, registries);inventory.deserializeNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("inventory"));setEnergy(tag.getInt("energy"));progress=tag.getInt("progress");totalTime=tag.getInt("total");powerPerTick=tag.getInt("power");plan=Math.floorMod(tag.getInt("plan"),4);redstoneMode=Math.floorMod(tag.getInt("redstone"),3);autoSplitMode=Math.floorMod(tag.getInt("autoSplit"),2);pending=techguns.util.TGItemNbt.load(techguns.util.TGItemNbt.registries(), tag.getCompound("pending"));consumed.clear();for(var entry:tag.getList("consumed",Tag.TAG_COMPOUND))consumed.add(techguns.util.TGItemNbt.load(techguns.util.TGItemNbt.registries(), (CompoundTag)entry));
+        inputTank.readFromNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("inputTank"));outputTank.readFromNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("outputTank"));pendingFluid=techguns.util.TGFluids2.load(tag.getCompound("pendingFluid"));drainInput=tag.getBoolean("drainInput");
         access.load(tag);
         formed=tag.getBoolean("formed");
         reactor.load(tag);
-        pendingMultiple.clear();for(var entry:tag.getList("pendingMultiple",Tag.TAG_COMPOUND))pendingMultiple.add(ItemStack.of((CompoundTag)entry));
+        pendingMultiple.clear();for(var entry:tag.getList("pendingMultiple",Tag.TAG_COMPOUND))pendingMultiple.add(techguns.util.TGItemNbt.load(techguns.util.TGItemNbt.registries(), (CompoundTag)entry));
     }
-    @Override public CompoundTag getUpdateTag(){return saveWithoutMetadata();}
+    @Override public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries){return saveWithoutMetadata(techguns.util.TGItemNbt.registries());}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
-    @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){if(capability==ForgeCapabilities.ITEM_HANDLER)return automation.cast();if(capability==ForgeCapabilities.ENERGY)return energyHandle.cast();if(capability==ForgeCapabilities.FLUID_HANDLER&&(kind==MachineKind.CHEM_LAB||kind==MachineKind.REACTION))return fluidHandle.cast();return super.getCapability(capability,side);}
-    @Override public void invalidateCaps(){super.invalidateCaps();automation.invalidate();energyHandle.invalidate();fluidHandle.invalidate();}@Override public void reviveCaps(){super.reviveCaps();createHandles();}
+    @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){if(capability==Capabilities.ITEM_HANDLER)return automation.cast();if(capability==Capabilities.ENERGY)return energyHandle.cast();if(capability==Capabilities.FLUID_HANDLER&&(kind==MachineKind.CHEM_LAB||kind==MachineKind.REACTION))return fluidHandle.cast();return LazyOptional.empty();}
+    @Override public void invalidateCaps(){invalidateCapabilities();automation.invalidate();energyHandle.invalidate();fluidHandle.invalidate();}@Override public void reviveCaps(){createHandles();}
     @Override public Component getDisplayName(){return Component.translatable(kind.titleKey());}
     @Override public AbstractContainerMenu createMenu(int id,Inventory playerInventory,Player player){return new MachineMenu(id,playerInventory,this);}
 }

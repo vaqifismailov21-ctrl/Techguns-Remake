@@ -4,8 +4,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import techguns.TGItems;
 import techguns.TGMenuTypes;
 import techguns.TGWeaponBlocks;
@@ -26,19 +26,19 @@ public final class PowerBlocks {
     /** Energy cell: buffer and transfer per tick (in on every side, out through the front). */
     public static final int CELL_CAPACITY=1_000_000,CELL_TRANSFER=1000;
 
-    public static final RegistryObject<Block> FUEL_GENERATOR=TGWeaponBlocks.BLOCKS.register("fuel_generator",()->new GeneratorBlock(false));
-    public static final RegistryObject<Block> LIQUID_GENERATOR=TGWeaponBlocks.BLOCKS.register("liquid_generator",()->new GeneratorBlock(true));
-    public static final RegistryObject<Block> SOLAR_PANEL=TGWeaponBlocks.BLOCKS.register("solar_panel",SolarPanelBlock::new);
-    public static final RegistryObject<Block> ENERGY_CELL=TGWeaponBlocks.BLOCKS.register("energy_cell",EnergyCellBlock::new);
-    public static final RegistryObject<Item> FUEL_GENERATOR_ITEM=TGItems.ITEMS.register("fuel_generator",()->new BlockItem(FUEL_GENERATOR.get(),new Item.Properties()));
-    public static final RegistryObject<Item> LIQUID_GENERATOR_ITEM=TGItems.ITEMS.register("liquid_generator",()->new BlockItem(LIQUID_GENERATOR.get(),new Item.Properties()));
-    public static final RegistryObject<Item> SOLAR_PANEL_ITEM=TGItems.ITEMS.register("solar_panel",()->new BlockItem(SOLAR_PANEL.get(),new Item.Properties()));
-    public static final RegistryObject<Item> ENERGY_CELL_ITEM=TGItems.ITEMS.register("energy_cell",()->new EnergyCellItem(ENERGY_CELL.get()));
-    public static final RegistryObject<BlockEntityType<FuelGeneratorEntity>> FUEL_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("fuel_generator",()->BlockEntityType.Builder.of(FuelGeneratorEntity::new,FUEL_GENERATOR.get()).build(null));
-    public static final RegistryObject<BlockEntityType<LiquidGeneratorEntity>> LIQUID_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("liquid_generator",()->BlockEntityType.Builder.of(LiquidGeneratorEntity::new,LIQUID_GENERATOR.get()).build(null));
-    public static final RegistryObject<BlockEntityType<SolarPanelEntity>> SOLAR_PANEL_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("solar_panel",()->BlockEntityType.Builder.of(SolarPanelEntity::new,SOLAR_PANEL.get()).build(null));
-    public static final RegistryObject<BlockEntityType<EnergyCellEntity>> ENERGY_CELL_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("energy_cell",()->BlockEntityType.Builder.of(EnergyCellEntity::new,ENERGY_CELL.get()).build(null));
-    public static final RegistryObject<net.minecraft.world.inventory.MenuType<GeneratorMenu>> GENERATOR_MENU=TGMenuTypes.MENUS.register("generator",()->IForgeMenuType.create(GeneratorMenu::new));
+    public static final DeferredHolder<net.minecraft.world.level.block.Block, Block> FUEL_GENERATOR=TGWeaponBlocks.BLOCKS.register("fuel_generator",()->new GeneratorBlock(false));
+    public static final DeferredHolder<net.minecraft.world.level.block.Block, Block> LIQUID_GENERATOR=TGWeaponBlocks.BLOCKS.register("liquid_generator",()->new GeneratorBlock(true));
+    public static final DeferredHolder<net.minecraft.world.level.block.Block, Block> SOLAR_PANEL=TGWeaponBlocks.BLOCKS.register("solar_panel",SolarPanelBlock::new);
+    public static final DeferredHolder<net.minecraft.world.level.block.Block, Block> ENERGY_CELL=TGWeaponBlocks.BLOCKS.register("energy_cell",EnergyCellBlock::new);
+    public static final DeferredHolder<net.minecraft.world.item.Item, Item> FUEL_GENERATOR_ITEM=TGItems.ITEMS.register("fuel_generator",()->new BlockItem(FUEL_GENERATOR.get(),new Item.Properties()));
+    public static final DeferredHolder<net.minecraft.world.item.Item, Item> LIQUID_GENERATOR_ITEM=TGItems.ITEMS.register("liquid_generator",()->new BlockItem(LIQUID_GENERATOR.get(),new Item.Properties()));
+    public static final DeferredHolder<net.minecraft.world.item.Item, Item> SOLAR_PANEL_ITEM=TGItems.ITEMS.register("solar_panel",()->new BlockItem(SOLAR_PANEL.get(),new Item.Properties()));
+    public static final DeferredHolder<net.minecraft.world.item.Item, Item> ENERGY_CELL_ITEM=TGItems.ITEMS.register("energy_cell",()->new EnergyCellItem(ENERGY_CELL.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FuelGeneratorEntity>> FUEL_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("fuel_generator",()->BlockEntityType.Builder.of(FuelGeneratorEntity::new,FUEL_GENERATOR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LiquidGeneratorEntity>> LIQUID_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("liquid_generator",()->BlockEntityType.Builder.of(LiquidGeneratorEntity::new,LIQUID_GENERATOR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarPanelEntity>> SOLAR_PANEL_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("solar_panel",()->BlockEntityType.Builder.of(SolarPanelEntity::new,SOLAR_PANEL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnergyCellEntity>> ENERGY_CELL_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("energy_cell",()->BlockEntityType.Builder.of(EnergyCellEntity::new,ENERGY_CELL.get()).build(null));
+    public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<GeneratorMenu>> GENERATOR_MENU=TGMenuTypes.MENUS.register("generator",()->IMenuTypeExtension.create(GeneratorMenu::new));
 
     /** Class loading registers the entries above. */
     public static void init(){}

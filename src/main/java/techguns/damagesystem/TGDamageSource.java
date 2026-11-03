@@ -105,7 +105,7 @@ public class TGDamageSource extends DamageSource {
         Component name = credited == null ? victim.getDisplayName() : credited.getDisplayName();
         ItemStack weapon = attacker instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
         String key = "death.attack." + getMsgId();
-        if (weapon.hasCustomHoverName() && ITEM_MESSAGES.contains(getMsgId())) return Component.translatable(key + ".item", victim.getDisplayName(), name, weapon.getDisplayName());
+        if (weapon.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME) && ITEM_MESSAGES.contains(getMsgId())) return Component.translatable(key + ".item", victim.getDisplayName(), name, weapon.getDisplayName());
         return Component.translatable(key, victim.getDisplayName(), name);
     }
     public static TGDamageSource copyWithNewEnt(TGDamageSource other, Entity direct, Entity attacker) {

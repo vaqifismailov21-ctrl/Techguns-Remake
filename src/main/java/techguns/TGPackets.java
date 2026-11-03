@@ -9,13 +9,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.api.distmarker.Dist;
+import techguns.network.DistExecutor;
+import techguns.network.NetworkDirection;
+import techguns.network.NetworkHooks;
+import techguns.network.PacketDistributor;
+import techguns.network.SimpleChannel;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.gui.player.TGPlayerInventoryContainer;
 import techguns.items.armors.TGArmorBonus;
@@ -25,8 +24,7 @@ import techguns.keybind.TGKeybindsID;
 /** Direction-restricted packets; inventory contents are only sent by the server. */
 public final class TGPackets {
     private static final String PROTOCOL = "8";
-    public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
+    public static final SimpleChannel NETWORK = new SimpleChannel(Techguns.MODID, PROTOCOL);
 
     public record OpenInventory() {}
     public record KeyPress(byte buttonId, boolean showMessage) {}

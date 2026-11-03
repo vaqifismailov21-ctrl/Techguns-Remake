@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " cc",
+    " c ",
+    "cc "
+  ],
+  "key": {
+    "c": {
+      "tag": "c:nuggets/copper"
+    }
+  },
+  "result": {
+    "id": "techguns:copperwire"
+  }
+}

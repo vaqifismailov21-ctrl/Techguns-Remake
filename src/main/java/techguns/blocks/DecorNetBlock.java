@@ -9,7 +9,7 @@ import net.minecraft.world.phys.shapes.*;
 public final class DecorNetBlock extends Block {
     public static final IntegerProperty CONNECTION=IntegerProperty.create("connection",0,15);
     public final boolean top;
-    public DecorNetBlock(boolean top){super(Properties.copy(Blocks.WHITE_WOOL).strength(2).noOcclusion());this.top=top;registerDefaultState(stateDefinition.any().setValue(CONNECTION,0));}
+    public DecorNetBlock(boolean top){super(Properties.ofFullCopy(Blocks.WHITE_WOOL).strength(2).noOcclusion());this.top=top;registerDefaultState(stateDefinition.any().setValue(CONNECTION,0));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> b){b.add(CONNECTION);}
     public int connections(BlockGetter level,BlockPos pos){int bits=0;Direction[] directions={Direction.WEST,Direction.SOUTH,Direction.EAST,Direction.NORTH};for(int i=0;i<4;i++)if(level.getBlockState(pos.relative(directions[i])).getBlock() instanceof DecorNetBlock net&&net.top==top)bits|=1<<i;return bits;}
     @Override public BlockState getStateForPlacement(BlockPlaceContext c){return defaultBlockState().setValue(CONNECTION,connections(c.getLevel(),c.getClickedPos()));}

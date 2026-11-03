@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import techguns.TGWeaponPackets;
 import techguns.TGProjectilePackets;
 import techguns.capabilities.TGExtendedPlayer;
@@ -26,7 +26,7 @@ import techguns.items.guns.ammo.AmmoTypes;
 import techguns.util.InventoryUtil;
 
 /** First functional port of the original magazine-gun path. Charge/tools/shotguns are separate later stages. */
-public class GenericGun extends Item implements techguns.items.armors.ICamoChangeable {
+public class GenericGun extends Item implements techguns.items.armors.ICamoChangeable, techguns.client.ext.ClientItemExtensible {
     public final int minFiretime, clipsize, reloadtime, maxRange, recoiltime;
     public final float damage, speed, accuracy, damageDropStart, damageDropEnd, damageMin;
     private final Supplier<AmmoType> ammoType;
@@ -107,24 +107,24 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     public int getClipDisplayCount(){return clipsize*(burst?getPelletCount():1);}
     public float getSpread() { return pelletSpread; }
     protected void initializeAmmo(ItemStack stack) {
-        var tag = stack.getOrCreateTag();
-        if (!tag.contains("ammo")) {
+        if (techguns.util.TGItemNbt.contains(stack, "ammo")) return;
+        techguns.util.TGItemNbt.update(stack, tag -> {
             tag.putShort("ammo", (short) clipsize);
             if(!tag.contains("ammovariant")) tag.putString("ammovariant", AmmoTypes.TYPE_DEFAULT);
             if (!tag.contains("camo")) tag.putByte("camo", (byte) 0);
-        }
+        });
     }
-    public int getCurrentAmmo(ItemStack stack) { initializeAmmo(stack); return Math.max(0, Math.min(clipsize, stack.getTag().getShort("ammo"))); }
+    public int getCurrentAmmo(ItemStack stack) { initializeAmmo(stack); return Math.max(0, Math.min(clipsize, techguns.util.TGItemNbt.tagOrEmpty(stack).getShort("ammo"))); }
     public String getCurrentAmmoVariantKey(ItemStack stack) {
-        initializeAmmo(stack); String key = stack.getTag().getString("ammovariant");
+        initializeAmmo(stack); String key = techguns.util.TGItemNbt.tagOrEmpty(stack).getString("ammovariant");
         return key.isEmpty() ? AmmoTypes.TYPE_DEFAULT : key;
     }
     public int getCurrentAmmoVariant(ItemStack stack) { return getAmmoType().getIDforVariantKey(getCurrentAmmoVariantKey(stack)); }
     public int useAmmo(ItemStack stack, int amount) {
         if (amount < 0) throw new IllegalArgumentException("Ammo consumption must be nonnegative");
-        int used = Math.min(getCurrentAmmo(stack), amount); stack.getTag().putShort("ammo", (short) (getCurrentAmmo(stack) - used)); return used;
+        int current = getCurrentAmmo(stack), used = Math.min(current, amount); techguns.util.TGItemNbt.putShort(stack, "ammo", (short) (current - used)); return used;
     }
-    public void setAmmo(ItemStack stack, int amount) { initializeAmmo(stack); stack.getTag().putShort("ammo", (short) Math.max(0, Math.min(clipsize, amount))); }
+    public void setAmmo(ItemStack stack, int amount) { initializeAmmo(stack); techguns.util.TGItemNbt.putShort(stack, "ammo", (short) Math.max(0, Math.min(clipsize, amount))); }
     public boolean isFullyLoaded(ItemStack stack) { return getCurrentAmmo(stack) == clipsize; }
     public boolean isSemiAuto() { return semiAuto; }
     public boolean hasBowAnim() { return aimedBowAnimation; }
@@ -167,11 +167,11 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         if (level.isClientSide) {
             if(energyMode==techguns.entities.projectiles.EnergyProjectile.Mode.GAUSS){
                 boolean right=hand==InteractionHand.MAIN_HAND==(player.getMainArm()==HumanoidArm.RIGHT);
-                net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attachHead("GaussFireFX",player,new net.minecraft.world.phys.Vec3(right?-0.14:0.14,-0.09,0.5),false));
+                techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attachHead("GaussFireFX",player,new net.minecraft.world.phys.Vec3(right?-0.14:0.14,-0.09,0.5),false));
             }
             if(projectileKind==ProjectileKind.FLAME) {
                 boolean right=hand==InteractionHand.MAIN_HAND==(player.getMainArm()==HumanoidArm.RIGHT);
-                net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attachHead("FlamethrowerFireFX",player,new net.minecraft.world.phys.Vec3(right?-0.15:0.15,-0.05,0.5),false));
+                techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attachHead("FlamethrowerFireFX",player,new net.minecraft.world.phys.Vec3(right?-0.15:0.15,-0.05,0.5),false));
             }
             predictAnimation(player, hand, false, recoiltime, muzzleFlashTicks);
             playLocalWeaponSound(player, shotSound, false);
@@ -267,7 +267,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     }
     private void playRechamberSound(Player player,Level level) {
         if(rechamberSound==null) return;
-        if(level.isClientSide) net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,
+        if(level.isClientSide) techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,
                 () -> () -> techguns.client.audio.GunSounds.playRechamber(player,rechamberSound.get()));
         else {
             var position=techguns.util.GunSoundPosition.of(player);
@@ -307,11 +307,11 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         if (remainder > 0 && !player.level().isClientSide) player.drop(stack.copyWithCount(remainder), false);
     }
     protected static void predictAnimation(Player player, InteractionHand hand, boolean reload, int ticks, int muzzleTicks) {
-        net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,
+        techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,
                 () -> () -> techguns.client.ClientWeaponEvents.animateLocal(player, hand, reload, ticks, muzzleTicks));
     }
     protected static void playLocalWeaponSound(Player player, SoundEvent sound, boolean reload) {
-        net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,
+        techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,
                 () -> () -> techguns.client.audio.GunSounds.play(player, sound, reload));
     }
     @Override public void onCraftedBy(ItemStack stack, Level level, Player player) { initializeAmmo(stack); }
@@ -321,7 +321,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     @Override public boolean onEntitySwing(ItemStack stack, LivingEntity entity) { return true; }
     @Override public boolean onLeftClickEntity(ItemStack stack, Player player, net.minecraft.world.entity.Entity target) { return true; }
     @Override public boolean shouldCauseReequipAnimation(ItemStack before, ItemStack after, boolean slotChanged) { return slotChanged || before.getItem() != after.getItem(); }
-    @Override public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flags) {
+    @Override public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext level, List<Component> tooltip, TooltipFlag flags) {
         int variant = getCurrentAmmoVariant(stack);
         boolean incendiary = getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_INCENDIARY);
         float modifier = incendiary ? 1.1F : getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_EXPLOSIVE)?1.15F:projectileKind==ProjectileKind.ROCKET&&getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_NUKE)?5:1;

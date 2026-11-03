@@ -17,11 +17,11 @@ import techguns.api.tginventory.ITGSpecialSlot;
 import techguns.api.tginventory.TGSlotType;
 import techguns.items.armors.TGArmorBonus;
 import techguns.items.guns.ammo.AmmoType;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import techguns.util.InventoryUtil;
 
 /** One original itemshared metadata variant, flattened into its own modern registry entry. */
-public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
+public final class SharedMaterialItem extends Item implements ITGSpecialSlot, techguns.client.ext.ClientItemExtensible {
     private final int legacyMetadata;
     private final TGSlotType slot;
     private ItemStack bullet = ItemStack.EMPTY;
@@ -102,7 +102,7 @@ public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext level, List<Component> tooltip, TooltipFlag flags) {
         super.appendHoverText(stack, level, tooltip, flags);
         if (slot != TGSlotType.NORMAL) {
             tooltip.add(Component.translatable("techguns.tooltip.slot")

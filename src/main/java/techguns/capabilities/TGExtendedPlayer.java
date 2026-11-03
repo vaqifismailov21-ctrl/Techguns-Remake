@@ -40,13 +40,12 @@ public final class TGExtendedPlayer implements ITGExtendedPlayer {
         tg_inventory = new TGPlayerInventory(entity);
     }
     public static TGExtendedPlayer get(Player player) {
-        return player.getCapability(TGExtendedPlayerCapProvider.CAPABILITY)
-                .orElseThrow(() -> new IllegalStateException("Techguns player capability is missing"));
+        return player.getData(TGExtendedPlayerCapProvider.EXTENDED_PLAYER);
     }
     /** Rendering can run while an old player is being removed or replaced. Never fabricate inventory data. */
     public static java.util.Optional<TGExtendedPlayer> find(Player player) {
         return player==null || player.isRemoved() ? java.util.Optional.empty()
-                : player.getCapability(TGExtendedPlayerCapProvider.CAPABILITY).resolve();
+                : java.util.Optional.of(player.getData(TGExtendedPlayerCapProvider.EXTENDED_PLAYER));
     }
     public AttackTime getAttackTime(boolean offhand) { return attackTimes[offhand ? 1 : 0]; }
     public Player getEntity() { return entity; }
@@ -133,7 +132,7 @@ public final class TGExtendedPlayer implements ITGExtendedPlayer {
             tag.remove("foodLeft");
             tag.remove("lastSaturation");
             tag.remove("radlevel");
-            for (int i = 0; i < 3; i++) tag.put("equipment" + i, tg_inventory.getItem(i).save(new CompoundTag()));
+            for (int i = 0; i < 3; i++) tag.put("equipment" + i, techguns.util.TGItemNbt.save(tg_inventory.getItem(i), entity.registryAccess()));
         }
         tag.putBoolean("chargingWeapon", chargingWeapon);
         tag.putBoolean("jumpPressed", jumpKeyPressed);
@@ -146,7 +145,7 @@ public final class TGExtendedPlayer implements ITGExtendedPlayer {
             var states = DataUtil.uncompress(tag.getByte("states"));
             enableJetpack = states.get(0); enableNightVision = states.get(1); enableSafemode = states.get(2);
             enableStepAssist = states.get(3); showTGHudElements = states.get(4); enableHovermode = states.get(5);
-            for (int i = 0; i < 3; i++) tg_inventory.setItem(i, ItemStack.of(tag.getCompound("equipment" + i)));
+            for (int i = 0; i < 3; i++) tg_inventory.setItem(i, techguns.util.TGItemNbt.load(tag.getCompound("equipment" + i), entity.registryAccess()));
         }
         chargingWeapon = tag.getBoolean("chargingWeapon");
         jumpKeyPressed = tag.getBoolean("jumpPressed");

@@ -42,13 +42,13 @@ public final class TGPlayerInventoryScreen extends AbstractContainerScreen<TGPla
         int radiation = state.radlevel;
         if (radiation > 0) graphics.blit(TEXTURE, leftPos + 116, topPos + 8, 177, 0, (int) Math.ceil(radiation / 1000.0 * 52), 4);
         graphics.enableScissor(leftPos+26,topPos+8,leftPos+75,topPos+79);
-        try{InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, leftPos + 51, topPos + 75, 30,
+        try{techguns.client.gui.TGGuiCompat.renderEntity(graphics, leftPos + 51, topPos + 75, 30,
                 leftPos + 51 - mouseX, topPos + 25 - mouseY, player);}finally{graphics.disableScissor();}
     }
     @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {}
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics);
-        super.render(graphics, mouseX, mouseY, partialTick);
+        renderBackground(graphics, mouseX, mouseY, partialTick);
+        super.render(graphics,mouseX,mouseY,partialTick);
         renderTooltip(graphics, mouseX, mouseY);
         if (minecraft.player != null && mouseX >= leftPos + 115 && mouseX < leftPos + 169 && mouseY >= topPos + 7 && mouseY < topPos + 13) {
             var state=TGExtendedPlayer.find(minecraft.player).orElse(null);

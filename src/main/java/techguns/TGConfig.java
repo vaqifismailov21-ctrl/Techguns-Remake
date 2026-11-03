@@ -1,14 +1,14 @@
 package techguns;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.*;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.*;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 
 /** Original defaults and ranges, separated into Forge COMMON and CLIENT specifications. */
 public final class TGConfig {
-    public static final ForgeConfigSpec COMMON;
-    public static final ForgeConfigSpec CLIENT;
+    public static final ModConfigSpec COMMON;
+    public static final ModConfigSpec CLIENT;
     public static boolean debug = false;
     private static final BooleanValue debug_VALUE;
     public static int upgrade_xp_cost = 20;
@@ -176,7 +176,7 @@ public final class TGConfig {
     public static double powermult_oil = 1.0f;
     private static final DoubleValue powermult_oil_VALUE;
     static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         debug_VALUE = builder.comment("Enable debug options and unfinished stuff, disable this for playing.").define(java.util.List.of("general", "debug"), false);
         upgrade_xp_cost_VALUE = builder.comment("Base XP value for Upgrade Bench recipes (enchants)").defineInRange(java.util.List.of("general", "UpgradeXPCost"), 20, 0, 10000);
         limitUnsafeModeToOP_VALUE = builder.comment("Only opped players can use the unsafe mode of guns, this OVERRIDES the permission setting 'techguns.allowunsafemode'").define(java.util.List.of("general", "RestrictUnsafeModeToOP"), false);
@@ -256,7 +256,7 @@ public final class TGConfig {
         powermult_nether_crystal_VALUE = builder.comment("Power Multiplier for nether crystal ore clusters").defineInRange(java.util.List.of("Ore Drills", "cluster_powermult_nether_crystal"), (double) 0.5f, (double) 0.0001f, (double) 1000f);
         powermult_oil_VALUE = builder.comment("Power Multiplier for oil clusters").defineInRange(java.util.List.of("Ore Drills", "cluster_powermult_oil"), (double) 1.0f, (double) 0.0001f, (double) 1000f);
         COMMON = builder.build();
-        builder = new ForgeConfigSpec.Builder();
+        builder = new ModConfigSpec.Builder();
         cl_enableDeathFX_VALUE = builder.comment("Enable Death Effects, pure clientside check.").define(java.util.List.of("Clientside", "EnableDeathEffects"), true);
         cl_enableDeathFX_Gore_VALUE = builder.comment("Enable the gore Death Effect, requires DeathEffects to be enabled, pure clientside check.").define(java.util.List.of("Clientside", "EnableGoreDeathEffect"), true);
         cl_lockSpeedFov_VALUE = builder.comment("Counters the speed dependant FOV change. This also stops FOV changes while sprinting. Don't activate if another mod does this too, pure clientside check.").define(java.util.List.of("Clientside", "LockSpeedDependantFov"), true);

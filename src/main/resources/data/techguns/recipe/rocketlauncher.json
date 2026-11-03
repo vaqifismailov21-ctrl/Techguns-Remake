@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rbb",
+    " f "
+  ],
+  "key": {
+    "r": {
+      "item": "techguns:rocket"
+    },
+    "b": {
+      "item": "techguns:obsidiansteelbarrel"
+    },
+    "f": {
+      "item": "techguns:steelreceiver"
+    }
+  },
+  "result": {
+    "id": "techguns:rocketlauncher",
+    "components": {
+      "minecraft:custom_data": "{ammo:1s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

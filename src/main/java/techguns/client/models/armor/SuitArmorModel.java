@@ -23,7 +23,7 @@ public final class SuitArmorModel extends HumanoidModel<LivingEntity> {
         };
     }
     public void select(EquipmentSlot slot){this.slot=slot;}
-    @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,float red,float green,float blue,float alpha){
+    @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,int tgColor){float red=net.minecraft.util.FastColor.ARGB32.red(tgColor)/255F,green=net.minecraft.util.FastColor.ARGB32.green(tgColor)/255F,blue=net.minecraft.util.FastColor.ARGB32.blue(tgColor)/255F,alpha=net.minecraft.util.FastColor.ARGB32.alpha(tgColor)/255F;
         geometry.sync(this,slot);geometry.renderModel(pose,vertices,light,overlay,ItemDisplayContext.NONE);
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import techguns.api.npc.*;
 import techguns.damagesystem.TGDamageSource;
 import techguns.entities.projectiles.*;
@@ -19,9 +19,9 @@ import techguns.entities.projectiles.*;
 /** Original active AIFireballAttack (the unused AIGhastlingAttack is deliberately not substituted). */
 public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCTechgunsShooter {
     private static final EntityDataAccessor<Boolean> ATTACKING=SynchedEntityData.defineId(Ghastling.class,EntityDataSerializers.BOOLEAN);
-    public Ghastling(EntityType<? extends Ghastling> type,Level level){super(type,level);xpReward=10;setPathfindingMalus(BlockPathTypes.WATER,-1);setPathfindingMalus(BlockPathTypes.LAVA,8);setPathfindingMalus(BlockPathTypes.DANGER_FIRE,0);setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE,0);}
+    public Ghastling(EntityType<? extends Ghastling> type,Level level){super(type,level);xpReward=10;setPathfindingMalus(PathType.WATER,-1);setPathfindingMalus(PathType.LAVA,8);setPathfindingMalus(PathType.DANGER_FIRE,0);setPathfindingMalus(PathType.DAMAGE_FIRE,0);}
     public static AttributeSupplier.Builder attributes(){return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH,20).add(Attributes.FOLLOW_RANGE,64).add(Attributes.ARMOR,10).add(Attributes.ARMOR_TOUGHNESS,0);}
-    @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(ATTACKING,false);}
+    @Override protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder){super.defineSynchedData(builder);builder.define(ATTACKING,false);}
     public boolean isAttacking(){return entityData.get(ATTACKING);}
     public void setAttacking(boolean value){entityData.set(ATTACKING,value);}
     @Override protected void registerGoals(){
@@ -47,8 +47,8 @@ public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCT
             }else{host.getNavigation().stop();host.getMoveControl().setWantedPosition(target.getX(),target.getY(),target.getZ(),1);}
         }
     }
-    @Override protected ResourceLocation getDefaultLootTable(){return ResourceLocation.parse("techguns:entities/ghastling");}
-    @Override protected float getStandingEyeHeight(Pose pose,EntityDimensions dimensions){return 1.5f;}
+    @Override protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {return net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.parse("techguns:entities/ghastling"));}
+    @Override public EntityDimensions getDefaultDimensions(Pose pose){return super.getDefaultDimensions(pose).withEyeHeight(1.5f);}
     @Override protected SoundEvent getAmbientSound(){return SoundEvents.GHAST_AMBIENT;}
     @Override protected SoundEvent getHurtSound(DamageSource source){return SoundEvents.GHAST_HURT;}
     @Override protected SoundEvent getDeathSound(){return SoundEvents.GHAST_DEATH;}

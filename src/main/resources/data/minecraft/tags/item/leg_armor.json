@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "techguns:t1_combat_leggings",
+    "techguns:t1_scout_leggings",
+    "techguns:t1_miner_leggings",
+    "techguns:steam_leggings",
+    "techguns:hazmat_leggings",
+    "techguns:t2_combat_leggings",
+    "techguns:t2_commando_leggings",
+    "techguns:t2_riot_leggings",
+    "techguns:t3_combat_leggings",
+    "techguns:t3_power_leggings",
+    "techguns:t3_miner_leggings",
+    "techguns:t3_exo_leggings",
+    "techguns:t4_praetor_leggings",
+    "techguns:t4_power_leggings"
+  ]
+}

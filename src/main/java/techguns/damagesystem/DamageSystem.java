@@ -75,7 +75,7 @@ public final class DamageSystem {
         for(var stack:player.getArmorSlots())if(stack.getItem() instanceof techguns.items.armors.TGSuitArmor armor){
             double ratio=1-getDamageAfterAbsorb_TGFormula(1,armor.armor(stack,source.damageType),armor.stats.toughness,source.armorPenetration);
             total+=ratio;
-            if(ratio>0&&!player.getAbilities().instabuild)stack.hurtAndBreak((int)Math.max(1,amount*ratio),player,p->{});
+            if(ratio>0&&!player.getAbilities().instabuild)stack.hurtAndBreak((int)Math.max(1,amount*ratio),player,net.minecraft.world.entity.EquipmentSlot.CHEST);
         }
         return amount*(float)(1-Math.min(1,total));
     }

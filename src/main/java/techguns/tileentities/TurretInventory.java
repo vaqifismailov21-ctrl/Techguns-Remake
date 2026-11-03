@@ -1,7 +1,7 @@
 package techguns.tileentities;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 /**
  * The original InventoryUtil helpers for ItemStackHandlerPlus that the turret uses. They bypass slot validity

@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import techguns.api.damagesystem.DamageType;
 
 /** Wearable armor stats, original power/NBT, bonus and repair contracts. */
-public final class TGSuitArmor extends ArmorItem implements ICamoChangeable {
+public final class TGSuitArmor extends ArmorItem implements ICamoChangeable, techguns.client.ext.ClientItemExtensible {
     public final TGArmorMaterial stats;
     public final String id;
     public final String[] textures;
@@ -25,12 +25,12 @@ public final class TGSuitArmor extends ArmorItem implements ICamoChangeable {
     private int repairCount;
     private static Type type(EquipmentSlot slot){return switch(slot){case HEAD->Type.HELMET;case CHEST->Type.CHESTPLATE;case LEGS->Type.LEGGINGS;case FEET->Type.BOOTS;default->throw new IllegalArgumentException("Armor slot required");};}
     public TGSuitArmor(String id,TGArmorMaterial material,String[] textures,EquipmentSlot slot,String powerType,int maxpower){
-        super(material,type(slot),new Item.Properties().durability(material.getDurabilityForType(type(slot))));this.id=id;stats=material;this.textures=textures;this.slot=slot;this.powerType=powerType;this.maxpower=maxpower;
+        super(material.holder(),type(slot),new Item.Properties().durability(material.getDurabilityForType(type(slot))));this.id=id;stats=material;this.textures=textures;this.slot=slot;this.powerType=powerType;this.maxpower=maxpower;
     }
     public boolean powered(){return maxpower>0;}
-    public int power(ItemStack stack){return Math.max(0,Math.min(maxpower,stack.getOrCreateTag().getInt("power")));}
-    public int charge(ItemStack stack,int amount){int before=power(stack),accepted=Math.min(Math.max(0,amount),maxpower-before);stack.getOrCreateTag().putInt("power",before+accepted);return accepted;}
-    public void consumePower(ItemStack stack,int amount){stack.getOrCreateTag().putInt("power",Math.max(0,power(stack)-Math.max(0,amount)));}
+    public int power(ItemStack stack){return Math.max(0,Math.min(maxpower,techguns.util.TGItemNbt.tagOrEmpty(stack).getInt("power")));}
+    public int charge(ItemStack stack,int amount){int before=power(stack),accepted=Math.min(Math.max(0,amount),maxpower-before);techguns.util.TGItemNbt.putInt(stack, "power",before+accepted);return accepted;}
+    public void consumePower(ItemStack stack,int amount){techguns.util.TGItemNbt.putInt(stack, "power",Math.max(0,power(stack)-Math.max(0,amount)));}
     public TGSuitArmor setBattery(ItemStack stack){battery=stack.copy();return this;}
     public TGSuitArmor setEmptyBattery(ItemStack stack){emptyBattery=stack.copy();return this;}
     public ItemStack battery(){return battery.copy();}public ItemStack emptyBattery(){return emptyBattery.copy();}
@@ -73,17 +73,18 @@ public final class TGSuitArmor extends ArmorItem implements ICamoChangeable {
     @Override public int getCamoCount(){return textures.length;}
     @Override public Component getCurrentCamoName(ItemStack stack){int camo=Math.floorMod(getCurrentCamoIndex(stack),textures.length);return Component.translatable("techguns.item."+textures[0]+"."+(camoSuffix.isEmpty()?"":camoSuffix+".")+"camoname."+camo);}
     @Override public boolean isFoil(ItemStack stack){return false;}
-    @Override public String getArmorTexture(ItemStack stack,Entity entity,EquipmentSlot slot,String layer){return "techguns:textures/models/armor/"+textures[Math.floorMod(getCurrentCamoIndex(stack),textures.length)]+(doubleTexture?"_layer_"+(slot==EquipmentSlot.LEGS?2:1):"")+".png";}
+    @Override public net.minecraft.resources.ResourceLocation getArmorTexture(ItemStack stack,Entity entity,EquipmentSlot slot,net.minecraft.world.item.ArmorMaterial.Layer layer,boolean innerModel){return net.minecraft.resources.ResourceLocation.parse("techguns:textures/models/armor/"+textures[Math.floorMod(getCurrentCamoIndex(stack),textures.length)]+(doubleTexture?"_layer_"+(slot==EquipmentSlot.LEGS?2:1):"")+".png");}
     @Override public InteractionResultHolder<ItemStack> use(Level level,Player player,InteractionHand hand){if(player.isShiftKeyDown()&&textures.length>1){var stack=player.getItemInHand(hand);if(!level.isClientSide)switchCamo(stack);return InteractionResultHolder.sidedSuccess(stack,level.isClientSide);}return super.use(level,player,hand);}
-    @Override public boolean isValidRepairItem(ItemStack stack,ItemStack material){return ItemStack.isSameItemSameTags(repairMetal.isEmpty()?repairCloth:repairMetal,material);}
-    @Override public <T extends LivingEntity> int damageItem(ItemStack stack,int amount,T entity,java.util.function.Consumer<T> onBroken){return Math.max(0,Math.min(amount,stack.getMaxDamage()-1-stack.getDamageValue()));}
-    @Override public com.google.common.collect.Multimap<net.minecraft.world.entity.ai.attributes.Attribute,net.minecraft.world.entity.ai.attributes.AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot,ItemStack stack){
-        var builder=com.google.common.collect.ImmutableMultimap.<net.minecraft.world.entity.ai.attributes.Attribute,net.minecraft.world.entity.ai.attributes.AttributeModifier>builder();builder.putAll(super.getAttributeModifiers(equipmentSlot,stack));
+    @Override public boolean isValidRepairItem(ItemStack stack,ItemStack material){return ItemStack.isSameItemSameComponents(repairMetal.isEmpty()?repairCloth:repairMetal,material);}
+    @Override public <T extends LivingEntity> int damageItem(ItemStack stack,int amount,T entity,java.util.function.Consumer<Item> onBroken){return Math.max(0,Math.min(amount,stack.getMaxDamage()-1-stack.getDamageValue()));}
+    /** 1.21.1: radiation resistance of the suit part as an item attribute modifier for its slot. */
+    @Override public net.minecraft.world.item.component.ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack){
+        var base=super.getDefaultAttributeModifiers(stack);
         float resistance=bonuses.getOrDefault(TGArmorBonus.RAD_RESISTANCE,0F);
-        if(equipmentSlot==slot&&resistance>0)builder.put(techguns.api.radiation.TGRadiation.RADIATION_RESISTANCE.get(),new net.minecraft.world.entity.ai.attributes.AttributeModifier(java.util.UUID.nameUUIDFromBytes(("techguns.radiation."+slot).getBytes(java.nio.charset.StandardCharsets.UTF_8)),"Techguns radiation resistance",resistance,net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION));
-        return builder.build();
+        if(resistance<=0)return base;
+        return base.withModifierAdded(techguns.api.radiation.TGRadiation.RADIATION_RESISTANCE,new net.minecraft.world.entity.ai.attributes.AttributeModifier(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("techguns","radiation_"+slot.getName()),resistance,net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE),net.minecraft.world.entity.EquipmentSlotGroup.bySlot(slot));
     }
-    @Override public void appendHoverText(ItemStack stack,Level level,List<Component> lines,TooltipFlag flags){
+    @Override public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext level,List<Component> lines,TooltipFlag flags){
         appendArmorTooltip(stack,lines,net.minecraft.client.gui.screens.Screen.hasShiftDown());
     }
     public void appendArmorTooltip(ItemStack stack,List<Component> lines,boolean detailed){
@@ -110,8 +111,8 @@ public final class TGSuitArmor extends ArmorItem implements ICamoChangeable {
     private void bonusLine(List<Component> lines,TGArmorBonus bonus,String key,String sign,float multiplier,String suffix){float value=baseBonus(bonus);if(value>0)lines.add(Component.translatable("techguns.armorTooltip."+key).append(": "+sign+number(value*multiplier)+suffix));}
     private void flagLine(List<Component> lines,TGArmorBonus bonus,String key){if(baseBonus(bonus)>0)lines.add(Component.translatable("techguns.armorTooltip."+key));}
     private static String number(float value){return new java.text.DecimalFormat("0.##",java.text.DecimalFormatSymbols.getInstance(Locale.ROOT)).format(value);}
-    @Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer){
-        consumer.accept(new net.minecraftforge.client.extensions.common.IClientItemExtensions(){
+    @Override public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientItemExtensions> consumer){
+        consumer.accept(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions(){
             @Override public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer(){return use3dIcon?techguns.client.render.item.ArmorItemRenderer.get():net.minecraft.client.Minecraft.getInstance().getItemRenderer().getBlockEntityRenderer();}
             private techguns.client.models.armor.SuitArmorModel model;
             @Override public net.minecraft.client.model.HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity,ItemStack stack,EquipmentSlot equipmentSlot,net.minecraft.client.model.HumanoidModel<?> original){

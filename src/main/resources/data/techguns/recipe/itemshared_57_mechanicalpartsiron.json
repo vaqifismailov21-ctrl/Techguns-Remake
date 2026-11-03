@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    "ifi",
+    " i "
+  ],
+  "key": {
+    "f": {
+      "item": "minecraft:flint"
+    },
+    "i": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "result": {
+    "id": "techguns:mechanicalpartsiron"
+  }
+}

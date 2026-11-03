@@ -11,8 +11,10 @@ import techguns.*;
 import techguns.tileentities.NpcSpawnerEntity;
 
 public final class NpcSpawnerBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<NpcSpawnerBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public final boolean soldier;
-    public NpcSpawnerBlock(boolean soldier){super(Properties.copy(Blocks.STONE).strength(-1,2).noOcclusion().noCollission().noLootTable());this.soldier=soldier;}
+    public NpcSpawnerBlock(boolean soldier){super(Properties.ofFullCopy(Blocks.STONE).strength(-1,2).noOcclusion().noCollission().noLootTable());this.soldier=soldier;}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public VoxelShape getShape(BlockState state,BlockGetter world,BlockPos pos,CollisionContext context){return Block.box(2,0,2,14,2,14);}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new NpcSpawnerEntity(pos,state);}

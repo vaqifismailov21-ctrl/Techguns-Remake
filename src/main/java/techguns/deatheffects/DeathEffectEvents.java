@@ -1,21 +1,22 @@
 package techguns.deatheffects;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.util.UUID;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import techguns.network.DistExecutor;
+import techguns.network.NetworkDirection;
+import techguns.network.PacketDistributor;
 import techguns.TGPackets;
 import techguns.damagesystem.TGDamageSource;
 import techguns.deatheffects.EntityDeathUtils.DeathType;
 
-@Mod.EventBusSubscriber(modid="techguns")
+@EventBusSubscriber(modid="techguns")
 public final class DeathEffectEvents {
     public record Death(int entityId,UUID uuid,int type,Vec3 motion){}
     public static boolean eligible(LivingEntity entity,TGDamageSource damage,float roll){

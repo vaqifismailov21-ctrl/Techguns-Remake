@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "MFM",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "c:plates/iron"
+    },
+    "M": {
+      "item": "techguns:mechanicalpartsiron"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "C": {
+      "item": "techguns:circuitboard"
+    }
+  },
+  "result": {
+    "id": "techguns:fuel_generator",
+    "count": 1
+  }
+}

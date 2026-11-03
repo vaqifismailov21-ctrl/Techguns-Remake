@@ -11,21 +11,22 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
 import techguns.TGSounds;
 import techguns.api.radiation.TGRadiation;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.damagesystem.TGDamageSource;
 import techguns.deatheffects.EntityDeathUtils.DeathType;
 
-public final class RadiationPotion extends MobEffect {
+public final class RadiationPotion extends MobEffect implements techguns.client.ext.ClientMobEffectExtensible {
     public RadiationPotion() { super(MobEffectCategory.HARMFUL, 0xcff8ff00); }
     @Override public String getDescriptionId() { return "techguns.radiation"; }
-    @Override public List<ItemStack> getCurativeItems() { return new ArrayList<>(); }
-    @Override public boolean isDurationEffectTick(int duration, int amplifier) { return duration % 20 == 0; }
-    @Override public void applyEffectTick(LivingEntity entity, int amplifier) {
-        int resistance = entity.getAttribute(TGRadiation.RADIATION_RESISTANCE.get()) == null ? 0
-                : (int) entity.getAttributeValue(TGRadiation.RADIATION_RESISTANCE.get());
+    /** 1.21.1: no cures (old getCurativeItems returned an empty list, so milk does not remove it). */
+    @Override public void fillEffectCures(java.util.Set<net.neoforged.neoforge.common.EffectCure> cures, net.minecraft.world.effect.MobEffectInstance instance) {}
+    @Override public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) { return duration % 20 == 0; }
+    @Override public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+        int resistance = entity.getAttribute(TGRadiation.RADIATION_RESISTANCE) == null ? 0
+                : (int) entity.getAttributeValue(TGRadiation.RADIATION_RESISTANCE);
         int amount = Math.max(0, Math.min(1000, amplifier + 1 - resistance));
         if (entity instanceof Player player) {
             if (!player.isCreative()) {
@@ -37,6 +38,7 @@ public final class RadiationPotion extends MobEffect {
         } else if (entity instanceof Mob && amount * 0.5F >= 1.0F) {
             entity.hurt(TGDamageSource.causeRadiationDamage(entity.level(), null, null, DeathType.BIO), amount * 0.5F);
         }
+            return true;
     }
     @Override public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
         consumer.accept(new techguns.client.gui.RadiationEffectIcon(0));

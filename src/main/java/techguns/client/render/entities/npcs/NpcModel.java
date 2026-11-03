@@ -19,10 +19,10 @@ public final class NpcModel extends HumanoidModel<GenericNPC> implements techgun
         }
         super.setupAnim(npc,limb,amount,age,yaw,pitch);geometry.syncNpc(this);
     }
-    @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,float r,float g,float b,float alpha){
+    @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,int tgColor){float r=net.minecraft.util.FastColor.ARGB32.red(tgColor)/255F,g=net.minecraft.util.FastColor.ARGB32.green(tgColor)/255F,b=net.minecraft.util.FastColor.ARGB32.blue(tgColor)/255F,alpha=net.minecraft.util.FastColor.ARGB32.alpha(tgColor)/255F;
         geometry.renderModel(pose,new techguns.client.models.TintedVertexConsumer(vertices,r,g,b,alpha),light,overlay,ItemDisplayContext.NONE,holder,0,0,0,0,0);
     }
-    @Override public java.util.List<techguns.client.models.MeshSnapshot> deathParts(PoseStack pose){return geometry.captureParts(vertices->renderToBuffer(pose,vertices,0xf000f0,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,1,1,1,1));}
+    @Override public java.util.List<techguns.client.models.MeshSnapshot> deathParts(PoseStack pose){return geometry.captureParts(vertices->renderToBuffer(pose,vertices,0xf000f0,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,-1));}
     @Override public void translateToHand(HumanoidArm hand,PoseStack pose){
         // Mutants retain the original limb pivots and model scale for held items as well as their body.
         float scale=holder instanceof SuperMutantBasic mutant?mutant.getModelScale():1;

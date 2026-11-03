@@ -29,13 +29,13 @@ public class GenericProjectileIncendiary extends GenericProjectile {
         var source = TGDamageSource.causeFireDamage(this, shooter, DeathType.DEFAULT);
         source.armorPenetration = penetration; source.setNoKnockback(); return source;
     }
-    @Override protected void onHitEffect(LivingEntity target, HitResult hit) { if (!target.fireImmune()) target.setSecondsOnFire(3); }
+    @Override protected void onHitEffect(LivingEntity target, HitResult hit) { if (!target.fireImmune()) target.igniteForSeconds(3); }
     @Override protected void hitBlock(BlockHitResult hit) {
         if (blockdamage) burnBlocks(level(), hit, damage / 40F);
         super.hitBlock(hit);
     }
     @Override protected void addAdditionalSaveData(CompoundTag tag) { super.addAdditionalSaveData(tag); tag.putBoolean("fireTrail", showFireTrail); }
     @Override protected void readAdditionalSaveData(CompoundTag tag) { super.readAdditionalSaveData(tag); showFireTrail = tag.getBoolean("fireTrail"); }
-    @Override public void writeSpawnData(FriendlyByteBuf buffer) { super.writeSpawnData(buffer); buffer.writeBoolean(showFireTrail); }
-    @Override public void readSpawnData(FriendlyByteBuf buffer) { super.readSpawnData(buffer); showFireTrail = buffer.readBoolean(); }
+    @Override public void writeSpawnData(net.minecraft.network.RegistryFriendlyByteBuf buffer) { super.writeSpawnData(buffer); buffer.writeBoolean(showFireTrail); }
+    @Override public void readSpawnData(net.minecraft.network.RegistryFriendlyByteBuf buffer) { super.readSpawnData(buffer); showFireTrail = buffer.readBoolean(); }
 }

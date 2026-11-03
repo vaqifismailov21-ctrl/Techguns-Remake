@@ -21,11 +21,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
+import techguns.network.NetworkHooks;
 import techguns.TGOreDrill;
 
 /** Original BlockOreDrill/MultiBlockMachine: hardness 4 machine blocks with a FORMED state; the controller owns the multiblock. */
 public class OreDrillBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<OreDrillBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public static final BooleanProperty FORMED=BooleanProperty.create("formed");
     public final OreDrillType type;
     public OreDrillBlock(OreDrillType type){
@@ -45,11 +47,12 @@ public class OreDrillBlock extends BaseEntityBlock {
     }
     @Override public float getShadeBrightness(BlockState state,BlockGetter level,BlockPos pos){return type.fullCube?0.2f:1.0f;}
     @Override public boolean propagatesSkylightDown(BlockState state,BlockGetter level,BlockPos pos){return !type.fullCube;}
-    @Override public ItemStack getCloneItemStack(BlockState state,HitResult target,BlockGetter level,BlockPos pos,Player player){
+    @Override public ItemStack getCloneItemStack(BlockState state,HitResult target,net.minecraft.world.level.LevelReader level,BlockPos pos,Player player){
         return OreDrillScaffoldBlock.isHidden(state)?ItemStack.EMPTY:super.getCloneItemStack(state,target,level,pos,player);
     }
 
-    @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack tgHeldStack,BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){return techguns.util.TGInteraction.item(legacyUse(state,level,pos,player,hand,hit));}
+    public InteractionResult legacyUse(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         var tile=level.getBlockEntity(pos);
         if(tile instanceof OreDrillTileEntMaster master){
             if(!master.isUseableByPlayer(player)){player.displayClientMessage(net.minecraft.network.chat.Component.translatable("techguns.container.security.denied"),true);return InteractionResult.sidedSuccess(level.isClientSide);}

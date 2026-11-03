@@ -11,8 +11,10 @@ import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
-import net.minecraftforge.network.NetworkHooks;
+import techguns.network.NetworkHooks;
 public final class BenchBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<BenchBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public static final net.minecraft.world.level.block.state.properties.DirectionProperty FACING=net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
     public final BenchKind kind;
     public BenchBlock(BenchKind kind){super(Properties.of().strength(4,20).sound(SoundType.METAL));this.kind=kind;registerDefaultState(stateDefinition.any().setValue(FACING,net.minecraft.core.Direction.NORTH));}
@@ -24,6 +26,7 @@ public final class BenchBlock extends BaseEntityBlock {
     @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return kind==BenchKind.UPGRADE?box(0,0,0,16,13,16):super.getShape(state,level,pos,context);}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new BenchEntity(pos,state);}
     @Override public void setPlacedBy(Level level,BlockPos pos,BlockState state,LivingEntity entity,ItemStack stack){super.setPlacedBy(level,pos,state,entity,stack);if(entity instanceof Player player&&level.getBlockEntity(pos) instanceof BenchEntity bench)bench.access.place(player);}
-    @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){if(!level.isClientSide&&player instanceof ServerPlayer server&&level.getBlockEntity(pos) instanceof BenchEntity bench&&bench.access.allows(player))NetworkHooks.openScreen(server,bench,pos);return InteractionResult.sidedSuccess(level.isClientSide);}
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack tgHeldStack,BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){return techguns.util.TGInteraction.item(legacyUse(state,level,pos,player,hand,hit));}
+    public InteractionResult legacyUse(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){if(!level.isClientSide&&player instanceof ServerPlayer server&&level.getBlockEntity(pos) instanceof BenchEntity bench&&bench.access.allows(player))NetworkHooks.openScreen(server,bench,pos);return InteractionResult.sidedSuccess(level.isClientSide);}
     @Override public void onRemove(BlockState state,Level level,BlockPos pos,BlockState next,boolean moving){if(state.getBlock()!=next.getBlock()&&!level.isClientSide&&level.getBlockEntity(pos) instanceof BenchEntity bench){for(int i=0;i<bench.inventory.getSlots();i++)Containers.dropItemStack(level,pos.getX(),pos.getY(),pos.getZ(),bench.inventory.getStackInSlot(i));}super.onRemove(state,level,pos,next,moving);}
 }

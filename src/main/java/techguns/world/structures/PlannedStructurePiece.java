@@ -56,9 +56,9 @@ public final class PlannedStructurePiece extends StructurePiece {
             // 1.12 source flag 2 did not perform modern neighbor-shape cascades during placement.
             // Keep the complete source plan while writing; native postprocessing resolves ordinary attachments.
             world.setBlock(pos,state,18);
-            var data=blockData.get(i/4);if(data!=null&&world.getBlockEntity(pos)!=null){var entity=world.getBlockEntity(pos);entity.load(data.copy());entity.setChanged();}
+            var data=blockData.get(i/4);if(data!=null&&world.getBlockEntity(pos)!=null){var entity=world.getBlockEntity(pos);entity.loadWithComponents(data.copy(),world.registryAccess());entity.setChanged();}
             boolean postprocess=resolveAllShapes&&!state.isAir()&&state.getFluidState().isEmpty()||trail&&!state.is(TGWorld.SLIMY_TRAIL.get())||state.is(net.minecraft.tags.BlockTags.FENCES)||state.getBlock() instanceof net.minecraft.world.level.block.IronBarsBlock||state.getBlock() instanceof net.minecraft.world.level.block.DoorBlock||state.getBlock() instanceof net.minecraft.world.level.block.StairBlock;
-            var chunkAccess=world.getChunk(pos);if(postprocess&&chunkAccess.getStatus()!=net.minecraft.world.level.chunk.ChunkStatus.FULL)chunkAccess.markPosForPostprocessing(pos);
+            var chunkAccess=world.getChunk(pos);if(postprocess&&chunkAccess.getPersistedStatus()!=net.minecraft.world.level.chunk.status.ChunkStatus.FULL)chunkAccess.markPosForPostprocessing(pos);
         }
     }
 }

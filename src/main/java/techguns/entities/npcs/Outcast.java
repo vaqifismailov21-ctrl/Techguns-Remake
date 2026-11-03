@@ -59,8 +59,8 @@ protected void addRandomArmor(int difficulty) {
 		}
 		if (weapon != null) this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(weapon));
 	}
-protected ResourceLocation getDefaultLootTable() {
-		return LOOT;
+protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {
+		return net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, LOOT);
 	}
 public static AttributeSupplier.Builder attributes(){return GenericNPCGearSpecificStats.attributes().add(Attributes.MOVEMENT_SPEED,0.2D).add(Attributes.MAX_HEALTH,30).add(Attributes.ATTACK_DAMAGE,8).add(Attributes.FOLLOW_RANGE,60.0D);}
 }

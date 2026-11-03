@@ -1,5 +1,6 @@
 package techguns.client.render.entities.npcs;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import techguns.client.models.npcs.ModelTurret;
 import techguns.entities.npcs.NPCTurret;
 import techguns.items.guns.TurretGunOffsets;
@@ -43,7 +43,7 @@ public final class NPCTurretRenderer extends EntityRenderer<NPCTurret> {
         MODEL.renderModel(pose,vertices,light,OverlayTexture.NO_OVERLAY,ItemDisplayContext.FIXED,turret,0,0,1,0,0);
         var gun=turret.getMainHandItem();
         if(!gun.isEmpty()){
-            float[] offset=TurretGunOffsets.get(ForgeRegistries.ITEMS.getKey(gun.getItem()).getPath());
+            float[] offset=TurretGunOffsets.get(BuiltInRegistries.ITEM.getKey(gun.getItem()).getPath());
             pose.pushPose();
             pose.translate(offset[0],offset[1]+GUN_OFFSET_Y,offset[2]);
             pose.mulPose(Axis.XP.rotationDegrees(180));

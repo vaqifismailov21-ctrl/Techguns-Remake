@@ -10,12 +10,12 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.*;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.*;
+import techguns.capabilities.compat.*;
+import techguns.capabilities.compat.LazyOptional;
+import net.neoforged.neoforge.items.*;
 import techguns.*;
 import techguns.items.armors.*;
-public final class BenchEntity extends BlockEntity implements MenuProvider {
+public final class BenchEntity extends BlockEntity implements MenuProvider, techguns.capabilities.compat.ICapabilityHost {
     public final BenchKind kind;
     public final ItemStackHandler inventory;
     public final MachineSecurity access=new MachineSecurity(this::changed);
@@ -27,15 +27,15 @@ public final class BenchEntity extends BlockEntity implements MenuProvider {
         var materials=repairMaterials(target);if(target.isEmpty()||target.getDamageValue()==0||materials.isEmpty())return false;
         // Reserve from a working copy so overlapping material requirements can never spend the same item twice.
         var remaining=new ArrayList<ItemStack>();for(int i=0;i<9;i++)remaining.add(inventory.getStackInSlot(i).copy());
-        for(var material:materials){int needed=material.getCount();for(var stack:remaining)if(ItemStack.isSameItemSameTags(stack,material)){int count=Math.min(needed,stack.getCount());stack.shrink(count);needed-=count;}if(needed>0)return false;}
+        for(var material:materials){int needed=material.getCount();for(var stack:remaining)if(ItemStack.isSameItemSameComponents(stack,material)){int count=Math.min(needed,stack.getCount());stack.shrink(count);needed-=count;}if(needed>0)return false;}
         for(int i=0;i<9;i++)inventory.setStackInSlot(i,remaining.get(i));target.setDamageValue(0);changed();return true;
     }
     public void changed(){setChanged();if(level!=null&&!level.isClientSide)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);}
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.put("inventory",inventory.serializeNBT());access.save(tag);}
-    @Override public void load(CompoundTag tag){super.load(tag);inventory.deserializeNBT(tag.getCompound("inventory"));access.load(tag);}
-    @Override public CompoundTag getUpdateTag(){return saveWithoutMetadata();}@Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
-    @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){return capability==ForgeCapabilities.ITEM_HANDLER?handler.cast():super.getCapability(capability,side);}
-    @Override public void invalidateCaps(){super.invalidateCaps();handler.invalidate();}@Override public void reviveCaps(){super.reviveCaps();handler=LazyOptional.of(()->inventory);}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);tag.put("inventory",inventory.serializeNBT(techguns.util.TGItemNbt.registries()));access.save(tag);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);inventory.deserializeNBT(techguns.util.TGItemNbt.registries(), tag.getCompound("inventory"));access.load(tag);}
+    @Override public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries){return saveWithoutMetadata(techguns.util.TGItemNbt.registries());}@Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
+    @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){return capability==Capabilities.ITEM_HANDLER?handler.cast():LazyOptional.empty();}
+    @Override public void invalidateCaps(){invalidateCapabilities();handler.invalidate();}@Override public void reviveCaps(){handler=LazyOptional.of(()->inventory);}
     @Override public Component getDisplayName(){return Component.translatable(kind.titleKey());}
     @Override public AbstractContainerMenu createMenu(int id,Inventory inventory,Player player){return new BenchMenu(id,inventory,this);}
 }

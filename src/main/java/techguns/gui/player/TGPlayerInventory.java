@@ -19,10 +19,10 @@ public final class TGPlayerInventory implements Container {
     public boolean dirty;
 
     public TGPlayerInventory(Player owner) { this.owner = owner; }
-    public void saveNBTData(CompoundTag tag) { ContainerHelper.saveAllItems(tag, inventory); }
+    public void saveNBTData(CompoundTag tag) { ContainerHelper.saveAllItems(tag, inventory, techguns.util.TGItemNbt.registries()); }
     public void loadNBTData(CompoundTag tag) {
         inventory.clear();
-        ContainerHelper.loadAllItems(tag, inventory);
+        ContainerHelper.loadAllItems(tag, inventory, techguns.util.TGItemNbt.registries());
         setChanged();
     }
     @Override public int getContainerSize() { return NUMSLOTS; }

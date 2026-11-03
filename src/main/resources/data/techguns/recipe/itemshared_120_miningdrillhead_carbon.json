@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " dd",
+    "ddd",
+    " dd"
+  ],
+  "key": {
+    "d": {
+      "tag": "c:plates/carbon"
+    }
+  },
+  "result": {
+    "id": "techguns:miningdrillhead_carbon"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pp",
+    "pp",
+    "pp"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/iron"
+    }
+  },
+  "result": {
+    "id": "techguns:bunker_door",
+    "count": 2
+  }
+}

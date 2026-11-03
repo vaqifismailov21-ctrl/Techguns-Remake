@@ -3,7 +3,7 @@ import java.util.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.*;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import techguns.items.armors.*;
 /** Generated from original TGArmors declarations and final settings. */
 public final class TGEquipment {
@@ -22,7 +22,7 @@ public final class TGEquipment {
     public static final TGArmorMaterial T2_BERET=new TGArmorMaterial("T2_BERET",60,0,8.0f,SoundEvents.ARMOR_EQUIP_LEATHER,0);
     public static final TGArmorMaterial T4_PRAETOR=new TGArmorMaterial("T4_PRAETOR",360,0,22.0f,SoundEvents.ARMOR_EQUIP_IRON,3.0f).setArmorFire(21.0f).setArmorExplosion(21.0f).setArmorEnergy(21.0f).setArmorIce(21.0f).setArmorLightning(21.0f).setArmorPoison(21.0f).setArmorRadiation(20.0f).setPenetrationResistance(0.25f);
     public static final TGArmorMaterial T4_POWER=new TGArmorMaterial("T4_POWER",460,0,23.0f,SoundEvents.ARMOR_EQUIP_IRON,3.5f).setArmorFire(21.0f).setArmorExplosion(22.0f).setArmorEnergy(21.0f).setArmorIce(21.0f).setArmorLightning(21.0f).setArmorPoison(19.0f).setArmorRadiation(20.0f).setPenetrationResistance(0.3f);
-    public static final Map<String,RegistryObject<TGSuitArmor>> ARMOR=new LinkedHashMap<>();
+    public static final Map<String,DeferredHolder<net.minecraft.world.item.Item, TGSuitArmor>> ARMOR=new LinkedHashMap<>();
     static {
         ARMOR.put("t1_combat_helmet",TGItems.ITEMS.register("t1_combat_helmet",()->new TGSuitArmor("t1_combat_helmet",T1_COMBAT,new String[]{"t1_combat"},EquipmentSlot.HEAD,null,0).setRepairMats(new ItemStack(Items.IRON_INGOT,1),TGItems.HEAVY_CLOTH.get().getDefaultInstance(),0.5f,2).setKnockbackResistance(0.05f)));
         ARMOR.put("t1_combat_chestplate",TGItems.ITEMS.register("t1_combat_chestplate",()->new TGSuitArmor("t1_combat_chestplate",T1_COMBAT,new String[]{"t1_combat"},EquipmentSlot.CHEST,null,0).setRepairMats(new ItemStack(Items.IRON_INGOT,1),TGItems.HEAVY_CLOTH.get().getDefaultInstance(),0.5f,4).setKnockbackResistance(0.20f)));

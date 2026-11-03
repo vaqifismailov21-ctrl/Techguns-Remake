@@ -6,17 +6,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
+import techguns.capabilities.compat.Capability;
+import techguns.capabilities.compat.Capabilities;
+import techguns.capabilities.compat.LazyOptional;
+import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 /**
  * Energy buffer of the power blocks. Each side either gives energy (pushed to the neighbour every tick and drainable by
  * cables) or takes it; generators only give, the energy cell takes on all sides but its front.
  */
-public abstract class EnergySource extends BlockEntity {
+public abstract class EnergySource extends BlockEntity implements techguns.capabilities.compat.ICapabilityHost{
     protected final EnergyStorage energy;
     private final int output;
     @SuppressWarnings("unchecked") private final LazyOptional<IEnergyStorage>[] handles=new LazyOptional[7];
@@ -35,7 +35,7 @@ public abstract class EnergySource extends BlockEntity {
         for(var side:Direction.values()){
             if(budget<=0)break;if(!gives(side))continue;var neighbour=level.getBlockEntity(worldPosition.relative(side));if(neighbour==null)continue;
             if(neighbour instanceof EnergySource source&&!source.takes(side.getOpposite()))continue;
-            var target=neighbour.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).resolve();if(target.isEmpty()||!target.get().canReceive())continue;
+            var target=Capabilities.block(neighbour,Capabilities.ENERGY,side.getOpposite()).resolve();if(target.isEmpty()||!target.get().canReceive())continue;
             int given=target.get().receiveEnergy(budget,false);if(given>0){energy.extractEnergy(given,false);budget-=given;setChanged();}
         }
     }
@@ -51,13 +51,13 @@ public abstract class EnergySource extends BlockEntity {
         };
     }
     @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){
-        if(capability==ForgeCapabilities.ENERGY){int i=side==null?6:side.ordinal();if(handles[i]==null)handles[i]=LazyOptional.of(()->handle(side));return handles[i].cast();}
-        return super.getCapability(capability,side);
+        if(capability==Capabilities.ENERGY){int i=side==null?6:side.ordinal();if(handles[i]==null)handles[i]=LazyOptional.of(()->handle(side));return handles[i].cast();}
+        return LazyOptional.empty();
     }
     /** Sided handles depend on the block's facing. */
     protected void resetHandles(){for(int i=0;i<handles.length;i++)if(handles[i]!=null){handles[i].invalidate();handles[i]=null;}}
-    @Override public void invalidateCaps(){super.invalidateCaps();resetHandles();}
+    @Override public void invalidateCaps(){invalidateCapabilities();resetHandles();}
     @Override public void setBlockState(BlockState state){super.setBlockState(state);resetHandles();}
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.putInt("Energy",energy.getEnergyStored());}
-    @Override public void load(CompoundTag tag){super.load(tag);if(tag.contains("Energy"))energy.deserializeNBT(net.minecraft.nbt.IntTag.valueOf(Math.min(tag.getInt("Energy"),energy.getMaxEnergyStored())));}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);tag.putInt("Energy",energy.getEnergyStored());}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);if(tag.contains("Energy"))energy.deserializeNBT(techguns.util.TGItemNbt.registries(), net.minecraft.nbt.IntTag.valueOf(Math.min(tag.getInt("Energy"),energy.getMaxEnergyStored())));}
 }

@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "obo",
+    "scr",
+    "ssp"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:sheets/plastic"
+    },
+    "b": {
+      "item": "techguns:laserbarrel"
+    },
+    "r": {
+      "item": "techguns:redstone_battery"
+    },
+    "s": {
+      "tag": "c:nuggets/steel"
+    },
+    "c": {
+      "tag": "c:circuits/elite"
+    },
+    "o": {
+      "tag": "c:plates/obsidian_steel"
+    }
+  },
+  "result": {
+    "id": "techguns:laserpistol",
+    "components": {
+      "minecraft:custom_data": "{ammo:20s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

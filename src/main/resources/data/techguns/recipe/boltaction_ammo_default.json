@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:boltaction"
+    },
+    {
+      "item": "techguns:riflerounds"
+    }
+  ],
+  "result": {
+    "id": "techguns:boltaction",
+    "components": {
+      "minecraft:custom_data": "{ammo:6s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

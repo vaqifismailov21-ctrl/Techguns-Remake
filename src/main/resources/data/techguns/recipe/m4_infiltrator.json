@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gpg",
+    "wwm",
+    "rri"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/steel"
+    },
+    "r": {
+      "tag": "c:dusts/redstone"
+    },
+    "g": {
+      "type": "techguns:hardened_glass_or_glass"
+    },
+    "w": {
+      "tag": "minecraft:wool"
+    },
+    "i": {
+      "tag": "c:ingots/steel"
+    },
+    "m": {
+      "item": "techguns:m4"
+    }
+  },
+  "result": {
+    "id": "techguns:m4_infiltrator",
+    "components": {
+      "minecraft:custom_data": "{ammo:30s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

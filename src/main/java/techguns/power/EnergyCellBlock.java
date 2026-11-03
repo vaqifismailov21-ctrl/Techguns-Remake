@@ -20,6 +20,8 @@ import net.minecraft.world.phys.BlockHitResult;
 
 /** Energy cell: its front (the side facing the player when placed) gives energy, all other sides take it. Keeps its charge when broken. */
 public final class EnergyCellBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<EnergyCellBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public static final DirectionProperty FACING=BlockStateProperties.FACING;
     public EnergyCellBlock(){super(Properties.of().strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FACING);}
@@ -29,7 +31,8 @@ public final class EnergyCellBlock extends BaseEntityBlock {
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new EnergyCellEntity(pos,state);}
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,PowerBlocks.ENERGY_CELL_ENTITY.get(),(world,pos,block,entity)->entity.tick());}
-    @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack tgHeldStack,BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){return techguns.util.TGInteraction.item(legacyUse(state,level,pos,player,hand,hit));}
+    public InteractionResult legacyUse(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(!level.isClientSide&&level.getBlockEntity(pos) instanceof EnergyCellEntity cell)player.displayClientMessage(Component.translatable("techguns.power.cell_status",cell.energyStored(),cell.energyCapacity()),true);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

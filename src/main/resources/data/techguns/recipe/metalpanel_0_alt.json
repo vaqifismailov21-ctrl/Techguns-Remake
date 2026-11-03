@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sss",
+    "psp",
+    "sss"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/tin"
+    },
+    "s": {
+      "tag": "c:stones"
+    }
+  },
+  "result": {
+    "id": "techguns:container_red",
+    "count": 32
+  }
+}

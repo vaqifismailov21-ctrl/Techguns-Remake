@@ -13,11 +13,7 @@ public interface ICamoChangeable {
 	}
 	
 	public default int switchCamo(ItemStack item,boolean back){
-		CompoundTag tags = item.getTag();
-		if (tags== null){
-			tags = new CompoundTag();
-			item.setTag(tags);
-		}
+		CompoundTag tags = techguns.util.TGItemNbt.tagOrEmpty(item);
 		byte camoID=0;
 		if (tags.contains("camo")){
 			camoID=tags.getByte("camo");
@@ -38,11 +34,12 @@ public interface ICamoChangeable {
 		}
 		
 		tags.putByte("camo", camoID);
+		techguns.util.TGItemNbt.set(item, tags);
 		return camoID;
 	}
 	
 	public default int getCurrentCamoIndex(ItemStack item) {
-		CompoundTag tags = item.getTag();
+		CompoundTag tags = techguns.util.TGItemNbt.tag(item);
 		byte camoID=0;
 		if (tags!=null && tags.contains("camo")){
 			camoID=tags.getByte("camo");

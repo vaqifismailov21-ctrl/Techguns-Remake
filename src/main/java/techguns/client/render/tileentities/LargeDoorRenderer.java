@@ -5,14 +5,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import techguns.tileentities.LargeDoorEntity;
 /** Original door meshes and movement distances; the frame stays fixed during opening. */
 public final class LargeDoorRenderer implements BlockEntityRenderer<LargeDoorEntity> {
+    /** 1.21.1: the render bounds moved from the block entity to its renderer. */
+    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(LargeDoorEntity entity){return entity.getRenderBoundingBox();}
     public static final String[] PARTS={"techdoor3x3_frame","techdoor3x3_left","techdoor3x3_right","techdoor3x3_frame_nether","techdoor3x3_left_nether","techdoor3x3_right_nether","hangar_door_frame","hangar_door_down_frame","hangar_door_mid1j","hangar_door_mid2j","hangar_door_mid3j","hangar_door_lower","hangar_door_down_upper"};
     public LargeDoorRenderer(BlockEntityRendererProvider.Context context){}
-    public static void registerModels(ModelEvent.RegisterAdditional event){for(String part:PARTS)event.register(id(part));}
+    public static void registerModels(ModelEvent.RegisterAdditional event){for(String part:PARTS)event.register(net.minecraft.client.resources.model.ModelResourceLocation.standalone(id(part)));}
     private static ResourceLocation id(String part){return ResourceLocation.fromNamespaceAndPath("techguns","block/"+part);}
     @Override public void render(LargeDoorEntity door,float partial,PoseStack pose,MultiBufferSource buffers,int light,int overlay){
         renderGeometry(door.getBlockState(),door.variant(),door.zplane(),door.openness(partial),pose,buffers,light,overlay);
@@ -26,6 +28,6 @@ public final class LargeDoorRenderer implements BlockEntityRenderer<LargeDoorEnt
             if(openness<1){draw(state,type==1?"hangar_door_mid1j":"hangar_door_mid3j",pose,buffers,light,overlay,0,dy);if(distance<=2)draw(state,"hangar_door_mid2j",pose,buffers,light,overlay,0,dy);if(distance<=1)draw(state,type==1?"hangar_door_mid3j":"hangar_door_mid1j",pose,buffers,light,overlay,0,dy);}
         }pose.popPose();
     }
-    private static void draw(net.minecraft.world.level.block.state.BlockState state,String part,PoseStack pose,MultiBufferSource buffers,int light,int overlay,double dx,double dy){pose.pushPose();pose.translate(dx,dy,0);var mc=Minecraft.getInstance();var model=mc.getModelManager().getModel(id(part));var renderType=RenderType.cutout();mc.getBlockRenderer().getModelRenderer().renderModel(pose.last(),buffers.getBuffer(renderType),state,model,1,1,1,light,overlay,ModelData.EMPTY,renderType);pose.popPose();}
+    private static void draw(net.minecraft.world.level.block.state.BlockState state,String part,PoseStack pose,MultiBufferSource buffers,int light,int overlay,double dx,double dy){pose.pushPose();pose.translate(dx,dy,0);var mc=Minecraft.getInstance();var model=mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(id(part)));var renderType=RenderType.cutout();mc.getBlockRenderer().getModelRenderer().renderModel(pose.last(),buffers.getBuffer(renderType),state,model,1,1,1,light,overlay,ModelData.EMPTY,renderType);pose.popPose();}
     @Override public boolean shouldRenderOffScreen(LargeDoorEntity door){return true;}
 }

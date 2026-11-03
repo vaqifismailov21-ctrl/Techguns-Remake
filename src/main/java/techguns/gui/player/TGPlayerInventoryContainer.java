@@ -41,7 +41,7 @@ public final class TGPlayerInventoryContainer extends AbstractContainerMenu {
                 @Override public int getMaxStackSize() { return 1; }
                 @Override public boolean mayPlace(ItemStack stack) { return stack.canEquip(equipment, owner); }
                 @Override public boolean mayPickup(Player player) {
-                    return (getItem().isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(getItem())) && super.mayPickup(player);
+                    return (getItem().isEmpty() || player.isCreative() || !net.minecraft.world.item.enchantment.EnchantmentHelper.has(getItem(), net.minecraft.world.item.enchantment.EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(player);
                 }
                 @Override public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     ResourceLocation icon = switch (equipment) {

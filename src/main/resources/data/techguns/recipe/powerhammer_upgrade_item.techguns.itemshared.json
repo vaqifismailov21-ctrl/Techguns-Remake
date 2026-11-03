@@ -1,0 +1,21 @@
+{
+  "type": "techguns:miningtool_upgrade",
+  "ingredients": [
+    {
+      "type": "techguns:partial_nbt",
+      "item": "techguns:powerhammer",
+      "nbt": {
+        "miningHead": 0
+      }
+    },
+    {
+      "item": "techguns:powerhammerhead_obsidian"
+    }
+  ],
+  "result": {
+    "id": "techguns:powerhammer",
+    "components": {
+      "minecraft:custom_data": "{ammo:300s,ammovariant:\"default\",camo:0b,miningHead:0}"
+    }
+  }
+}

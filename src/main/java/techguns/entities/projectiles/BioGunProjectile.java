@@ -30,8 +30,8 @@ public final class BioGunProjectile extends GenericProjectile {
                 var pos=hit.getBlockPos().relative(hit.getDirection());
                 if(level().getBlockEntity(pos) instanceof BioBlobBlockEntity blob)blob.hitBlob(power,shooter);
                 else if(blockdamage&&level().isEmptyBlock(pos)) {
-                    var snapshot=net.minecraftforge.common.util.BlockSnapshot.create(level().dimension(),level(),pos);
-                    if(!net.minecraftforge.event.ForgeEventFactory.onBlockPlace(shooter,snapshot,hit.getDirection())) {
+                    var snapshot=net.neoforged.neoforge.common.util.BlockSnapshot.create(level().dimension(),level(),pos);
+                    if(!net.neoforged.neoforge.event.EventHooks.onBlockPlace(shooter,snapshot,hit.getDirection())) {
                         level().setBlockAndUpdate(pos,TGWeaponBlocks.BIOBLOB.get().defaultBlockState().setValue(BioBlobBlock.FACING,hit.getDirection().getOpposite()).setValue(BioBlobBlock.SIZE,net.minecraft.util.Mth.clamp(power-1,0,2)));
                     }
                 }
@@ -39,8 +39,8 @@ public final class BioGunProjectile extends GenericProjectile {
             impact(hit);
         }
     }
-    @Override public void writeSpawnData(FriendlyByteBuf b) {super.writeSpawnData(b);b.writeVarInt(power);}
-    @Override public void readSpawnData(FriendlyByteBuf b) {super.readSpawnData(b);power=b.readVarInt();}
+    @Override public void writeSpawnData(net.minecraft.network.RegistryFriendlyByteBuf b) {super.writeSpawnData(b);b.writeVarInt(power);}
+    @Override public void readSpawnData(net.minecraft.network.RegistryFriendlyByteBuf b) {super.readSpawnData(b);power=b.readVarInt();}
     @Override protected void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {super.addAdditionalSaveData(tag);tag.putInt("power",power);}
     @Override protected void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {super.readAdditionalSaveData(tag);power=tag.getInt("power");}
 }

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "techguns:turretarmorsteel"
+  },
+  "result": {
+    "id": "techguns:ingotsteel",
+    "count": 5
+  },
+  "experience": 0,
+  "cookingtime": 200
+}

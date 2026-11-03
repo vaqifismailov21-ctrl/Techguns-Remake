@@ -53,8 +53,8 @@ public SoundEvent getDeathSound() {
 public SoundEvent getStepSound() {
 		return SoundEvents.ZOMBIE_STEP;
 	}
-protected ResourceLocation getDefaultLootTable() {
-		return LOOT;
+protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {
+		return net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, LOOT);
 	}
 public static AttributeSupplier.Builder attributes(){return GenericNPCGearSpecificStats.attributes().add(Attributes.MOVEMENT_SPEED,0.30D).add(Attributes.MAX_HEALTH,35).add(Attributes.ATTACK_DAMAGE,4).add(Attributes.FOLLOW_RANGE,75.0D);}
 @Override protected void playStepSound(net.minecraft.core.BlockPos pos,net.minecraft.world.level.block.state.BlockState state){playSound(getStepSound(),.15f,1);}

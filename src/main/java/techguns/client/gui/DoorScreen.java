@@ -49,7 +49,7 @@ public final class DoorScreen extends AbstractContainerScreen<DoorMenu> {
     }
     @Override public void render(GuiGraphics graphics,int x,int y,float partial){
         autoClose.setMessage(Component.translatable(menu.data.get(1)==1?"techguns.yes":"techguns.no"));
-        renderBackground(graphics);super.render(graphics,x,y,partial);renderTooltip(graphics,x,y);
+        renderBackground(graphics, x, y, partial);super.render(graphics,x,y,partial);renderTooltip(graphics,x,y);
         int mx=x-leftPos,my=y-topPos;
         List<Component> tooltip=redstoneTooltip(mx,my,signal(),redstoneMode());if(tooltip==null)tooltip=securityTooltip(mx,my,SECURITY_Y,security(),menu.door.access.ownerId());
         if(tooltip!=null)graphics.renderComponentTooltip(font,tooltip,x,y);

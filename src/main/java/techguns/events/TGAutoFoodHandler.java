@@ -28,14 +28,14 @@ public final class TGAutoFoodHandler {
         if (food == null) return;
         // This is the modern equivalent of the original protected ItemFood.onFoodEaten call:
         // effects are applied once, without also granting all nutrition via finishUsingItem.
-        for (var effect : food.getEffects()) if (player.getRandom().nextFloat() < effect.getSecond()) {
-            player.addEffect(new MobEffectInstance(effect.getFirst()));
+        for (var effect : food.effects()) if (player.getRandom().nextFloat() < effect.probability()) {
+            player.addEffect(new MobEffectInstance(effect.effect()));
         }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 1, 1);
-        int used = Math.min(needed, food.getNutrition());
-        player.getFoodData().eat(used, food.getSaturationModifier());
-        data.foodleft = (short) Math.max(0, food.getNutrition() - needed);
-        data.lastSaturation = data.foodleft > 0 ? food.getSaturationModifier() : 0;
+        int used = Math.min(needed, food.nutrition());
+        player.getFoodData().eat(used, (food.nutrition() > 0 ? food.saturation() / (2F * food.nutrition()) : 0F));
+        data.foodleft = (short) Math.max(0, food.nutrition() - needed);
+        data.lastSaturation = data.foodleft > 0 ? (food.nutrition() > 0 ? food.saturation() / (2F * food.nutrition()) : 0F) : 0;
         data.markDirty();
     }
     private TGAutoFoodHandler() {}

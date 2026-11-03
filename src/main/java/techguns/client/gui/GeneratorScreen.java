@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import techguns.power.GeneratorMenu;
 
 /** Generator interface in the style of the Techguns machines: energy bar, fuel slot, flame or tank, readouts. */
@@ -17,7 +17,7 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
     private static final ResourceLocation FURNACE=ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");
     private static final int TANK_X=40,TANK_Y=17,TANK_W=16,TANK_H=48;
     public GeneratorScreen(GeneratorMenu menu,Inventory inventory,Component title){super(menu,inventory,title);}
-    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){renderBackground(graphics, mouseX, mouseY, partial);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
         int x=mouseX-leftPos,y=mouseY-topPos;
         if(x>=7&&x<13&&y>=16&&y<66)graphics.renderTooltip(font,Component.translatable("techguns.power.energy",menu.energy(),menu.capacity()),mouseX,mouseY);
         if(menu.liquid&&x>=TANK_X-1&&x<TANK_X+TANK_W+1&&y>=TANK_Y-1&&y<TANK_Y+TANK_H+1)graphics.renderTooltip(font,menu.tankAmount()>0?Component.translatable("techguns.power.tank",menu.tankFluid().getFluidType().getDescription(),menu.tankAmount(),techguns.power.PowerBlocks.LIQUID_TANK):Component.translatable("techguns.power.tank_empty"),mouseX,mouseY);

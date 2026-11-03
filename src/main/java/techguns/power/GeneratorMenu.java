@@ -14,8 +14,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 /** Fuel slot or fluid container slot, energy, burn progress and (liquid generator) tank. Values sync as 16-bit halves. */
 public final class GeneratorMenu extends AbstractContainerMenu {

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " g ",
+    "cfc",
+    " g "
+  ],
+  "key": {
+    "c": {
+      "tag": "c:circuits/elite"
+    },
+    "f": {
+      "item": "techguns:fabricator_housing"
+    },
+    "g": {
+      "type": "techguns:hardened_glass_or_glass"
+    }
+  },
+  "result": {
+    "id": "techguns:fabricator_controller"
+  }
+}

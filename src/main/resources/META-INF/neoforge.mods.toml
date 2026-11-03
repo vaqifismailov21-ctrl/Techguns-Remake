@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="See LICENSE.txt (original Techguns license)"
+
+[[mods]]
+modId="techguns"
+version="${mod_version}"
+displayName="Techguns"
+authors="pWn3d1337; 1.21.1 NeoForge port"
+description='''New port from the original Techguns 1.12.2 source (Techguns Remake [Unofficial]).'''
+
+[[dependencies.techguns]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.techguns]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"

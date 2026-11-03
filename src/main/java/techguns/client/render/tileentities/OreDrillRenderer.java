@@ -20,6 +20,8 @@ import techguns.oredrill.OreDrillTileEntMaster;
  * while it has a head, redstone permission and power.
  */
 public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileEntMaster> {
+    /** 1.21.1: the render bounds moved from the block entity to its renderer. */
+    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(OreDrillTileEntMaster entity){return entity.getRenderBoundingBox();}
     private static final int DRILLERCUBESPERBLOCK=4;
     private static final ResourceLocation[] HEADS={
         ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/drillhead.png"),
@@ -84,7 +86,7 @@ public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileE
     }
     /** Original OreDrillCube: six full-texture quads of half-size (x,y,z) around the origin. */
     private static void drawCube(VertexConsumer b,PoseStack pose,float x,float y,float z,int light){
-        Matrix4f m=pose.last().pose();Matrix3f n=pose.last().normal();
+        Matrix4f m=pose.last().pose();var n=pose.last();
         quad(b,m,n,light,0,1,0, -x,y,-z,0,1, -x,y,z,0,0, x,y,z,1,0, x,y,-z,1,1);
         quad(b,m,n,light,0,-1,0, x,-y,-z,1,0, x,-y,z,1,1, -x,-y,z,0,1, -x,-y,-z,0,0);
         quad(b,m,n,light,1,0,0, -x,-y,-z,0,1, -x,y,-z,0,0, x,y,-z,1,0, x,-y,-z,1,1);
@@ -92,8 +94,8 @@ public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileE
         quad(b,m,n,light,0,0,-1, x,-y,-z,0,0, x,y,-z,0,1, x,y,z,1,1, x,-y,z,1,0);
         quad(b,m,n,light,0,0,1, -x,-y,z,1,0, -x,y,z,1,1, -x,y,-z,0,1, -x,-y,-z,0,0);
     }
-    private static void quad(VertexConsumer b,Matrix4f m,Matrix3f n,int light,float nx,float ny,float nz,float... v){
-        for(int i=0;i<4;i++){int o=i*5;b.vertex(m,v[o],v[o+1],v[o+2]).color(255,255,255,255).uv(v[o+3],v[o+4]).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(n,nx,ny,nz).endVertex();}
+    private static void quad(VertexConsumer b,Matrix4f m,com.mojang.blaze3d.vertex.PoseStack.Pose n,int light,float nx,float ny,float nz,float... v){
+        for(int i=0;i<4;i++){int o=i*5;b.addVertex(m,v[o],v[o+1],v[o+2]).setColor(255,255,255,255).setUv(v[o+3],v[o+4]).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(n,nx,ny,nz);}
     }
     @Override public boolean shouldRenderOffScreen(OreDrillTileEntMaster tile){return tile.isFormed();}
     @Override public int getViewDistance(){return 128;}

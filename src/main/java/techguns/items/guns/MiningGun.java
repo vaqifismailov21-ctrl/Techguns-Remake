@@ -16,8 +16,8 @@ import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.common.ItemAbilities;
 import techguns.*;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.damagesystem.TGDamageSource;
@@ -39,7 +39,7 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         if(tool==Tool.SHISHKEBAP)setNoBowAnim();
     }
     public Tool tool(){return tool;}
-    @Override protected void initializeAmmo(ItemStack stack){super.initializeAmmo(stack);if(!stack.getOrCreateTag().contains("miningHead"))stack.getOrCreateTag().putInt("miningHead",0);}
+    @Override protected void initializeAmmo(ItemStack stack){super.initializeAmmo(stack);if(!techguns.util.TGItemNbt.contains(stack,"miningHead"))techguns.util.TGItemNbt.putInt(stack, "miningHead",0);}
     public MiningGun setMeleeDmg(float powered,float empty){poweredDamage=powered;emptyDamage=empty;return this;}
     public MiningGun setTool(String name,int level){miningLevels.put(name,level);return this;}
     public MiningGun setDigSpeed(float speed){digSpeed=speed;return this;}
@@ -47,7 +47,7 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
     public MiningGun setSwingSoundDelay(int delay){swingSoundDelay=delay;return this;}
     public MiningGun setHasAmbient(){ambient=true;return this;}
     public boolean hasAmbient(){return ambient;}
-    public int getMiningHeadLevel(ItemStack stack){return Mth.clamp(stack.getOrCreateTag().getInt("miningHead"),0,tool==Tool.MININGDRILL?1:2);}
+    public int getMiningHeadLevel(ItemStack stack){return Mth.clamp(techguns.util.TGItemNbt.tagOrEmpty(stack).getInt("miningHead"),0,tool==Tool.MININGDRILL?1:2);}
     public int getMiningHeadLevelForHead(ItemStack head) {
         return switch(tool) {
             case POWERHAMMER -> head.is(TGItems.POWERHAMMERHEAD_OBSIDIAN.get())?1:head.is(TGItems.POWERHAMMERHEAD_CARBON.get())?2:0;
@@ -71,14 +71,15 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         int level=harvestLevel(stack);
         return isEffectiveToolForState(stack,state)&&(!state.is(BlockTags.NEEDS_DIAMOND_TOOL)||level>=3)&&(!state.is(BlockTags.NEEDS_IRON_TOOL)||level>=2)&&(!state.is(BlockTags.NEEDS_STONE_TOOL)||level>=1);
     }
-    @Override public boolean canPerformAction(ItemStack stack,ToolAction action) {
-        if(action==ToolActions.SWORD_SWEEP)return getCurrentAmmo(stack)>0;
-        return action==ToolActions.PICKAXE_DIG&&miningLevels.containsKey("pickaxe")||action==ToolActions.SHOVEL_DIG&&miningLevels.containsKey("shovel")||action==ToolActions.AXE_DIG&&miningLevels.containsKey("axe")||action==ToolActions.SWORD_DIG&&miningLevels.containsKey("sword");
+    @Override public boolean canPerformAction(ItemStack stack,ItemAbility action) {
+        if(action==ItemAbilities.SWORD_SWEEP)return getCurrentAmmo(stack)>0;
+        return action==ItemAbilities.PICKAXE_DIG&&miningLevels.containsKey("pickaxe")||action==ItemAbilities.SHOVEL_DIG&&miningLevels.containsKey("shovel")||action==ItemAbilities.AXE_DIG&&miningLevels.containsKey("axe")||action==ItemAbilities.SWORD_DIG&&miningLevels.containsKey("sword");
     }
-    @Override public Multimap<Attribute,AttributeModifier> getAttributeModifiers(EquipmentSlot slot,ItemStack stack) {
-        var result=HashMultimap.<Attribute,AttributeModifier>create();
-        if(slot==EquipmentSlot.MAINHAND){result.put(Attributes.ATTACK_DAMAGE,new AttributeModifier(BASE_ATTACK_DAMAGE_UUID,"Weapon modifier",getCurrentAmmo(stack)>0?poweredDamage:emptyDamage,AttributeModifier.Operation.ADDITION));result.put(Attributes.ATTACK_SPEED,new AttributeModifier(BASE_ATTACK_SPEED_UUID,"Weapon modifier",-2.4000000953674316,AttributeModifier.Operation.ADDITION));}
-        return result;
+    /** 1.21.1: per-stack attributes (powered vs. empty damage) through ItemAttributeModifiers. */
+    @Override public net.minecraft.world.item.component.ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        return net.minecraft.world.item.component.ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE,new AttributeModifier(BASE_ATTACK_DAMAGE_ID,getCurrentAmmo(stack)>0?poweredDamage:emptyDamage,AttributeModifier.Operation.ADD_VALUE),net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED,new AttributeModifier(BASE_ATTACK_SPEED_ID,-2.4000000953674316,AttributeModifier.Operation.ADD_VALUE),net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND).build();
     }
     public void animateMelee(Player player){predictAnimation(player,InteractionHand.MAIN_HAND,false,recoiltime,0);}
     public boolean hasSwordSweep(){return true;}
@@ -89,7 +90,7 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         return source;
     }
     public void consumeAmmoOnMeleeHit(LivingEntity entity,ItemStack stack){if(!(entity instanceof Player player)||!player.getAbilities().instabuild)useAmmo(stack,1);}
-    public void onMeleeHitTarget(ItemStack stack,Entity target){if(tool==Tool.SHISHKEBAP&&getCurrentAmmo(stack)>0)target.setSecondsOnFire(3);}
+    public void onMeleeHitTarget(ItemStack stack,Entity target){if(tool==Tool.SHISHKEBAP&&getCurrentAmmo(stack)>0)target.igniteForSeconds(3);}
     public void doSweepAttackEffect(Player player) {
         if(player.level().isClientSide)return;
         var p=player.position().add(-Mth.sin(player.getYRot()*Mth.DEG_TO_RAD),player.getBbHeight()*0.8,Mth.cos(player.getYRot()*Mth.DEG_TO_RAD));
@@ -117,7 +118,14 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         if(tool!=Tool.SHISHKEBAP)level.playSound(miner instanceof Player player?player:null,pos,tool==Tool.CHAINSAW?TGSounds.CHAINSAW_HIT.get():tool==Tool.MININGDRILL?TGSounds.DRILLER_BREAK.get():TGSounds.POWERHAMMER_IMPACT.get(),SoundSource.PLAYERS,0.65F,1);
         return true;
     }
-    @Override public boolean onBlockStartBreak(ItemStack stack,BlockPos centre,Player player) {
+    private static boolean silkInProgress;
+    /** 1.21.1: Item#onBlockStartBreak is gone; BlockEvent.BreakEvent calls this before the block is removed. */
+    public static void onBreak(net.neoforged.neoforge.event.level.BlockEvent.BreakEvent event) {
+        if (silkInProgress) return;
+        var player = event.getPlayer(); var stack = player.getMainHandItem();
+        if (stack.getItem() instanceof MiningGun gun && gun.onBlockStartBreak(stack, event.getPos(), player)) event.setCanceled(true);
+    }
+    public boolean onBlockStartBreak(ItemStack stack,BlockPos centre,Player player) {
         if(tool==Tool.MININGDRILL&&player.isShiftKeyDown()&&player instanceof ServerPlayer server&&getCurrentAmmo(stack)>0)return silkHarvest(stack,centre,server);
         if(!(player instanceof ServerPlayer server)||player.isShiftKeyDown()||miningRadius==0||miningPlane)return false;
         var hit=player.pick(6,0,false);if(!(hit instanceof BlockHitResult block))return false;
@@ -136,9 +144,10 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         var level=player.serverLevel();var state=level.getBlockState(pos);
         if(state.isAir()||state.getDestroySpeed(level,pos)<0||!isCorrectToolForDrops(stack,state))return false;
         if(player.blockActionRestricted(level,pos,player.gameMode.getGameModeForPlayer()))return true;
-        int xp=net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level,player.gameMode.getGameModeForPlayer(),player,pos);
-        if(xp<0)return true;
-        var block=state.getBlock();var tile=level.getBlockEntity(pos);var lootTool=stack.copy();lootTool.enchant(Enchantments.SILK_TOUCH,1);
+        silkInProgress=true;
+        try{if(net.neoforged.neoforge.common.CommonHooks.fireBlockBreak(level,player.gameMode.getGameModeForPlayer(),player,pos,state).isCanceled())return true;}
+        finally{silkInProgress=false;}
+        var block=state.getBlock();var tile=level.getBlockEntity(pos);var lootTool=stack.copy();lootTool.enchant(techguns.util.TGItemNbt.enchantment(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH),1);
         block.playerWillDestroy(level,pos,state,player);
         boolean creative=player.getAbilities().instabuild;
         if(state.onDestroyedByPlayer(level,pos,player,!creative,level.getFluidState(pos))) {

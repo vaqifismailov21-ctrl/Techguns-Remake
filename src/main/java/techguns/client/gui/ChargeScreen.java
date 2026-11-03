@@ -23,5 +23,5 @@ public final class ChargeScreen extends AbstractContainerScreen<ChargeMenu> {
         graphics.drawString(font,Component.translatable("techguns.charge.length",menu.data.get(1)),37,50,4210752,false);
         graphics.drawString(font,Component.translatable("techguns.charge.delay",menu.data.get(2)/20),37,60,4210752,false);
     }
-    @Override public void render(GuiGraphics g,int x,int y,float partial){renderBackground(g);super.render(g,x,y,partial);renderTooltip(g,x,y);}
+    @Override public void render(GuiGraphics g,int x,int y,float partial){renderBackground(g, x, y, partial);super.render(g,x,y,partial);renderTooltip(g,x,y);}
 }

@@ -32,6 +32,6 @@ public final class BioBlobBlockEntity extends BlockEntity {
             TGProjectilePackets.effect(level,"bioblobExplosion",position,0,0);
         } else {level.setBlockAndUpdate(worldPosition,getBlockState().setValue(BioBlobBlock.SIZE,size-1));setChanged();}
     }
-    @Override public void load(CompoundTag tag) {super.load(tag);ticks=tag.getInt("BlobTicks");}
-    @Override protected void saveAdditional(CompoundTag tag) {super.saveAdditional(tag);tag.putInt("BlobTicks",ticks);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {super.loadAdditional(tag, registries);ticks=tag.getInt("BlobTicks");}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {super.saveAdditional(tag, registries);tag.putInt("BlobTicks",ticks);}
 }

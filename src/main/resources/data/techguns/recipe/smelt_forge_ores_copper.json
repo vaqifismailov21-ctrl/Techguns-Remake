@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:ores/copper"
+  },
+  "result": {
+    "id": "techguns:ingotcopper"
+  },
+  "experience": 0.5,
+  "cookingtime": 200
+}

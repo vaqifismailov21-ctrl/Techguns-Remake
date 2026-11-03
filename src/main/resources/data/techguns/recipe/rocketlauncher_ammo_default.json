@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:rocketlauncher"
+    },
+    {
+      "item": "techguns:rocket"
+    }
+  ],
+  "result": {
+    "id": "techguns:rocketlauncher",
+    "components": {
+      "minecraft:custom_data": "{ammo:1s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

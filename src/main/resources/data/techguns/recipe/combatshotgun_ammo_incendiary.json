@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:combatshotgun"
+    },
+    {
+      "item": "techguns:shotgunrounds_incendiary"
+    }
+  ],
+  "result": {
+    "id": "techguns:combatshotgun",
+    "components": {
+      "minecraft:custom_data": "{ammo:8s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

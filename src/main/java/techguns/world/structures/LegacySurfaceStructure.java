@@ -20,7 +20,7 @@ import techguns.world.*;
  * carrier and nest), kept only so that worlds saved with it keep generating their started pieces.
  */
 public final class LegacySurfaceStructure extends Structure {
-    public static final Codec<LegacySurfaceStructure> CODEC=RecordCodecBuilder.create(i->i.group(settingsCodec(i),Codec.STRING.optionalFieldOf("kind","legacy").forGetter(s->s.kind)).apply(i,LegacySurfaceStructure::new));
+    public static final com.mojang.serialization.MapCodec<LegacySurfaceStructure> CODEC=RecordCodecBuilder.mapCodec(i->i.group(settingsCodec(i),Codec.STRING.optionalFieldOf("kind","legacy").forGetter(s->s.kind)).apply(i,LegacySurfaceStructure::new));
     public static final Set<String> BIG=Set.of("alien_bug_nest","aircraftcarrier","military_base","castle");
     public final String kind;
     public LegacySurfaceStructure(StructureSettings settings,String kind){

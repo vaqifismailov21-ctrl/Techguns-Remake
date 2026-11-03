@@ -6,8 +6,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import techguns.TGMenuTypes;
 import techguns.api.tginventory.ITGSpecialSlot;
 import techguns.api.tginventory.TGSlotType;
@@ -30,7 +30,7 @@ public final class OreDrillMenu extends AbstractContainerMenu {
             @Override public int getMaxStackSize(ItemStack stack){return 1;}
         });
         addSlot(new SlotItemHandler(handler,OreDrillTileEntMaster.SLOT_FURNACE,SLOT_DRILL_X,SLOTS_FURNACE_Y){
-            @Override public boolean mayPlace(ItemStack item){return ForgeHooks.getBurnTime(item,null)>0;}
+            @Override public boolean mayPlace(ItemStack item){return item.getBurnTime(null)>0;}
         });
         for(int i=0;i<3;i++)for(int j=0;j<3;j++)addSlot(new SlotItemHandler(handler,OreDrillTileEntMaster.SLOT_OUTPUT1+i*3+j,SLOTS_OUTPUT_X+18*i,SLOTS_ROW1_Y+18*j){
             @Override public boolean mayPlace(ItemStack item){return false;}

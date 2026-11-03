@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.common.world.ModifiableStructureInfo;
-import net.minecraftforge.common.world.StructureModifier;
+import net.neoforged.neoforge.common.world.ModifiableStructureInfo;
+import net.neoforged.neoforge.common.world.StructureModifier;
 import techguns.TGWorld;
 
 /**
@@ -15,9 +15,9 @@ import techguns.TGWorld;
  */
 public final class ConfigStructureModifier implements StructureModifier {
     public static final ConfigStructureModifier INSTANCE=new ConfigStructureModifier();
-    public static final Codec<ConfigStructureModifier> CODEC=Codec.unit(INSTANCE);
+    public static final com.mojang.serialization.MapCodec<ConfigStructureModifier> CODEC=com.mojang.serialization.MapCodec.unit(INSTANCE);
     @Override public void modify(Holder<Structure> structure,Phase phase,ModifiableStructureInfo.StructureInfo.Builder builder){
         if(phase==Phase.REMOVE&&structure.value() instanceof LegacySurfaceStructure legacy&&!legacy.canEverGenerate())builder.getStructureSettings().setBiomes(HolderSet.direct());
     }
-    @Override public Codec<? extends StructureModifier> codec(){return TGWorld.CONFIG_STRUCTURE_MODIFIER.get();}
+    @Override public com.mojang.serialization.MapCodec<? extends StructureModifier> codec(){return TGWorld.CONFIG_STRUCTURE_MODIFIER.get();}
 }

@@ -25,8 +25,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import techguns.network.NetworkHooks;
 import techguns.TGEntities;
 import techguns.TGPackets;
 import techguns.damagesystem.DamageSystem;
@@ -36,7 +36,7 @@ import techguns.deatheffects.EntityDeathUtils.DeathType;
 /** Original bullet movement/collision/damage, adapted to the current entity and ray-tracing APIs.
  * NPC faction/weapon offsets and the particle system are integrated with their respective later ports.
  */
-public class GenericProjectile extends Entity implements IEntityAdditionalSpawnData {
+public class GenericProjectile extends Entity implements IEntityWithComplexSpawn {
     protected float damage, damageDropStart, damageDropEnd, damageMin, penetration, radius;
     public float speed = 1;
     protected int ticksToLive = 100, lifetime = 100;
@@ -195,8 +195,8 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         return damageMin + (damage - damageMin) * factor;
     }
     protected float getDamage() { return damageAtDistance(getDistanceTravelled()); }
-    @Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) { return 0.25F; }
-    @Override protected void defineSynchedData() {}
+    // 1.21.1: eye height 0.25 is set on the EntityType builders (TGEntities).
+    @Override protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {}
     @Override protected void addAdditionalSaveData(CompoundTag tag) {
         tag.putFloat("damage", damage); tag.putFloat("speed", speed);
         tag.putShort("ticksToLive", (short) ticksToLive); tag.putShort("lifetime", (short) lifetime);
@@ -216,13 +216,12 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         posInitialized = tag.contains("startX");
         if (posInitialized) { startX = tag.getDouble("startX"); startY = tag.getDouble("startY"); startZ = tag.getDouble("startZ"); }
     }
-    @Override public Packet<ClientGamePacketListener> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }
-    @Override public void writeSpawnData(FriendlyByteBuf buffer) {
+    @Override public void writeSpawnData(net.minecraft.network.RegistryFriendlyByteBuf buffer) {
         buffer.writeFloat(speed); var motion = getDeltaMovement(); buffer.writeDouble(motion.x); buffer.writeDouble(motion.y); buffer.writeDouble(motion.z);
         buffer.writeVarInt(shooter == null ? 0 : shooter.getId());
         buffer.writeDouble(gravity);buffer.writeVarInt(ticksToLive);
     }
-    @Override public void readSpawnData(FriendlyByteBuf buffer) {
+    @Override public void readSpawnData(net.minecraft.network.RegistryFriendlyByteBuf buffer) {
         speed = buffer.readFloat(); setDeltaMovement(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         int owner = buffer.readVarInt(); if (level().getEntity(owner) instanceof LivingEntity living) shooter = living;
         gravity=buffer.readDouble();ticksToLive=lifetime=buffer.readVarInt();

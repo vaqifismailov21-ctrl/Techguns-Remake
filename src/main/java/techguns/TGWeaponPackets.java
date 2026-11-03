@@ -4,10 +4,10 @@ import java.util.UUID;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import techguns.network.DistExecutor;
+import techguns.network.NetworkDirection;
+import techguns.network.PacketDistributor;
 import techguns.items.guns.GenericGun;
 
 public final class TGWeaponPackets {

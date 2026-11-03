@@ -19,11 +19,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import techguns.network.NetworkHooks;
 
 /** Fuel (solid) or liquid generator: a furnace-like block with a front that glows while burning. */
 public final class GeneratorBlock extends BaseEntityBlock {
+    /** 1.21.1 block codec (blocks are never decoded from data; the codec returns this instance). */
+    @Override protected com.mojang.serialization.MapCodec<GeneratorBlock> codec(){return com.mojang.serialization.MapCodec.unit(this);}
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT=BlockStateProperties.LIT;
     public final boolean liquid;
@@ -41,7 +43,8 @@ public final class GeneratorBlock extends BaseEntityBlock {
         if(level.isClientSide)return null;
         return liquid?createTickerHelper(type,PowerBlocks.LIQUID_GENERATOR_ENTITY.get(),(world,pos,block,entity)->entity.tick()):createTickerHelper(type,PowerBlocks.FUEL_GENERATOR_ENTITY.get(),(world,pos,block,entity)->entity.tick());
     }
-    @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack tgHeldStack,BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){return techguns.util.TGInteraction.item(legacyUse(state,level,pos,player,hand,hit));}
+    public InteractionResult legacyUse(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         var entity=level.getBlockEntity(pos);if(entity==null)return InteractionResult.PASS;
         // Buckets and fluid containers pour straight into the liquid generator.
         if(entity instanceof LiquidGeneratorEntity generator&&FluidUtil.interactWithFluidHandler(player,hand,generator.tank))return InteractionResult.sidedSuccess(level.isClientSide);

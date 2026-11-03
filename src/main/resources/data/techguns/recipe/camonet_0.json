@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sds",
+    "sds"
+  ],
+  "key": {
+    "s": {
+      "tag": "c:rods/wooden"
+    },
+    "d": {
+      "tag": "minecraft:dirt"
+    }
+  },
+  "result": {
+    "id": "techguns:camonet_wood",
+    "count": 8
+  }
+}

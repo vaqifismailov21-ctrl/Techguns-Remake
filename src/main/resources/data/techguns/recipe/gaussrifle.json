@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "dpc",
+    "brs",
+    " ae"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/titanium"
+    },
+    "a": {
+      "item": "techguns:gaussrifleslugs"
+    },
+    "b": {
+      "item": "techguns:gaussbarrel"
+    },
+    "r": {
+      "item": "techguns:carbonreceiver"
+    },
+    "s": {
+      "item": "techguns:carbonstock"
+    },
+    "c": {
+      "tag": "c:circuits/elite"
+    },
+    "d": {
+      "tag": "c:gems/diamond"
+    },
+    "e": {
+      "item": "techguns:energycell"
+    }
+  },
+  "result": {
+    "id": "techguns:gaussrifle",
+    "components": {
+      "minecraft:custom_data": "{ammo:8s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

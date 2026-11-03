@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:goldenrevolver"
+    },
+    {
+      "item": "techguns:pistolrounds_incendiary"
+    }
+  ],
+  "result": {
+    "id": "techguns:goldenrevolver",
+    "components": {
+      "minecraft:custom_data": "{ammo:6s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " gd",
+    "crs",
+    " e "
+  ],
+  "key": {
+    "r": {
+      "item": "techguns:carbonreceiver"
+    },
+    "c": {
+      "item": "techguns:coil"
+    },
+    "s": {
+      "item": "techguns:carbonstock"
+    },
+    "d": {
+      "tag": "c:dusts/redstone"
+    },
+    "e": {
+      "item": "techguns:energycell"
+    },
+    "g": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "result": {
+    "id": "techguns:teslagun",
+    "components": {
+      "minecraft:custom_data": "{ammo:25s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:pistol"
+    },
+    {
+      "item": "techguns:pistolmagazine"
+    }
+  ],
+  "result": {
+    "id": "techguns:pistol",
+    "components": {
+      "minecraft:custom_data": "{ammo:18s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

@@ -10,7 +10,7 @@
     {
       "type": "patchouli:entity",
       "name": "Экзокостюм",
-      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t3_exo_boots'}, {Count:1,id:'techguns:t3_exo_leggings'}, {Count:1,id:'techguns:t3_exo_chestplate'}, {Count:1,id:'techguns:t3_exo_helmet'}]}",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{count:1,id:'techguns:t3_exo_boots'}, {count:1,id:'techguns:t3_exo_leggings'}, {count:1,id:'techguns:t3_exo_chestplate'}, {count:1,id:'techguns:t3_exo_helmet'}]}",
       "text": ""
     },
     {

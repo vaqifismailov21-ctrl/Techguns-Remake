@@ -47,7 +47,7 @@ public final class EnergyProjectile extends GenericProjectile {
         }else super.tick();
         if(level().isClientSide&&!trailStarted){
             trailStarted=true;String name=switch(mode){case ALIEN->"AlienBlasterTrail";case NETHER->"CyberDemonBlasterTrail";case DEATOMIZER->"BlueBlasterTrail";case GAUSS->"GaussProjectileTrail";case TFG->"TFGTrail";case NDR->"BeamGunMuzzleFX";case SONIC->mainProjectile?"SonicShotgunTrail":null;default->null;};
-            if(name!=null)net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attach(name,this,mode==Mode.TFG?size*0.75F:1));
+            if(name!=null)techguns.network.DistExecutor.unsafeRunWhenOn(net.neoforged.api.distmarker.Dist.CLIENT,()->()->techguns.client.particle.WeaponEffects.attach(name,this,mode==Mode.TFG?size*0.75F:1));
         }
     }
     public void traceBeam(){
@@ -97,8 +97,8 @@ public final class EnergyProjectile extends GenericProjectile {
         }
     }
     @Override protected void onHitEffect(LivingEntity target,HitResult hit){
-        if(mode==Mode.ALIEN)target.setSecondsOnFire(3);
-        if(mode==Mode.NDR&&TGRadiationSystem.isEnabled())target.addEffect(new net.minecraft.world.effect.MobEffectInstance(TGRadiationSystem.RADIATION.get(),40,4,false,true));
+        if(mode==Mode.ALIEN)target.igniteForSeconds(3);
+        if(mode==Mode.NDR&&TGRadiationSystem.isEnabled())target.addEffect(new net.minecraft.world.effect.MobEffectInstance(TGRadiationSystem.RADIATION,40,4,false,true));
         if(mode==Mode.TFG)explode();
         if(mode==Mode.GAUSS)effect("GaussRifleImpact_Block",hit);
     }
@@ -138,8 +138,8 @@ public final class EnergyProjectile extends GenericProjectile {
     }
     public Vec3 beamEnd(){return position().add(getDeltaMovement().normalize().scale(beamDistance));}
     @Override public AABB getBoundingBoxForCulling(){return isBeam()?new AABB(position(),beamEnd()).inflate(1):super.getBoundingBoxForCulling();}
-    @Override public void writeSpawnData(FriendlyByteBuf b){super.writeSpawnData(b);b.writeEnum(mode);b.writeFloat(size);b.writeDouble(beamDistance);b.writeVarInt(beamLifetime);b.writeLong(seed);b.writeBoolean(mainProjectile);}
-    @Override public void readSpawnData(FriendlyByteBuf b){super.readSpawnData(b);mode=b.readEnum(Mode.class);size=b.readFloat();beamDistance=b.readDouble();beamLifetime=b.readVarInt();seed=b.readLong();mainProjectile=b.readBoolean();noCulling=isBeam();traced=true;}
+    @Override public void writeSpawnData(net.minecraft.network.RegistryFriendlyByteBuf b){super.writeSpawnData(b);b.writeEnum(mode);b.writeFloat(size);b.writeDouble(beamDistance);b.writeVarInt(beamLifetime);b.writeLong(seed);b.writeBoolean(mainProjectile);}
+    @Override public void readSpawnData(net.minecraft.network.RegistryFriendlyByteBuf b){super.readSpawnData(b);mode=b.readEnum(Mode.class);size=b.readFloat();beamDistance=b.readDouble();beamLifetime=b.readVarInt();seed=b.readLong();mainProjectile=b.readBoolean();noCulling=isBeam();traced=true;}
     @Override protected void addAdditionalSaveData(CompoundTag n){super.addAdditionalSaveData(n);n.putString("mode",mode.name());n.putFloat("size",size);n.putDouble("beamDistance",beamDistance);n.putInt("beamLifetime",beamLifetime);n.putBoolean("mainProjectile",mainProjectile);n.putInt("chainTargets",chainTargets);if(previousTeslaTarget!=null)n.putUUID("previousTeslaTarget",previousTeslaTarget);}
     @Override protected void readAdditionalSaveData(CompoundTag n){super.readAdditionalSaveData(n);mode=Mode.valueOf(n.getString("mode"));size=n.getFloat("size");beamDistance=n.getDouble("beamDistance");beamLifetime=n.getInt("beamLifetime");mainProjectile=n.getBoolean("mainProjectile");chainTargets=n.getInt("chainTargets");previousTeslaTarget=n.hasUUID("previousTeslaTarget")?n.getUUID("previousTeslaTarget"):null;noCulling=isBeam();}
 }

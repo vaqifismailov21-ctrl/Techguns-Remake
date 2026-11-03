@@ -1,4 +1,5 @@
 package techguns.client.render.entities.npcs;
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.*;
@@ -33,7 +34,7 @@ public final class NpcRenderer extends HumanoidMobRenderer<GenericNPC,NpcModel> 
     }
     public static LayerDefinition layer(){return LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE,0),64,64);}
     @Override public ResourceLocation getTextureLocation(GenericNPC npc){
-        String id=net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(npc.getType()).getPath();
+        String id=BuiltInRegistries.ENTITY_TYPE.getKey(npc.getType()).getPath();
         var textures=NpcTextures.VALUES.get(id);int index=npc instanceof SuperMutantBasic mutant?mutant.gettype():0;
         return ResourceLocation.parse(textures[index]);
     }

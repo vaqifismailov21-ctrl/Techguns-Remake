@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gpg",
+    "bfs",
+    "i m"
+  ],
+  "key": {
+    "p": {
+      "tag": "c:plates/steel"
+    },
+    "b": {
+      "item": "techguns:obsidiansteelbarrel"
+    },
+    "s": {
+      "item": "techguns:plasticstock"
+    },
+    "f": {
+      "item": "techguns:steelreceiver"
+    },
+    "g": {
+      "tag": "c:glass_panes"
+    },
+    "i": {
+      "tag": "c:sheets/plastic"
+    },
+    "m": {
+      "item": "techguns:assaultriflemagazineempty"
+    }
+  },
+  "result": {
+    "id": "techguns:aug",
+    "components": {
+      "minecraft:custom_data": "{ammo:0s,ammovariant:\"default\",camo:0b}"
+    }
+  }
+}

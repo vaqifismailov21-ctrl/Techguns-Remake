@@ -45,14 +45,14 @@ public final class LargeDoorEntity extends BlockEntity implements MenuProvider {
         if(level.getGameTime()%5!=0)return;
         if(mode==0){if(autoClose&&phase==Phase.OPENED&&elapsed>=100)toggle(true);}
         else if(mode==1&&redstone!=0){boolean powered=false;for(int c=0;c<3;c++)for(int r=0;r<3;r++)powered|=level.hasNeighborSignal(LargeDoorBlock.partPos(worldPosition,zplane(),c,r));boolean shouldOpen=redstone==1?powered:!powered;if(shouldOpen!=(phase==Phase.OPENED))toggle(true);}
-        else if(mode==2){boolean nearby=level.getEntitiesOfClass(Player.class,new AABB(worldPosition).inflate(2,1,2),p->!p.isSpectator()&&access.allows(p)).size()>0;if(nearby&&phase==Phase.CLOSED||!nearby&&phase==Phase.OPENED&&elapsed>=20)toggle(true);}
+        else if(mode==2){boolean nearby=level.getEntitiesOfClass(Player.class,net.minecraft.world.phys.AABB.unitCubeFromLowerCorner(net.minecraft.world.phys.Vec3.atLowerCornerOf(worldPosition)).inflate(2,1,2),p->!p.isSpectator()&&access.allows(p)).size()>0;if(nearby&&phase==Phase.CLOSED||!nearby&&phase==Phase.OPENED&&elapsed>=20)toggle(true);}
     }
     public float openness(float partial){Phase state=phase();if(state==Phase.OPENED)return 1;if(state==Phase.CLOSED)return 0;float t=net.minecraft.util.Mth.clamp((level.getGameTime()-changedAt+partial)/20f,0,1);return state==Phase.OPENING?t:1-t;}
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.putInt("mode",mode);tag.putInt("redstone",redstone);tag.putBoolean("autoClose",autoClose);tag.putLong("changedAt",changedAt);access.save(tag);}
-    @Override public void load(CompoundTag tag){super.load(tag);mode=Math.floorMod(tag.getInt("mode"),3);redstone=Math.floorMod(tag.getInt("redstone"),3);autoClose=!tag.contains("autoClose")||tag.getBoolean("autoClose");changedAt=tag.getLong("changedAt");access.load(tag);}
-    @Override public CompoundTag getUpdateTag(){return saveWithoutMetadata();}
+    @Override protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.saveAdditional(tag, registries);tag.putInt("mode",mode);tag.putInt("redstone",redstone);tag.putBoolean("autoClose",autoClose);tag.putLong("changedAt",changedAt);access.save(tag);}
+    @Override protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries){super.loadAdditional(tag, registries);mode=Math.floorMod(tag.getInt("mode"),3);redstone=Math.floorMod(tag.getInt("redstone"),3);autoClose=!tag.contains("autoClose")||tag.getBoolean("autoClose");changedAt=tag.getLong("changedAt");access.load(tag);}
+    @Override public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries){return saveWithoutMetadata(techguns.util.TGItemNbt.registries());}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
-    @Override public AABB getRenderBoundingBox(){return new AABB(worldPosition).inflate(4);}
+    public AABB getRenderBoundingBox(){return net.minecraft.world.phys.AABB.unitCubeFromLowerCorner(net.minecraft.world.phys.Vec3.atLowerCornerOf(worldPosition)).inflate(4);}
     @Override public Component getDisplayName(){return Component.translatable("block.techguns."+new String[]{"metal_door_3x3","hangar_door_up","hangar_door_down","nether_door_3x3"}[variant()]);}
     @Override public AbstractContainerMenu createMenu(int id,Inventory inventory,Player player){return new DoorMenu(id,inventory,this);}
 }

@@ -47,8 +47,8 @@ public SoundEvent getDeathSound() {
 public SoundEvent getStepSound() {
 		return TGSounds.CYBERDEMON_STEP.get();
 	}
-protected ResourceLocation getDefaultLootTable() {
-		return LOOT;
+protected net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getDefaultLootTable() {
+		return net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, LOOT);
 	}
 public float getWeaponPosX() {
 		return 0.13f;
