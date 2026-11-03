@@ -1,0 +1,20 @@
+{
+  "name": "Дробитель",
+  "icon": "techguns:grinder",
+  "category": "techguns:powered_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Дробитель разбирает оружие, броню и некоторые другие предметы на материалы. У него 1 вход, 9 выходов и $(l:machine_mechanics#upgrade)слот улучшения$(/l)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Использование",
+      "text": "Предмет для разборки кладётся в левый слот. Полученные материалы появляются в девяти слотах справа. Состав выхода зависит от рецепта."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:simplemachine2_8_grinder"
+    }
+  ]
+}

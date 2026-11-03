@@ -1,0 +1,6 @@
+{
+  "name": "Простые устройства",
+  "description": "Этим устройствам не нужна энергия. При этом они могут иметь $(l:machine_mechanics#security)настройки доступа$(/l).",
+  "icon": "techguns:camo_bench",
+  "sortnum": 2
+}

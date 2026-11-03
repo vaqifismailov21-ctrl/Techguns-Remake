@@ -1,0 +1,25 @@
+{
+  "name": "Chemical Laboratory",
+  "icon": "techguns:chem_lab",
+  "category": "techguns:powered_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Chemical Laboratory processes items and fluids. Its three input slots accept two reagents and, for recipes that need one, a container. Supply Forge Energy and the required input fluid."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "Place reagents in the first two input slots. Recipes that fill tanks, cells or other containers also use the third slot. The right-hand slots hold the finished items. The fluid bars show the input and output tanks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "Both tanks have a 'dump' button that deletes the content of the tank. $(br)Available ingredients depend on the recipe data and item tags."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:basicmachine_2_chem_lab"
+    }
+  ]
+}

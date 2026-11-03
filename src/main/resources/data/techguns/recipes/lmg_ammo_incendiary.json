@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:lmg"
+    },
+    {
+      "item": "techguns:lmgmagazine_incendiary"
+    }
+  ],
+  "result": {
+    "item": "techguns:lmg",
+    "nbt": "{ammo:100s,ammovariant:\"default\",camo:0b}"
+  }
+}

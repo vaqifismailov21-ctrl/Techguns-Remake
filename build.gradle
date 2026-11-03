@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '6.0.54'
+}
+
+group = 'techguns'
+version = mod_version
+base { archivesName = 'techguns-1.20.1' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+def flag = { String name -> providers.gradleProperty(name).getOrElse('false').toBoolean() }
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            if (flag('withJei') || flag('withPatchouli')) {
+                property 'mixin.env.remapRefMap', 'true'
+                property 'mixin.env.refMapRemappingFile', layout.buildDirectory.file('createSrgToMcp/output.srg').get().asFile.absolutePath
+            }
+            mods { techguns { source sourceSets.main } }
+        }
+        client {}
+        server { args '--nogui' }
+        data { args '--mod', 'techguns', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/') }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+repositories { mavenCentral(); maven { url = 'https://maven.blamejared.com' } }
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly fg.deobf('mezz.jei:jei-1.20.1-common-api:15.74.0.227')
+    compileOnly fg.deobf('mezz.jei:jei-1.20.1-forge-api:15.74.0.227')
+    // Optional in the development client: gradlew runClient -PwithJei=true -PwithPatchouli=true
+    if (flag('withJei')) { runtimeOnly fg.deobf('mezz.jei:jei-1.20.1-forge:15.74.0.227') }
+    if (flag('withPatchouli')) { runtimeOnly fg.deobf('vazkii.patchouli:Patchouli:1.20.1-85-FORGE') }
+}
+
+// The Techguns manual is a Patchouli book. Patchouli (CC BY-NC-SA 3.0, by Vazkii) is shipped inside the mod jar
+// (Forge Jar-in-Jar), so the book works without installing it separately; a newer separately installed Patchouli wins.
+jarJar.enable()
+dependencies {
+    jarJar('vazkii.patchouli:Patchouli:1.20.1-85-FORGE') { jarJar.ranged(it, '[1.20.1-85-FORGE,)') }
+}
+tasks.named('jarJar').configure { archiveClassifier = ''; finalizedBy 'reobfJarJar' }
+reobf { jarJar {} }
+tasks.named('build').configure { dependsOn 'jarJar' }
+
+tasks.named('processResources', ProcessResources).configure {
+    inputs.property 'mod_version', project.version
+    filesMatching('META-INF/mods.toml') { expand mod_version: project.version }
+}
+tasks.named('jar', Jar).configure {
+    archiveClassifier = 'slim'
+    manifest { attributes 'Implementation-Title': 'Techguns', 'Implementation-Version': project.version }
+    finalizedBy 'reobfJar'
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }

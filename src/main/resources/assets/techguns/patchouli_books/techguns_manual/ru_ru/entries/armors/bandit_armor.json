@@ -1,0 +1,27 @@
+{
+  "name": "T1: Броня бандита",
+  "icon": "techguns:t1_scout_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Броня бандита первого уровня подходит для ранних путешествий. Среди комплектов T1 она даёт самый большой бонус к скорости передвижения."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Броня бандита",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t1_scout_boots'}, {Count:1,id:'techguns:t1_scout_leggings'}, {Count:1,id:'techguns:t1_scout_chestplate'}, {Count:1,id:'techguns:t1_scout_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t1_scout_helmet",
+      "recipe2": "techguns:t1_scout_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t1_scout_leggings",
+      "recipe2": "techguns:t1_scout_boots"
+    }
+  ]
+}

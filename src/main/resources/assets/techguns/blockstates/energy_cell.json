@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "techguns:block/energy_cell"
+    },
+    "facing=south": {
+      "model": "techguns:block/energy_cell",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "techguns:block/energy_cell",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "techguns:block/energy_cell",
+      "y": 90
+    },
+    "facing=up": {
+      "model": "techguns:block/energy_cell",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "techguns:block/energy_cell",
+      "x": 90
+    }
+  }
+}

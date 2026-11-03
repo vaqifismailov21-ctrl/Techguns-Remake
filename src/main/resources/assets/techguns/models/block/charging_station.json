@@ -1,0 +1,7 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "techguns:blocks/charging_station"
+  },
+  "elements": []
+}

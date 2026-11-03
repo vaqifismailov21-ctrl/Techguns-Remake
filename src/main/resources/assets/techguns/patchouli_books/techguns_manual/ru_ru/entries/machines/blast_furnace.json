@@ -1,0 +1,20 @@
+{
+  "name": "Доменная печь",
+  "icon": "techguns:blast_furnace",
+  "category": "techguns:powered_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Доменная печь производит сталь и обсидиановую сталь для более совершенного оборудования. У неё 2 входа, 1 выход и $(l:machine_mechanics#upgrade)слот улучшения$(/l)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Использование",
+      "text": "Слитки кладутся в левый вход, добавки вроде угля — в правый. Количество предметов, длительность и расход энергии зависят от рецепта."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:simplemachine_11_blast_furnace"
+    }
+  ]
+}

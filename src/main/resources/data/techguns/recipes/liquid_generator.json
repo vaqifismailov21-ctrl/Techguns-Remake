@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "MGM",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "M": {
+      "item": "techguns:mechanicalpartsiron"
+    },
+    "G": {
+      "item": "techguns:fuel_generator"
+    },
+    "C": {
+      "item": "techguns:circuitboard"
+    }
+  },
+  "result": {
+    "item": "techguns:liquid_generator",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "techguns:miningtool_upgrade",
+  "ingredients": [
+    {
+      "type": "forge:partial_nbt",
+      "item": "techguns:miningdrill",
+      "nbt": {
+        "miningHead": 0
+      }
+    },
+    {
+      "item": "techguns:miningdrillhead_carbon"
+    }
+  ],
+  "result": {
+    "item": "techguns:miningdrill",
+    "nbt": "{ammo:300s,ammovariant:\"default\",camo:0b,miningHead:0}"
+  }
+}

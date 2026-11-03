@@ -1,0 +1,33 @@
+{
+  "structures": [
+    {
+      "structure": "techguns:alien_bug_nest",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:policestation",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:survivor_hideout",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:orecluster_spike",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:orecluster_meteorbase",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:desert_oil_cluster",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "techguns:legacy_grid",
+    "grid": "medium",
+    "salt": 1729338
+  }
+}

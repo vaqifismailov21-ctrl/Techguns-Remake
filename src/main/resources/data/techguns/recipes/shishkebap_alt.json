@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p ",
+    "pm",
+    "sf"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/obsidian_steel"
+    },
+    "s": {
+      "tag": "forge:sheets/plastic"
+    },
+    "f": {
+      "item": "techguns:fueltankempty"
+    },
+    "m": {
+      "item": "techguns:pumpmechanism"
+    }
+  },
+  "result": {
+    "item": "techguns:shishkebap",
+    "nbt": "{ammo:0s,ammovariant:\"default\",camo:0b,miningHead:0}"
+  }
+}

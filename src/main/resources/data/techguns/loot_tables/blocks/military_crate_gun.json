@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "name": "gun",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:revolver"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:thompson"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:ak47"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:boltaction"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:m4"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:pistol"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:combatshotgun"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:mac10"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:aug"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:flamethrower"
+        }
+      ]
+    }
+  ]
+}

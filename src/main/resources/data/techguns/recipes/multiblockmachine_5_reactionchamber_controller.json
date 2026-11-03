@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " g ",
+    "crc",
+    " g "
+  ],
+  "key": {
+    "r": {
+      "item": "techguns:reactionchamber_housing"
+    },
+    "c": {
+      "tag": "forge:circuits/elite"
+    },
+    "g": {
+      "type": "techguns:hardened_glass_or_glass"
+    }
+  },
+  "result": {
+    "item": "techguns:reactionchamber_controller"
+  }
+}

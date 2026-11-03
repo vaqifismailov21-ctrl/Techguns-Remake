@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "techguns:tg_bullet",
+    "techguns:tg_poison",
+    "techguns:tg_fire",
+    "techguns:tg_energy",
+    "techguns:tg_rad",
+    "techguns:tg_rad_poisoning",
+    "techguns:tg_lightning",
+    "techguns:tg_dark"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  q",
+    " q ",
+    "q  "
+  ],
+  "key": {
+    "q": {
+      "tag": "forge:gems/quartz"
+    }
+  },
+  "result": {
+    "item": "techguns:quartzrod"
+  }
+}

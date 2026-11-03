@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " pm",
+    "m  ",
+    " pm"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/obsidian_steel"
+    },
+    "m": {
+      "item": "techguns:mechanicalpartscarbon"
+    }
+  },
+  "result": {
+    "item": "techguns:chainsawblades_carbon"
+  }
+}

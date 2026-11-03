@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bfs",
+    " m "
+  ],
+  "key": {
+    "b": {
+      "item": "techguns:ironbarrel"
+    },
+    "s": {
+      "item": "techguns:woodstock"
+    },
+    "f": {
+      "item": "techguns:ironreceiver"
+    },
+    "m": {
+      "item": "techguns:smgmagazineempty"
+    }
+  },
+  "result": {
+    "item": "techguns:thompson",
+    "nbt": "{ammo:0s,ammovariant:\"default\",camo:0b}"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " np",
+    " p ",
+    "p  "
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/steel"
+    },
+    "n": {
+      "tag": "forge:nuggets/steel"
+    }
+  },
+  "result": {
+    "item": "techguns:crowbar"
+  }
+}

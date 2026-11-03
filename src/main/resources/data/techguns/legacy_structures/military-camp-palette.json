@@ -1,0 +1,167 @@
+{
+  "crate_0": {
+    "name": "techguns:military_crate_ammo"
+  },
+  "crate_1": {
+    "name": "techguns:military_crate_gun"
+  },
+  "crate_2": {
+    "name": "techguns:military_crate_armor"
+  },
+  "crate_3": {
+    "name": "techguns:military_crate_medical"
+  },
+  "crate_4": {
+    "name": "techguns:military_crate_explosive"
+  },
+  "crate_5": {
+    "name": "techguns:military_crate_generic_oak"
+  },
+  "crate_6": {
+    "name": "techguns:military_crate_generic_jungle"
+  },
+  "crate_7": {
+    "name": "techguns:military_crate_generic_birch"
+  },
+  "crate_8": {
+    "name": "techguns:military_crate_generic_spruce"
+  },
+  "yellow_lantern": {
+    "name": "techguns:lamp_yellow_lantern",
+    "properties": {
+      "facing": "down"
+    }
+  },
+  "inline_0": {
+    "name": "techguns:container_red",
+    "properties": {}
+  },
+  "MILBASE_FENCE": {
+    "name": "minecraft:iron_bars"
+  },
+  "MILBASE_ROADBLOCK_SECONDARY": {
+    "name": "techguns:concrete_grey"
+  },
+  "MILBASE_ROADBLOCK": {
+    "name": "minecraft:gravel"
+  },
+  "inline_1": {
+    "name": "minecraft:gravel"
+  },
+  "inline_2": {
+    "name": "techguns:camonet_wood"
+  },
+  "inline_3": {
+    "name": "techguns:camonet_top_wood"
+  },
+  "inline_4": {
+    "name": "techguns:sandbags"
+  },
+  "inline_5": {
+    "name": "minecraft:gravel"
+  },
+  "inline_6": {
+    "name": "techguns:lamp_yellow",
+    "properties": {
+      "facing": "down"
+    }
+  },
+  "inline_7": {
+    "name": "minecraft:glowstone"
+  },
+  "inline_8": {
+    "name": "techguns:ladder_metal",
+    "properties": {
+      "facing": "south"
+    }
+  },
+  "inline_9": {
+    "name": "techguns:sandbags"
+  },
+  "inline_10": {
+    "name": "techguns:concrete_grey"
+  },
+  "inline_11": {
+    "name": "techguns:concrete_brown"
+  },
+  "inline_12": {
+    "name": "minecraft:cobblestone_stairs",
+    "properties": {
+      "facing": "east",
+      "half": "bottom"
+    }
+  },
+  "inline_13": {
+    "name": "techguns:concrete_brown_light"
+  },
+  "BARRACKS_WOOD_PILLAR": {
+    "name": "minecraft:oak_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "BARRACKS_WOOD_WALL": {
+    "name": "minecraft:oak_planks"
+  },
+  "BARRACKS_WOOD_FLOOR": {
+    "name": "minecraft:oak_planks"
+  },
+  "BARRACKS_WOOD_SCAFFOLD": {
+    "name": "minecraft:dark_oak_planks"
+  },
+  "BARRACKS_WOOD_ROOF": {
+    "name": "minecraft:spruce_planks"
+  },
+  "BARRACKS_WOOD_ROOFSLAB": {
+    "name": "minecraft:spruce_slab",
+    "properties": {
+      "type": "bottom"
+    }
+  },
+  "WOOD_STAIRS_OAK": {
+    "name": "minecraft:oak_stairs",
+    "properties": {
+      "facing": "east",
+      "half": "bottom"
+    }
+  },
+  "TGLAMP": {
+    "name": "techguns:lamp_yellow",
+    "properties": {
+      "facing": "down"
+    }
+  },
+  "GRAVEL": {
+    "name": "minecraft:gravel"
+  },
+  "GLASS_PANE": {
+    "name": "minecraft:glass_pane"
+  },
+  "HELIPAD_WIREFRAME": {
+    "name": "techguns:steelframe_dark"
+  },
+  "HELIPAD_HAZARDBLOCK": {
+    "name": "minecraft:yellow_concrete"
+  },
+  "HELIPAD_CONCRETE": {
+    "name": "techguns:concrete_grey_dark"
+  },
+  "HELIPAD_GLOWBLOCK": {
+    "name": "techguns:neonsquare_white"
+  },
+  "inline_14": {
+    "name": "minecraft:lava"
+  },
+  "TANKS_BASE": {
+    "name": "techguns:steelframe_scaffold"
+  },
+  "TANKS_WALL": {
+    "name": "techguns:container_red"
+  },
+  "TANKS_BORDER": {
+    "name": "techguns:container_orange"
+  },
+  "default_CAMONET_TOP": {
+    "name": "techguns:camonet_top_wood"
+  }
+}

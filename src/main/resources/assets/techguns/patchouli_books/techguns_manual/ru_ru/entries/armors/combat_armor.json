@@ -1,0 +1,27 @@
+{
+  "name": "T2: Боевая броня",
+  "icon": "techguns:t2_combat_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Боевая броня второго уровня предназначена для сражений. Её характеристики выше, чем у $(l:armors/soldier_armor)солдатской брони$(/l)."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Боевая броня",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t2_combat_boots'}, {Count:1,id:'techguns:t2_combat_leggings'}, {Count:1,id:'techguns:t2_combat_chestplate'}, {Count:1,id:'techguns:t2_combat_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t2_combat_helmet",
+      "recipe2": "techguns:t2_combat_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t2_combat_leggings",
+      "recipe2": "techguns:t2_combat_boots"
+    }
+  ]
+}

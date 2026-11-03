@@ -1,0 +1,180 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "connection": "0"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_center"
+      }
+    },
+    {
+      "when": {
+        "connection": "1"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "2"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "3"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_corner",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "4"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 0,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "5"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 0,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "5"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "6"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_corner",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "7"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side2",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "8"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "9"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_corner",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "10"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "10"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "11"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side2",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "12"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_corner",
+        "y": 0,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "13"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side2",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "14"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_side2",
+        "y": 0,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "connection": "15"
+      },
+      "apply": {
+        "model": "techguns:block/decor/camonet_top_snow/camonet_top_full"
+      }
+    }
+  ]
+}

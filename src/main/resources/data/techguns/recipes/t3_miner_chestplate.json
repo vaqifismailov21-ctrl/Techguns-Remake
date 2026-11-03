@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p p",
+    "lcl",
+    "lpl"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/carbon"
+    },
+    "c": {
+      "tag": "forge:circuits/elite"
+    },
+    "l": {
+      "tag": "forge:plates/titanium"
+    }
+  },
+  "result": {
+    "item": "techguns:t3_miner_chestplate"
+  }
+}

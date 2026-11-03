@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "lhl",
+    "p p",
+    "l l"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/lead"
+    },
+    "h": {
+      "item": "techguns:t2_combat_leggings"
+    },
+    "l": {
+      "item": "techguns:treatedleather"
+    }
+  },
+  "result": {
+    "item": "techguns:t2_riot_leggings"
+  }
+}

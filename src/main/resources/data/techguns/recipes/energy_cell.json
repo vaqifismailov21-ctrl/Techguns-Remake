@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PRP",
+    "RCR",
+    "PRP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "C": {
+      "item": "techguns:circuitboard"
+    }
+  },
+  "result": {
+    "item": "techguns:energy_cell",
+    "count": 1
+  }
+}

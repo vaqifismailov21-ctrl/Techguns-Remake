@@ -1,0 +1,56 @@
+{
+  "name": "Фабрикатор",
+  "icon": "techguns:fabricator_controller",
+  "category": "techguns:multiblock_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Фабрикатор собирается как многоблочная машина. Для сборки нажмите $(thing)ПКМ по контроллеру$(). Если смотреть на переднюю сторону, контроллер должен быть правым из двух нижних блоков. Сторона нажатия задаёт перед машины."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Фабрикатор",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:fabricator_controller",
+          "H": "techguns:fabricator_housing",
+          "G": "techguns:fabricator_glass"
+        },
+        "pattern": [
+          [
+            "H0",
+            "HH"
+          ],
+          [
+            "GG",
+            "GG"
+          ]
+        ],
+        "enable_visualize": false
+      }
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:multiblockmachine_0_fabricator_housing",
+      "text": "Для сборки нужны:$(li)3 корпуса$(li)4 стеклянные секции$(li)1 контроллер$(br)С учётом деталей для крафта потребуется изготовить 8 корпусов."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:multiblockmachine_1_fabricator_glass",
+      "recipe2": "techguns:multiblockmachine_2_fabricator_controller"
+    },
+    {
+      "type": "patchouli:image",
+      "title": "Внешний вид",
+      "images": [
+        "techguns:textures/gui/manual/fabricator_image.png"
+      ],
+      "text": "Собранный фабрикатор в мире."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Использование",
+      "text": "У фабрикатора 4 входа, 1 выход и $(l:machine_mechanics#upgrade)слот улучшения$(/l).$(li)Вход 1: основной компонент.$(li)Вход 2: проволока.$(li)Вход 3: порошок или механические детали.$(li)Вход 4: пластина.$(br)Shift + щелчок и трубы сами распределяют предметы."
+    }
+  ]
+}

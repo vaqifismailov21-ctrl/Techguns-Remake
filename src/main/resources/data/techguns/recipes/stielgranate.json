@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " it",
+    " wi",
+    "i  "
+  ],
+  "key": {
+    "t": {
+      "item": "minecraft:tnt"
+    },
+    "w": {
+      "tag": "minecraft:planks"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:stielgranate",
+    "count": 16
+  }
+}

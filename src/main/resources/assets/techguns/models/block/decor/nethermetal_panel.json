@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "techguns:blocks/nethermetal_panel",
+    "particle": "techguns:blocks/nethermetal_panel"
+  },
+  "render_type": "minecraft:cutout"
+}

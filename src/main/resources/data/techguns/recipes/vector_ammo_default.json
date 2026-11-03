@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:vector"
+    },
+    {
+      "item": "techguns:smgmagazine"
+    }
+  ],
+  "result": {
+    "item": "techguns:vector",
+    "nbt": "{ammo:25s,ammovariant:\"default\",camo:0b}"
+  }
+}

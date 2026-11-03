@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "b  ",
+    "bb ",
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "item": "techguns:concrete_brown_light"
+    }
+  },
+  "result": {
+    "item": "techguns:stairs_concrete_2",
+    "count": 6
+  }
+}

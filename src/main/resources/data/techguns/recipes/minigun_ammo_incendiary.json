@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:minigun"
+    },
+    {
+      "item": "techguns:minigundrum_incendiary"
+    }
+  ],
+  "result": {
+    "item": "techguns:minigun",
+    "nbt": "{ammo:200s,ammovariant:\"default\",camo:0b}"
+  }
+}

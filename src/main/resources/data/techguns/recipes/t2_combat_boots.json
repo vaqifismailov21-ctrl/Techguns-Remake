@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "h h",
+    "i i"
+  ],
+  "key": {
+    "h": {
+      "item": "techguns:heavycloth"
+    },
+    "i": {
+      "tag": "forge:ingots/obsidian_steel"
+    }
+  },
+  "result": {
+    "item": "techguns:t2_combat_boots"
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "RocketExplosion": [
+    "LargeExplosionBlastwave",
+    "LargeExplosionBlastwaveGroundAligned",
+    "LargeExplosionSmoke",
+    "LargeExplosion",
+    "LargeExplosionRing"
+  ],
+  "GuidedMissileExplosion": [
+    "LargeExplosionBlastwave",
+    "LargeExplosionSmoke",
+    "LargeExplosion2"
+  ],
+  "NukeExplosion": [
+    "NukeExplosionMain",
+    "NukeExplosionBlastwave",
+    "NukeExplosionBlast",
+    "NukeExplosionSmoke",
+    "NukeExplosionRing",
+    "NukeExplosionMushroomStem",
+    "NukeExplosionMushroomCloud",
+    "NukeExplosionBall"
+  ],
+  "RocketLauncherExhaust": [
+    "RocketLauncherTrail",
+    "RocketLauncherTrailFlare"
+  ],
+  "GuidedMissileExhaust": [
+    "RocketLauncherTrailFlare",
+    "GuidedMissileTrailStreak"
+  ],
+  "FlamethrowerTrail": [
+    "FlamethrowerTrailFlames",
+    "FlamethrowerTrailFlames2"
+  ],
+  "FlamethrowerImpact": [
+    "FlamethrowerImpactFlames"
+  ],
+  "FlamethrowerFireFX": [
+    "FlamethrowerFireFXFlames"
+  ],
+  "BioGunTrail": [
+    "BioTrailSplat",
+    "BioTrailBlobs"
+  ],
+  "biogunImpact": [
+    "biogunImpactSplat",
+    "biogunImpactBlobs"
+  ],
+  "biogunCharge": [
+    "biogunChargeFlare"
+  ],
+  "bioblobExplosion": [
+    "bioblobExplosionExplosion",
+    "bioblobExplosionSplat",
+    "LargeExplosionBlastwave",
+    "bioblobExplosionBlobs"
+  ],
+  "PowerhammerImpact": [
+    "PowerhammerImpactSparks"
+  ],
+  "ScreenTestFX": [
+    "ScreenTestFXFlames"
+  ],
+  "Impact_IncendiaryBullet": [
+    "IncendiaryBulletImpactFlare",
+    "IncendiaryBulletImpactSparks",
+    "IncendiaryBulletImpactSparksExtra",
+    "IncendiaryBulletImpactFlames",
+    "IncendiaryBulletImpactRicochet"
+  ],
+  "IncendiaryShotgunTrail": [
+    "IncendiaryShotgunTrailFlames",
+    "IncendiaryShotgunTrailTrail",
+    "IncendiaryShotgunTrailSparks",
+    "IncendiaryShotgunTrailSparks2",
+    "IncendiaryShotgunTrailFlare"
+  ],
+  "MiningChargeBlockExplosion": [
+    "MiningChargeExplosionFire",
+    "MediumExplosionSmoke"
+  ],
+  "AlienBlasterTrail": [
+    "AlienBlasterTrailFlare",
+    "AlienBlasterTrailWave",
+    "AlienBlasterTrailGlow"
+  ],
+  "AlienExplosion": [
+    "AlienFlare",
+    "AlienShockwave"
+  ],
+  "CyberDemonBlasterTrail": [
+    "CDBTrailFlares_S",
+    "CDBSparkyFlares_S",
+    "CDBTrailFlames_S"
+  ],
+  "CyberdemonBlasterImpact": [
+    "NetherBlasterImpactFlare",
+    "MediumExplosionSmoke"
+  ],
+  "BlueBlasterTrail": [
+    "BlueBlasterTrailFlare",
+    "BlueBlasterTrailGlow"
+  ],
+  "BlueBlasterExplosion": [
+    "BlueBlasterFlare",
+    "BlueBlasterShockwave"
+  ],
+  "GaussProjectileTrail": [
+    "GaussTrail",
+    "GaussTrailFlare",
+    "GaussTrailFlare2",
+    "GaussTrailWave",
+    "GaussTrailLightFlash"
+  ],
+  "GaussRifleImpact_Block": [
+    "GaussRifleImpactSpark",
+    "GaussRifleImpactWave",
+    "GaussRifleImpactWave2",
+    "GaussRifleImpactSparks"
+  ],
+  "GaussFireFX": [
+    "GaussFireFlare"
+  ],
+  "BeamGunMuzzleFX": [
+    "BeamGunMuzzleFlare",
+    "BeamGunMuzzleSparks"
+  ],
+  "BeamGunImpactFX": [
+    "BeamGunImpactFlare",
+    "BeamGunImpactSparks",
+    "BeamGunImpactGlow"
+  ],
+  "SonicShotgunTrail": [
+    "SonicShotgunWaves",
+    "SonicShotgunWaves2"
+  ],
+  "SonicShotgunImpact": [
+    "SonicShotgunImpactWave",
+    "SonicShotgunImpactBlastwave"
+  ],
+  "TFGTrail": [
+    "TFGTrailMainFlare",
+    "TFGTrailFlares",
+    "TFGTrailGlow"
+  ],
+  "TFGExplosion": [
+    "TFGExplosionMainFlare",
+    "TFGExplosionMainFlare2",
+    "TFGExplosionFlares",
+    "TFGExplosionFlaresInverted",
+    "TFGExplosionSparks",
+    "TFGExplosionFlyout"
+  ],
+  "TFGChargeStart": [
+    "TFGChargeMainFlare",
+    "TFGChargeMainFlare_Full",
+    "TFGChargeMainFlare_FullBurst",
+    "TFGChargeFlyin",
+    "TFGChargeWavesInverted",
+    "TFGChargeFlare",
+    "TFGChargeFlare_Full"
+  ],
+  "LaserGunImpact": [
+    "LaserFlareEnd",
+    "LaserGunImpactSparks"
+  ],
+  "Impact_BulletDefault_Blue": [
+    "BulletImpactFlare_Blue",
+    "BulletImpactSparks_Blue",
+    "BulletImpactDust"
+  ],
+  "Impact_BulletDirt_Blue": [
+    "BulletImpactFlare_Blue",
+    "BulletImpactSparks_Blue",
+    "BulletImpactDust",
+    "BulletImpactDirt"
+  ],
+  "Impact_BulletRock_Blue": [
+    "BulletImpactFlare_Blue",
+    "BulletImpactSparks_Blue",
+    "BulletImpactDust",
+    "BulletImpactDebris"
+  ],
+  "Impact_BulletMetal_Blue": [
+    "BulletImpactFlare_Blue",
+    "BulletImpactSparks_Blue",
+    "BulletImpactDust",
+    "BulletImpactSparksExtra"
+  ],
+  "Impact_BulletWood_Blue": [
+    "BulletImpactFlare_Blue",
+    "BulletImpactSparks_Blue",
+    "BulletImpactDust",
+    "BulletImpactDebrisWood"
+  ],
+  "Impact_BulletGlass_Blue": [
+    "BulletImpactFlare_Blue",
+    "BulletImpactSparks_Blue",
+    "BulletImpactDust",
+    "BulletImpactDebrisGlass"
+  ],
+  "JumpPackBoost": [
+    "JumpPackRing",
+    "JumpBoostSmoke"
+  ],
+  "JumpPackFall": [
+    "JumpPackRingFall",
+    "JumpPackFallRing"
+  ],
+  "HelicopterDeathExplosion": [
+    "HeliExplosionBlastwave",
+    "HeliExplosionSmoke",
+    "HeliExplosion",
+    "HeliExplosionRing",
+    "HeliExplosionParts"
+  ]
+}

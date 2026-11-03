@@ -1,0 +1,8 @@
+{
+  "type": "techguns:legacy_surface",
+  "kind": "nether_ghast_spawner",
+  "biomes": "#minecraft:is_nether",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:ak47"
+    },
+    {
+      "item": "techguns:assaultriflemagazine"
+    }
+  ],
+  "result": {
+    "item": "techguns:ak47",
+    "nbt": "{ammo:30s,ammovariant:\"default\",camo:0b}"
+  }
+}

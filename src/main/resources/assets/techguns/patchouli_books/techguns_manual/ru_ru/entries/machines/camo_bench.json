@@ -1,0 +1,15 @@
+{
+  "name": "Камуфляжный верстак",
+  "icon": "techguns:camo_bench",
+  "category": "techguns:simple_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Верстак меняет камуфляж предметов Techguns и цвет обычных блоков, например шерсти. Положите предмет в верхний левый слот и выберите цвет кнопками. Камуфляж надетой брони можно менять прямо на верстаке."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:simplemachine_8_camo_bench"
+    }
+  ]
+}

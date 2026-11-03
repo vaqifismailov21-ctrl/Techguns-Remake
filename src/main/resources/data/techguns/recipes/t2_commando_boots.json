@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i i",
+    "h h"
+  ],
+  "key": {
+    "h": {
+      "tag": "forge:item_rubber"
+    },
+    "i": {
+      "tag": "forge:ingots/obsidian_steel"
+    }
+  },
+  "result": {
+    "item": "techguns:t2_commando_boots"
+  }
+}

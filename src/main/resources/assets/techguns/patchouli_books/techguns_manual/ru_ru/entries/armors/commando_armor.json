@@ -1,0 +1,27 @@
+{
+  "name": "T2: Броня коммандос",
+  "icon": "techguns:t2_commando_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Броня коммандос второго уровня подходит для сражений и работы под водой."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Броня коммандос",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t2_commando_boots'}, {Count:1,id:'techguns:t2_commando_leggings'}, {Count:1,id:'techguns:t2_commando_chestplate'}, {Count:1,id:'techguns:t2_commando_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t2_commando_helmet",
+      "recipe2": "techguns:t2_commando_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t2_commando_leggings",
+      "recipe2": "techguns:t2_commando_boots"
+    }
+  ]
+}

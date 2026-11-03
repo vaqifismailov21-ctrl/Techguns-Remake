@@ -1,0 +1,15 @@
+{
+  "name": "Ремонтный верстак",
+  "icon": "techguns:repair_bench",
+  "category": "techguns:simple_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Ремонтный верстак восстанавливает броню Techguns без энергии. Наведите курсор на кнопку ремонта, чтобы увидеть цену в материалах. Ремонт обходится дешевле изготовления нового комплекта."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:simplemachine_9_repair_bench"
+    }
+  ]
+}

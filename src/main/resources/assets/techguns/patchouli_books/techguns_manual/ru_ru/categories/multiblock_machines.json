@@ -1,0 +1,6 @@
+{
+  "name": "Многоблочные машины",
+  "description": "Эти машины собираются из нескольких блоков. К ним также относятся правила из раздела $(l:machine_mechanics)«Работа машин»$(/l).",
+  "icon": "techguns:reactionchamber_controller",
+  "sortnum": 4
+}

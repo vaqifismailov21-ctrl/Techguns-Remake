@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ipi",
+    "ipi",
+    "ipi"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/iron"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:oredrill_rod",
+    "count": 4
+  }
+}

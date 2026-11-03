@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "techguns:blocks/steelframe_dark",
+    "particle": "techguns:blocks/steelframe_dark"
+  },
+  "render_type": "minecraft:cutout"
+}

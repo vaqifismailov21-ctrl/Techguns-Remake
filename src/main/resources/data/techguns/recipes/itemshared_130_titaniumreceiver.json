@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ttt",
+    " rc",
+    "  t"
+  ],
+  "key": {
+    "r": {
+      "item": "techguns:carbonreceiver"
+    },
+    "c": {
+      "tag": "forge:circuits/elite"
+    },
+    "t": {
+      "tag": "forge:plates/titanium"
+    }
+  },
+  "result": {
+    "item": "techguns:titaniumreceiver"
+  }
+}

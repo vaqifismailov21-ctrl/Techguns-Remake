@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pip",
+    "igi",
+    "pip"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/carbon"
+    },
+    "g": {
+      "tag": "forge:gems/diamond"
+    },
+    "i": {
+      "item": "techguns:steamarmorplate"
+    }
+  },
+  "result": {
+    "item": "techguns:upgrade_projectile_protection_3"
+  }
+}

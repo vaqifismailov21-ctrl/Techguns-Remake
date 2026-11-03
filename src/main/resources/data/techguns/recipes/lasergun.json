@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " gd",
+    "brs",
+    " em"
+  ],
+  "key": {
+    "b": {
+      "item": "techguns:laserbarrel"
+    },
+    "r": {
+      "item": "techguns:obsidiansteelreceiver"
+    },
+    "s": {
+      "item": "techguns:plasticstock"
+    },
+    "d": {
+      "tag": "forge:dusts/redstone"
+    },
+    "e": {
+      "item": "techguns:energycell"
+    },
+    "g": {
+      "tag": "forge:glass_panes"
+    },
+    "m": {
+      "item": "techguns:mechanicalpartscarbon"
+    }
+  },
+  "result": {
+    "item": "techguns:lasergun",
+    "nbt": "{ammo:45s,ammovariant:\"default\",camo:0b}"
+  }
+}

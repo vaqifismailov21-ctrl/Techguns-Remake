@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pip",
+    "igi",
+    "pip"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/carbon"
+    },
+    "g": {
+      "tag": "forge:gems/diamond"
+    },
+    "i": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result": {
+    "item": "techguns:upgrade_blast_protection_3"
+  }
+}

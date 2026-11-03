@@ -1,0 +1,66 @@
+package techguns.entities.npcs;
+import java.util.Random;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.*;
+import net.minecraft.resources.ResourceLocation;
+import techguns.*;
+import techguns.damagesystem.TGDamageSource;
+/** Adapted from original ArmySoldier; equipment branches and damage values are retained. */
+public class ArmySoldier extends GenericNPC {
+public ArmySoldier(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(8.0f, 0f);}
+public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/armysoldier");
+protected void addRandomArmor(int difficulty) {
+
+		
+		double chance = 0.5;
+		if (random.nextDouble() <= chance) {
+			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TGEquipment.ARMOR.get("t2_combat_helmet").get()));
+		}
+		else {
+			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TGEquipment.ARMOR.get("t2_beret").get()));
+		}
+		if (random.nextDouble() <= chance)
+			 this.setItemSlot(EquipmentSlot.CHEST,new ItemStack(TGEquipment.ARMOR.get("t2_combat_chestplate").get()));
+		if (random.nextDouble() <= chance)
+			 this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(TGEquipment.ARMOR.get("t2_combat_leggings").get()));
+		if (random.nextDouble() <= chance)
+			this.setItemSlot(EquipmentSlot.FEET, new ItemStack(TGEquipment.ARMOR.get("t2_combat_boots").get()));
+
+		
+		Random r = new Random(random.nextLong());
+		Item weapon = null;
+		switch (r.nextInt(3)) {
+		case 0:
+			weapon = TGuns.m4.get();
+			break;
+		case 1:
+			weapon = TGuns.combatshotgun.get();
+			break;
+		default:
+			weapon = TGuns.boltaction.get();
+			break;
+		}
+		if (weapon != null) this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(weapon));
+	}
+public SoundEvent getAmbientSound() {
+		return SoundEvents.VILLAGER_AMBIENT;
+	}
+public SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return SoundEvents.VILLAGER_HURT;
+	}
+public SoundEvent getDeathSound() {
+		return SoundEvents.VILLAGER_DEATH;
+	}
+public SoundEvent getStepSound() {
+		return SoundEvents.ZOMBIE_VILLAGER_STEP;
+	}
+protected ResourceLocation getDefaultLootTable() {
+		return LOOT;
+	}
+public static AttributeSupplier.Builder attributes(){return GenericNPC.attributes().add(Attributes.MOVEMENT_SPEED,0.30D).add(Attributes.MAX_HEALTH,25).add(Attributes.ATTACK_DAMAGE,4).add(Attributes.FOLLOW_RANGE,75.0D);}
+@Override protected void playStepSound(net.minecraft.core.BlockPos pos,net.minecraft.world.level.block.state.BlockState state){playSound(getStepSound(),.15f,1);}
+}

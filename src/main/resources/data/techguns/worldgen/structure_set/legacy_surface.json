@@ -1,0 +1,21 @@
+{
+  "structures": [
+    {
+      "structure": "techguns:military_base",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:castle",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:aircraftcarrier",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "techguns:legacy_grid",
+    "grid": "big",
+    "salt": 1729337
+  }
+}

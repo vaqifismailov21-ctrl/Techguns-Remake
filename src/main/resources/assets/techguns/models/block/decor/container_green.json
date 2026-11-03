@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "techguns:blocks/container_green",
+    "particle": "techguns:blocks/container_green"
+  },
+  "render_type": "minecraft:cutout"
+}

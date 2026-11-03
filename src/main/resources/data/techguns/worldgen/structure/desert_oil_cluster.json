@@ -1,0 +1,8 @@
+{
+  "type": "techguns:legacy_surface",
+  "kind": "desert_oil_cluster",
+  "biomes": "#minecraft:is_overworld",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

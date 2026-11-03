@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p p",
+    "ppp",
+    "fpf"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/carbon"
+    },
+    "f": {
+      "tag": "forge:fibers/carbon"
+    }
+  },
+  "result": {
+    "item": "techguns:t3_combat_chestplate"
+  }
+}

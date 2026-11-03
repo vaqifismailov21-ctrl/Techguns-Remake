@@ -1,0 +1,20 @@
+{
+  "name": "Зарядная станция",
+  "icon": "techguns:charging_station",
+  "category": "techguns:powered_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Зарядная станция пополняет энергетические ячейки. У неё 1 вход, 1 выход и $(l:machine_mechanics#upgrade)слот улучшения$(/l)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Использование",
+      "text": "Станция также заряжает совместимые предметы с поддержкой Forge Energy (FE). Предмет поступает на выход после завершения зарядки."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:simplemachine_10_charging_station"
+    }
+  ]
+}

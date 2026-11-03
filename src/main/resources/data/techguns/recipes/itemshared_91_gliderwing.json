@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sss",
+    "hhh",
+    "hhh"
+  ],
+  "key": {
+    "s": {
+      "tag": "forge:ingots/iron"
+    },
+    "h": {
+      "item": "techguns:heavycloth"
+    }
+  },
+  "result": {
+    "item": "techguns:gliderwing"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rgr",
+    "rgr",
+    "rgr"
+  ],
+  "key": {
+    "r": {
+      "item": "techguns:reactionchamber_housing"
+    },
+    "g": {
+      "type": "techguns:hardened_glass_or_glass"
+    }
+  },
+  "result": {
+    "item": "techguns:reactionchamber_glass",
+    "count": 6
+  }
+}

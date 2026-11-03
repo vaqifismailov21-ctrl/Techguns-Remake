@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="See LICENSE.txt (original Techguns license)"
+
+[[mods]]
+modId="techguns"
+version="${mod_version}"
+displayName="Techguns"
+authors="pWn3d1337; 1.20.1 port in progress"
+description='''New port from the original Techguns 1.12.2 source. INCOMPLETE DEVELOPMENT BUILD.'''
+
+[[dependencies.techguns]]
+modId="forge"
+mandatory=true
+versionRange="[47.4,48)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.techguns]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"

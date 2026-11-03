@@ -1,0 +1,27 @@
+{
+  "name": "T3: Силовая броня",
+  "icon": "techguns:t3_power_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Силовая броня — $(l:armor_mechanics#powered_armors)энергозависимый$(/l) боевой комплект T3 с высокой защитой. Использует $(thing)энергетические ячейки$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Силовая броня",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t3_power_boots'}, {Count:1,id:'techguns:t3_power_leggings'}, {Count:1,id:'techguns:t3_power_chestplate'}, {Count:1,id:'techguns:t3_power_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t3_power_helmet",
+      "recipe2": "techguns:t3_power_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t3_power_leggings",
+      "recipe2": "techguns:t3_power_boots"
+    }
+  ]
+}

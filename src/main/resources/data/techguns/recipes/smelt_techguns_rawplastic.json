@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "techguns:rawplastic"
+  },
+  "result": {
+    "item": "techguns:plasticsheet"
+  },
+  "experience": 0,
+  "cookingtime": 200
+}

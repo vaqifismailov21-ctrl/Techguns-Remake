@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb",
+    "bpb",
+    "bbb"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/iron"
+    },
+    "b": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "result": {
+    "item": "techguns:oredrill_scaffold",
+    "count": 8
+  }
+}

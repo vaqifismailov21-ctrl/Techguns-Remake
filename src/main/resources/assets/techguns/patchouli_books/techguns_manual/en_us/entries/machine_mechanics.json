@@ -1,0 +1,54 @@
+{
+  "name": "* Machine Mechanics *",
+  "icon": "techguns:electricengine",
+  "category": "techguns:powered_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Techguns machines share a few mechanics. This includes: $(l:machine_mechanics#power)Power$(/l), $(l:machine_mechanics#security)Security Settings$(/l) and $(l:machine_mechanics#redstone)Redstone Control$(/l). Power and Redstone Control is only relevant to powered machines, while Security Settings are also applicable to simple machines. The $(l:machine_mechanics#upgrade)'Upgrade Slot'$(/l) is also a shared mechanic between multiple machines."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Side Configuration",
+      "text": "Techguns machines share the concept to not need side configuration. This means input and extraction from pipes can come from any side. Recipes are designed in a way that for each item it must be deterministic in which slot it belongs. Extraction from machines require pipes with 'extract' mode as the machines do not output to inventories themselves."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Security Settings",
+      "anchor": "security",
+      "text": "The lock button switches between public access and owner-only access. The owner is the player who placed the machine. Only the owner can change access settings. Restricted machines cannot be opened by other players."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Security Settings",
+      "anchor": "security2",
+      "text": "This port supports Public and Owner modes. The old FTB Utilities team and ally integration from Minecraft 1.12.2 is not included."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Power",
+      "anchor": "power",
+      "text": "The left bar shows stored Forge Energy (FE). Supply it with compatible cables and a generator from another mod; Techguns has no generator. The machinesNeedNoPower option in techguns-common.toml can disable the energy requirement."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Redstone Control",
+      "anchor": "redstone",
+      "text": "With redstone control a machine can be configured to react to redstone signals. The indicator in the top left with a red and green light indicate the current state. This allows to turn off machines by redstone signals. By default a machine ignores signals."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Upgrade Slot",
+      "item": "techguns:machinestackupgrade",
+      "anchor": "upgrade",
+      "text": "Some machines have an upgrade slot in the bottom right of their gui. In this slot 'Machine Upgrades' can be placed. The 'Stack Operation' upgrade allows the machine to process the same recipe multiple times at once. The stack upgrade can be applied up to 7 times allowing to process a recipe up to 8x simultaneously."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "'Wrench'",
+      "item": "techguns:crowbar",
+      "anchor": "wrench",
+      "text": "As many other tech mods, Techguns also has a 'wrench' item. The crowbar is Techguns version of a wrench, but can also be used as pickaxe and for hitting enemies. The crowbar allows to rotate techguns machines or can dismantle them ($(thing)'Sneak + Right Click'$()). Technically everything that has the tool class 'wrench' is considered as wrench."
+    }
+  ]
+}

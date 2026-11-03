@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "techguns:blocks/neonsquare_white",
+    "particle": "techguns:blocks/neonsquare_white"
+  },
+  "render_type": "minecraft:cutout"
+}

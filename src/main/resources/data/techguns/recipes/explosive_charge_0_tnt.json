@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rtr",
+    "tct",
+    "rtr"
+  ],
+  "key": {
+    "r": {
+      "tag": "forge:item_rubber"
+    },
+    "c": {
+      "tag": "forge:circuits/basic"
+    },
+    "t": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "techguns:tnt_charge",
+    "count": 8
+  }
+}

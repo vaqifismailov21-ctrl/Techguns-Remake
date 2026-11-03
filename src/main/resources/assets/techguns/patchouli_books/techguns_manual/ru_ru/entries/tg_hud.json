@@ -1,0 +1,20 @@
+{
+  "name": "Индикаторы Techguns",
+  "icon": "techguns:pistolrounds",
+  "category": "techguns:tg_inventory",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Значки на экране показывают состояние эффектов Techguns. Некоторые переключаются $(l:tg_inventory_tab#buttons)кнопками$(/l) или назначенными клавишами."
+    },
+    {
+      "type": "patchouli:image",
+      "title": "Значки и кнопки",
+      "anchor": "images",
+      "images": [
+        "techguns:textures/gui/manual/tg_hud_symbols.png"
+      ],
+      "text": "Эти символы используются на экране и на $(l:tg_inventory_tab#buttons)кнопках$(/l) $(l:tg_inventory_tab)вкладки Techguns$(/l)."
+    }
+  ]
+}

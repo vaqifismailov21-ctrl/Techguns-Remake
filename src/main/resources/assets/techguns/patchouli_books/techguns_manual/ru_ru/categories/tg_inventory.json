@@ -1,0 +1,6 @@
+{
+  "name": "Инвентарь Techguns",
+  "description": "Вкладка Techguns: дополнительное снаряжение, патроны, питание и кнопки управления.",
+  "icon": "techguns:pistolrounds",
+  "sortnum": 6
+}

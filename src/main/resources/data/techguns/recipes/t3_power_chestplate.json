@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p p",
+    "ece",
+    "ppp"
+  ],
+  "key": {
+    "p": {
+      "item": "techguns:powerplating"
+    },
+    "c": {
+      "tag": "forge:circuits/elite"
+    },
+    "e": {
+      "item": "techguns:electricengine"
+    }
+  },
+  "result": {
+    "item": "techguns:t3_power_chestplate"
+  }
+}

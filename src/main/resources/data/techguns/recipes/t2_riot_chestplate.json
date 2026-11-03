@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p p",
+    "lcl",
+    "lpl"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/lead"
+    },
+    "c": {
+      "item": "techguns:t2_combat_chestplate"
+    },
+    "l": {
+      "item": "techguns:treatedleather"
+    }
+  },
+  "result": {
+    "item": "techguns:t2_riot_chestplate"
+  }
+}

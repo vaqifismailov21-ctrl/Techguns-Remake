@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "igi",
+    "isi",
+    "iii"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:shield"
+    },
+    "g": {
+      "tag": "forge:glass_panes"
+    },
+    "i": {
+      "tag": "forge:plates/carbon"
+    }
+  },
+  "result": {
+    "item": "techguns:advanced_shield"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "LCL",
+    "PRP"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:glass_panes"
+    },
+    "L": {
+      "tag": "forge:gems/lapis"
+    },
+    "C": {
+      "item": "techguns:circuitboard"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "techguns:solar_panel",
+    "count": 1
+  }
+}

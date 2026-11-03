@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "techguns:blocks/nethermetal_grate1",
+    "particle": "techguns:blocks/nethermetal_grate1"
+  },
+  "render_type": "minecraft:cutout"
+}

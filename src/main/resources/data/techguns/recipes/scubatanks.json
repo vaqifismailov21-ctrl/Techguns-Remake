@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p p",
+    "aia",
+    "p p"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:sheets/plastic"
+    },
+    "a": {
+      "item": "techguns:compressedairtank"
+    },
+    "i": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:scubatanks"
+  }
+}

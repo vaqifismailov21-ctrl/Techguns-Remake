@@ -1,0 +1,25 @@
+{
+  "structures": [
+    {
+      "structure": "techguns:factory_building_small",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:small_trainstation",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:small_mine",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:gasstation",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "techguns:legacy_grid",
+    "grid": "small",
+    "salt": 1729339
+  }
+}

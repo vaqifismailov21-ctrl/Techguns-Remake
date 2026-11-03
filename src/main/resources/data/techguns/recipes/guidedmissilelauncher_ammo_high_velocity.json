@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:guidedmissilelauncher"
+    },
+    {
+      "item": "techguns:rocket_high_velocity"
+    }
+  ],
+  "result": {
+    "item": "techguns:guidedmissilelauncher",
+    "nbt": "{ammo:1s,ammovariant:\"default\",camo:0b}"
+  }
+}

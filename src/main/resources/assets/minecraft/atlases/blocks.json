@@ -1,0 +1,1644 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:armors/advanced_shield"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:armors/ballistic_shield"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:armors/riot_shield"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/acid_flow"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/acid_still"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ammopress"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/armor_bench_bottom"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/armor_bench_bottom_full"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/armor_bench_bottom_mid"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/armor_bench_upper_bottom"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/armor_crate_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/bioblob"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/blast_furnace_bottom"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/blast_furnace_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/blast_furnace_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/blast_furnace_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/bugnest_eggs"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/bugnest_sand"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/bugnestslimy"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/bunker_door_lower"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/bunker_door_upper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/c4_charge"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/c4_charge_armed"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/camonet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/camonet_desert"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/camonet_snow"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/charging_station"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/chemlab"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_brown"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_brown_light"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_brown_light_scaff"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_brown_pipes"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_grey"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_grey_dark"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_blue"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_green"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_orange"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_red"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/crate_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/crate_top_blue"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/crate_top_dark"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/crate_top_red"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_engine"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_engine_c"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_engine_controller"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_engine_top_c"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_frame_c"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_rod"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_rod_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_scaffold"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_scaffold_c"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/energy_cell_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/energy_cell_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/energy_cell_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/explosive_crate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/fabricator_controller"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/fabricator_glass"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/fabricator_housing"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/fuel_generator_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/fuel_generator_front_on"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/generator_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/generator_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/grinder_bottom"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/grinder_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/grinder_roll"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/grinder_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/grinder_side_inner"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/grinder_side_inner2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/hangar_door"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/hole"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/lamp01"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/lamp02"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/lantern01_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/lantern01_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/lantern02_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/lantern02_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/liquid_generator_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/liquid_generator_front_on"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/liquid_generator_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/medical_crate_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/metal_ladder"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/metal_ladder_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/metal_ladder_rusty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/metal_ladder_shiny"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/metalpress"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/military_crate_bottom"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/military_crate_gun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/military_crate_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/neonsquare_white"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/neontubes2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/neontubes2_rotated"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/neontubes4"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/neontubes4_rotated"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_border_alpha"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_border_red"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_grate1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_grate2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_grey"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_grey_dark"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_grey_tiles"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_panel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_plate_black"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_plate_red"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_coal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_common_gem"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_common_metal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_nether_crystal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_oil"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_rare_metal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_shiny_gem"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_shiny_metal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_cluster_uranium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_copper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_lead"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_tin"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_titanium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ore_uranium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/paintmachine_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/paintmachine_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/paintmachine_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/panel_large_border"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/reactionchamber"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/reactionchamber_controller"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/reactionchamber_glass"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/reactionchamber_housing"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/repairbench_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/repairbench_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/sandbags-side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/sandbags-top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/solar_panel_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/solar_panel_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/soldier_spawn"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/steelframe_blue"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/steelframe_dark"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/steelframe_scaffold"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/techdoor3x3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/techdoor3x3_nether"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/tnt_charge"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/tnt_charge_armed"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/turret_base"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_back"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_bullet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_bullet_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_face"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_food"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_hand"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_heal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_turretarmor"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:gui/emptyslots/emptyslot_turretgun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/ak47texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/alien_blaster"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/ar_mag"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/ar_mag_inc"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/as50_mag"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/as50_mag_exp"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/as50_mag_inc"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/as50texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/augtexture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/biogun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/blasterrifle"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/boltactionrifle"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/chainsaw"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/combatshotgun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/cyberdemonblaster"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/flamethrower"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/frag_grenade_texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/gaussrifle"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/goldenrevolver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/grenadelauncher"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/grimreaper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/guidedmissilelauncher"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/handgun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/laser_pistol"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/lasergun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/lasergunnew"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/lmg_mag"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/lmg_mag_inc"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/m4_uq_texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/m4texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/mac10texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/mg2_texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/mibgun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/minigun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/miningdrill_obsidian"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/ndr"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/pdw"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/pistol3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/powerhammer"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/pulserifle"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/revolver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/rocket"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/rocket_hv"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/rocket_nuke"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/rocketlauncher"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/sawedoff"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/scar_texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/shishkebab_texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/sonicshotgun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/stielgranate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/teslagun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/tfg"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/thompson"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:guns/vector_texture"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/40mmgrenade"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/advancedmagazine"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/advancedmagazineempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/advancedrounds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/antigravcore"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/antigravpack"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/biomass"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/biotank"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/biotankempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/carbonbarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/carbonfibers"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/carbonreceiver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/carbonstock"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/chainsawblades_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/chainsawblades_obsidian"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/circuitboard"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/circuitboardelite"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/coil"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/combatknife"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/compressedairtank"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/compressedairtankempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/copperwire"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/crowbar"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/cyberneticparts"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/electricengine"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/energycell"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/energycellempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/enricheduranium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/fueltank"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/fueltankempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/gasmask"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/gasmaskfilter"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/gaussbarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/gaussrifleslugs"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/glider"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/gliderbackpack"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/gliderwing"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/goldwire"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/hangar_door_down"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/hangar_door_up"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/hazmat_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/hazmat_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/hazmat_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/hazmat_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/heavycloth"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/infusionbag"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingotbronze"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingotcopper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingotlead"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingotobsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingotsteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingottin"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingottitanium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ironbarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ironreceiver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/item_bunkerdoor"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/item_door3x3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/item_door3x3_nether"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/jetpack"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/jumppack"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/laserbarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/laserfocus"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/machinestackupgrade"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/mechanicalpartscarbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/mechanicalpartsiron"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/mechanicalpartsobsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/minigundrum"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/minigundrum_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/minigundrumempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/miningdrillhead_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/miningdrillhead_obsidian"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nethercharge"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nightvisiongoggles"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nuclearpowercell"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nuclearpowercelldepleted"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nuggetcopper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nuggetlead"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/nuggetsteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/obsidiansteelbarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/obsidiansteelreceiver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrilllarge_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrilllarge_obsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrilllarge_steel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrillmedium_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrillmedium_obsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrillmedium_steel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrillsmall_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrillsmall_obsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oredrillsmall_steel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oretitanium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/oxygenmask"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pistolmagazine"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pistolmagazine_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pistolmagazineempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pistolrounds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pistolrounds_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/plasmagenerator"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/plasticsheet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/plasticstock"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platebronze"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platecarbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platecopper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/plateiron"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platelead"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/plateobsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platesteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platetin"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platetitanium"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/powerhammerhead_carbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/powerhammerhead_obsidian"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/powerplating"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/protectivefiber"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pumpmechanism"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/quartzrod"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/radaway"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rademitter"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/radpills"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rawplastic"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rawrubber"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rcheatray"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rcuvemitter"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/redstone_battery"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/redstone_battery_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/riflerounds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/riflerounds_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rifleroundsstack"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rifleroundsstack_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/rubberbar"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/scubatanks"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/shieldedtitaniumbarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/shotgunrounds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/shotgunrounds_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/smgmagazine"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/smgmagazine_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/smgmagazineempty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/sniperrounds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/sniperrounds_explosive"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/sniperrounds_incendiary"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/sonicemitter"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/steamarmorplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/steelreceiver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/stonebarrel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/stonebullets"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_combat_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_combat_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_combat_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_combat_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_miner_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_miner_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_miner_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_miner_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_scout_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_scout_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_scout_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t1_scout_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_beret"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_combat_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_combat_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_combat_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_combat_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_commando_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_commando_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_commando_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_commando_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_riot_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_riot_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_riot_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t2_riot_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_combat_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_combat_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_combat_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_combat_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_exo_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_exo_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_exo_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_exo_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_miner_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_miner_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_miner_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t3_miner_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t4_praetor_boots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t4_praetor_chestplate"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t4_praetor_helmet"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/t4_praetor_leggings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/tacticalmask"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/tacticalnukewarhead"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/tgmanual"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/tgx"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/titaniumreceiver"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/treatedleather"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/turretarmorcarbon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/turretarmoriron"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/turretarmorobsidiansteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/turretarmorsteel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_blast_protection_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_blast_protection_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_blast_protection_3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_projectile_protection_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_projectile_protection_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_projectile_protection_3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_protection_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_protection_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/upgrade_protection_3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/woodstock"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/workinggloves"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/yellowcake"
+    }
+  ]
+}

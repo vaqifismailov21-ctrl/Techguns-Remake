@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:thompson"
+    },
+    {
+      "item": "techguns:smgmagazine"
+    }
+  ],
+  "result": {
+    "item": "techguns:thompson",
+    "nbt": "{ammo:20s,ammovariant:\"default\",camo:0b}"
+  }
+}

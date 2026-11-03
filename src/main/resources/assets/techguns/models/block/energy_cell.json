@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "techguns:blocks/energy_cell_side",
+    "north": "techguns:blocks/energy_cell_front",
+    "south": "techguns:blocks/energy_cell_top",
+    "east": "techguns:blocks/energy_cell_side",
+    "west": "techguns:blocks/energy_cell_side",
+    "up": "techguns:blocks/energy_cell_top",
+    "down": "techguns:blocks/energy_cell_top"
+  }
+}

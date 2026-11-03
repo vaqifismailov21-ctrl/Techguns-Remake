@@ -1,0 +1,8 @@
+{
+  "type": "techguns:legacy_surface",
+  "kind": "small_mine",
+  "biomes": "#minecraft:is_overworld",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

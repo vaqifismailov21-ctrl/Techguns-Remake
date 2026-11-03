@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "e e",
+    "p p"
+  ],
+  "key": {
+    "p": {
+      "item": "techguns:powerplating"
+    },
+    "e": {
+      "item": "techguns:electricengine"
+    }
+  },
+  "result": {
+    "item": "techguns:t3_power_boots"
+  }
+}

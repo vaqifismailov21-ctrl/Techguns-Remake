@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:pistol"
+    },
+    {
+      "item": "techguns:pistolmagazine_incendiary"
+    }
+  ],
+  "result": {
+    "item": "techguns:pistol",
+    "nbt": "{ammo:18s,ammovariant:\"default\",camo:0b}"
+  }
+}

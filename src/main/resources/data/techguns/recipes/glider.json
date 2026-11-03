@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "techguns:gliderbackpack"
+    },
+    {
+      "item": "techguns:gliderwing"
+    },
+    {
+      "item": "techguns:gliderwing"
+    }
+  ],
+  "result": {
+    "item": "techguns:glider"
+  }
+}

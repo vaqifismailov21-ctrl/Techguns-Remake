@@ -1,0 +1,388 @@
+{
+  "name": "Рудный бур",
+  "icon": "techguns:oredrill_controller",
+  "category": "techguns:ore_drills",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Рудные буры — многоблочные машины, для них действуют общие $(l:machine_mechanics)механики машин$(/l). Буры можно строить разных размеров и в разных направлениях, но они должны примыкать к рудному кластеру. В постройке участвуют 5 разных типов блоков. Формулы добычи и энергии объяснены $(l:oredrills/ore_clusters#formulas)здесь$(/l)."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:oredrill_0_frame",
+      "recipe2": "techguns:oredrill_1_scaffold"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:oredrill_2_rod",
+      "recipe2": "techguns:oredrill_3_engine"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:oredrill_4_controller",
+      "text": "Чтобы начать строить рудный бур, найдите $(l:oredrills/ore_clusters)рудный кластер$(/l) и сначала поставьте стержень(и). Чтобы собрать многоблочную конструкцию, нажмите $(thing)ПКМ$() по контроллеру."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Минимальный бур",
+      "anchor": "tinydrill",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:oredrill_rod",
+          "R": "techguns:oredrill_controller",
+          "C": "techguns:ore_cluster_common_metal"
+        },
+        "pattern": [
+          [
+            "C"
+          ],
+          [
+            "0"
+          ],
+          [
+            "R"
+          ]
+        ],
+        "enable_visualize": false
+      }
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Размеры",
+      "text": "Самый маленький бур — это 1 контроллер и 1 стержень. Для всех бо́льших размеров нужна рама. Должны выполняться условия:$(li)длина стержней+двигателей <= 16 $(li)длина стержня >= диаметр бура$(li)высота блока двигателей >= радиус$(li)длина стержня >= длина двигателей"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Малый рудный бур",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:oredrill_controller",
+          "R": "techguns:oredrill_rod",
+          "F": "techguns:oredrill_frame",
+          "S": "techguns:oredrill_scaffold",
+          "E": "techguns:oredrill_engine",
+          "C": "techguns:ore_cluster_common_metal"
+        },
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "FFF",
+            "FRF",
+            "FFF"
+          ],
+          [
+            "FSF",
+            "SRS",
+            "FSF"
+          ],
+          [
+            "FSF",
+            "SES",
+            "FSF"
+          ],
+          [
+            "FFF",
+            "FEF",
+            "FFF"
+          ],
+          [
+            "   ",
+            " 0 ",
+            "   "
+          ]
+        ],
+        "enable_visualize": false
+      }
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Средний рудный бур",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:oredrill_controller",
+          "R": "techguns:oredrill_rod",
+          "F": "techguns:oredrill_frame",
+          "S": "techguns:oredrill_scaffold",
+          "E": "techguns:oredrill_engine",
+          "C": "techguns:ore_cluster_common_metal"
+        },
+        "pattern": [
+          [
+            " FFFFFFFF ",
+            " FSSSSSSF ",
+            " FSSSSSSF ",
+            " FSSSSSSF ",
+            " FFFFFFFF "
+          ],
+          [
+            " FSSSSSSF ",
+            " S    EEE ",
+            " S    EEE ",
+            " S    EEE ",
+            " FSSSSSSF "
+          ],
+          [
+            " FSSSSSSF ",
+            " S    EEE ",
+            "CRRRRREEE0",
+            " S    EEE ",
+            " FSSSSSSF "
+          ],
+          [
+            " FSSSSSSF ",
+            " S    EEE ",
+            " S    EEE ",
+            " S    EEE ",
+            " FSSSSSSF "
+          ],
+          [
+            " FFFFFFFF ",
+            " FSSSSSSF ",
+            " FSSSSSSF ",
+            " FSSSSSSF ",
+            " FFFFFFFF "
+          ]
+        ],
+        "enable_visualize": false
+      }
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Максимальный бур",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:oredrill_controller",
+          "R": "techguns:oredrill_rod",
+          "F": "techguns:oredrill_frame",
+          "S": "techguns:oredrill_scaffold",
+          "E": "techguns:oredrill_engine",
+          "C": "techguns:ore_cluster_common_metal"
+        },
+        "pattern": [
+          [
+            "         ",
+            "         ",
+            "         ",
+            "         ",
+            "    C    ",
+            "         ",
+            "         ",
+            "         ",
+            "         "
+          ],
+          [
+            "FFFFFFFFF",
+            "FSSSSSSSF",
+            "FSSSSSSSF",
+            "FSSSSSSSF",
+            "FSSSRSSSF",
+            "FSSSSSSSF",
+            "FSSSSSSSF",
+            "FSSSSSSSF",
+            "FFFFFFFFF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FFFFFFFFF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FFFFFFFFF"
+          ],
+          [
+            "         ",
+            "         ",
+            "         ",
+            "         ",
+            "    0    ",
+            "         ",
+            "         ",
+            "         ",
+            "         "
+          ]
+        ],
+        "enable_visualize": false
+      }
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Буровая головка",
+      "item": "techguns:oredrillmedium_steel",
+      "anchor": "drill",
+      "text": "Для работы бура нужен предмет-бур. В зависимости от размера конструкции нужен бур разного размера. Если навести курсор на шкалу прогресса в интерфейсе, будет показан радиус бура. Радиусу 0 (только контроллер и стержень) нужен малый бур, радиусам 1 и 2 — средний, а 3 и 4 — большой."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Буровая головка",
+      "item": "techguns:oredrillmedium_obsidiansteel",
+      "anchor": "drill",
+      "text": "Материал бура определяет его уровень добычи. У железа уровень добычи 1, у обсидиановой стали 2, у карбона 3."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Энергия",
+      "text": "Многоблочный бур можно питать по кабелям или загружая предметы, годные как топливо для печи, либо жидкое топливо. Энергия из предметов рассчитывается по времени горения в печи. Ценность жидкого топлива задаётся в файле настроек. Каждая жидкость, отмеченная в настройках как «топливо», добавляется с одинаковой ценностью. Формулы объяснены $(l:oredrills/ore_clusters#power)здесь$(/l)."
+    }
+  ]
+}

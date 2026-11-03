@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "igi",
+    "geg",
+    "iri"
+  ],
+  "key": {
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "e": {
+      "item": "techguns:electricengine"
+    },
+    "g": {
+      "item": "minecraft:glass_bottle"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:chem_lab"
+  }
+}

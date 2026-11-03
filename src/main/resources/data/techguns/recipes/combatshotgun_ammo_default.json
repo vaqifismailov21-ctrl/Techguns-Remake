@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:combatshotgun"
+    },
+    {
+      "item": "techguns:shotgunrounds"
+    }
+  ],
+  "result": {
+    "item": "techguns:combatshotgun",
+    "nbt": "{ammo:8s,ammovariant:\"default\",camo:0b}"
+  }
+}

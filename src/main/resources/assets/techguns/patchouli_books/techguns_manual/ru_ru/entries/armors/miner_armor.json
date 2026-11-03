@@ -1,0 +1,27 @@
+{
+  "name": "T1: Броня шахтёра",
+  "icon": "techguns:t1_miner_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Броня шахтёра первого уровня подходит для ранней добычи ресурсов. Среди комплектов T1 она даёт самый большой бонус к скорости копания."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Броня шахтёра",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t1_miner_boots'}, {Count:1,id:'techguns:t1_miner_leggings'}, {Count:1,id:'techguns:t1_miner_chestplate'}, {Count:1,id:'techguns:t1_miner_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t1_miner_helmet",
+      "recipe2": "techguns:t1_miner_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t1_miner_leggings",
+      "recipe2": "techguns:t1_miner_boots"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "T1: Солдатская броня",
+  "icon": "techguns:t1_combat_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Солдатская броня первого уровня предназначена для ранних сражений. Среди комплектов T1 она обеспечивает самую высокую защиту."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Солдатская броня",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t1_combat_boots'}, {Count:1,id:'techguns:t1_combat_leggings'}, {Count:1,id:'techguns:t1_combat_chestplate'}, {Count:1,id:'techguns:t1_combat_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t1_combat_helmet",
+      "recipe2": "techguns:t1_combat_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t1_combat_leggings",
+      "recipe2": "techguns:t1_combat_boots"
+    }
+  ]
+}

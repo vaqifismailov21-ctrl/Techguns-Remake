@@ -1,0 +1,46 @@
+package techguns;
+public final class TGNpcGunSettings { public static void setup(){
+ TGuns.handcannon.get().setAI(12.0f,60,0,0);
+ TGuns.sawedoff.get().setAI(12.0f,60,2,20);
+ TGuns.revolver.get().setAI(18.0f,90,6,20);
+ TGuns.ak47.get().setAI(24.0f,30,3,3);
+ TGuns.m4.get().setAI(24.0f,30,3,3);
+ TGuns.thompson.get().setAI(18.0f,45,3,3);
+ TGuns.pistol.get().setAI(24.0f,30,3,10);
+ TGuns.lmg.get().setAI(24.0f,40,6,3);
+ TGuns.boltaction.get().setAI(36.0f,60,0,0);
+ TGuns.flamethrower.get().setAI(12.0f,20,5,5);
+ TGuns.biogun.get().setAI(18.0f,30,0,0);
+ TGuns.rocketlauncher.get().setAI(24.0f,80,0,0);
+ TGuns.minigun.get().setAI(24.0f,40,10,1);
+ TGuns.combatshotgun.get().setAI(12.0f,30,0,0);
+ TGuns.grimreaper.get().setAI(24.0f,120,4,30);
+ TGuns.pdw.get().setAI(18.0f,30,4,2);
+ TGuns.as50.get().setAI(36.0f,30,0,0);
+ TGuns.teslagun.get().setAI(24.0f,30,0,0);
+ TGuns.m4_infiltrator.get().setAI(24.0f,30,3,3);
+ TGuns.goldenrevolver.get().setAI(24.0f,60,6,15);
+ TGuns.pulserifle.get().setAI(24.0f,30,0,0);
+ TGuns.lasergun.get().setAI(24.0f,30,0,0);
+ TGuns.alienblaster.get().setAI(24.0f,40,0,0);
+ TGuns.netherblaster.get().setAI(24.0f,40,0,0);
+ TGuns.blasterrifle.get().setAI(24.0f,30,5,3);
+ TGuns.powerhammer.get().setAI(3.0f,30,0,0);
+ TGuns.grenadelauncher.get().setAI(24.0f,40,3,20);
+ TGuns.aug.get().setAI(24.0f,30,3,3);
+ TGuns.sonicshotgun.get().setAI(18.0f,40,0,0);
+ TGuns.chainsaw.get().setAI(3.0f,10,0,0);
+ TGuns.scatterbeamrifle.get().setAI(18.0f,30,0,0);
+ TGuns.nucleardeathray.get().setAI(24.0f,40,5,5);
+ TGuns.mac10.get().setAI(18.0f,35,3,2);
+ TGuns.mibgun.get().setAI(24.0f,60,0,0);
+ TGuns.scar.get().setAI(24.0f,30,5,2);
+ TGuns.vector.get().setAI(18.0f,35,3,2);
+ TGuns.gaussrifle.get().setAI(36.0f,30,0,0);
+ TGuns.guidedmissilelauncher.get().setAI(24.0f,80,0,0);
+ TGuns.miningdrill.get().setAI(3.0f,10,0,0);
+ TGuns.tfg.get().setAI(18.0f,30,0,0);
+ TGuns.laserpistol.get().setAI(24.0f,30,0,0);
+ TGuns.shishkebap.get().setAI(3.0f,10,0,0);
+ }private TGNpcGunSettings(){}
+}

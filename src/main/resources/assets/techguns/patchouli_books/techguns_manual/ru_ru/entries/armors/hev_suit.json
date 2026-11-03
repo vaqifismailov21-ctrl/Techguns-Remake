@@ -1,0 +1,27 @@
+{
+  "name": "T3: Костюм HEV",
+  "icon": "techguns:t3_miner_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Костюм HEV — $(l:armor_mechanics#powered_armors)энергозависимая$(/l) броня T3 для добычи ресурсов в опасных условиях. Для питания нужны $(thing)энергетические ячейки$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Костюм HEV",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t3_miner_boots'}, {Count:1,id:'techguns:t3_miner_leggings'}, {Count:1,id:'techguns:t3_miner_chestplate'}, {Count:1,id:'techguns:t3_miner_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t3_miner_helmet",
+      "recipe2": "techguns:t3_miner_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t3_miner_leggings",
+      "recipe2": "techguns:t3_miner_boots"
+    }
+  ]
+}

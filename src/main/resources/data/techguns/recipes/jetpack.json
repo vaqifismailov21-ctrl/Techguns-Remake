@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "f f",
+    "pgp",
+    "rmr"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/obsidian_steel"
+    },
+    "r": {
+      "item": "techguns:rocket"
+    },
+    "f": {
+      "item": "techguns:fueltank"
+    },
+    "g": {
+      "item": "techguns:glider"
+    },
+    "m": {
+      "item": "techguns:mechanicalpartsobsidiansteel"
+    }
+  },
+  "result": {
+    "item": "techguns:jetpack"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ici",
+    "c c",
+    "c c"
+  ],
+  "key": {
+    "c": {
+      "item": "techguns:heavycloth"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:t1_miner_leggings"
+  }
+}

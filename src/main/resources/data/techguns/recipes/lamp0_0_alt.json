@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "techguns:lamp_white"
+    }
+  ],
+  "result": {
+    "item": "techguns:lamp_yellow"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "T3: Экзокостюм",
+  "icon": "techguns:t3_exo_chestplate",
+  "category": "techguns:armors",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Экзокостюм — $(l:armor_mechanics#powered_armors)энергозависимая$(/l) броня T3 с большими бонусами к подвижности. Использует $(thing)энергетические ячейки$(). Создаётся из $(l:armors/advanced_combat_armor)улучшенной боевой брони$(/l)."
+    },
+    {
+      "type": "patchouli:entity",
+      "name": "Экзокостюм",
+      "entity": "minecraft:armor_stand{ShowArms:1,NoBasePlate:1,ArmorItems:[{Count:1,id:'techguns:t3_exo_boots'}, {Count:1,id:'techguns:t3_exo_leggings'}, {Count:1,id:'techguns:t3_exo_chestplate'}, {Count:1,id:'techguns:t3_exo_helmet'}]}",
+      "text": ""
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t3_exo_helmet",
+      "recipe2": "techguns:t3_exo_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:t3_exo_leggings",
+      "recipe2": "techguns:t3_exo_boots"
+    }
+  ]
+}

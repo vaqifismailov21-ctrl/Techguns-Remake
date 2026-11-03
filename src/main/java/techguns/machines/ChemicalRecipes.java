@@ -1,0 +1,40 @@
+package techguns.machines;
+import java.util.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.FluidStack;
+import techguns.*;
+/** Original standalone chemical recipes; external-mod alternatives are recorded separately. */
+public final class ChemicalRecipes {
+ private static List<ChemicalRecipe> recipes;
+ public static List<ChemicalRecipe> all(){if(recipes==null){recipes=new ArrayList<>();
+        recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:dusts/redstone"),Ingredient.of(new ItemStack(Items.COAL,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,250),FluidStack.EMPTY,new ItemStack(Items.GUNPOWDER,1),true,5));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:item_raw_rubber"),Ingredient.of(new ItemStack(Items.COAL,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,1000),FluidStack.EMPTY,new ItemStack(TGItems.RAW_PLASTIC.get(),1),true,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.BIOMASS.get())),Ingredient.of(new ItemStack(Items.GUNPOWDER,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,1000),new FluidStack(TGFluids.ACID.get(),1000),ItemStack.EMPTY,true,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:gunpowder"),MachineRecipes.tag("forge:gems/lapis"),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.LAVA,500),FluidStack.EMPTY,new ItemStack(TGItems.TGX.get(),1),true,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.FUEL_TANK_EMPTY.get())),Ingredient.EMPTY,Ingredient.EMPTY},new int[]{1,0,0},new FluidStack(Fluids.LAVA,500),FluidStack.EMPTY,new ItemStack(TGItems.FUEL_TANK.get()),false,1));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.ROCKET.get(),1)),Ingredient.EMPTY,Ingredient.EMPTY},new int[]{1,0,0},new FluidStack(Fluids.LAVA,250),FluidStack.EMPTY,new ItemStack(TGItems.ROCKET_HIGH_VELOCITY.get(),1),false,5));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:gems/diamond"),Ingredient.of(new ItemStack(Items.BLAZE_POWDER,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.LAVA,1000),FluidStack.EMPTY,new ItemStack(TGItems.CARBON_FIBERS.get(),2),true,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("minecraft:logs"),Ingredient.EMPTY,Ingredient.EMPTY},new int[]{1,0,0},new FluidStack(Fluids.WATER,1000),FluidStack.EMPTY,new ItemStack(TGItems.RAW_RUBBER.get(),1),false,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.BIOMASS.get(),1)),Ingredient.EMPTY,Ingredient.of(new ItemStack(TGItems.BIO_TANK_EMPTY.get(),1))},new int[]{1,0,1},new FluidStack(Fluids.WATER,500),FluidStack.EMPTY,new ItemStack(TGItems.BIO_TANK.get(),1),false,1));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.COAL,1)),Ingredient.EMPTY,Ingredient.of(new ItemStack(TGItems.COMPRESSED_AIR_TANK_EMPTY.get(),1))},new int[]{1,0,1},new FluidStack(Fluids.WATER,250),FluidStack.EMPTY,new ItemStack(TGItems.COMPRESSED_AIR_TANK.get(),1),true,5));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Blocks.NETHERRACK,1)),Ingredient.of(new ItemStack(Blocks.SOUL_SAND,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.LAVA,1000),FluidStack.EMPTY,new ItemStack(TGItems.NETHER_CHARGE.get(),4),true,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:ores/uranium"),Ingredient.EMPTY,Ingredient.EMPTY},new int[]{1,0,0},new FluidStack(TGFluids.ACID.get(),250),FluidStack.EMPTY,new ItemStack(TGItems.YELLOWCAKE.get(),3),false,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.ENRICHED_URANIUM.get())),Ingredient.EMPTY,Ingredient.of(new ItemStack(TGItems.NUCLEAR_POWERCELL_EMPTY.get()))},new int[]{1,0,1},new FluidStack(Fluids.WATER,1000),FluidStack.EMPTY,new ItemStack(TGItems.NUCLEAR_POWERCELL.get(),1),true,40));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.GREEN_DYE,1)),MachineRecipes.tag("forge:item_raw_rubber"),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(net.minecraftforge.common.ForgeMod.MILK.get(),500),FluidStack.EMPTY,new ItemStack(Items.SLIME_BALL,1),true,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.LEATHER,2)),MachineRecipes.tag("forge:slimeballs"),Ingredient.EMPTY},new int[]{2,1,0},new FluidStack(TGFluids.ACID.get(),500),FluidStack.EMPTY,new ItemStack(TGItems.TREATED_LEATHER.get(),2),true,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.ROTTEN_FLESH,1)),Ingredient.EMPTY,Ingredient.EMPTY},new int[]{1,0,0},new FluidStack(Fluids.WATER,500),FluidStack.EMPTY,new ItemStack(Items.LEATHER,1),false,15));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Blocks.GRAVEL,1)),Ingredient.of(new ItemStack(Blocks.SAND,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,250),FluidStack.EMPTY,new ItemStack(Blocks.LIGHT_GRAY_CONCRETE,2),false,5));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Blocks.GRAVEL,1)),Ingredient.of(new ItemStack(Blocks.DIRT,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,250),FluidStack.EMPTY,new ItemStack(Blocks.CLAY,2),false,5));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.RIFLE_ROUNDS.get())),Ingredient.of(new ItemStack(Items.BLAZE_POWDER,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.LAVA,250),FluidStack.EMPTY,new ItemStack(TGItems.RIFLE_ROUNDS_INCENDIARY.get(),1),false,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.PISTOL_ROUNDS.get())),Ingredient.of(new ItemStack(Items.BLAZE_POWDER,1)),Ingredient.EMPTY},new int[]{2,1,0},new FluidStack(Fluids.LAVA,250),FluidStack.EMPTY,new ItemStack(TGItems.PISTOL_ROUNDS_INCENDIARY.get(),2),false,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.SNIPER_ROUNDS.get())),Ingredient.of(new ItemStack(Items.BLAZE_POWDER,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.LAVA,250),FluidStack.EMPTY,new ItemStack(TGItems.SNIPER_ROUNDS_INCENDIARY.get(),1),false,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.SHOTGUN_ROUNDS.get())),Ingredient.of(new ItemStack(Items.BLAZE_POWDER,1)),Ingredient.EMPTY},new int[]{8,1,0},new FluidStack(Fluids.LAVA,250),FluidStack.EMPTY,new ItemStack(TGItems.SHOTGUN_ROUNDS_INCENDIARY.get(),8),false,25));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.SUGAR,1)),Ingredient.of(new ItemStack(Items.GLISTERING_MELON_SLICE,1)),Ingredient.of(new ItemStack(Items.GLASS_BOTTLE,1))},new int[]{4,1,1},new FluidStack(net.minecraftforge.common.ForgeMod.MILK.get(),1000),FluidStack.EMPTY,new ItemStack(TGItems.RAD_PILLS.get(),4),true,20));
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.NETHER_WART,1)),Ingredient.of(new ItemStack(Items.GLISTERING_MELON_SLICE,1)),Ingredient.of(new ItemStack(TGItems.INFUSION_BAG.get(),1))},new int[]{1,1,1},new FluidStack(TGFluids.ACID.get(),250),FluidStack.EMPTY,new ItemStack(TGItems.RAD_AWAY.get(),1),true,25));
+}return Collections.unmodifiableList(recipes);}
+ public static boolean accepts(int slot,ItemStack stack){for(var r:all()){if(slot<r.inputs().length&&r.amounts()[slot]>0&&r.inputs()[slot].test(stack))return true;if(r.swap()&&slot<2&&r.amounts()[1-slot]>0&&r.inputs()[1-slot].test(stack))return true;}return false;}
+ private ChemicalRecipes(){}
+}

@@ -1,0 +1,15 @@
+{
+  "type": "techguns:ammo_change_crafting",
+  "ingredients": [
+    {
+      "item": "techguns:goldenrevolver"
+    },
+    {
+      "item": "techguns:pistolrounds"
+    }
+  ],
+  "result": {
+    "item": "techguns:goldenrevolver",
+    "nbt": "{ammo:6s,ammovariant:\"default\",camo:0b}"
+  }
+}
