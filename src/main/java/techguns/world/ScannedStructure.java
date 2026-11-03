@@ -2,7 +2,7 @@ package techguns.world;
 import java.util.*;
 import com.google.gson.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -30,7 +30,7 @@ public final class ScannedStructure {
     private static Rotation rotation(int turns){return switch(Math.floorMod(turns,4)){case 1->Rotation.COUNTERCLOCKWISE_90;case 2->Rotation.CLOCKWISE_180;case 3->Rotation.CLOCKWISE_90;default->Rotation.NONE;};}
     private static <T extends Comparable<T>> BlockState property(BlockState state,Property<T> property,String value){return state.setValue(property,property.getValue(value).orElseThrow(()->new IllegalStateException("Invalid structure property "+property.getName()+"="+value)));}
     private static BlockState state(JsonObject data,int turns){
-        String id=data.get("name").getAsString();var location=ResourceLocation.parse(id);if(!ForgeRegistries.BLOCKS.containsKey(location))throw new IllegalStateException("Unknown original structure block "+id);
+        String id=data.get("name").getAsString();var location=new ResourceLocation(id);if(!ForgeRegistries.BLOCKS.containsKey(location))throw new IllegalStateException("Unknown original structure block "+id);
         var state=ForgeRegistries.BLOCKS.getValue(location).defaultBlockState();
         if(data.has("properties"))for(var entry:data.getAsJsonObject("properties").entrySet()){
             var property=state.getBlock().getStateDefinition().getProperty(entry.getKey());if(property==null)throw new IllegalStateException("Missing structure property "+id+"/"+entry.getKey());state=property(state,property,entry.getValue().getAsString());
@@ -90,11 +90,11 @@ public final class ScannedStructure {
         var be=world.blockEntity(pos);boolean changed=false;
         if(entry.has("spawner")&&be instanceof NpcSpawnerEntity spawner){
             var data=entry.getAsJsonObject("spawner");spawner.setParams(data.get("remaining").getAsInt(),data.get("maxActive").getAsInt(),data.get("delay").getAsInt(),data.get("range").getAsInt());
-            for(var type:data.getAsJsonArray("mobs")){var mob=type.getAsJsonObject();var key=ResourceLocation.parse(mob.get("entity").getAsString());if(!ForgeRegistries.ENTITY_TYPES.containsKey(key))throw new IllegalStateException("Missing structure guard "+key);spawner.addMobType(ForgeRegistries.ENTITY_TYPES.getValue(key),mob.get("weight").getAsInt());}
-            if(data.has("weapon"))spawner.setWeaponOverride(new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(data.get("weapon").getAsString()))));changed=true;
+            for(var type:data.getAsJsonArray("mobs")){var mob=type.getAsJsonObject();var key=new ResourceLocation(mob.get("entity").getAsString());if(!ForgeRegistries.ENTITY_TYPES.containsKey(key))throw new IllegalStateException("Missing structure guard "+key);spawner.addMobType(ForgeRegistries.ENTITY_TYPES.getValue(key),mob.get("weight").getAsInt());}
+            if(data.has("weapon"))spawner.setWeaponOverride(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(data.get("weapon").getAsString()))));changed=true;
         }
-        if(entry.has("lootTable")&&be instanceof RandomizableContainerBlockEntity chest){chest.setLootTable(ResourceLocation.parse(entry.get("lootTable").getAsString()),random.nextLong());changed=true;}
-        if(entry.has("vanillaSpawner")&&be instanceof SpawnerBlockEntity spawner){var type=ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse(entry.get("vanillaSpawner").getAsString()));spawner.setEntityId(type,random);changed=true;}
+        if(entry.has("lootTable")&&be instanceof RandomizableContainerBlockEntity chest){chest.setLootTable(new ResourceLocation(entry.get("lootTable").getAsString()),random.nextLong());changed=true;}
+        if(entry.has("vanillaSpawner")&&be instanceof SpawnerBlockEntity spawner){var type=ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(entry.get("vanillaSpawner").getAsString()));spawner.getSpawner().setEntityId(type);changed=true;}
         if(changed)world.saveBlockEntity(pos,be);
     }
     public List<BlockPos> place(WorldGenLevel world,BlockPos origin,int turns,RandomSource random){
@@ -107,8 +107,8 @@ public final class ScannedStructure {
         int cx=sizeX/2,cz=sizeZ/2;
         for(int pass=0;pass<2;pass++)for(var element:blocks){var block=element.getAsJsonArray();var original=palette.get(block.get(3).getAsInt()).getAsJsonObject();if((original.has("pass")?original.get("pass").getAsInt():0)!=pass)continue;
             var pos=origin.above(heightOffset).offset(rotate(new BlockPos(block.get(0).getAsInt(),block.get(1).getAsInt(),block.get(2).getAsInt()),cx,cz,turns));var entry=choose(original,random,structureRandom,biome,0);plan.setBlockState(pos,state(entry.getAsJsonObject("state"),turns),2);
-            if(entry.has("spawner")){var data=entry.getAsJsonObject("spawner");var types=new LinkedHashMap<String,Integer>();for(var raw:data.getAsJsonArray("mobs")){var mob=raw.getAsJsonObject();String name=mob.get("entity").getAsString();if(!ForgeRegistries.ENTITY_TYPES.containsKey(ResourceLocation.parse(name)))throw new IllegalStateException("Unknown source guard "+name);types.put(name,mob.get("weight").getAsInt());}var tag=techguns.world.structures.LegacyStructurePlan.guardData(data.get("remaining").getAsInt(),data.get("maxActive").getAsInt(),data.get("delay").getAsInt(),data.get("range").getAsInt(),types);
-                if(data.has("weapon"))tag.put("weapon",new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(data.get("weapon").getAsString())))).save(new net.minecraft.nbt.CompoundTag()));plan.setBlockData(pos,tag);
+            if(entry.has("spawner")){var data=entry.getAsJsonObject("spawner");var types=new LinkedHashMap<String,Integer>();for(var raw:data.getAsJsonArray("mobs")){var mob=raw.getAsJsonObject();String name=mob.get("entity").getAsString();if(!ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(name)))throw new IllegalStateException("Unknown source guard "+name);types.put(name,mob.get("weight").getAsInt());}var tag=techguns.world.structures.LegacyStructurePlan.guardData(data.get("remaining").getAsInt(),data.get("maxActive").getAsInt(),data.get("delay").getAsInt(),data.get("range").getAsInt(),types);
+                if(data.has("weapon"))tag.put("weapon",new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(data.get("weapon").getAsString())))).save(new net.minecraft.nbt.CompoundTag()));plan.setBlockData(pos,tag);
             }
             if(entry.has("lootTable")){var data=new net.minecraft.nbt.CompoundTag();data.putString("LootTable",entry.get("lootTable").getAsString());data.putLong("LootTableSeed",random.nextLong());plan.setBlockData(pos,data);}
             if(entry.has("vanillaSpawner"))throw new IllegalStateException("Unadapted native vanilla spawner plan: "+id);
@@ -132,7 +132,7 @@ public final class ScannedStructure {
             var entry=palette.get(block.get(3).getAsInt()).getAsJsonObject();if(placementPass(entry)!=0)continue;int solid=0;
             for(int depth=1;depth<=foundation;depth++){
                 var pos=base.offset(rotate(new BlockPos(block.get(0).getAsInt(),-depth,block.get(2).getAsInt()),cx,cz,turns));
-                if(world.get(pos).canBeReplaced()){place(world,pos,entry,turns,random,structureRandom,biome,index);solid=0;}else if(netherFoundation&&++solid>=2)break;
+                if(world.get(pos).getMaterial().isReplaceable()){place(world,pos,entry,turns,random,structureRandom,biome,index);solid=0;}else if(netherFoundation&&++solid>=2)break;
             }
         }
         for(int pass=0;pass<2;pass++)for(var element:blocks){var block=element.getAsJsonArray();var entry=palette.get(block.get(3).getAsInt()).getAsJsonObject();if(placementPass(entry)!=pass)continue;var pos=base.offset(rotate(new BlockPos(block.get(0).getAsInt(),block.get(1).getAsInt(),block.get(2).getAsInt()),cx,cz,turns));place(world,pos,entry,turns,random,structureRandom,biome,index);placed.add(pos);}

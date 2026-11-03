@@ -19,7 +19,7 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 		if (gun.shootsWithLeftClick()) {
 			return true;
 		} else {
-			if (player.level().isClientSide) {
+			if (player.level.isClientSide) {
 				
 				gun.animateMelee(player);
 			}
@@ -43,12 +43,12 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 						int i = 0;
 						i = i + EnchantmentHelper.getKnockbackBonus(player);
 						if (player.isSprinting() && flag) {
-							player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK,
+							player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK,
 									player.getSoundSource(), 1.0F, 1.0F);
 							++i;
 							flag1 = true;
 						}
-						boolean flag2 = flag && player.fallDistance > 0.0F && !player.onGround() && !player.onClimbable() && !player.isInWater()
+						boolean flag2 = flag && player.fallDistance > 0.0F && !player.isOnGround() && !player.onClimbable() && !player.isInWater()
 								&& !player.hasEffect(MobEffects.BLINDNESS) && !player.isPassenger() && targetEntity instanceof LivingEntity;
 						flag2 = flag2 && !player.isSprinting();
 						if (flag2) {
@@ -57,7 +57,7 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 						f = f + f1;
 						boolean flag3 = false;
 						double d0 = (double) (player.walkDist - player.walkDistO);
-						if (flag && !flag2 && !flag1 && player.onGround() && d0 < (double) player.getSpeed()) {
+						if (flag && !flag2 && !flag1 && player.isOnGround() && d0 < (double) player.getSpeed()) {
 							ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
 							flag3= gun.hasSwordSweep() && gun.getCurrentAmmo(stack)>0; 
 							
@@ -95,7 +95,7 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 							}
 							if (flag3) {
 								float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(player) * f;
-								for (LivingEntity entitylivingbase : player.level().getEntitiesOfClass(LivingEntity.class,
+								for (LivingEntity entitylivingbase : player.level.getEntitiesOfClass(LivingEntity.class,
 										targetEntity.getBoundingBox().inflate(1.0D, 0.25D, 1.0D))) {
 									if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isAlliedTo(entitylivingbase)
 											&& player.distanceToSqr(entitylivingbase) < 9.0D) {
@@ -121,16 +121,16 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 								targetEntity.setDeltaMovement(targetEntity.getDeltaMovement().x,targetEntity.getDeltaMovement().y,d3);
 							}
 							if (flag2) {
-								player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, player.getSoundSource(),
+								player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, player.getSoundSource(),
 										1.0F, 1.0F);
 								player.crit(targetEntity);
 							}
 							if (!flag2 && !flag3) {
 								if (flag) {
-									player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_STRONG,
+									player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_STRONG,
 											player.getSoundSource(), 1.0F, 1.0F);
 								} else {
-									player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_WEAK,
+									player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_WEAK,
 											player.getSoundSource(), 1.0F, 1.0F);
 								}
 							}
@@ -159,15 +159,15 @@ public static boolean attack(LegacyMeleeWeapon gun,ItemStack stack,Player player
 								if (j > 0) {
 									targetEntity.setSecondsOnFire(j * 4);
 								}
-								if (player.level() instanceof ServerLevel && f5 > 2.0F) {
+								if (player.level instanceof ServerLevel && f5 > 2.0F) {
 									int k = (int) ((double) f5 * 0.5D);
-									((ServerLevel) player.level()).sendParticles(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getX(),
+									((ServerLevel) player.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getX(),
 											targetEntity.getY() + (double) (targetEntity.getBbHeight() * 0.5F), targetEntity.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
 								}
 							}
 							player.causeFoodExhaustion(0.1F);
 						} else {
-							player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(),
+							player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(),
 									1.0F, 1.0F);
 							if (flag4) {
 								targetEntity.clearFire();

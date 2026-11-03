@@ -2,7 +2,7 @@ package techguns.client.render.tileentities;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
 import techguns.oredrill.OreDrillTileEntMaster;
 
 /**
@@ -22,9 +22,9 @@ import techguns.oredrill.OreDrillTileEntMaster;
 public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileEntMaster> {
     private static final int DRILLERCUBESPERBLOCK=4;
     private static final ResourceLocation[] HEADS={
-        ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/drillhead.png"),
-        ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/drillhead_obsidian.png"),
-        ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/drillhead_carbon.png")};
+        new ResourceLocation("techguns","textures/blocks/drillhead.png"),
+        new ResourceLocation("techguns","textures/blocks/drillhead_obsidian.png"),
+        new ResourceLocation("techguns","textures/blocks/drillhead_carbon.png")};
     public OreDrillRenderer(BlockEntityRendererProvider.Context context){}
 
     public static int[] offset(Direction dir,int distance){int[] pos=new int[3];int axis=dir.getAxis().ordinal();pos[axis]+=dir.getAxisDirection()==Direction.AxisDirection.POSITIVE?distance:-distance;return pos;}
@@ -37,12 +37,12 @@ public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileE
         pose.translate(0.5f-vec[0],1.25f-vec[1],0.5f-vec[2]);
         pose.pushPose();
         int rot=(int)(tile.getLevel().getGameTime()%360);
-        if(dir[1]<0)pose.mulPose(Axis.ZP.rotationDegrees(180));
+        if(dir[1]<0)pose.mulPose(Vector3f.ZP.rotationDegrees(180));
         else if(dir[1]>0)pose.translate(0,-1.5f,0);
-        else if(dir[0]!=0){pose.mulPose(Axis.ZP.rotationDegrees(-90f*dir[0]));pose.translate(dir[0]*0.75f,0,0);pose.translate(0,-0.75f,0);}
-        else if(dir[2]!=0){pose.mulPose(Axis.XP.rotationDegrees(90f*dir[2]));pose.translate(0,0,dir[2]*0.75f);pose.translate(0,-0.75f,0);}
+        else if(dir[0]!=0){pose.mulPose(Vector3f.ZP.rotationDegrees(-90f*dir[0]));pose.translate(dir[0]*0.75f,0,0);pose.translate(0,-0.75f,0);}
+        else if(dir[2]!=0){pose.mulPose(Vector3f.XP.rotationDegrees(90f*dir[2]));pose.translate(0,0,dir[2]*0.75f);pose.translate(0,-0.75f,0);}
         pose.translate(0,2*(tile.getEngines()+1),0);
-        if(tile.hasDrill()&&tile.isRedstoneEnabled()&&tile.hasPower())pose.mulPose(Axis.YP.rotationDegrees(rot*10f+((1f/36f)*partialTick)));
+        if(tile.hasDrill()&&tile.isRedstoneEnabled()&&tile.hasPower())pose.mulPose(Vector3f.YP.rotationDegrees(rot*10f+((1f/36f)*partialTick)));
         if(tile.hasDrill()){
             int type=tile.getDrillType();
             if(type>=1&&type<=3)drawDriller(tile,buffers.getBuffer(RenderType.entityCutoutNoCull(HEADS[type-1])),pose,light);
@@ -62,7 +62,7 @@ public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileE
             float factor=(float)Math.log((length*DRILLERCUBESPERBLOCK)-i+1.0f);
             float size=((tile.getDrillRadius()==0?1.0f:tile.getDrillRadius()*1.0f)*factor)*(1.0f/max)*radiusfactor;
             pose.translate(0,height,0);
-            if(rotate){pose.pushPose();pose.mulPose(Axis.YP.rotationDegrees(45));}
+            if(rotate){pose.pushPose();pose.mulPose(Vector3f.YP.rotationDegrees(45));}
             drawCube(vertices,pose,size,pos,size,light);
             if(rotate)pose.popPose();
         }
@@ -76,7 +76,7 @@ public final class OreDrillRenderer implements BlockEntityRenderer<OreDrillTileE
         for(int i=0;i<length;i++){
             float size=0.2f;
             pose.translate(0,height*2,0);
-            pose.pushPose();pose.mulPose(Axis.YP.rotationDegrees(45));
+            pose.pushPose();pose.mulPose(Vector3f.YP.rotationDegrees(45));
             drawCube(vertices,pose,size,pos,size,light);
             pose.popPose();
         }

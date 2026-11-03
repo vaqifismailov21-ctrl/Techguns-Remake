@@ -20,7 +20,7 @@ public final class MilitaryCrateBlock extends Block {
     private static final VoxelShape SHAPE=Block.box(.5,0,.5,15.5,16,15.5);
     public MilitaryCrateBlock(MilitaryCrateKind kind){super(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).strength(4,4).sound(SoundType.STONE).noOcclusion());this.kind=kind;}
     @Override public VoxelShape getShape(BlockState state,BlockGetter world,BlockPos pos,CollisionContext context){return SHAPE;}
-    @Override public List<ItemStack> getDrops(BlockState state,LootParams.Builder builder){
+    @Override public List<ItemStack> getDrops(BlockState state,LootContext.Builder builder){
         var entity=builder.getOptionalParameter(LootContextParams.THIS_ENTITY);
         var tool=builder.getOptionalParameter(LootContextParams.TOOL);if(tool==null)tool=ItemStack.EMPTY;
         if(!(entity instanceof Player)||EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH,tool)>0){
@@ -30,7 +30,7 @@ public final class MilitaryCrateBlock extends Block {
             return List.of(new ItemStack(this));
         }
         int fortune=EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE,tool);
-        var params=new LootParams.Builder(builder.getLevel()).withParameter(LootContextParams.ORIGIN,builder.getParameter(LootContextParams.ORIGIN)).withParameter(LootContextParams.THIS_ENTITY,entity).withLuck(fortune).create(LootContextParamSets.CHEST);
-        return builder.getLevel().getServer().getLootData().getLootTable(ResourceLocation.fromNamespaceAndPath("techguns","blocks/military_crate_"+kind.loot)).getRandomItems(params);
+        var params=new LootContext.Builder(builder.getLevel()).withParameter(LootContextParams.ORIGIN,builder.getParameter(LootContextParams.ORIGIN)).withParameter(LootContextParams.THIS_ENTITY,entity).withLuck(fortune).create(LootContextParamSets.CHEST);
+        return builder.getLevel().getServer().getLootTables().get(new ResourceLocation("techguns","blocks/military_crate_"+kind.loot)).getRandomItems(params);
     }
 }

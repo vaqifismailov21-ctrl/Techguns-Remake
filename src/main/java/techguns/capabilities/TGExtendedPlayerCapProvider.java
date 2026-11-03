@@ -9,7 +9,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import techguns.Techguns;
 
 public final class TGExtendedPlayerCapProvider implements ICapabilitySerializable<CompoundTag> {
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "extended_player");
+    public static final ResourceLocation ID = new ResourceLocation(Techguns.MODID, "extended_player");
     public static final Capability<TGExtendedPlayer> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     private final TGExtendedPlayer data;
     private LazyOptional<TGExtendedPlayer> optional;

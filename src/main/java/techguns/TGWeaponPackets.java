@@ -45,7 +45,7 @@ public final class TGWeaponPackets {
         var stack = player.getItemInHand(message.hand);
         if (stack.getItem() instanceof GenericGun gun) {
             if (message.reload) {
-                if(!gun.tryForcedReload(stack, player.level(), player, message.hand) && gun.getAmmoType().hasMultipleVariants()) {
+                if(!gun.tryForcedReload(stack, player.level, player, message.hand) && gun.getAmmoType().hasMultipleVariants()) {
                     int current=gun.getCurrentAmmoVariant(stack);
                     for(int variant=0;variant<gun.getAmmoType().getVariants().size();variant++) if(variant!=current
                             && java.util.Arrays.stream(gun.getAmmoType().getAmmo(variant)).allMatch(ammo->techguns.util.InventoryUtil.canConsumeAmmoPlayer(player,ammo))) {
@@ -54,7 +54,7 @@ public final class TGWeaponPackets {
                     }
                 }
             }
-            else gun.shootGunPrimary(stack, player.level(), player, message.hand,message.aiming);
+            else gun.shootGunPrimary(stack, player.level, player, message.hand,message.aiming);
         }
     }
     public static void request(InteractionHand hand, boolean reload) { TGPackets.NETWORK.sendToServer(new Shoot(hand, reload)); }

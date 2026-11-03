@@ -14,8 +14,8 @@ public final class ToolProjectile extends GenericProjectile {
     }
     @Override protected TGDamageSource getProjectileDamageSource() {var source=new TGDamageSource(getType()==TGEntities.HAMMER.get()?"powerhammer":"chainsaw",this,shooter,DamageType.PHYSICAL,DeathType.GORE);source.goreChance=1;source.armorPenetration=penetration;return source;}
     private void impact(HitResult hit) {
-        if(level().isClientSide)return;var p=hit.getLocation();
-        level().playSound(null,p.x,p.y,p.z,TGSounds.POWERHAMMER_IMPACT.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);TGProjectilePackets.effect(this,"PowerhammerImpact",p,0,0);
+        if(level.isClientSide)return;var p=hit.getLocation();
+        level.playSound(null,p.x,p.y,p.z,TGSounds.POWERHAMMER_IMPACT.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);TGProjectilePackets.effect(this,"PowerhammerImpact",p,0,0);
     }
     @Override protected void onHitEffect(LivingEntity target,HitResult hit){impact(hit);}
     @Override protected void hitBlock(BlockHitResult hit){impact(hit);}

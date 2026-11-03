@@ -11,7 +11,7 @@ import techguns.tileentities.BioBlobBlockEntity;
 public final class BioBlobBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING=BlockStateProperties.FACING;
     public static final IntegerProperty SIZE=IntegerProperty.create("size",0,2);
-    public BioBlobBlock() {super(Properties.of().strength(2).sound(SoundType.SLIME_BLOCK).lightLevel(s->7).noOcclusion());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.DOWN).setValue(SIZE,0));}
+    public BioBlobBlock() {super(Properties.of(net.minecraft.world.level.material.Material.CLAY).strength(2).sound(SoundType.SLIME_BLOCK).lightLevel(s->7).noOcclusion());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.DOWN).setValue(SIZE,0));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder) {builder.add(FACING,SIZE);}
     @Override public RenderShape getRenderShape(BlockState state) {return RenderShape.MODEL;}
     @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context) {

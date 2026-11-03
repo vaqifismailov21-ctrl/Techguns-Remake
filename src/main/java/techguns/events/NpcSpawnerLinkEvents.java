@@ -14,12 +14,12 @@ import techguns.tileentities.NpcSpawnerEntity;
 public final class NpcSpawnerLinkEvents {
     private static final Set<Mob> LINKED=Collections.newSetFromMap(new WeakHashMap<>());
     public static NpcSpawnerEntity spawner(Mob mob){
-        if(!(mob.level() instanceof ServerLevel world)||!mob.getPersistentData().contains("TGSpawner"))return null;
+        if(!(mob.level instanceof ServerLevel world)||!mob.getPersistentData().contains("TGSpawner"))return null;
         var link=mob.getPersistentData().getCompound("TGSpawner");if(!world.dimension().location().toString().equals(link.getString("dimension")))return null;
         var pos=BlockPos.of(link.getLong("pos"));if(!world.hasChunkAt(pos))return null;
         return world.getBlockEntity(pos) instanceof NpcSpawnerEntity spawner?spawner:null;
     }
-    @SubscribeEvent public static void tick(LivingEvent.LivingTickEvent event){if(event.getEntity() instanceof Mob mob&&!mob.level().isClientSide&&!LINKED.contains(mob)){var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);LINKED.add(mob);}}}
+    @SubscribeEvent public static void tick(LivingEvent.LivingTickEvent event){if(event.getEntity() instanceof Mob mob&&!mob.level.isClientSide&&!LINKED.contains(mob)){var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);LINKED.add(mob);}}}
     @SubscribeEvent(priority=EventPriority.LOWEST) public static void death(LivingDeathEvent event){if(event.getEntity() instanceof Mob mob){var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);spawner.killed(mob);}LINKED.remove(mob);}}
     @SubscribeEvent public static void leave(EntityLeaveLevelEvent event){if(event.getEntity() instanceof Mob mob){
         // Chunk unloading retains the guard's persistent link; only actual removal frees its active slot.

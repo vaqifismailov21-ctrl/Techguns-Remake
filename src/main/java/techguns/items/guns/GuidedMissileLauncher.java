@@ -19,9 +19,9 @@ public final class GuidedMissileLauncher extends GenericGunCharge {
     public Entity traceTarget(Player player) {
         var state=TGExtendedPlayer.find(player).orElse(null);if(state==null)return null;
         Vec3 start=player.getEyePosition(),end=start.add(player.getLookAngle().scale(150));
-        var block=player.level().clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));if(block.getType()!=HitResult.Type.MISS)end=block.getLocation();
+        var block=player.level.clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));if(block.getType()!=HitResult.Type.MISS)end=block.getLocation();
         Entity target=null;double nearest=Double.MAX_VALUE;
-        for(var candidate:player.level().getEntities(player,player.getBoundingBox().expandTowards(player.getLookAngle().scale(150)).inflate(1),e->e.isAlive()&&!e.isSpectator()&&e.isPickable())) {
+        for(var candidate:player.level.getEntities(player,player.getBoundingBox().expandTowards(player.getLookAngle().scale(150)).inflate(1),e->e.isAlive()&&!e.isSpectator()&&e.isPickable())) {
             var hit=candidate.getBoundingBox().inflate(0.5).clip(start,end);if(hit.isEmpty())continue;
             if(candidate instanceof Player victim&&!player.canHarmPlayer(victim))continue;
             double distance=start.distanceToSqr(hit.get());

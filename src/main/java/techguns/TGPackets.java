@@ -26,7 +26,7 @@ import techguns.keybind.TGKeybindsID;
 public final class TGPackets {
     private static final String PROTOCOL = "8";
     public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
+            new ResourceLocation(Techguns.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
 
     public record OpenInventory() {}
     public record KeyPress(byte buttonId, boolean showMessage) {}
@@ -94,9 +94,9 @@ public final class TGPackets {
                 data.enableNightVision = !data.enableNightVision;
                 if (!data.enableNightVision && player.hasEffect(MobEffects.NIGHT_VISION)) {
                     player.removeEffect(MobEffects.NIGHT_VISION);
-                    player.level().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TGSounds.NIGHTVISION_OFF.get(), SoundSource.PLAYERS, 1, 1);
+                    player.level.playSound(null, player.getX(), player.getEyeY(), player.getZ(), TGSounds.NIGHTVISION_OFF.get(), SoundSource.PLAYERS, 1, 1);
                 } else if (data.enableNightVision && TGEquipmentBonuses.getBonus(player, TGArmorBonus.NIGHTVISION, false) > 0) {
-                    player.level().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TGSounds.NIGHTVISION_ON.get(), SoundSource.PLAYERS, 1, 1);
+                    player.level.playSound(null, player.getX(), player.getEyeY(), player.getZ(), TGSounds.NIGHTVISION_ON.get(), SoundSource.PLAYERS, 1, 1);
                 }
                 label = "techguns.armorTooltip.nightvision"; state = data.enableNightVision;
             }

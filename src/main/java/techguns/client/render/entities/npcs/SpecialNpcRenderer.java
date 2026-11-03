@@ -7,5 +7,5 @@ import techguns.entities.npcs.Ghastling;
 public final class SpecialNpcRenderer<T extends Mob> extends MobRenderer<T,SpecialNpcModel<T>> {
     private final boolean bug;
     public SpecialNpcRenderer(EntityRendererProvider.Context context,boolean bug){super(context,new SpecialNpcModel<>(bug?new ModelAlienBug():new ModelGhastling()),bug?.8f:.25f);this.bug=bug;}
-    @Override public ResourceLocation getTextureLocation(T entity){return bug?ResourceLocation.parse("techguns:textures/entity/alienbug.png"):ResourceLocation.parse("minecraft:textures/entity/ghast/"+(entity instanceof Ghastling g&&g.isAttacking()?"ghast_shooting":"ghast")+".png");}
+    @Override public ResourceLocation getTextureLocation(T entity){return bug?new ResourceLocation("techguns:textures/entity/alienbug.png"):new ResourceLocation("minecraft:textures/entity/ghast/"+(entity instanceof Ghastling g&&g.isAttacking()?"ghast_shooting":"ghast")+".png");}
 }

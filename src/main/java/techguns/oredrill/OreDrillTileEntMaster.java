@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -206,7 +206,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
             ItemStack container=fuel.getCraftingRemainingItem();
             if(!container.isEmpty()){
                 int leftover=addItemToOutputs(container.copy());
-                if(leftover>0&&level!=null&&!level.isClientSide)level.addFreshEntity(new ItemEntity(level,worldPosition.getX()+.5,worldPosition.getY()+.5,worldPosition.getZ()+.5,container.copyWithCount(leftover)));
+                if(leftover>0&&level!=null&&!level.isClientSide)level.addFreshEntity(new ItemEntity(level,worldPosition.getX()+.5,worldPosition.getY()+.5,worldPosition.getZ()+.5,techguns.util.Compat.copyWithCount(container, leftover)));
             }
             var rest=fuel.copy();rest.shrink(1);inventory.setStackInSlot(SLOT_FURNACE,rest.isEmpty()?ItemStack.EMPTY:rest);
             fuelBuffer=fuelValue;currentFuelBufferMax=fuelValue;
@@ -229,7 +229,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
     }
     /** Original InventoryUtil.addItemToInventory over the output slots: merge first, then one empty slot. */
     private int addItemToOutputs(ItemStack item){
-        for(int i=SLOT_OUTPUT1;i<SLOT_OUTPUT1+SLOT_OUTPUT_COUNT;i++){var slot=inventory.getStackInSlot(i);if(!slot.isEmpty()&&slot.getItem()==item.getItem()&&slot.getCount()<item.getMaxStackSize()){int total=slot.getCount()+item.getCount();if(total<=item.getMaxStackSize()){inventory.setStackInSlot(i,slot.copyWithCount(total));return 0;}inventory.setStackInSlot(i,slot.copyWithCount(item.getMaxStackSize()));item.setCount(total-item.getMaxStackSize());}}
+        for(int i=SLOT_OUTPUT1;i<SLOT_OUTPUT1+SLOT_OUTPUT_COUNT;i++){var slot=inventory.getStackInSlot(i);if(!slot.isEmpty()&&slot.getItem()==item.getItem()&&slot.getCount()<item.getMaxStackSize()){int total=slot.getCount()+item.getCount();if(total<=item.getMaxStackSize()){inventory.setStackInSlot(i,techguns.util.Compat.copyWithCount(slot, total));return 0;}inventory.setStackInSlot(i,techguns.util.Compat.copyWithCount(slot, item.getMaxStackSize()));item.setCount(total-item.getMaxStackSize());}}
         for(int i=SLOT_OUTPUT1;i<SLOT_OUTPUT1+SLOT_OUTPUT_COUNT;i++)if(inventory.getStackInSlot(i).isEmpty()){inventory.setStackInSlot(i,item.copy());return 0;}
         return item.getCount();
     }
@@ -240,7 +240,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
             ItemStack drill=inventory.getStackInSlot(SLOT_DRILL);
             if(lastDrill.isEmpty()&&drill.isEmpty()){hasDrill=false;needUpdate();return false;}
             else if(lastDrill.isEmpty()){lastDrill=drill;return true;}
-            else if(drill.isEmpty()||!ItemStack.isSameItem(lastDrill,drill)){lastDrill=drill.copy();currentOperation=null;progress=0;totaltime=0;needUpdate();return false;}
+            else if(drill.isEmpty()||!techguns.util.Compat.isSameItem(lastDrill,drill)){lastDrill=drill.copy();currentOperation=null;progress=0;totaltime=0;needUpdate();return false;}
         }
         return true;
     }
@@ -292,7 +292,7 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
         if(entries.isEmpty())return cobblestoneOperation();
         var entry=TGOreClusters.choose(cluster,level.random);
         int power=(int)(8*orePerHour*(1+Math.max(drillRadius-1,0)*0.2)*cluster.powerMultiplier()*TGConfig.oreDrillMultiplierPower);
-        if(!entry.item().isEmpty())return new Operation(entry.item().copyWithCount(1),FluidStack.EMPTY,power);
+        if(!entry.item().isEmpty())return new Operation(techguns.util.Compat.copyWithCount(entry.item(), 1),FluidStack.EMPTY,power);
         return new Operation(ItemStack.EMPTY,new FluidStack(entry.fluid().getFluid(),1000),power);
     }
     protected Operation cobblestoneOperation(){return new Operation(new ItemStack(Blocks.COBBLESTONE),FluidStack.EMPTY,(int)(24*TGConfig.oreDrillMultiplierPower));}
@@ -319,8 +319,8 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
         if(!output.isEmpty()){
             for(int s=SLOT_OUTPUT1;s<SLOT_OUTPUT1+SLOT_OUTPUT_COUNT&&!output.isEmpty();s++){
                 var slot=inventory.getStackInSlot(s);
-                if(slot.isEmpty()){int n=Math.min(output.getCount(),output.getMaxStackSize());inventory.setStackInSlot(s,output.copyWithCount(n));output.shrink(n);}
-                else if(ItemStack.isSameItemSameTags(slot,output)){int n=Math.min(output.getCount(),slot.getMaxStackSize()-slot.getCount());if(n>0){inventory.setStackInSlot(s,slot.copyWithCount(slot.getCount()+n));output.shrink(n);}}
+                if(slot.isEmpty()){int n=Math.min(output.getCount(),output.getMaxStackSize());inventory.setStackInSlot(s,techguns.util.Compat.copyWithCount(output, n));output.shrink(n);}
+                else if(ItemStack.isSameItemSameTags(slot,output)){int n=Math.min(output.getCount(),slot.getMaxStackSize()-slot.getCount());if(n>0){inventory.setStackInSlot(s,techguns.util.Compat.copyWithCount(slot, slot.getCount()+n));output.shrink(n);}}
             }
             if(!output.isEmpty())level.addFreshEntity(new ItemEntity(level,worldPosition.getX()+.5d,worldPosition.getY()+.5d,worldPosition.getZ()+.5d,output));
         }
@@ -385,5 +385,5 @@ public class OreDrillTileEntMaster extends BlockEntity implements MenuProvider {
     }
     @Override public void invalidateCaps(){super.invalidateCaps();automation.invalidate();energyHandle.invalidate();fluidHandle.invalidate();}
     @Override public void reviveCaps(){super.reviveCaps();automation=LazyOptional.of(this::createAutomation);energyHandle=LazyOptional.of(()->energy);fluidHandle=LazyOptional.of(this::createFluidHandler);}
-    static String fluidName(FluidStack stack){var id=BuiltInRegistries.FLUID.getKey(stack.getFluid());return id==null?"":id.toString();}
+    static String fluidName(FluidStack stack){var id=net.minecraft.core.Registry.FLUID.getKey(stack.getFluid());return id==null?"":id.toString();}
 }

@@ -3,7 +3,7 @@ package techguns.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +17,7 @@ import static techguns.client.gui.LegacyMachineGui.*;
  * lamps, textured redstone/security/animal/PvP buttons on side panels, repair bar and the original tooltips.
  */
 public final class TurretScreen extends AbstractContainerScreen<TurretMenu> {
-    public static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/turret_base_gui.png");
+    public static final ResourceLocation TEXTURE=new ResourceLocation("techguns","textures/gui/turret_base_gui.png");
     private final TurretTileEnt tile;
 
     public TurretScreen(TurretMenu menu,Inventory inventory,Component title){super(menu,inventory,title);tile=menu.tile;imageWidth=176;imageHeight=166;}
@@ -31,7 +31,7 @@ public final class TurretScreen extends AbstractContainerScreen<TurretMenu> {
         addRenderableWidget(iconButton(leftPos-22,topPos+100,()->send(TurretTileEnt.BUTTON_ID_PVP_SETTING),TEXTURE,193,()->6+16*tile.getPvpSetting()));
     }
 
-    @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
+    @Override protected void renderBg(com.mojang.blaze3d.vertex.PoseStack graphics__pose,float partial,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         int k=leftPos,l=topPos;
         graphics.blit(TEXTURE,k,l,0,0,imageWidth,imageHeight);
         drawPowered(graphics,k,l,tile.isRedstoneEnabled(),tile.energy.getEnergyStored(),tile.energy.getMaxEnergyStored());
@@ -40,13 +40,13 @@ public final class TurretScreen extends AbstractContainerScreen<TurretMenu> {
         if(tile.turretDeath){int i1=tile.getRepairTimeScaled(52);graphics.blit(TEXTURE,k+116,l+74,177,1,i1+1,4);}
     }
 
-    @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
+    @Override protected void renderLabels(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         graphics.drawString(font,playerInventoryTitle,8,imageHeight-96+2,4210752,false);
         graphics.drawString(font,title,imageWidth/2-font.width(title)/2,6,4210752,false);
     }
 
-    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){
-        renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+    @Override public void render(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
+        renderBackground(graphics.pose());super.render(graphics.pose(),mouseX,mouseY,partial);renderTooltip(graphics.pose(),mouseX,mouseY);
         int mx=mouseX-leftPos,my=mouseY-topPos;
         boolean signal=minecraft.level!=null&&minecraft.level.hasNeighborSignal(tile.getBlockPos());
         List<Component> tooltip=poweredTooltip(mx,my,signal,tile.redstoneBehaviour,tile.getSecurity(),tile.getOwner(),tile.energy.getEnergyStored(),tile.energy.getMaxEnergyStored());

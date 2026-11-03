@@ -5,7 +5,7 @@ plugins {
 
 group = 'techguns'
 version = mod_version
-base { archivesName = 'techguns-1.20.1' }
+base { archivesName = 'Techguns-1.19.2-Forge' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 def flag = { String name -> providers.gradleProperty(name).getOrElse('false').toBoolean() }
@@ -33,18 +33,18 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories { mavenCentral(); maven { url = 'https://maven.blamejared.com' } }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly fg.deobf('mezz.jei:jei-1.20.1-common-api:15.74.0.227')
-    compileOnly fg.deobf('mezz.jei:jei-1.20.1-forge-api:15.74.0.227')
+    compileOnly fg.deobf('mezz.jei:jei-1.19.2-common-api:11.80.0.1093')
+    compileOnly fg.deobf('mezz.jei:jei-1.19.2-forge-api:11.80.0.1093')
     // Optional in the development client: gradlew runClient -PwithJei=true -PwithPatchouli=true
-    if (flag('withJei')) { runtimeOnly fg.deobf('mezz.jei:jei-1.20.1-forge:15.74.0.227') }
-    if (flag('withPatchouli')) { runtimeOnly fg.deobf('vazkii.patchouli:Patchouli:1.20.1-85-FORGE') }
+    if (flag('withJei')) { runtimeOnly fg.deobf('mezz.jei:jei-1.19.2-forge:11.80.0.1093') }
+    if (flag('withPatchouli')) { runtimeOnly fg.deobf('vazkii.patchouli:Patchouli:1.19.2-77') }
 }
 
 // The Techguns manual is a Patchouli book. Patchouli (CC BY-NC-SA 3.0, by Vazkii) is shipped inside the mod jar
 // (Forge Jar-in-Jar), so the book works without installing it separately; a newer separately installed Patchouli wins.
 jarJar.enable()
 dependencies {
-    jarJar('vazkii.patchouli:Patchouli:1.20.1-85-FORGE') { jarJar.ranged(it, '[1.20.1-85-FORGE,)') }
+    jarJar('vazkii.patchouli:Patchouli:1.19.2-77') { jarJar.ranged(it, '[1.19.2-77,)') }
 }
 tasks.named('jarJar').configure { archiveClassifier = ''; finalizedBy 'reobfJarJar' }
 reobf { jarJar {} }

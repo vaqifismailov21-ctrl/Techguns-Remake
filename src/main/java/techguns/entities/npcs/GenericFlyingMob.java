@@ -14,13 +14,13 @@ import techguns.api.npc.*;
 public abstract class GenericFlyingMob extends FlyingMob implements Enemy,INpcTGDamageSystem,INPCTechgunsShooter {
     protected GenericFlyingMob(EntityType<? extends GenericFlyingMob> type,Level level){super(type,level);moveControl=new FlightControl(this);}
     protected abstract int getTargetFlyHeight();
-    @Override public void tick(){super.tick();if(!level().isClientSide&&level().getDifficulty()==net.minecraft.world.Difficulty.PEACEFUL)discard();}
+    @Override public void tick(){super.tick();if(!level.isClientSide&&level.getDifficulty()==net.minecraft.world.Difficulty.PEACEFUL)discard();}
     protected static final class RandomFly extends Goal {
         private final GenericFlyingMob host;
         RandomFly(GenericFlyingMob host){this.host=host;setFlags(EnumSet.of(Flag.MOVE));}
         @Override public boolean canUse(){var move=host.getMoveControl();if(!move.hasWanted())return true;double d=host.distanceToSqr(move.getWantedX(),move.getWantedY(),move.getWantedZ());return d<1||d>3600;}
         @Override public boolean canContinueToUse(){return false;}
-        @Override public void start(){var r=host.random;double x=host.getX()+(r.nextFloat()*2-1)*16,z=host.getZ()+(r.nextFloat()*2-1)*16;double y=host.level().getHeight(Heightmap.Types.WORLD_SURFACE,(int)host.getX(),(int)host.getZ())+host.getTargetFlyHeight();host.getMoveControl().setWantedPosition(x,y,z,1);}
+        @Override public void start(){var r=host.random;double x=host.getX()+(r.nextFloat()*2-1)*16,z=host.getZ()+(r.nextFloat()*2-1)*16;double y=host.level.getHeight(Heightmap.Types.WORLD_SURFACE,(int)host.getX(),(int)host.getZ())+host.getTargetFlyHeight();host.getMoveControl().setWantedPosition(x,y,z,1);}
     }
     protected static final class LookAround extends Goal {
         private final GenericFlyingMob host;
@@ -43,7 +43,7 @@ public abstract class GenericFlyingMob extends FlyingMob implements Enemy,INpcTG
             var delta=new Vec3(wantedX-host.getX(),wantedY-host.getY(),wantedZ-host.getZ());double distance=delta.length();
             if(cooldown--<=0){cooldown+=host.random.nextInt(5)+2;if(distance<1e-8){operation=Operation.WAIT;return;}
                 var step=delta.scale(1/distance);var box=host.getBoundingBox();boolean clear=true;
-                for(int i=1;i<distance;i++){box=box.move(step);if(!host.level().noCollision(host,box)){clear=false;break;}}
+                for(int i=1;i<distance;i++){box=box.move(step);if(!host.level.noCollision(host,box)){clear=false;break;}}
                 if(clear)host.setDeltaMovement(host.getDeltaMovement().add(step.scale(.1)));else operation=Operation.WAIT;
             }
         }

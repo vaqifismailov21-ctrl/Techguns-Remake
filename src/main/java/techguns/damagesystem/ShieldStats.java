@@ -154,7 +154,7 @@ public class ShieldStats {
 	}
 	
 	public static void playBlockSound(LivingEntity ent, TGDamageSource src) {	
-		Level w = ent.level();
+		Level w = ent.level;
 		if(!w.isClientSide) {
 			ItemStack active = ent.getUseItem();
 			if(!active.isEmpty()) {

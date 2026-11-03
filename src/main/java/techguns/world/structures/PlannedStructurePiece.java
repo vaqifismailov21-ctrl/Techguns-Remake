@@ -2,7 +2,7 @@ package techguns.world.structures;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.*;
@@ -32,7 +32,7 @@ public final class PlannedStructurePiece extends StructurePiece {
     public PlannedStructurePiece(StructurePieceSerializationContext context,CompoundTag tag){
         super(TGWorld.PLANNED_PIECE.get(),tag);cells=tag.getIntArray("SourceCells");
         cleanupColumns=tag.getLongArray("SourceCleanupColumns");resolveAllShapes=tag.getBoolean("SourceResolveShapes");
-        for(var row:tag.getList("SourcePalette",Tag.TAG_COMPOUND))palette.add(NbtUtils.readBlockState(context.registryAccess().registryOrThrow(Registries.BLOCK).asLookup(),(CompoundTag)row));
+        for(var row:tag.getList("SourcePalette",Tag.TAG_COMPOUND))palette.add(NbtUtils.readBlockState((CompoundTag)row));
         for(var row:tag.getList("SourceBlockData",Tag.TAG_COMPOUND)){var entry=(CompoundTag)row;int index=entry.getInt("Cell");if(index<0||index>=cells.length/4)throw new IllegalStateException("Invalid source block data index");blockData.put(index,entry.getCompound("Data").copy());}
         if(cells.length%4!=0)throw new IllegalStateException("Invalid source plan cell array");
         for(int i=3;i<cells.length;i+=4)if(cells[i]<0||cells[i]>=palette.size())throw new IllegalStateException("Invalid source plan palette index");

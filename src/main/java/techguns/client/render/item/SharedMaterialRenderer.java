@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.item.ItemStack;
 import techguns.Techguns;
 import techguns.TGItems;
@@ -92,7 +92,7 @@ public final class SharedMaterialRenderer extends BlockEntityWithoutLevelRendere
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+    public void renderByItem(ItemStack stack, ItemTransforms.TransformType context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         RenderItemBase renderer = renderers.get(stack.getItem());
         if (renderer != null) renderer.render(context, pose, buffers, light, overlay);
     }

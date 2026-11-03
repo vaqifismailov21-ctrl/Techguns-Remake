@@ -2,7 +2,7 @@ package techguns.client.models.guns;
 
 import techguns.client.models.LegacyModelPart;
 
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.Entity;
 import techguns.client.models.ModelMultipart;
 
@@ -355,7 +355,7 @@ public class ModelLMG extends ModelMultipart {
  
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3,
-			float f4, float f5, int ammoLeft, float reloadProgress, ItemDisplayContext transformType, int part,
+			float f4, float f5, int ammoLeft, float reloadProgress, ItemTransforms.TransformType transformType, int part,
 			float fireProgress, float chargeProgress) {
 		
    Grip1.render(f5);
@@ -431,8 +431,8 @@ public class ModelLMG extends ModelMultipart {
    }
  }
 	
-	protected void animateBullet(LegacyModelPart bullet, float scale, ItemDisplayContext transform, LegacyModelPart targetPos, float recoilProgress) {
-		if ( transform == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transform == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+	protected void animateBullet(LegacyModelPart bullet, float scale, ItemTransforms.TransformType transform, LegacyModelPart targetPos, float recoilProgress) {
+		if ( transform == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transform == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
 			float x,y,z;
 			recoilProgress = recoilProgress*4F;
 			if (recoilProgress>1.0f) {

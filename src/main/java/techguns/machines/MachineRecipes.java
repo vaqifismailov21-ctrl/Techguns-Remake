@@ -1,6 +1,6 @@
 package techguns.machines;
 import java.util.*;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
@@ -9,9 +9,9 @@ import techguns.TGItems;
 /** Source recipes shared by the machine, automation validation and recipe display. */
 public final class MachineRecipes {
     private static List<ProcessingRecipe> recipes;
-    public static Ingredient tag(String path){return Ingredient.of(TagKey.create(Registries.ITEM,ResourceLocation.parse(path)));}
+    public static Ingredient tag(String path){return Ingredient.of(TagKey.create(net.minecraft.core.Registry.ITEM_REGISTRY,new ResourceLocation(path)));}
     public static Ingredient items(Item... items){return Ingredient.of(items);}
-    private static Ingredient alternatives(String... tags){return Ingredient.fromValues(Arrays.stream(tags).map(t->new Ingredient.TagValue(TagKey.create(Registries.ITEM,ResourceLocation.parse(t)))));}
+    private static Ingredient alternatives(String... tags){return Ingredient.fromValues(Arrays.stream(tags).map(t->new Ingredient.TagValue(TagKey.create(net.minecraft.core.Registry.ITEM_REGISTRY,new ResourceLocation(t)))));}
     public static List<ProcessingRecipe> all(){if(recipes==null){recipes=new ArrayList<>();GeneratedMachineRecipes.add(recipes);GeneratedFabricatorRecipes.add(recipes);}return Collections.unmodifiableList(recipes);}
     public static ProcessingRecipe ammo(int plan){
         Item[] outputs={TGItems.PISTOL_ROUNDS.get(),TGItems.SHOTGUN_ROUNDS.get(),TGItems.RIFLE_ROUNDS.get(),TGItems.SNIPER_ROUNDS.get()};int[] counts={12,16,8,4};

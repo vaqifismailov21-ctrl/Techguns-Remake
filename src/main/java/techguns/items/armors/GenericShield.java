@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -33,7 +33,7 @@ public class GenericShield extends ShieldItem implements ICamoChangeable {
     public GenericShield(String id, int durability, int camos, ResourceLocation repairTag, int repairCount, ShieldStats stats) {
         super(new Item.Properties().durability(durability));
         this.id = id; camocount = Math.max(camos, 1); repairMatCount = repairCount; this.stats = stats;
-        repairMat = TagKey.create(net.minecraft.core.registries.Registries.ITEM, repairTag);
+        repairMat = TagKey.create(net.minecraft.core.Registry.ITEM_REGISTRY, repairTag);
     }
     public ShieldStats getShieldStats() { return stats; }
     @Override public int getCamoCount() { return camocount; }
@@ -55,7 +55,7 @@ public class GenericShield extends ShieldItem implements ICamoChangeable {
         float fraction = stack.getDamageValue() / (float) (stack.getMaxDamage() - 1);
         int count = (int) Math.ceil(repairMatCount * fraction);
         // Tag contents are only resolved after datapacks load, never during item registration.
-        BuiltInRegistries.ITEM.getTag(repairMat).ifPresent(entries -> entries.stream().findFirst()
+        net.minecraft.core.Registry.ITEM.getTag(repairMat).ifPresent(entries -> entries.stream().findFirst()
                 .ifPresent(holder -> result.add(new ItemStack(holder, count))));
         return result;
     }

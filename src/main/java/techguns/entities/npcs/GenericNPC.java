@@ -36,7 +36,7 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
         targetSelector.addGoal(2,new NearestAttackableTargetGoal<>(this,Player.class,true));
     }
     public void setCombatTask(){
-        if(level().isClientSide)return;
+        if(level.isClientSide)return;
         if(combatGoal!=null)goalSelector.removeGoal(combatGoal);
         combatGoal=getMainHandItem().getItem() instanceof GenericGun gun?new NpcRangedAttackGoal<>(this,gun):new MeleeAttackGoal(this,1.2,false);
         goalSelector.addGoal(4,combatGoal);
@@ -53,7 +53,7 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
     @Override public void performRangedAttack(LivingEntity target,float distance){
         if(getMainHandItem().getItem() instanceof GenericGun gun){
             float damage=1,accuracy=1;
-            switch(level().getDifficulty()){case EASY-> {damage=.6f;accuracy=1.3f;}case NORMAL->{damage=.8f;accuracy=1.15f;}default->{}}
+            switch(level.getDifficulty()){case EASY-> {damage=.6f;accuracy=1.3f;}case NORMAL->{damage=.8f;accuracy=1.15f;}default->{}}
             gun.fireWeaponFromNPC(this,damage,accuracy);
         }
     }

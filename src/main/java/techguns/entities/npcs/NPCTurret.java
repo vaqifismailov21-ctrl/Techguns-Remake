@@ -49,7 +49,7 @@ import techguns.tileentities.TurretTileEnt;
 public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTechgunsShooter, ITGNpcTeam, ITGTurretDamage {
     private static final EntityDataAccessor<Byte> TURRET_FACING=SynchedEntityData.defineId(NPCTurret.class,EntityDataSerializers.BYTE);
     private static final ResourceLocation[] TEXTURES=new ResourceLocation[5];
-    static{for(int i=0;i<5;i++)TEXTURES[i]=ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/turret_base"+(i==0?"":String.valueOf(i+1))+".png");}
+    static{for(int i=0;i<5;i++)TEXTURES[i]=new ResourceLocation("techguns","textures/blocks/turret_base"+(i==0?"":String.valueOf(i+1))+".png");}
 
     protected TurretWatchClosestGoal aiWatch;
     protected RandomLookAroundGoal aiIdle;
@@ -88,7 +88,7 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
     /** The base this turret stands on; on the client it is located from the synchronised position and facing. */
     public TurretTileEnt getTile(){
         if(mountedTileEnt!=null&&!mountedTileEnt.isRemoved())return mountedTileEnt;
-        if(level().isClientSide&&level().getBlockEntity(basePos()) instanceof TurretTileEnt tile)return tile;
+        if(level.isClientSide&&level.getBlockEntity(basePos()) instanceof TurretTileEnt tile)return tile;
         return null;
     }
     protected BlockPos basePos(){
@@ -120,11 +120,11 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
     @Override public void tick(){
         super.tick();
         setPos(xo,yo,zo);
-        if(!level().isClientSide){
+        if(!level.isClientSide){
             if(mountedTileEnt==null){
-                if(level().getBlockEntity(basePos()) instanceof TurretTileEnt tile){
+                if(level.getBlockEntity(basePos()) instanceof TurretTileEnt tile){
                     tile.setMountedTurret(this);mountedTileEnt=tile;tile.needUpdate();setCombatTask();
-                }else hurt(level().damageSources().fellOutOfWorld(),1.0f);
+                }else hurt(net.minecraft.world.damagesource.DamageSource.OUT_OF_WORLD,1.0f);
             }else if(mountedTileEnt.mountedTurret!=this)discard();
         }
     }
@@ -155,7 +155,7 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
     }
     /** Sets the combat goal for the gun in the base, as in the original setCombatTask. */
     public void setCombatTask(){
-        if(level()==null||level().isClientSide)return;
+        if(level==null||level.isClientSide)return;
         if(aiRangedAttack!=null)goalSelector.removeGoal(aiRangedAttack);
         ItemStack stack=getMainHandItem();
         if(stack.getItem() instanceof GenericGun gun){
@@ -207,7 +207,7 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
         @Override public boolean canUse(){
             if(entity.getRandom().nextFloat()>=chance)return false;
             if(entity.getTarget()!=null)closest=entity.getTarget();
-            closest=entity.level().getNearestEntity(LivingEntity.class,net.minecraft.world.entity.ai.targeting.TargetingConditions.forNonCombat().range(Double.MAX_VALUE).ignoreLineOfSight(),entity,entity.getX(),entity.getY(),entity.getZ(),entity.getBoundingBox().inflate(maxDistance,yOffset,maxDistance));
+            closest=entity.level.getNearestEntity(LivingEntity.class,net.minecraft.world.entity.ai.targeting.TargetingConditions.forNonCombat().range(Double.MAX_VALUE).ignoreLineOfSight(),entity,entity.getX(),entity.getY(),entity.getZ(),entity.getBoundingBox().inflate(maxDistance,yOffset,maxDistance));
             return closest!=null;
         }
         @Override public boolean canContinueToUse(){return closest.isAlive()&&entity.distanceToSqr(closest)<=(double)(maxDistance*maxDistance)&&lookTime>0;}

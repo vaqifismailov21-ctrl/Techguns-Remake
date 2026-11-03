@@ -6,7 +6,7 @@ import net.minecraft.core.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -25,7 +25,7 @@ public final class TGSpawnManager {
         new Spawn(TGNpcs.BANDIT,2,()->TGConfig.spawnWeightBandit));
     private static final List<Spawn> NETHER=List.of(new Spawn(TGNpcs.ZOMBIEPIGMANSOLDIER,0,()->TGConfig.spawnWeightZombiePigmanSoldier),new Spawn(TGNpcs.CYBERDEMON,0,()->TGConfig.spawnWeightCyberDemon));
     public static int distanceDanger(double distance,boolean nether){double factor=nether?.5:1;return distance<TGConfig.distanceSpawnLevel0*factor?0:distance<TGConfig.distanceSpawnLevel1*factor?1:distance<TGConfig.distanceSpawnLevel2*factor?2:3;}
-    private static boolean tagged(Holder<Biome> biome,String id){return biome.is(TagKey.create(Registries.BIOME,ResourceLocation.parse(id)));}
+    private static boolean tagged(Holder<Biome> biome,String id){return biome.is(TagKey.create(net.minecraft.core.Registry.BIOME_REGISTRY,new ResourceLocation(id)));}
     public static int biomeDanger(Holder<Biome> biome){
         if(tagged(biome,"minecraft:is_nether")||tagged(biome,"minecraft:is_end"))return 0;
         for(String tag:new String[]{"forge:is_desert","forge:is_sandy","forge:is_snowy","forge:is_swamp","forge:is_spooky","forge:is_dead","forge:is_wasteland"})if(tagged(biome,tag))return 2;
@@ -42,7 +42,7 @@ public final class TGSpawnManager {
         for(var spawn:candidates){accumulated+=spawn.weight.getAsInt();if(accumulated>=roll)return spawn.type.get();}return null;
     }
     public static GenericNPC replace(ServerLevel level,TGDummySpawn dummy){
-        var biome=level.getBiome(BlockPos.containing(Math.round(dummy.getX()),64,Math.round(dummy.getZ())));
+        var biome=level.getBiome(new BlockPos((int)Math.round(dummy.getX()),64,(int)Math.round(dummy.getZ())));
         if(blacklisted(biome)){dummy.discard();return null;}
         boolean nether=level.dimension().equals(Level.NETHER);var spawn=level.getSharedSpawnPos();
         double distance=Math.hypot(dummy.getX()-spawn.getX(),dummy.getZ()-spawn.getZ());int danger=distanceDanger(distance,nether)+biomeDanger(biome);

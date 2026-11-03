@@ -1,9 +1,8 @@
 package techguns.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import techguns.TGPackets;
@@ -21,7 +20,7 @@ public final class TGGuiToggleButton extends AbstractButton {
         this.type = type;
     }
     @Override public void onPress() { TGPackets.sendKey(KEYS[type], false); }
-    @Override protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    @Override public void renderButton(com.mojang.blaze3d.vertex.PoseStack graphics__pose, int mouseX, int mouseY, float partialTick) {techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         var player = Minecraft.getInstance().player;
         if (player == null) return;
         var data = TGExtendedPlayer.find(player).orElse(null);
@@ -30,14 +29,14 @@ public final class TGGuiToggleButton extends AbstractButton {
             case 0 -> data.showTGHudElements; case 1 -> data.enableNightVision; case 2 -> data.enableSafemode;
             case 3 -> data.enableStepAssist; default -> data.enableJetpack;
         };
-        graphics.blitNineSliced(WIDGETS, getX(), getY(), width, height, 2, 3, 2, 2, 200, 20, 0, 46 + (isHoveredOrFocused() ? 2 : 1) * 20);
+        graphics.blitNineSliced(WIDGETS, x, y, width, height, 2, 3, 2, 2, 200, 20, 0, 46 + (isHoveredOrFocused() ? 2 : 1) * 20);
         int textureY = type * 7 + (type > 3 ? 14 : 0);
-        graphics.blit(TGPlayerInventoryScreen.TEXTURE, getX() + 2, getY() + 2, 242 + (enabled ? 7 : 0), textureY, 7, 7);
-        setTooltip(Tooltip.create(Component.translatable("techguns.tgguitooltip." + LABELS[type])
+        graphics.blit(TGPlayerInventoryScreen.TEXTURE, x + 2, y + 2, 242 + (enabled ? 7 : 0), textureY, 7, 7);
+        if(isHovered&&Minecraft.getInstance().screen!=null)Minecraft.getInstance().screen.renderTooltip(graphics__pose,Minecraft.getInstance().font.split(Component.translatable("techguns.tgguitooltip." + LABELS[type])
                 .append("\n").append(Component.translatable("techguns.tgguitooltip.current")).append(": ")
                 .append(enabled ? "§a" : "§c").append(Component.translatable("techguns.tgguitooltip." + (enabled ? "on" : "off")))
                 .append("\n").append(Component.translatable("techguns.tgguitooltip." + LABELS[type] + ".tooltip1"))
-                .append("\n").append(Component.translatable("techguns.tgguitooltip." + LABELS[type] + ".tooltip2"))));
+                .append("\n").append(Component.translatable("techguns.tgguitooltip." + LABELS[type] + ".tooltip2")),200),mouseX,mouseY);
     }
-    @Override protected void updateWidgetNarration(net.minecraft.client.gui.narration.NarrationElementOutput narration) { defaultButtonNarrationText(narration); }
+    @Override public void updateNarration(net.minecraft.client.gui.narration.NarrationElementOutput narration) { defaultButtonNarrationText(narration); }
 }

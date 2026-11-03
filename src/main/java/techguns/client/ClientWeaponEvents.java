@@ -60,7 +60,7 @@ public final class ClientWeaponEvents {
         if (pressed && state.getFireDelay(hand) <= 0) {
             boolean aiming=hand==InteractionHand.MAIN_HAND&&ClientZoom.isZoomed(player,gun);
             TGWeaponPackets.request(hand, false,aiming);
-            gun.shootGunPrimary(stack, player.level(), player, hand,aiming);
+            gun.shootGunPrimary(stack, player.level, player, hand,aiming);
         }
         return pressed && !gun.isSemiAuto();
     }

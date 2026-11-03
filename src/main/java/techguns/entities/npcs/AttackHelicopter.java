@@ -31,8 +31,8 @@ public final class AttackHelicopter extends GenericFlyingMob {
             var target=host.getTarget();if(target==null)return;
             if(host.distanceToSqr(target)<4096&&host.getSensing().hasLineOfSight(target)){
                 ++timer;
-                if(timer>=14&&timer<24&&timer%2==0){if(timer==14)host.playSound(TGSounds.HELICOPTER_BURST.get(),8,1);host.level().addFreshEntity(new GenericProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,EnumBulletFirePos.CENTER));}
-                else if(timer==35){host.playSound(TGSounds.ROCKET_FIRE.get(),8,1);host.level().addFreshEntity(new RocketProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,"default"));}
+                if(timer>=14&&timer<24&&timer%2==0){if(timer==14)host.playSound(TGSounds.HELICOPTER_BURST.get(),8,1);host.level.addFreshEntity(new GenericProjectile(host.level,host,12,1,100,.05f,30,40,8,.25f,false,EnumBulletFirePos.CENTER));}
+                else if(timer==35){host.playSound(TGSounds.ROCKET_FIRE.get(),8,1);host.level.addFreshEntity(new RocketProjectile(host.level,host,12,1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,"default"));}
                 else if(timer>35)timer=-30;
             }else if(timer>0)--timer;
             host.setAttacking(timer>10);
@@ -42,12 +42,12 @@ public final class AttackHelicopter extends GenericFlyingMob {
     @Override protected void tickDeath(){
         if(deathTime==0)playSound(TGSounds.HELICOPTER_DEATH.get(),6,1);++deathTime;
         if(deathTime==MAX_DEATH_TIME){
-            if(!level().isClientSide){dropExperience();TGProjectilePackets.effect(this,"HelicopterDeathExplosion",position().add(0,-8,0),0,0);}
+            if(!level.isClientSide){dropExperience();TGProjectilePackets.effect(this,"HelicopterDeathExplosion",position().add(0,-8,0),0,0);}
             playSound(TGSounds.HELICOPTER_EXPLODE.get(),6,1);remove(RemovalReason.KILLED);
         }
     }
     @Override protected float getStandingEyeHeight(Pose pose,EntityDimensions dimensions){return .5f;}
-    @Override protected ResourceLocation getDefaultLootTable(){return ResourceLocation.parse("techguns:entities/attackhelicopter");}
+    @Override protected ResourceLocation getDefaultLootTable(){return new ResourceLocation("techguns:entities/attackhelicopter");}
     @Override protected SoundEvent getHurtSound(DamageSource source){return TGSounds.HELICOPTER_HIT.get();}
     @Override protected SoundEvent getDeathSound(){return TGSounds.HELICOPTER_HIT.get();}
     @Override protected float getSoundVolume(){return 10;}

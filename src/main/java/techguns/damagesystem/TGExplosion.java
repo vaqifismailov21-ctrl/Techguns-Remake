@@ -60,7 +60,7 @@ public class TGExplosion {
         this.blockDamageFactor = blockDamageFactor;
         this.damagesTerrain = (blockDamageFactor >= 0.01);
         this.position = new Vec3(this.x, this.y, this.z);
-        this.explosionDummy = new Explosion(world, exploder, x, y, z, (float)Math.max(primaryRadius, secondaryRadius), false, this.damagesTerrain?Explosion.BlockInteraction.DESTROY:Explosion.BlockInteraction.KEEP);
+        this.explosionDummy = new Explosion(world, exploder, x, y, z, (float)Math.max(primaryRadius, secondaryRadius), false, this.damagesTerrain?Explosion.BlockInteraction.BREAK:Explosion.BlockInteraction.NONE);
     }
     public TGExplosion setDmgSrc(TGDamageSource src) {
     	this.dmgSrc=src;
@@ -107,7 +107,7 @@ public class TGExplosion {
                         BlockPos prevPos = null;
                         for (int i = 0; i < steps && explosionPower > 0.0; i++)
                         {
-                            BlockPos blockpos = BlockPos.containing(x +px, y +py, z +pz);
+                            BlockPos blockpos = new BlockPos(x +px, y +py, z +pz);
                             BlockState iblockstate = this.world.getBlockState(blockpos);
                             double distance = this.position.distanceTo(new Vec3(blockpos.getX()+0.5,blockpos.getY()+0.5,blockpos.getZ()+0.5));
                             if (distance <= primaryRadius) explosionPower = primaryDamage;

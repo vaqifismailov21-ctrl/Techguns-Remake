@@ -22,7 +22,7 @@ public final class DamageEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onAttack(LivingAttackEvent event) {
-        if (event.getEntity().level().isClientSide) return;
+        if (event.getEntity().level.isClientSide) return;
         var hits = HITS.get();
         if (!hits.isEmpty() && hits.peek().target == event.getEntity() && hits.peek().source == event.getSource()) return;
         if (!(event.getSource() instanceof TGDamageSource) && !(event.getEntity() instanceof INpcTGDamageSystem) && !DamageSystem.hasSuitArmor(event.getEntity())) {
@@ -38,6 +38,8 @@ public final class DamageEvents {
         int invulnerableTime = target.invulnerableTime, hurtTime = target.hurtTime, hurtDuration = target.hurtDuration;
         float lastHurt = readLastHurt(target);
         try {
+            // 1.19.2 has no BYPASSES_COOLDOWN damage type tag: the fast-hit path ignores the hurt cooldown like the original.
+            if (source.ignoreHurtresistTime) target.invulnerableTime = 0;
             if (target.hurt(hitSource, event.getAmount())) source.setAttackSuccessful();
         } finally {
             // In the original fast-hit path these fields are never changed. Merely tagging a modern source

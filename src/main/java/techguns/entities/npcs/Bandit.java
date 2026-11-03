@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original Bandit; equipment branches and damage values are retained. */
 public class Bandit extends GenericNPC {
 public Bandit(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(5.0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/bandit");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/bandit");
 protected void addRandomArmor(int difficulty) {
 
 		

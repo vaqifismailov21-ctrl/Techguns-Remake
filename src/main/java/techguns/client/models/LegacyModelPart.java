@@ -1,6 +1,6 @@
 package techguns.client.models;
 
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -40,7 +40,7 @@ public final class LegacyModelPart {
     public void addBox(float x, float y, float z, int width, int height, int depth, float inflation) {
         // Capture UV dimensions/mirror when addBox is called, as ModelRenderer did in 1.12.2.
         cubes.add(new ModelPart.Cube(textureU, textureV, x, y, z, width, height, depth,
-                inflation, inflation, inflation, mirror, textureWidth, textureHeight, EnumSet.allOf(Direction.class)));
+                inflation, inflation, inflation, mirror, textureWidth, textureHeight));
     }
 
     public void setTextureSize(int width, int height) {
@@ -59,9 +59,9 @@ public final class LegacyModelPart {
         model.pose.pushPose();
         model.pose.translate(offsetX,offsetY,offsetZ);
         model.pose.translate(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
-        if (rotateAngleZ != 0) model.pose.mulPose(Axis.ZP.rotation(rotateAngleZ));
-        if (rotateAngleY != 0) model.pose.mulPose(Axis.YP.rotation(rotateAngleY));
-        if (rotateAngleX != 0) model.pose.mulPose(Axis.XP.rotation(rotateAngleX));
+        if (rotateAngleZ != 0) model.pose.mulPose(Vector3f.ZP.rotation(rotateAngleZ));
+        if (rotateAngleY != 0) model.pose.mulPose(Vector3f.YP.rotation(rotateAngleY));
+        if (rotateAngleX != 0) model.pose.mulPose(Vector3f.XP.rotation(rotateAngleX));
         float factor = scale * 16.0F;
         model.pose.pushPose();
         model.pose.scale(factor, factor, factor);

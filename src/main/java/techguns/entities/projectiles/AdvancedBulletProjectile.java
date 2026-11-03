@@ -17,7 +17,7 @@ public final class AdvancedBulletProjectile extends GenericProjectile {
         return "Impact_Bullet"+(sound==SoundType.STONE?"Rock":sound==SoundType.WOOD||sound==SoundType.LADDER?"Wood":sound==SoundType.GLASS?"Glass":sound==SoundType.METAL||sound==SoundType.ANVIL?"Metal":sound==SoundType.GRAVEL||sound==SoundType.SAND?"Dirt":"Default")+"_Blue";
     }
     public static void impact(GenericProjectile projectile,BlockHitResult hit){
-        var level=projectile.level();if(level.isClientSide)return;var location=hit.getLocation();var state=level.getBlockState(hit.getBlockPos());var sound=state.getSoundType(level,hit.getBlockPos(),projectile);
+        var level=projectile.level;if(level.isClientSide)return;var location=hit.getLocation();var state=level.getBlockState(hit.getBlockPos());var sound=state.getSoundType(level,hit.getBlockPos(),projectile);
         SoundEvent effect=sound==SoundType.STONE?TGSounds.BULLET_IMPACT_STONE.get():sound==SoundType.WOOD||sound==SoundType.LADDER?TGSounds.BULLET_IMPACT_WOOD.get():sound==SoundType.GLASS?TGSounds.BULLET_IMPACT_GLASS.get():sound==SoundType.METAL||sound==SoundType.ANVIL?TGSounds.BULLET_IMPACT_METAL.get():TGSounds.BULLET_IMPACT_DIRT.get();
         level.playSound(null,location.x,location.y,location.z,effect,SoundSource.AMBIENT,1,1);
         TGProjectilePackets.effect(projectile,impactGroup(sound),location,TGProjectilePackets.impactPitch(hit.getDirection()),TGProjectilePackets.impactYaw(hit.getDirection()));

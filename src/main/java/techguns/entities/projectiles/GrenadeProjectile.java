@@ -17,16 +17,16 @@ public class GrenadeProjectile extends GenericProjectile {
     public int getBounces() {return bounces;}
     @Override protected void onHit(HitResult hit) {
         if(hit instanceof BlockHitResult block && bounces>0) {
-            if(!level().isClientSide) {
+            if(!level.isClientSide) {
                 var motion=getDeltaMovement();Direction.Axis axis=block.getDirection().getAxis();
                 var reflected=new Vec3(axis==Direction.Axis.X?-motion.x:motion.x,axis==Direction.Axis.Y?-motion.y:motion.y,axis==Direction.Axis.Z?-motion.z:motion.z).scale(0.5);
                 // 1.12 replaced the entity on a bounce. Reset its lifetime as the original copy constructor did.
-                var next=new GrenadeProjectile((EntityType<? extends GrenadeProjectile>)getType(),level());
+                var next=new GrenadeProjectile((EntityType<? extends GrenadeProjectile>)getType(),level);
                 next.configure(damage,speed,ticksToLive,damageDropStart,damageDropEnd,damageMin,penetration,blockdamage);
                 next.setShooter(getShooter());next.gravity=gravity;next.bounces=bounces-1;
                 next.moveTo(block.getLocation().add(reflected).x,block.getLocation().add(reflected).y,block.getLocation().add(reflected).z,getYRot(),getXRot());
-                next.setDeltaMovement(reflected);level().addFreshEntity(next);
-                level().playSound(null,getX(),getY(),getZ(),net.minecraft.sounds.SoundEvents.IRON_GOLEM_HURT,net.minecraft.sounds.SoundSource.PLAYERS,1,1);
+                next.setDeltaMovement(reflected);level.addFreshEntity(next);
+                level.playSound(null,getX(),getY(),getZ(),net.minecraft.sounds.SoundEvents.IRON_GOLEM_HURT,net.minecraft.sounds.SoundSource.PLAYERS,1,1);
             }
             discard();return;
         }
@@ -35,8 +35,8 @@ public class GrenadeProjectile extends GenericProjectile {
     @Override protected void hitBlock(BlockHitResult hit) {setPos(hit.getLocation());explode();}
     @Override protected void onHitEffect(LivingEntity target,HitResult hit) {explode();}
     protected void explode() {
-        if(!level().isClientSide) {
-            new TGExplosion(level(),getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,0).doExplosion(true);
+        if(!level.isClientSide) {
+            new TGExplosion(level,getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,0).doExplosion(true);
             TGProjectilePackets.effect(this,"RocketExplosion",position(),0,0);
         }
         discard();

@@ -9,8 +9,8 @@ import techguns.client.ClientWeaponEvents;
 
 /** ScreenEffect.muzzleFlash_gun and the exact pistol settings from original ClientProxy. */
 public final class PistolMuzzleFlash {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("techguns", "textures/fx/muzzleflashnew_2_add_2.png");
-    public static final ResourceLocation RIFLE_TEXTURE = ResourceLocation.fromNamespaceAndPath("techguns", "textures/fx/muzzleflashnew_add.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation("techguns", "textures/fx/muzzleflashnew_2_add_2.png");
+    public static final ResourceLocation RIFLE_TEXTURE = new ResourceLocation("techguns", "textures/fx/muzzleflashnew_add.png");
     public record Specification(ResourceLocation texture,int frames,float rightX,float leftX,float y,float z,float scale,
                                 float jitterX,float jitterY,float jitterScale,float thirdY,float thirdZ,
                                 int columns,int rows,boolean flipX,boolean flipY,float red,float green,float blue,boolean smoothFade) {
@@ -39,7 +39,7 @@ public final class PistolMuzzleFlash {
         renderSingle(spec,pose,buffers,progress,left,thirdPerson,1,false);
     }
     private static Specification layer(Specification spec,String name,float scale,float z,int frames,int columns){
-        return new Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/"+name+".png"),frames,spec.rightX,spec.leftX,spec.y,spec.z+z,spec.scale*scale,spec.jitterX,spec.jitterY,spec.jitterScale,spec.thirdY,spec.thirdZ+z,columns,columns,false,false);
+        return new Specification(new ResourceLocation("techguns","textures/fx/"+name+".png"),frames,spec.rightX,spec.leftX,spec.y,spec.z+z,spec.scale*scale,spec.jitterX,spec.jitterY,spec.jitterScale,spec.thirdY,spec.thirdZ+z,columns,columns,false,false);
     }
     private static void renderSingle(Specification spec,PoseStack pose,MultiBufferSource buffers,float progress,boolean left,boolean thirdPerson,float opacity,boolean fast){
         int frame = (int) (spec.frames * progress);

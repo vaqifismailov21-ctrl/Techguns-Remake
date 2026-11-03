@@ -28,9 +28,9 @@ public final class EquipmentEvents {
         var back=state.tg_inventory.getItem(1);
         if(!(back.getItem() instanceof AccessoryItem device&&(device.kind==AccessoryItem.Kind.GLIDER||device.kind==AccessoryItem.Kind.JETPACK&&back.getDamageValue()<back.getMaxDamage())))state.isGliding=false;
         flight(player,state);
-        if(player.level().isClientSide){
+        if(player.level.isClientSide){
             float assist=TGEquipmentBonuses.getBonus(player,TGArmorBonus.STEPASSIST,false);
-            if(state.enableStepAssist&&assist>0)player.setMaxUpStep(Math.max(1.1F,player.maxUpStep()));else if(player.maxUpStep()==1.1F)player.setMaxUpStep(0.6F);
+            if(state.enableStepAssist&&assist>0)player.maxUpStep=Math.max(1.1F,player.maxUpStep);else if(player.maxUpStep==1.1F)player.maxUpStep=0.6F;
             return;
         }
         distributePower(player);
@@ -52,15 +52,15 @@ public final class EquipmentEvents {
         if(allowed){changed=!player.getAbilities().mayfly;player.getAbilities().mayfly=true;state.gotCreativeFlightLastTick=true;}
         else if(state.gotCreativeFlightLastTick){if(!player.getAbilities().instabuild&&!player.isSpectator()){player.getAbilities().mayfly=false;player.getAbilities().flying=false;changed=true;}state.gotCreativeFlightLastTick=false;state.wasFlying=false;}
         if(allowed&&player.getAbilities().flying){
-            if(!state.wasFlying&&!player.level().isClientSide){player.level().playSound(null,player.getX(),player.getY(),player.getZ(),techguns.TGSounds.ANTI_GRAV_START.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);techguns.TGProjectilePackets.effect(player,"AntiGravRing",player.position(),0,0);}state.wasFlying=true;
+            if(!state.wasFlying&&!player.level.isClientSide){player.level.playSound(null,player.getX(),player.getY(),player.getZ(),techguns.TGSounds.ANTI_GRAV_START.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);techguns.TGProjectilePackets.effect(player,"AntiGravRing",player.position(),0,0);}state.wasFlying=true;
         }else state.wasFlying=false;
-        if(player.level().isClientSide)player.getAbilities().setFlyingSpeed(0.05F*(1+(state.enableJetpack?TGEquipmentBonuses.getBonus(player,TGArmorBonus.FLYSPEED,false):0)));
+        if(player.level.isClientSide)player.getAbilities().setFlyingSpeed(0.05F*(1+(state.enableJetpack?TGEquipmentBonuses.getBonus(player,TGArmorBonus.FLYSPEED,false):0)));
         else if(changed)player.onUpdateAbilities();
     }
     public static void distributePower(Player player){
         var chest=player.getItemBySlot(EquipmentSlot.CHEST);var powerChest=chest.getItem() instanceof TGSuitArmor a&&a.powered()?a:null;
         boolean moving=Math.abs(player.getDeltaMovement().x)>0.001||Math.abs(player.getDeltaMovement().z)>0.001;
-        boolean consume=player.level().getGameTime()%20==0&&moving;
+        boolean consume=player.level.getGameTime()%20==0&&moving;
         for(var slot:new EquipmentSlot[]{EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD}){
             var stack=player.getItemBySlot(slot);if(!(stack.getItem() instanceof TGSuitArmor armor)||!armor.powered())continue;
             if(slot!=EquipmentSlot.CHEST&&powerChest!=null&&powerChest.powerType.equals(armor.powerType)){
@@ -69,7 +69,7 @@ public final class EquipmentEvents {
             if(consume)armor.consumePower(stack,1);
         }
         if(powerChest!=null&&powerChest.power(chest)==0&&!powerChest.battery().isEmpty()&&InventoryUtil.consumeAmmoPlayer(player,new ItemStack[]{powerChest.battery()})){
-            var empty=powerChest.emptyBattery();if(!empty.isEmpty()){int left=InventoryUtil.addAmmoToPlayerInventory(player,empty);if(left>0)player.drop(empty.copyWithCount(left),false);}
+            var empty=powerChest.emptyBattery();if(!empty.isEmpty()){int left=InventoryUtil.addAmmoToPlayerInventory(player,empty);if(left>0)player.drop(techguns.util.Compat.copyWithCount(empty, left),false);}
             powerChest.charge(chest,powerChest.maxpower);
             for(var stack:player.getArmorSlots())if(stack!=chest&&stack.getItem() instanceof TGSuitArmor armor&&armor.powered()&&powerChest.powerType.equals(armor.powerType))powerChest.consumePower(chest,armor.charge(stack,powerChest.power(chest)));
         }

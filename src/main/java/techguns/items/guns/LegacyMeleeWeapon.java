@@ -12,5 +12,5 @@ public interface LegacyMeleeWeapon {
     default void consumeAmmoOnMeleeHit(LivingEntity player,ItemStack stack){}
     default void onMeleeHitTarget(ItemStack stack,Entity target){}
     default int getCurrentAmmo(ItemStack stack){return 1;}
-    default void doSweepAttackEffect(Player player){player.sweepAttack();player.level().playSound(null,player.getX(),player.getY(),player.getZ(),net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_SWEEP,player.getSoundSource(),1,1);}
+    default void doSweepAttackEffect(Player player){player.sweepAttack();player.level.playSound(null,player.getX(),player.getY(),player.getZ(),net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_SWEEP,player.getSoundSource(),1,1);}
 }

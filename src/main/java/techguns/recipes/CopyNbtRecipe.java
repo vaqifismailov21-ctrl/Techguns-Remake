@@ -14,13 +14,13 @@ import techguns.items.guns.GenericGun;
 /** Original ShapedOreRecipeCopyNBTFactory: copy the last gun's whole tag, without reloading it. */
 public final class CopyNbtRecipe extends ShapedRecipe {
     private CopyNbtRecipe(ShapedRecipe recipe) {
-        super(recipe.getId(),recipe.getGroup(),recipe.category(),recipe.getWidth(),recipe.getHeight(),recipe.getIngredients(),recipe.getResultItem(RegistryAccess.EMPTY),recipe.showNotification());
+        super(recipe.getId(),recipe.getGroup(),recipe.getWidth(),recipe.getHeight(),recipe.getIngredients(),recipe.getResultItem());
     }
     @Override public RecipeSerializer<?> getSerializer() { return TGRecipeSerializers.COPY_NBT.get(); }
-    @Override public ItemStack assemble(CraftingContainer input,RegistryAccess registries) {
+    @Override public ItemStack assemble(CraftingContainer input) {
         int source=0;
         for(int i=0;i<input.getContainerSize();i++) if(input.getItem(i).getItem() instanceof GenericGun) source=i;
-        var result=super.assemble(input,registries);
+        var result=super.assemble(input);
         if(input.getItem(source).hasTag()) result.setTag(input.getItem(source).getTag().copy());
         return result;
     }

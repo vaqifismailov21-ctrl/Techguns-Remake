@@ -70,7 +70,7 @@ public final class DamageSystem {
     public static boolean hasSuitArmor(LivingEntity entity){for(var stack:entity.getArmorSlots())if(stack.getItem() instanceof techguns.items.armors.TGSuitArmor)return true;return false;}
     /** Source ISpecialArmor ratios share priority zero; each piece applies its own toughness/penetration. */
     public static float applySuitArmor(Player player,TGDamageSource source,float amount){
-        if(source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_ARMOR))return amount;
+        if(source.isBypassArmor())return amount;
         double total=0;
         for(var stack:player.getArmorSlots())if(stack.getItem() instanceof techguns.items.armors.TGSuitArmor armor){
             double ratio=1-getDamageAfterAbsorb_TGFormula(1,armor.armor(stack,source.damageType),armor.stats.toughness,source.armorPenetration);

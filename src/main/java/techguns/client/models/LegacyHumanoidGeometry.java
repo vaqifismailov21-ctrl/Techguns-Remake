@@ -3,7 +3,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 /** ModelBiped geometry adapter. The actual animation pose comes from the modern humanoid model. */
 public class LegacyHumanoidGeometry extends ModelMultipart {
     public LegacyModelPart bipedHead,bipedHeadwear,bipedBody,bipedRightArm,bipedLeftArm,bipedRightLeg,bipedLeftLeg;
@@ -24,7 +24,7 @@ public class LegacyHumanoidGeometry extends ModelMultipart {
         copy(bipedRightArm,model.rightArm,slot==EquipmentSlot.CHEST);copy(bipedLeftArm,model.leftArm,slot==EquipmentSlot.CHEST);
         copy(bipedRightLeg,model.rightLeg,slot==EquipmentSlot.LEGS||slot==EquipmentSlot.FEET);copy(bipedLeftLeg,model.leftLeg,slot==EquipmentSlot.LEGS||slot==EquipmentSlot.FEET);
     }
-    @Override public void render(Entity entity,float a,float b,float c,float d,float e,float scale,int ammo,float reload,ItemDisplayContext context,int part,float fire,float charge){
+    @Override public void render(Entity entity,float a,float b,float c,float d,float e,float scale,int ammo,float reload,ItemTransforms.TransformType context,int part,float fire,float charge){
         render(entity,a,b,c,d,e,scale);
     }
     public void render(Entity entity,float a,float b,float c,float d,float e,float scale){

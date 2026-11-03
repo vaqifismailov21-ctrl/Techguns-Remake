@@ -1,7 +1,7 @@
 package techguns.power;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -32,7 +32,7 @@ public final class GeneratorMenu extends AbstractContainerMenu {
     }
 
     /** Client side. */
-    public GeneratorMenu(int id,Inventory inventory,FriendlyByteBuf buffer){this(id,inventory,inventory.player.level().getBlockEntity(buffer.readBlockPos()));}
+    public GeneratorMenu(int id,Inventory inventory,FriendlyByteBuf buffer){this(id,inventory,inventory.player.level.getBlockEntity(buffer.readBlockPos()));}
     private GeneratorMenu(int id,Inventory inventory,net.minecraft.world.level.block.entity.BlockEntity entity){
         super(PowerBlocks.GENERATOR_MENU.get(),id);
         liquid=entity instanceof LiquidGeneratorEntity;
@@ -53,7 +53,7 @@ public final class GeneratorMenu extends AbstractContainerMenu {
                     case 0->energy&0xFFFF;case 1->energy>>>16;case 2->capacity&0xFFFF;case 3->capacity>>>16;
                     case 4->source instanceof FuelGeneratorEntity fuel&&fuel.burnTotal>0?fuel.burnTime*1000/fuel.burnTotal:source instanceof LiquidGeneratorEntity liquid&&liquid.burnEnergy>0?1000:0;
                     case 5->source instanceof LiquidGeneratorEntity liquid?liquid.tank.getFluidAmount():0;
-                    case 6->source instanceof LiquidGeneratorEntity liquid&&!liquid.tank.isEmpty()?BuiltInRegistries.FLUID.getId(liquid.tank.getFluid().getFluid()):0;
+                    case 6->source instanceof LiquidGeneratorEntity liquid&&!liquid.tank.isEmpty()?net.minecraft.core.Registry.FLUID.getId(liquid.tank.getFluid().getFluid()):0;
                     default->source instanceof LiquidGeneratorEntity?PowerBlocks.LIQUID_RATE:PowerBlocks.GENERATOR_RATE;
                 };
             }
@@ -67,7 +67,7 @@ public final class GeneratorMenu extends AbstractContainerMenu {
     /** Remaining burn of the current fuel, 0..1000. */
     public int burn(){return part(4);}
     public int tankAmount(){return part(5);}
-    public Fluid tankFluid(){return BuiltInRegistries.FLUID.byId(part(6));}
+    public Fluid tankFluid(){return net.minecraft.core.Registry.FLUID.byId(part(6));}
     public int rate(){return part(7);}
     @Override public boolean stillValid(Player player){return stillValid(access,player,block);}
     @Override public ItemStack quickMoveStack(Player player,int index){

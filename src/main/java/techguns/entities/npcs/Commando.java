@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original Commando; equipment branches and damage values are retained. */
 public class Commando extends GenericNPC {
 public Commando(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(8.0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/commando");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/commando");
 protected void addRandomArmor(int difficulty) {
 
 		

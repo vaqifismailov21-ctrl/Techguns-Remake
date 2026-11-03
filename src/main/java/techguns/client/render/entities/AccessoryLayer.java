@@ -1,4 +1,5 @@
 package techguns.client.render.entities;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import java.util.*;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -35,9 +36,9 @@ public final class AccessoryLayer extends RenderLayer<AbstractClientPlayer,Playe
             if(stack.getItem() instanceof AccessoryItem accessory){entry=entries.get(accessory.kind);camo=Math.floorMod(accessory.getCurrentCamoIndex(stack),accessory.getCamoCount());}
             else if(stack.is(TGItems.OXYGEN_MASK.get()))entry=oxygen;else if(stack.is(TGItems.WORKING_GLOVES.get()))entry=gloves;
             if(entry==null)continue;
-            var texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/"+entry.texture+(camo==0?"":"_"+camo)+".png");
+            var texture=new ResourceLocation("techguns","textures/"+entry.texture+(camo==0?"":"_"+camo)+".png");
             entry.model.sync(getParentModel(),slot==0?EquipmentSlot.HEAD:EquipmentSlot.CHEST);
-            entry.model.renderModel(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,OverlayTexture.NO_OVERLAY,ItemDisplayContext.NONE,player,0,0,0,0,0);
+            entry.model.renderModel(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,OverlayTexture.NO_OVERLAY,ItemTransforms.TransformType.NONE,player,0,0,0,0,0);
         }
     }
 }

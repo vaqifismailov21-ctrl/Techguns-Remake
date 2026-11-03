@@ -14,7 +14,7 @@ public final class MachinePartBlock extends BaseEntityBlock {
     public final boolean glass;
     public final boolean reactor;
     public MachinePartBlock(boolean glass){this(glass,false);}
-    public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of().strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion());this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false));}
+    public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of(net.minecraft.world.level.material.Material.METAL).strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion());this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(MachineBlock.FORMED);}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new MachinePartEntity(pos,state);}

@@ -24,7 +24,7 @@ public final class BulletImpactEffects {
     private static final Random RANDOM=new Random();
     public static Map<String,BulletImpactDefinition> definitions() {
         if (definitions==null) {
-            var resource=ResourceLocation.fromNamespaceAndPath("techguns","particles/impactfx.txt");
+            var resource=new ResourceLocation("techguns","particles/impactfx.txt");
             try (var reader=new InputStreamReader(Minecraft.getInstance().getResourceManager().open(resource),StandardCharsets.UTF_8)) {
                 definitions=BulletImpactDefinition.read(reader);
             } catch(IOException error) { throw new IllegalStateException("Cannot load original Techguns bullet effects",error); }

@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original SkeletonSoldier; equipment branches and damage values are retained. */
 public class SkeletonSoldier extends GenericNPCUndead {
 public SkeletonSoldier(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/skeletonsoldier");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/skeletonsoldier");
 protected void addRandomArmor(int difficulty) {
 
 		

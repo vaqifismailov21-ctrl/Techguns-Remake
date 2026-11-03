@@ -1,7 +1,7 @@
 package techguns.client.gui;
 
 import java.util.List;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -18,12 +18,12 @@ import static techguns.client.gui.LegacyMachineGui.*;
  */
 public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     public static final int TANK_Y=17,INPUT_TANK_X=18,OUTPUT_TANK_X=157,TANK_W=10,TANK_H=50;
-    private static final ResourceLocation CHEM_LAB=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/chem_lab_gui.png");
+    private static final ResourceLocation CHEM_LAB=new ResourceLocation("techguns","textures/gui/chem_lab_gui.png");
     private final ResourceLocation texture;
-    public MachineScreen(MachineMenu menu,Inventory inventory,Component title){super(menu,inventory,title);texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+menu.machine.kind.texture()+"_gui.png");imageHeight=166;}
+    public MachineScreen(MachineMenu menu,Inventory inventory,Component title){super(menu,inventory,title);texture=new ResourceLocation("techguns","textures/gui/"+menu.machine.kind.texture()+"_gui.png");imageHeight=166;}
     private void send(int id){minecraft.gameMode.handleInventoryButtonClick(menu.containerId,id);}
     private void text(String label,int id,int x,int y,int width,int height){text(Component.literal(label),id,x,y,width,height);}
-    private void text(Component label,int id,int x,int y,int width,int height){addRenderableWidget(Button.builder(label,b->send(id)).bounds(leftPos+x,topPos+y,width,height).build());}
+    private void text(Component label,int id,int x,int y,int width,int height){addRenderableWidget(new Button(leftPos+x,topPos+y,width,height,label,b->send(id)));}
     private byte security(){return (byte)(menu.machine.access.restricted()?3:0);}
 
     @Override protected void init(){
@@ -36,15 +36,15 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             case METAL_PRESS->text(Component.translatable("techguns.button.switch"),3,20,50,40,20);
             case CHEM_LAB->{text("x",3,20,7,8,8);text("x",4,159,7,8,8);
                 // GuiButtonToggleDrainTank: 12x12 icon from the chemistry laboratory sheet.
-                addRenderableWidget(new Button(leftPos+156,topPos+68,14,14,Component.empty(),b->send(5),s->s.get()){
-                    @Override protected void renderWidget(GuiGraphics graphics,int mouseX,int mouseY,float partial){super.renderWidget(graphics,mouseX,mouseY,partial);graphics.blit(CHEM_LAB,getX()+1,getY()+1,188,31+12*(menu.machine.drainInput?1:0),12,12);}
+                addRenderableWidget(new Button(leftPos+156,topPos+68,14,14,Component.empty(),b->send(5)){
+                    @Override public void renderButton(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);super.renderButton(graphics.pose(),mouseX,mouseY,partial);graphics.blit(CHEM_LAB,x+1,y+1,188,31+12*(menu.machine.drainInput?1:0),12,12);}
                 });}
             case REACTION->{text("+",3,33,58,10,10);text("-",4,43,58,10,10);text("+",5,91,36,10,10);text("-",6,101,36,10,10);text("x",7,20,7,8,8);}
             default->{}
         }
     }
 
-    @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
+    @Override protected void renderBg(com.mojang.blaze3d.vertex.PoseStack graphics__pose,float partial,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         var machine=menu.machine;var kind=machine.kind;int k=leftPos,l=topPos;
         graphics.blit(texture,k,l,0,0,imageWidth,imageHeight);
         drawPowered(graphics,k,l,machine.redstoneEnabled(),machine.energy.getEnergyStored(),kind.capacity);
@@ -84,7 +84,7 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     private int scaled(int size){var m=menu.machine;return m.totalTime<=0?0:m.progress*size/m.totalTime;}
     private static void tank(GuiGraphics graphics,FluidTank tank,int x,int y){if(tank.getFluidAmount()>0)drawFluid(graphics,tank.getFluid(),x,y,TANK_W,TANK_H,tank.getFluidAmount()*TANK_H/tank.getCapacity());}
 
-    @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
+    @Override protected void renderLabels(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         var machine=menu.machine;int color=4210752;
         // TGBaseGui.drawInventoryContainerName; long translations are kept clear of the dump buttons.
         int start=machine.kind==MachineKind.REACTION||machine.kind==MachineKind.CHEM_LAB?32:20;GuiText.centered(graphics,font,title,start,imageWidth-start,6,color);
@@ -115,8 +115,8 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     }
     private static List<Component> tankTooltip(FluidTank tank){return List.of(tank.isEmpty()?Component.translatable("techguns.gui.empty"):tank.getFluid().getDisplayName(),Component.literal(tank.getFluidAmount()+"/"+tank.getCapacity()+"mB"));}
 
-    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){
-        renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+    @Override public void render(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
+        renderBackground(graphics.pose());super.render(graphics.pose(),mouseX,mouseY,partial);renderTooltip(graphics.pose(),mouseX,mouseY);
         var tooltip=hoverTooltip(mouseX-leftPos,mouseY-topPos);if(tooltip!=null)graphics.renderComponentTooltip(font,tooltip,mouseX,mouseY);
     }
 }

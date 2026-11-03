@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import techguns.entities.projectiles.StoneBulletProjectile;
 /** Original camera-facing handgunbullet quad, including its asymmetric vertical origin. */
 public final class RenderStoneBullet extends EntityRenderer<StoneBulletProjectile> {
-    private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/entity/handgunbullet.png");
+    private static final ResourceLocation TEXTURE=new ResourceLocation("techguns","textures/entity/handgunbullet.png");
     public RenderStoneBullet(EntityRendererProvider.Context context) {super(context);}
     @Override public ResourceLocation getTextureLocation(StoneBulletProjectile entity) {return TEXTURE;}
     @Override public void render(StoneBulletProjectile entity,float yaw,float partial,PoseStack pose,MultiBufferSource buffers,int light) {

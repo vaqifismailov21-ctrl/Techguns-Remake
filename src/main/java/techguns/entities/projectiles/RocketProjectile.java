@@ -10,7 +10,7 @@ public class RocketProjectile extends GenericProjectile {
     private boolean trail;
     protected String trailEffect() {return "RocketLauncherExhaust";}
     @Override public void tick() {
-        if(level().isClientSide&&!trail) {trail=true;techguns.client.particle.WeaponEffects.attach(trailEffect(),this);}
+        if(level.isClientSide&&!trail) {trail=true;techguns.client.particle.WeaponEffects.attach(trailEffect(),this);}
         super.tick();
     }
     public RocketProjectile(EntityType<? extends RocketProjectile> type,Level level) {super(type,level);}
@@ -24,14 +24,14 @@ public class RocketProjectile extends GenericProjectile {
     protected double blockFactor() {return 0.5;}
     protected String explosionEffect() {return isNuclear()?"NukeExplosion":"RocketExplosion";}
     protected void explodeRocket() {
-        if(!level().isClientSide) {
-            var explosion=new TGExplosion(level(),getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,blockdamage?blockFactor():0);
+        if(!level.isClientSide) {
+            var explosion=new TGExplosion(level,getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,blockdamage?blockFactor():0);
             if(isNuclear()) {explosion.blockDropChance=0.05F;explosion.setDmgSrc(getProjectileDamageSource());}
             explosion.doExplosion(!isNuclear());
             TGProjectilePackets.effect(this,explosionEffect(),position(),0,0);
             if(isNuclear()) {
-                level().playSound(null,getX(),getY(),getZ(),TGSounds.NUKE_EXPLOSION.get(),net.minecraft.sounds.SoundSource.BLOCKS,4,1);
-                if(TGRadiationSystem.isEnabled()) level().addFreshEntity(new techguns.entities.special.EntityRadiation(this,1200,damageDropStart,9,damageDropEnd,2));
+                level.playSound(null,getX(),getY(),getZ(),TGSounds.NUKE_EXPLOSION.get(),net.minecraft.sounds.SoundSource.BLOCKS,4,1);
+                if(TGRadiationSystem.isEnabled()) level.addFreshEntity(new techguns.entities.special.EntityRadiation(this,1200,damageDropStart,9,damageDropEnd,2));
             }
         }
         discard();

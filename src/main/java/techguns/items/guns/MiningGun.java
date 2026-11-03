@@ -84,17 +84,17 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
     public boolean hasSwordSweep(){return true;}
     public TGDamageSource getMeleeDamageSource(Player player,ItemStack stack) {
         boolean powered=getCurrentAmmo(stack)>0;
-        var source=new TGDamageSource(player.level(),"tg_melee",player,player,tool==Tool.SHISHKEBAP?DamageType.FIRE:DamageType.PHYSICAL,powered?DeathType.GORE:DeathType.DEFAULT);
+        var source=new TGDamageSource(player.level,"tg_melee",player,player,tool==Tool.SHISHKEBAP?DamageType.FIRE:DamageType.PHYSICAL,powered?DeathType.GORE:DeathType.DEFAULT);
         if(powered){source.goreChance=tool==Tool.SHISHKEBAP?0.25F:tool==Tool.MININGDRILL?0.5F:1;source.armorPenetration=getPenetration();source.knockbackMultiplier=tool==Tool.POWERHAMMER?1.5F:1;}
         return source;
     }
     public void consumeAmmoOnMeleeHit(LivingEntity entity,ItemStack stack){if(!(entity instanceof Player player)||!player.getAbilities().instabuild)useAmmo(stack,1);}
     public void onMeleeHitTarget(ItemStack stack,Entity target){if(tool==Tool.SHISHKEBAP&&getCurrentAmmo(stack)>0)target.setSecondsOnFire(3);}
     public void doSweepAttackEffect(Player player) {
-        if(player.level().isClientSide)return;
+        if(player.level.isClientSide)return;
         var p=player.position().add(-Mth.sin(player.getYRot()*Mth.DEG_TO_RAD),player.getBbHeight()*0.8,Mth.cos(player.getYRot()*Mth.DEG_TO_RAD));
         TGProjectilePackets.effect(player,"PowerhammerImpact",p,0,0);
-        player.level().playSound(null,player.getX(),player.getY(),player.getZ(),tool==Tool.CHAINSAW?TGSounds.CHAINSAW_HIT.get():tool==Tool.MININGDRILL?TGSounds.DRILLER_HIT.get():TGSounds.POWERHAMMER_IMPACT.get(),SoundSource.PLAYERS,tool==Tool.CHAINSAW?0.65F:1,1);
+        player.level.playSound(null,player.getX(),player.getY(),player.getZ(),tool==Tool.CHAINSAW?TGSounds.CHAINSAW_HIT.get():tool==Tool.MININGDRILL?TGSounds.DRILLER_HIT.get():TGSounds.POWERHAMMER_IMPACT.get(),SoundSource.PLAYERS,tool==Tool.CHAINSAW?0.65F:1,1);
     }
     @Override public boolean onLeftClickEntity(ItemStack stack,Player player,Entity target){
         if(player instanceof ServerPlayer server&&getCurrentAmmo(stack)>0)TGWeaponPackets.animate(server,InteractionHand.MAIN_HAND,false,recoiltime,0);
@@ -104,8 +104,8 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         if(getCurrentAmmo(stack)<=0)return false;
         if(entity instanceof Player player) {
             var state=TGExtendedPlayer.find(player).orElse(null);if(state==null)return false;
-            if(entity.level().isClientSide){if(!state.getAttackTime(false).isRecoiling())predictAnimation(player,InteractionHand.MAIN_HAND,false,5,0);}
-            else if(state.swingSoundDelay<=0&&player.containerMenu==player.inventoryMenu){state.swingSoundDelay=swingSoundDelay;player.level().playSound(null,player.getX(),player.getY(),player.getZ(),swingSound(),SoundSource.PLAYERS,0.65F,1);}
+            if(entity.level.isClientSide){if(!state.getAttackTime(false).isRecoiling())predictAnimation(player,InteractionHand.MAIN_HAND,false,5,0);}
+            else if(state.swingSoundDelay<=0&&player.containerMenu==player.inventoryMenu){state.swingSoundDelay=swingSoundDelay;player.level.playSound(null,player.getX(),player.getY(),player.getZ(),swingSound(),SoundSource.PLAYERS,0.65F,1);}
         }
         return tool!=Tool.SHISHKEBAP;
     }
@@ -125,15 +125,15 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
         try {
             for(int a=-miningRadius;a<=miningRadius;a++)for(int b=-miningRadius;b<=miningRadius;b++) {
                 if(a==0&&b==0)continue;var pos=centre.offset(axis==Direction.Axis.X?0:a,axis==Direction.Axis.Y?0:axis==Direction.Axis.X?a:b,axis==Direction.Axis.Z?0:b);
-                if(!player.level().hasChunkAt(pos)||player.level().getBlockEntity(pos)!=null)continue;
-                var state=player.level().getBlockState(pos);
-                if(!state.isAir()&&state.getDestroySpeed(player.level(),pos)>=0&&isCorrectToolForDrops(stack,state))server.gameMode.destroyBlock(pos);
+                if(!player.level.hasChunkAt(pos)||player.level.getBlockEntity(pos)!=null)continue;
+                var state=player.level.getBlockState(pos);
+                if(!state.isAir()&&state.getDestroySpeed(player.level,pos)>=0&&isCorrectToolForDrops(stack,state))server.gameMode.destroyBlock(pos);
             }
         } finally {miningPlane=false;}
         return false;
     }
     private boolean silkHarvest(ItemStack stack,BlockPos pos,ServerPlayer player) {
-        var level=player.serverLevel();var state=level.getBlockState(pos);
+        var level=player.getLevel();var state=level.getBlockState(pos);
         if(state.isAir()||state.getDestroySpeed(level,pos)<0||!isCorrectToolForDrops(stack,state))return false;
         if(player.blockActionRestricted(level,pos,player.gameMode.getGameModeForPlayer()))return true;
         int xp=net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level,player.gameMode.getGameModeForPlayer(),player,pos);

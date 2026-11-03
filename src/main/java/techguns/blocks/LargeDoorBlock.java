@@ -23,13 +23,15 @@ public final class LargeDoorBlock extends BaseEntityBlock {
     public static final EnumProperty<Phase> PHASE=EnumProperty.create("phase",Phase.class);
     private static final Set<BlockPos> REMOVING=new HashSet<>(),CREATIVE=new HashSet<>();
     public final int variant;
-    public LargeDoorBlock(int variant){super(Properties.copy(Blocks.IRON_BLOCK).strength(6).noOcclusion().pushReaction(PushReaction.BLOCK));this.variant=variant;registerDefaultState(stateDefinition.any().setValue(ZPLANE,false).setValue(ROW,1).setValue(COLUMN,1).setValue(PHASE,Phase.CLOSED));}
+    public LargeDoorBlock(int variant){super(Properties.copy(Blocks.IRON_BLOCK).strength(6).noOcclusion());this.variant=variant;registerDefaultState(stateDefinition.any().setValue(ZPLANE,false).setValue(ROW,1).setValue(COLUMN,1).setValue(PHASE,Phase.CLOSED));}
+    /** Block push reaction (a block property only from 1.20). */
+    @Override public PushReaction getPistonPushReaction(BlockState state){return PushReaction.BLOCK;}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> b){b.add(ZPLANE,ROW,COLUMN,PHASE);}
     public static boolean master(BlockState state){return state.getValue(ROW)==1&&state.getValue(COLUMN)==1;}
     public static BlockPos masterPos(BlockPos pos,BlockState state){return state.getValue(ZPLANE)?pos.offset(0,1-state.getValue(ROW),1-state.getValue(COLUMN)):pos.offset(1-state.getValue(COLUMN),1-state.getValue(ROW),0);}
     public static BlockPos partPos(BlockPos center,boolean zplane,int column,int row){return zplane?center.offset(0,row-1,column-1):center.offset(column-1,row-1,0);}
     public boolean place(Level level,BlockPos bottom,boolean zplane,Player player){
-        BlockPos center=bottom.above();for(int c=0;c<3;c++)for(int r=0;r<3;r++){BlockPos p=partPos(center,zplane,c,r);if(!level.isInWorldBounds(p)||!level.getBlockState(p).canBeReplaced()||!level.getWorldBorder().isWithinBounds(p)||player!=null&&!player.mayUseItemAt(p,Direction.UP,player.getMainHandItem()))return false;}
+        BlockPos center=bottom.above();for(int c=0;c<3;c++)for(int r=0;r<3;r++){BlockPos p=partPos(center,zplane,c,r);if(!level.isInWorldBounds(p)||!level.getBlockState(p).getMaterial().isReplaceable()||!level.getWorldBorder().isWithinBounds(p)||player!=null&&!player.mayUseItemAt(p,Direction.UP,player.getMainHandItem()))return false;}
         if(level.isClientSide)return true;
         for(int c=0;c<3;c++)for(int r=0;r<3;r++)level.setBlock(partPos(center,zplane,c,r),defaultBlockState().setValue(ZPLANE,zplane).setValue(COLUMN,c).setValue(ROW,r),2);
         if(level.getBlockEntity(center) instanceof LargeDoorEntity door&&player!=null)door.access.place(player);
@@ -55,7 +57,7 @@ public final class LargeDoorBlock extends BaseEntityBlock {
         }return InteractionResult.sidedSuccess(level.isClientSide);
     }
     @Override public ItemStack getCloneItemStack(BlockGetter level,BlockPos pos,BlockState state){return TGDoors.ITEMS.get(variant).get().getDefaultInstance();}
-    @Override public java.util.List<ItemStack> getDrops(BlockState state,net.minecraft.world.level.storage.loot.LootParams.Builder builder){return java.util.List.of();}
+    @Override public java.util.List<ItemStack> getDrops(BlockState state,net.minecraft.world.level.storage.loot.LootContext.Builder builder){return java.util.List.of();}
     @Override public void playerWillDestroy(Level level,BlockPos pos,BlockState state,Player player){if(player.isCreative())CREATIVE.add(masterPos(pos,state));super.playerWillDestroy(level,pos,state,player);}
     @Override public void onRemove(BlockState state,Level level,BlockPos pos,BlockState next,boolean moving){
         if(!state.is(next.getBlock())&&!level.isClientSide){BlockPos center=masterPos(pos,state);if(REMOVING.add(center)){boolean creative=CREATIVE.remove(center);try{

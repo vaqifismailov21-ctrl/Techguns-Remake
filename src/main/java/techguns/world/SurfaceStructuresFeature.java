@@ -31,7 +31,7 @@ public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfigura
         var eligible=candidates.stream().filter(s->(!s.cluster||TGConfig.spawnOreClusterStructures)&&(!s.desert||desert)&&(!s.oil||oil)).toList();int total=eligible.stream().mapToInt(Spawn::weight).sum();if(total==0)return null;
         int roll=random.nextInt(total)+1,sum=0;for(var spawn:eligible){sum+=spawn.weight;if(roll<=sum)return spawn.id;}return null;
     }
-    private static boolean tag(Holder<Biome> biome,String id){return biome.is(TagKey.create(net.minecraft.core.registries.Registries.BIOME,ResourceLocation.parse(id)));}
+    private static boolean tag(Holder<Biome> biome,String id){return biome.is(TagKey.create(net.minecraft.core.Registry.BIOME_REGISTRY,new ResourceLocation(id)));}
     public static boolean desert(Holder<Biome> biome){return biome.is(Biomes.DESERT)||tag(biome,"forge:is_sandy")||tag(biome,"forge:is_wasteland");}
     public static int biomeColor(Holder<Biome> biome){
         if(tag(biome,"forge:is_cold")||tag(biome,"forge:is_cold/overworld")||tag(biome,"forge:is_snowy")||biome.value().getBaseTemperature()<.15f)return 1;

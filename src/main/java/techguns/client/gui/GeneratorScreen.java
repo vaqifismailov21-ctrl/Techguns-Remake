@@ -1,7 +1,7 @@
 package techguns.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.network.chat.Component;
@@ -13,16 +13,16 @@ import techguns.power.GeneratorMenu;
 
 /** Generator interface in the style of the Techguns machines: energy bar, fuel slot, flame or tank, readouts. */
 public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
-    private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/generator_gui.png");
+    private static final ResourceLocation TEXTURE=new ResourceLocation("techguns","textures/gui/generator_gui.png");
     private static final ResourceLocation FURNACE=ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");
     private static final int TANK_X=40,TANK_Y=17,TANK_W=16,TANK_H=48;
     public GeneratorScreen(GeneratorMenu menu,Inventory inventory,Component title){super(menu,inventory,title);}
-    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+    @Override public void render(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);renderBackground(graphics.pose());super.render(graphics.pose(),mouseX,mouseY,partial);renderTooltip(graphics.pose(),mouseX,mouseY);
         int x=mouseX-leftPos,y=mouseY-topPos;
         if(x>=7&&x<13&&y>=16&&y<66)graphics.renderTooltip(font,Component.translatable("techguns.power.energy",menu.energy(),menu.capacity()),mouseX,mouseY);
         if(menu.liquid&&x>=TANK_X-1&&x<TANK_X+TANK_W+1&&y>=TANK_Y-1&&y<TANK_Y+TANK_H+1)graphics.renderTooltip(font,menu.tankAmount()>0?Component.translatable("techguns.power.tank",menu.tankFluid().getFluidType().getDescription(),menu.tankAmount(),techguns.power.PowerBlocks.LIQUID_TANK):Component.translatable("techguns.power.tank_empty"),mouseX,mouseY);
     }
-    @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
+    @Override protected void renderBg(com.mojang.blaze3d.vertex.PoseStack graphics__pose,float partial,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         int k=leftPos,l=topPos;graphics.blit(TEXTURE,k,l,0,0,imageWidth,imageHeight);
         int capacity=Math.max(1,menu.capacity()),power=(int)((long)menu.energy()*48/capacity),diff=48-power;
         graphics.blit(LegacyMachineGui.MACHINE,k+8,l+17+diff,251,1+diff,4,48);
@@ -44,7 +44,7 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
             if(burn>0){int h=Math.max(1,burn*13/1000);graphics.blit(FURNACE,k+19,l+40+13-h,176,13-h,14,h);}
         }
     }
-    @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
+    @Override protected void renderLabels(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         graphics.drawString(font,title,8,6,0x404040,false);graphics.drawString(font,playerInventoryTitle,8,imageHeight-94,0x404040,false);
         int x=menu.liquid?62:40;
         graphics.drawString(font,Component.translatable("techguns.power.stored",menu.energy()),x,22,0x404040,false);

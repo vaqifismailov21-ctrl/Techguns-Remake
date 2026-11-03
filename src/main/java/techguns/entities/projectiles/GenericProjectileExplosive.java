@@ -25,11 +25,11 @@ public final class GenericProjectileExplosive extends GenericProjectile {
     @Override protected void onHitEffect(LivingEntity entity,HitResult hit) { explode(hit); }
     @Override protected void hitBlock(BlockHitResult hit) { explode(hit); }
     private void explode(HitResult hit) {
-        if(detonated || level().isClientSide) return;
+        if(detonated || level.isClientSide) return;
         detonated=true;var at=hit.getLocation();
-        var explosion=new net.minecraft.world.level.Explosion(level(),this,at.x,at.y,at.z,1.5F,false,blockdamage?net.minecraft.world.level.Explosion.BlockInteraction.DESTROY_WITH_DECAY:net.minecraft.world.level.Explosion.BlockInteraction.KEEP);
+        var explosion=new net.minecraft.world.level.Explosion(level,this,at.x,at.y,at.z,1.5F,false,blockdamage?net.minecraft.world.level.Explosion.BlockInteraction.DESTROY:net.minecraft.world.level.Explosion.BlockInteraction.NONE);
         explosion.explode();explosion.finalizeExplosion(false);
-        level().playSound(null,at.x,at.y,at.z,net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,net.minecraft.sounds.SoundSource.BLOCKS,4,(1+(random.nextFloat()-random.nextFloat())*0.2F)*0.7F);
+        level.playSound(null,at.x,at.y,at.z,net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,net.minecraft.sounds.SoundSource.BLOCKS,4,(1+(random.nextFloat()-random.nextFloat())*0.2F)*0.7F);
         techguns.TGProjectilePackets.effect(this,"MiningChargeBlockExplosion",at,0,0);
         discard();
     }

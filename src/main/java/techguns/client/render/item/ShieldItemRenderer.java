@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.item.ItemStack;
 import techguns.TGArmors;
 import techguns.Techguns;
@@ -29,12 +29,12 @@ public final class ShieldItemRenderer extends BlockEntityWithoutLevelRenderer {
                 TGArmors.ballistic_shield.get(), new Definition(new ModelBallisticShield(), new String[]{"ballistic_shield", "ballistic_shield_black", "ballistic_shield_green", "ballistic_shield_grey"}),
                 TGArmors.advanced_shield.get(), new Definition(new ModelAdvancedShield(), new String[]{"advanced_shield", "advanced_shield_silver", "advanced_shield_green"}));
     }
-    @Override public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+    @Override public void renderByItem(ItemStack stack, ItemTransforms.TransformType context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         var def = definitions.get(stack.getItem());
         if (def == null || !(stack.getItem() instanceof GenericShield shield)) return;
         int camo = shield.getCurrentCamoIndex(stack);
         if (camo < 0 || camo >= def.textures.length) return;
-        var texture = ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "textures/armors/" + def.textures[camo] + ".png");
+        var texture = new ResourceLocation(Techguns.MODID, "textures/armors/" + def.textures[camo] + ".png");
         pose.pushPose();
         pose.scale(1, -1, -1);
         def.model.renderModel(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(texture)), light, overlay, context);

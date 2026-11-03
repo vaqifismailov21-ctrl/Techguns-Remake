@@ -37,7 +37,7 @@ public final class ItemWeaponEffects {
     @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event) {
         var game=Minecraft.getInstance();if(event.phase!=TickEvent.Phase.END||game.isPaused())return;
         if(game.level==null){states.clear();return;}
-        states.entrySet().removeIf(e->e.getKey().isRemoved()||e.getKey().level()!=game.level);
+        states.entrySet().removeIf(e->e.getKey().isRemoved()||e.getKey().level!=game.level);
         for(var entry:states.entrySet()) {
             var owner=entry.getKey();entry.getValue().entrySet().removeIf(e->{var stack=owner.getItemInHand(e.getKey());return !(stack.getItem() instanceof MiningGun gun)||!gun.hasAmbient()||gun.getCurrentAmmo(stack)==0;});
             entry.getValue().values().forEach(State::tick);

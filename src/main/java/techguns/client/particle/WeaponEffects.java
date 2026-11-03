@@ -20,7 +20,7 @@ public final class WeaponEffects {
     private static final List<Emitter> active=new ArrayList<>();
     private static final List<Emitter> pending=new ArrayList<>();
     private static final Random random=new Random();
-    private static Reader read(String path) throws IOException {return new InputStreamReader(Minecraft.getInstance().getResourceManager().open(ResourceLocation.fromNamespaceAndPath("techguns","particles/"+path)),StandardCharsets.UTF_8);}
+    private static Reader read(String path) throws IOException {return new InputStreamReader(Minecraft.getInstance().getResourceManager().open(new ResourceLocation("techguns","particles/"+path)),StandardCharsets.UTF_8);}
     public static void load() {
         if(definitions!=null)return;
         try(var data=read("nonenergyfx.txt");var lists=read("nonenergyfx-groups.json")) {

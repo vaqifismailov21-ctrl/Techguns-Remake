@@ -56,16 +56,16 @@ public final class CapabilityEventHandler {
         }
     }
     @SubscribeEvent public static void drops(LivingDropsEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player) || player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) return;
+        if (!(event.getEntity() instanceof ServerPlayer player) || player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) return;
         var inventory = TGExtendedPlayer.get(player).tg_inventory;
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.removeItemNoUpdate(slot);
-            if (!stack.isEmpty()) event.getDrops().add(new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), stack));
+            if (!stack.isEmpty()) event.getDrops().add(new ItemEntity(player.level, player.getX(), player.getY(), player.getZ(), stack));
         }
     }
     @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event) {
         if (!event.player.isAlive() || event.player.isRemoved()) return;
-        var data = event.player.level().isClientSide ? TGExtendedPlayer.find(event.player).orElse(null) : TGExtendedPlayer.get(event.player);
+        var data = event.player.level.isClientSide ? TGExtendedPlayer.find(event.player).orElse(null) : TGExtendedPlayer.get(event.player);
         if(data==null) return;
         if (event.phase == TickEvent.Phase.START) {
             if (data.fireDelayMainhand > 0) data.fireDelayMainhand--;

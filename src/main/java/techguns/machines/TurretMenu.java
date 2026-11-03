@@ -19,11 +19,11 @@ import techguns.tileentities.TurretTileEnt;
 /** Original TurretContainer: 3x3 ammunition inputs, 3x3 empty-magazine outputs, gun and armor slots, original shift-click routing. */
 public final class TurretMenu extends AbstractContainerMenu {
     public final TurretTileEnt tile;
-    private static Pair<ResourceLocation,ResourceLocation> icon(String name){return Pair.of(InventoryMenu.BLOCK_ATLAS,ResourceLocation.fromNamespaceAndPath("techguns","gui/emptyslots/"+name));}
+    private static Pair<ResourceLocation,ResourceLocation> icon(String name){return Pair.of(InventoryMenu.BLOCK_ATLAS,new ResourceLocation("techguns","gui/emptyslots/"+name));}
 
     public TurretMenu(int id,Inventory inventory,FriendlyByteBuf buffer){this(id,inventory,require(inventory,buffer));}
     private static TurretTileEnt require(Inventory inventory,FriendlyByteBuf buffer){
-        if(inventory.player.level().getBlockEntity(buffer.readBlockPos()) instanceof TurretTileEnt tile)return tile;
+        if(inventory.player.level.getBlockEntity(buffer.readBlockPos()) instanceof TurretTileEnt tile)return tile;
         throw new IllegalArgumentException("Turret menu requires the actual block entity");
     }
     public TurretMenu(int id,Inventory inventory,TurretTileEnt tile){
@@ -55,7 +55,7 @@ public final class TurretMenu extends AbstractContainerMenu {
     @Override public boolean stillValid(Player player){return tile.isUseableByPlayer(player);}
     @Override public boolean clickMenuButton(Player player,int id){
         if(id<TurretTileEnt.BUTTON_ID_SECURITY||id>TurretTileEnt.BUTTON_ID_PVP_SETTING||!stillValid(player))return false;
-        if(!player.level().isClientSide)tile.buttonClicked(id,player);
+        if(!player.level.isClientSide)tile.buttonClicked(id,player);
         return true;
     }
     /**
@@ -80,7 +80,7 @@ public final class TurretMenu extends AbstractContainerMenu {
                 if(!moveItemStackTo(stack1,TurretTileEnt.SLOT_OUTPUT1,TurretTileEnt.SLOT_INPUT1+TurretTileEnt.INPUTS_SIZE,false))return ItemStack.EMPTY;
                 slot.onQuickCraft(stack1,stack);
             }
-            if(stack1.isEmpty())slot.setByPlayer(ItemStack.EMPTY);else slot.setChanged();
+            if(stack1.isEmpty())slot.set(ItemStack.EMPTY);else slot.setChanged();
             if(stack1.getCount()==stack.getCount())return ItemStack.EMPTY;
             slot.onTake(player,stack1);
         }

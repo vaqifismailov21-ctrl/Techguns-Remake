@@ -23,9 +23,9 @@ public final class TGSuitArmor extends ArmorItem implements ICamoChangeable {
     private ItemStack battery=ItemStack.EMPTY,emptyBattery=ItemStack.EMPTY,repairMetal=ItemStack.EMPTY,repairCloth=ItemStack.EMPTY;
     private float repairMetalRatio;
     private int repairCount;
-    private static Type type(EquipmentSlot slot){return switch(slot){case HEAD->Type.HELMET;case CHEST->Type.CHESTPLATE;case LEGS->Type.LEGGINGS;case FEET->Type.BOOTS;default->throw new IllegalArgumentException("Armor slot required");};}
+    
     public TGSuitArmor(String id,TGArmorMaterial material,String[] textures,EquipmentSlot slot,String powerType,int maxpower){
-        super(material,type(slot),new Item.Properties().durability(material.getDurabilityForType(type(slot))));this.id=id;stats=material;this.textures=textures;this.slot=slot;this.powerType=powerType;this.maxpower=maxpower;
+        super(material,slot,new Item.Properties().durability(material.getDurabilityForSlot(slot)));this.id=id;stats=material;this.textures=textures;this.slot=slot;this.powerType=powerType;this.maxpower=maxpower;
     }
     public boolean powered(){return maxpower>0;}
     public int power(ItemStack stack){return Math.max(0,Math.min(maxpower,stack.getOrCreateTag().getInt("power")));}
@@ -63,8 +63,8 @@ public final class TGSuitArmor extends ArmorItem implements ICamoChangeable {
     public List<ItemStack> repairMaterials(ItemStack stack){
         var result=new ArrayList<ItemStack>();if(stack.getDamageValue()<=0||repairCount<=0)return result;
         int count=(int)Math.ceil(repairCount*stack.getDamageValue()/(float)(stack.getMaxDamage()-1));
-        int metal=(int)Math.ceil(count*repairMetalRatio);if(metal>0&&!repairMetal.isEmpty())result.add(repairMetal.copyWithCount(metal));
-        int cloth=count-metal;if(cloth>0&&!repairCloth.isEmpty())result.add(repairCloth.copyWithCount(cloth));return result;
+        int metal=(int)Math.ceil(count*repairMetalRatio);if(metal>0&&!repairMetal.isEmpty())result.add(techguns.util.Compat.copyWithCount(repairMetal, metal));
+        int cloth=count-metal;if(cloth>0&&!repairCloth.isEmpty())result.add(techguns.util.Compat.copyWithCount(repairCloth, cloth));return result;
     }
     public boolean broken(ItemStack stack){return stack.getDamageValue()>=stack.getMaxDamage()-1;}
     public float armor(ItemStack stack,DamageType type){return stats.armor(slot,type);}

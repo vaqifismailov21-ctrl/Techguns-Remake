@@ -1,7 +1,7 @@
 package techguns.client.models.guns;
 
 import techguns.client.models.LegacyModelPart;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.Entity;
 import techguns.client.models.ModelMultipart;
 
@@ -521,7 +521,7 @@ public class ModelPulseRifle extends ModelMultipart {
 
 @Override
 public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, int ammoLeft, float reloadProgress,
-		ItemDisplayContext transformType, int part, float fireProgress, float chargeProgress) {
+		ItemTransforms.TransformType transformType, int part, float fireProgress, float chargeProgress) {
 
     Shape1.render(scale);
     Shape2.render(scale);

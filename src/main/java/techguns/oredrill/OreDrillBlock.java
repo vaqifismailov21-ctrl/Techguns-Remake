@@ -29,7 +29,7 @@ public class OreDrillBlock extends BaseEntityBlock {
     public static final BooleanProperty FORMED=BooleanProperty.create("formed");
     public final OreDrillType type;
     public OreDrillBlock(OreDrillType type){
-        super(Properties.of().strength(4.0f).sound(SoundType.METAL).noOcclusion());
+        super(Properties.of(net.minecraft.world.level.material.Material.METAL).strength(4.0f).sound(SoundType.METAL).noOcclusion());
         this.type=type;registerDefaultState(stateDefinition.any().setValue(FORMED,false));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FORMED);}

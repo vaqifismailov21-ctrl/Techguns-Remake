@@ -23,8 +23,8 @@ public final class DeathEffectEvents {
     }
     @SubscribeEvent(priority=EventPriority.LOWEST) public static void died(LivingDeathEvent event){
         var entity=event.getEntity();
-        if(entity.level().isClientSide||!(event.getSource() instanceof TGDamageSource damage)||!eligible(entity,damage,entity.getRandom().nextFloat()))return;
-        TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(entity.getX(),entity.getY(),entity.getZ(),100,entity.level().dimension())),new Death(entity.getId(),entity.getUUID(),damage.deathType.ordinal(),entity.getDeltaMovement()));
+        if(entity.level.isClientSide||!(event.getSource() instanceof TGDamageSource damage)||!eligible(entity,damage,entity.getRandom().nextFloat()))return;
+        TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(entity.getX(),entity.getY(),entity.getZ(),100,entity.level.dimension())),new Death(entity.getId(),entity.getUUID(),damage.deathType.ordinal(),entity.getDeltaMovement()));
     }
     public static void register(){
         TGPackets.NETWORK.messageBuilder(Death.class,9,NetworkDirection.PLAY_TO_CLIENT)

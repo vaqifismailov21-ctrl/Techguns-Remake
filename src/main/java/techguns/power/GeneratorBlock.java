@@ -28,7 +28,7 @@ public final class GeneratorBlock extends BaseEntityBlock {
     public static final BooleanProperty LIT=BlockStateProperties.LIT;
     public final boolean liquid;
     public GeneratorBlock(boolean liquid){
-        super(Properties.of().strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops().lightLevel(state->state.getValue(LIT)?13:0));this.liquid=liquid;
+        super(Properties.of(net.minecraft.world.level.material.Material.METAL).strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops().lightLevel(state->state.getValue(LIT)?13:0));this.liquid=liquid;
         registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH).setValue(LIT,false));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FACING,LIT);}

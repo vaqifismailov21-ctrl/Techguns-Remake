@@ -97,7 +97,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     protected double projectileGravity() {return projectileGravity;}
     protected float projectileOffset() {return forwardOffset;}
     protected void chargedEffects(Player player,InteractionHand hand,float charge) {
-        if(player.level().isClientSide) {predictAnimation(player,hand,false,recoiltime,muzzleFlashTicks);TGExtendedPlayer.find(player).ifPresent(state->state.getAttackTime(hand==InteractionHand.OFF_HAND).setRecoilChargeProgress(charge));playLocalWeaponSound(player,fireSound.get(),false);}
+        if(player.level.isClientSide) {predictAnimation(player,hand,false,recoiltime,muzzleFlashTicks);TGExtendedPlayer.find(player).ifPresent(state->state.getAttackTime(hand==InteractionHand.OFF_HAND).setRecoilChargeProgress(charge));playLocalWeaponSound(player,fireSound.get(),false);}
         else if(player instanceof ServerPlayer server) {TGWeaponPackets.sound(server,fireSound.get(),false);TGWeaponPackets.animate(server,hand,false,recoiltime,muzzleFlashTicks,charge);}
     }
     public GenericGun setRechamberSound(Supplier<SoundEvent> sound) { rechamberSound=sound; return this; }
@@ -248,7 +248,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     }
     /** NPCs use the original separate AI firing path: infinite ammunition, difficulty and zoom accuracy multipliers. */
     public void fireWeaponFromNPC(LivingEntity shooter,float damageScale,float accuracyScale){
-        if(shooter.level().isClientSide)return;
+        if(shooter.level.isClientSide)return;
         var stack=shooter.getMainHandItem();
         // Original: turrets fire from the centre, other NPCs from the right hand.
         var firePos=shooter instanceof techguns.entities.npcs.NPCTurret?EnumBulletFirePos.CENTER:EnumBulletFirePos.RIGHT;
@@ -256,13 +256,13 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         TGWeaponPackets.animate(shooter,InteractionHand.MAIN_HAND,false,recoiltime,muzzleFlashTicks,0);
         for(int pellet=0;pellet<=extraPellets;pellet++){
             float offset=forwardOffset+(pellet>0&&burst?speed/extraPellets*pellet:0);
-            if(energyMode==techguns.entities.projectiles.EnergyProjectile.Mode.SONIC){spawnSonic(shooter.level(),shooter,firePos,false,offset,damageScale);continue;}
+            if(energyMode==techguns.entities.projectiles.EnergyProjectile.Mode.SONIC){spawnSonic(shooter.level,shooter,firePos,false,offset,damageScale);continue;}
             float spread=(pellet==0?accuracy:pelletSpread)*zoomBonus*accuracyScale;
-            var projectile=createProjectileForLiving(stack,shooter.level(),shooter,firePos,spread,false,damageScale);
+            var projectile=createProjectileForLiving(stack,shooter.level,shooter,firePos,spread,false,damageScale);
             if(!(projectile instanceof techguns.entities.projectiles.GuidedMissileProjectile))projectile.setProjectileGravity(projectileGravity);
             if(silenced)projectile.setSilenced();
             if(offset>0)projectile.shiftForward(offset/speed);
-            shooter.level().addFreshEntity(projectile);
+            shooter.level.addFreshEntity(projectile);
         }
     }
     private void playRechamberSound(Player player,Level level) {
@@ -283,10 +283,10 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         if (!InventoryUtil.consumeAmmoPlayer(player, getAmmoType().getAmmo(variant))) return false;
         ItemStack[] empties = getAmmoType().getEmptyMag();
         for (int i = 0; i < empties.length; i++) if (!empties[i].isEmpty()) {
-            giveOrDrop(player, empties[i].copyWithCount(1));
+            giveOrDrop(player, techguns.util.Compat.copyWithCount(empties[i], 1));
             // Preserve the original conversion from shots remaining into bullet items on forced reload.
             int bullets = (int) Math.floor(oldAmmo / getAmmoType().getShotsPerBullet(clipsize, oldAmmo));
-            if (bullets > 0) giveOrDrop(player, getAmmoType().getBullet(variant)[i].copyWithCount(bullets));
+            if (bullets > 0) giveOrDrop(player, techguns.util.Compat.copyWithCount(getAmmoType().getBullet(variant)[i], bullets));
         }
         if(ammoPerReload>1) {
             int loaded=1;
@@ -304,7 +304,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     }
     private static void giveOrDrop(Player player, ItemStack stack) {
         int remainder = InventoryUtil.addAmmoToPlayerInventory(player, stack);
-        if (remainder > 0 && !player.level().isClientSide) player.drop(stack.copyWithCount(remainder), false);
+        if (remainder > 0 && !player.level.isClientSide) player.drop(techguns.util.Compat.copyWithCount(stack, remainder), false);
     }
     protected static void predictAnimation(Player player, InteractionHand hand, boolean reload, int ticks, int muzzleTicks) {
         net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,

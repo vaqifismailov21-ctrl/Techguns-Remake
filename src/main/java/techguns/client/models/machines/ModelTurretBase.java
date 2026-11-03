@@ -2,7 +2,7 @@
 package techguns.client.models.machines;
 
 import techguns.client.models.LegacyModelPart;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.Entity;
 import techguns.client.models.ModelMultipart;
 
@@ -143,7 +143,7 @@ public class ModelTurretBase extends ModelMultipart {
 
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
-			float headPitch, float scale, int ammoLeft, float reloadProgress, ItemDisplayContext transformType, int part,
+			float headPitch, float scale, int ammoLeft, float reloadProgress, ItemTransforms.TransformType transformType, int part,
 			float fireProgress, float chargeProgress) {
 		Corner01.render(scale);
 		Top.render(scale);

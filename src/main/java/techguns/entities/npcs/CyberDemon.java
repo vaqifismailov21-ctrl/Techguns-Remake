@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original CyberDemon; equipment branches and damage values are retained. */
 public class CyberDemon extends GenericNPCUndead {
 public CyberDemon(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(10.0f, 0f);hasAimedBowAnim=false;}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/cyberdemon");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/cyberdemon");
 protected void addRandomArmor(int difficulty) {
 
 		

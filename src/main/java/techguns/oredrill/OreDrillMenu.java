@@ -18,7 +18,7 @@ public final class OreDrillMenu extends AbstractContainerMenu {
     public final OreDrillTileEntMaster tile;
     public OreDrillMenu(int id,Inventory inventory,FriendlyByteBuf buffer){this(id,inventory,require(inventory,buffer));}
     private static OreDrillTileEntMaster require(Inventory inventory,FriendlyByteBuf buffer){
-        if(inventory.player.level().getBlockEntity(buffer.readBlockPos()) instanceof OreDrillTileEntMaster tile)return tile;
+        if(inventory.player.level.getBlockEntity(buffer.readBlockPos()) instanceof OreDrillTileEntMaster tile)return tile;
         throw new IllegalArgumentException("Ore drill menu requires the actual controller");
     }
     public OreDrillMenu(int id,Inventory inventory,OreDrillTileEntMaster tile){
@@ -51,7 +51,7 @@ public final class OreDrillMenu extends AbstractContainerMenu {
     @Override public boolean stillValid(Player player){return tile.isUseableByPlayer(player);}
     @Override public boolean clickMenuButton(Player player,int id){
         if((id!=OreDrillTileEntMaster.BUTTON_ID_SECURITY&&id!=OreDrillTileEntMaster.BUTTON_ID_REDSTONE)||!stillValid(player))return false;
-        if(!player.level().isClientSide)tile.buttonClicked(id,player);
+        if(!player.level.isClientSide)tile.buttonClicked(id,player);
         return true;
     }
     /** Original transferStackInSlot: the drill never shift-clicks out; outputs/fuel go to the player; player items to their valid slot. */
@@ -67,7 +67,7 @@ public final class OreDrillMenu extends AbstractContainerMenu {
             if(valid<0||!moveItemStackTo(stack1,valid,valid+1,false))return ItemStack.EMPTY;
             slot.onQuickCraft(stack1,stack);
         }
-        if(stack1.isEmpty())slot.setByPlayer(ItemStack.EMPTY);else slot.setChanged();
+        if(stack1.isEmpty())slot.set(ItemStack.EMPTY);else slot.setChanged();
         if(stack1.getCount()==stack.getCount())return ItemStack.EMPTY;
         slot.onTake(player,stack1);
         return stack;

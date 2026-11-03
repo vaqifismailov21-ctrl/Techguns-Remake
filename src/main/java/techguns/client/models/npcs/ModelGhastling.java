@@ -1,4 +1,5 @@
 package techguns.client.models.npcs;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 
 import java.util.Random;
 
@@ -69,5 +70,5 @@ public class ModelGhastling extends ModelMultipart {
         popMatrix();
     }
 
- @Override public void render(Entity entity,float limb,float amount,float age,float yaw,float pitch,float scale,int ammo,float reload,net.minecraft.world.item.ItemDisplayContext context,int part,float fire,float charge){render(entity,limb,amount,age,yaw,pitch,scale);}
+ @Override public void render(Entity entity,float limb,float amount,float age,float yaw,float pitch,float scale,int ammo,float reload,net.minecraft.client.renderer.block.model.ItemTransforms.TransformType context,int part,float fire,float charge){render(entity,limb,amount,age,yaw,pitch,scale);}
 }

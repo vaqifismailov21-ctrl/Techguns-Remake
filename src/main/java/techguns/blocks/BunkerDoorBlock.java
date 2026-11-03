@@ -11,7 +11,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import techguns.TGSounds;
 /** Original iron bunker door: hand operation and matching double-door leaf. */
 public final class BunkerDoorBlock extends DoorBlock {
-    public BunkerDoorBlock(){super(Properties.copy(Blocks.IRON_DOOR).strength(8).pushReaction(PushReaction.BLOCK),BlockSetType.IRON);}
+    public BunkerDoorBlock(){super(Properties.copy(Blocks.IRON_DOOR).strength(8));}
+    @Override public PushReaction getPistonPushReaction(BlockState state){return PushReaction.BLOCK;}
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(level.isClientSide)return InteractionResult.SUCCESS;
         BlockPos bottom=state.getValue(HALF)==DoubleBlockHalf.UPPER?pos.below():pos;

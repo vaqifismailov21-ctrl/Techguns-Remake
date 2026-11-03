@@ -19,7 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /** A flat panel; right click shows the current output and stored energy. */
 public final class SolarPanelBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE=Block.box(0,0,0,16,6,16);
-    public SolarPanelBlock(){super(Properties.of().strength(2.5f,6).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion());}
+    public SolarPanelBlock(){super(Properties.of(net.minecraft.world.level.material.Material.METAL).strength(2.5f,6).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion());}
     @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return SHAPE;}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new SolarPanelEntity(pos,state);}

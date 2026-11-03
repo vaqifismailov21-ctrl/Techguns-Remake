@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original DictatorDave; equipment branches and damage values are retained. */
 public class DictatorDave extends GenericNPC {
 public DictatorDave(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(15.0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/dictatordave");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/dictatordave");
 protected void addRandomArmor(int difficulty) {
 
 		

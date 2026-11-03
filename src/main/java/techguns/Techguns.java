@@ -1,7 +1,7 @@
 package techguns;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -25,13 +25,11 @@ public final class Techguns {
     public static final String MODID = "techguns";
     public static final String NAME = "Techguns";
     public static final Logger LOGGER = LogUtils.getLogger();
-    private static final DeferredRegister<CreativeModeTab> TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-    public static final RegistryObject<CreativeModeTab> TAB = TABS.register("techguns", () ->
-            CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.techguns"))
-                    .icon(() -> TGItems.PISTOL_ROUNDS.get().getDefaultInstance())
-                    .displayItems((parameters, output) -> {
+    /** 1.19.2 creative tabs are plain objects; the tab lists the same items in the same order as the 1.20.1 tab. */
+    public static final CreativeModeTab TAB = new CreativeModeTab("techguns") {
+        @Override public net.minecraft.world.item.ItemStack makeIcon() { return TGItems.PISTOL_ROUNDS.get().getDefaultInstance(); }
+        @Override public void fillItemList(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items) {
+            TabOutput output = items::add;
                         TGItems.SHARED_ITEMS.forEach((id, item) -> { if (TGItems.enabled(id)) output.accept(item.get()); });
                         output.accept(TGItems.RAD_AWAY.get()); output.accept(TGItems.RAD_PILLS.get());
                         TGArmors.SHIELDS.values().forEach(item -> output.accept(item.get()));
@@ -53,8 +51,16 @@ public final class Techguns {
                         TGWorld.ITEMS.values().forEach(item->output.accept(item.get()));
                         TGNpcs.EGGS.values().forEach(item->output.accept(item.get()));
                         TGSpecialNpcs.EGGS.values().forEach(item->output.accept(item.get()));
-                    })
-                    .build());
+                        // Same as the 1.20.1/1.21.1 tab: Patchouli puts the Techguns manual last (it targets this tab in book.json).
+                        var patchouliBook = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(new net.minecraft.resources.ResourceLocation("patchouli", "guide_book"));
+                        if (patchouliBook != null && patchouliBook != net.minecraft.world.item.Items.AIR) patchouliBook.fillItemCategory(this, items);
+                            }
+    };
+    @FunctionalInterface private interface TabOutput {
+        void add(net.minecraft.world.item.ItemStack stack);
+        default void accept(net.minecraft.world.item.ItemStack stack) { add(stack); }
+        default void accept(net.minecraft.world.level.ItemLike item) { add(new net.minecraft.world.item.ItemStack(item)); }
+    }
 
     public Techguns() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -79,7 +85,6 @@ public final class Techguns {
         bus.addListener(TGNpcs::attributes);
         TGItems.ITEMS.register(bus);
         TGSounds.SOUNDS.register(bus);
-        TABS.register(bus);
         TGMenuTypes.MENUS.register(bus);
         TGRecipeSerializers.SERIALIZERS.register(bus);
         TGRadiation.ATTRIBUTES.register(bus);
@@ -98,6 +103,11 @@ public final class Techguns {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            // 1.19.2 creative search only lists items that have a category; the 1.20.1 tab is searchable, so give every
+            // Techguns item this tab as its category (the tab itself is still filled in the 1.20.1 order above).
+            for (var item : net.minecraftforge.registries.ForgeRegistries.ITEMS.getValues())
+                if (MODID.equals(net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item).getNamespace()) && item.getItemCategory() == null)
+                    net.minecraftforge.fml.util.ObfuscationReflectionHelper.setPrivateValue(net.minecraft.world.item.Item.class, item, TAB, "f_41377_");
             AmmoTypes.init();
             TGNpcGunSettings.setup();
             net.minecraftforge.common.crafting.CraftingHelper.register(techguns.recipes.HardenedGlassIngredient.ID,techguns.recipes.HardenedGlassIngredient.SERIALIZER);

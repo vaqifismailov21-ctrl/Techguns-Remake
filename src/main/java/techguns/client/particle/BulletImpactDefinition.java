@@ -68,7 +68,7 @@ public final class BulletImpactDefinition {
         String key = pair[0].trim().toLowerCase(Locale.ROOT), value = pair[1].trim();
         String[] values = value.split("\\s+");
         switch (key) {
-            case "texture" -> texture = ResourceLocation.parse(value.toLowerCase(Locale.ROOT));
+            case "texture" -> texture = new ResourceLocation(value.toLowerCase(Locale.ROOT));
             case "rendertype" -> { if (!value.equals("ALPHA") && !value.equals("ADDITIVE") && !value.equals("NO_Z_TEST")) throw new IOException("Unsupported bullet blend " + value); additive = !value.equals("ALPHA"); noZTest = value.equals("NO_Z_TEST"); }
             case "rows" -> rows = Integer.parseInt(value);
             case "columns" -> columns = Integer.parseInt(value);

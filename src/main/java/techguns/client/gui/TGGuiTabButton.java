@@ -1,6 +1,6 @@
 package techguns.client.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,21 +17,21 @@ public final class TGGuiTabButton extends AbstractButton {
         this.selected = selected; this.icon = icon; this.action = action; active = !selected;
     }
     @Override public void onPress() { action.run(); }
-    @Override protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    @Override public void renderButton(com.mojang.blaze3d.vertex.PoseStack graphics__pose, int mouseX, int mouseY, float partialTick) {techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         graphics.flush();
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
         com.mojang.blaze3d.systems.RenderSystem.defaultBlendFunc();
         // Vanilla narrowed each atlas tab from 28 to 26 pixels. Preserve original 28px borders
         // by stretching only its flat centre, rather than sampling into the neighbouring tab.
-        drawLegacyWidth(graphics,getX(),getY(),0,selected?32:2,26);
-        if (selected) drawLegacyWidth(graphics,getX()+1,getY()+26,27,60,4);
+        drawLegacyWidth(graphics,x,y,0,selected?32:2,26);
+        if (selected) drawLegacyWidth(graphics,x+1,y+26,27,60,4);
         com.mojang.blaze3d.systems.RenderSystem.disableBlend();
-        graphics.renderItem(icon, getX() + 6, getY() + 6);
+        graphics.renderItem(icon, x + 6, y + 6);
     }
     private static void drawLegacyWidth(GuiGraphics graphics,int x,int y,int u,int v,int height) {
         graphics.blit(TABS,x,y,3,height,(float)u,v,3,height,256,256);
         graphics.blit(TABS,x+3,y,22,height,(float)u+3,v,20,height,256,256);
         graphics.blit(TABS,x+25,y,3,height,(float)u+23,v,3,height,256,256);
     }
-    @Override protected void updateWidgetNarration(net.minecraft.client.gui.narration.NarrationElementOutput narration) { defaultButtonNarrationText(narration); }
+    @Override public void updateNarration(net.minecraft.client.gui.narration.NarrationElementOutput narration) { defaultButtonNarrationText(narration); }
 }

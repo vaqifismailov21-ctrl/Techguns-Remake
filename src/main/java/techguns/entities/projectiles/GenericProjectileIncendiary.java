@@ -15,7 +15,7 @@ public class GenericProjectileIncendiary extends GenericProjectile {
     protected boolean showFireTrail;
     private boolean trailStarted;
     @Override public void tick() {
-        if(level().isClientSide&&showFireTrail&&!trailStarted){trailStarted=true;techguns.client.particle.WeaponEffects.attach("IncendiaryShotgunTrail",this);}
+        if(level.isClientSide&&showFireTrail&&!trailStarted){trailStarted=true;techguns.client.particle.WeaponEffects.attach("IncendiaryShotgunTrail",this);}
         super.tick();
     }
     public GenericProjectileIncendiary(EntityType<? extends GenericProjectileIncendiary> type, Level level) { super(type, level); }
@@ -31,7 +31,7 @@ public class GenericProjectileIncendiary extends GenericProjectile {
     }
     @Override protected void onHitEffect(LivingEntity target, HitResult hit) { if (!target.fireImmune()) target.setSecondsOnFire(3); }
     @Override protected void hitBlock(BlockHitResult hit) {
-        if (blockdamage) burnBlocks(level(), hit, damage / 40F);
+        if (blockdamage) burnBlocks(level, hit, damage / 40F);
         super.hitBlock(hit);
     }
     @Override protected void addAdditionalSaveData(CompoundTag tag) { super.addAdditionalSaveData(tag); tag.putBoolean("fireTrail", showFireTrail); }

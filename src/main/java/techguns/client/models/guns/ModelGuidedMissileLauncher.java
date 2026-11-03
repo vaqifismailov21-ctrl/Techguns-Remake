@@ -2,7 +2,7 @@ package techguns.client.models.guns;
 
 import techguns.client.models.LegacyModelPart;
 
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import techguns.capabilities.TGExtendedPlayer;
@@ -155,7 +155,7 @@ public class ModelGuidedMissileLauncher extends ModelMultipart {
 
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
-			float headPitch, float scale, int ammoLeft, float reloadProgress, ItemDisplayContext transformType, int part,
+			float headPitch, float scale, int ammoLeft, float reloadProgress, ItemTransforms.TransformType transformType, int part,
 			float fireProgress, float chargeProgress) {
 		this.Optics07.render(scale);
 		this.End02.render(scale);
@@ -201,7 +201,7 @@ public class ModelGuidedMissileLauncher extends ModelMultipart {
 		translate(-this.Holo2.rotationPointX * scale, -this.Holo2.rotationPointY * scale,
 				-this.Holo2.rotationPointZ * scale);
 		boolean locked = false;
-		if (transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND ) {
+		if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND ) {
 			if (entityIn != null && entityIn instanceof Player) {
 				Player player = (Player) entityIn;
 				TGExtendedPlayer tge = TGExtendedPlayer.get(player);

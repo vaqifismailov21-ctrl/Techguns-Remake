@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ import techguns.util.InventoryUtil;
 /** Pistol subset of original TGGuiEvents, using original sprites, spacing and coordinates. */
 @Mod.EventBusSubscriber(modid = Techguns.MODID, value = Dist.CLIENT)
 public final class WeaponHud {
-    private static final ResourceLocation CROSSHAIRS = ResourceLocation.fromNamespaceAndPath("techguns", "textures/gui/tg_crosshairs.png");
+    private static final ResourceLocation CROSSHAIRS = new ResourceLocation("techguns", "textures/gui/tg_crosshairs.png");
     private static final ResourceLocation INVENTORY = techguns.client.gui.TGPlayerInventoryScreen.TEXTURE;
     @SubscribeEvent public static void crosshair(RenderGuiOverlayEvent.Pre event) {
         var game = Minecraft.getInstance();
@@ -32,7 +32,7 @@ public final class WeaponHud {
         if(ClientZoom.isZoomed(game.player,gun)&&techguns.client.render.item.GunItemRenderer.get().hasScope(gun)) {event.setCanceled(true);return;}
         if(style==techguns.items.guns.EnumCrosshairStyle.VANILLA) return;
         event.setCanceled(true);
-        var graphics = event.getGuiGraphics();
+        var graphics = new techguns.client.gui.compat.GuiGraphics(event.getPoseStack());
         int x = graphics.guiWidth() / 2, y = graphics.guiHeight() / 2;
         int spacing = Mth.clamp(Math.round(100 * gun.getSpread() * (ClientZoom.isZoomed(game.player,gun)?gun.getZoomBonus():1) * (game.player.isBlocking() ?
                 gun.getGunHandType()==techguns.api.guns.GunHandType.ONE_HANDED?4:8 : 1)), 1, 10);
@@ -86,7 +86,7 @@ public final class WeaponHud {
         if (game.player == null || game.player.isSpectator() || game.options.hideGui) return;
         var state = TGExtendedPlayer.find(game.player).orElse(null);
         if(state==null) return;
-        var graphics = event.getGuiGraphics();
+        var graphics = new techguns.client.gui.compat.GuiGraphics(event.getPoseStack());
         boolean held = drawAmmo(graphics, game.player.getMainHandItem(), 0, state);
         if(techguns.api.guns.GunManager.canUseOffhand(game.player)) held |= drawAmmo(graphics, game.player.getOffhandItem(), -12, state);
         if (held && state.showTGHudElements)

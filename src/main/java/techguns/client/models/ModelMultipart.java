@@ -3,7 +3,7 @@ package techguns.client.models;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 
 /** Rendering adapter for the original Techguns multipart geometry. Client only. */
 public abstract class ModelMultipart {
@@ -39,12 +39,12 @@ public abstract class ModelMultipart {
     protected void useDoubleSidedLayer(boolean value){doubleSided=value;if(layers!=null)vertices=layers.apply(alphaLayer,doubleSided);}
 
     public final void renderModel(PoseStack pose, VertexConsumer vertices, int light, int overlay,
-                                  ItemDisplayContext context) {
+                                  ItemTransforms.TransformType context) {
         renderModel(pose, vertices, light, overlay, context, null, 0, 0, 0, 0, 0);
     }
 
     public final void renderModel(PoseStack pose, VertexConsumer vertices, int light, int overlay,
-                                  ItemDisplayContext context, net.minecraft.world.entity.LivingEntity entity,
+                                  ItemTransforms.TransformType context, net.minecraft.world.entity.LivingEntity entity,
                                   int ammo, float reload, int part, float fire, float charge) {
         this.pose = pose;
         this.vertices = vertices;
@@ -59,12 +59,12 @@ public abstract class ModelMultipart {
     }
 
     protected void pushMatrix() { pose.pushPose(); }
-    public final void renderAnimatedModel(PoseStack pose,VertexConsumer vertices,int light,int overlay,ItemDisplayContext context,net.minecraft.world.entity.LivingEntity entity,float limb,float amount,float age,float yaw,float pitch){
+    public final void renderAnimatedModel(PoseStack pose,VertexConsumer vertices,int light,int overlay,ItemTransforms.TransformType context,net.minecraft.world.entity.LivingEntity entity,float limb,float amount,float age,float yaw,float pitch){
         this.pose=pose;this.vertices=vertices;this.light=light;this.overlay=overlay;
         try{render(entity,limb,amount,age,yaw,pitch,.0625f,0,0,context,0,0,0);}finally{this.pose=null;this.vertices=null;}
     }
     /** A nested ModelBase used global render state in 1.12; explicitly pass that state to its adapter. */
-    public final void renderInherited(ModelMultipart parent,Entity entity,float limb,float amount,float age,float yaw,float pitch,float scale,int ammo,float reload,ItemDisplayContext context,int part,float fire,float charge) {
+    public final void renderInherited(ModelMultipart parent,Entity entity,float limb,float amount,float age,float yaw,float pitch,float scale,int ammo,float reload,ItemTransforms.TransformType context,int part,float fire,float charge) {
         var previousPose=pose;var previousVertices=vertices;int previousLight=light,previousOverlay=overlay;
         pose=parent.pose;vertices=parent.vertices;light=parent.light;overlay=parent.overlay;
         try {render(entity,limb,amount,age,yaw,pitch,scale,ammo,reload,context,part,fire,charge);}
@@ -74,7 +74,7 @@ public abstract class ModelMultipart {
     protected void translate(double x, double y, double z) { pose.translate(x, y, z); }
     protected void scale(double x,double y,double z) { pose.scale((float)x,(float)y,(float)z); }
     protected void rotate(float angle,float x,float y,float z) {
-        pose.mulPose(new org.joml.Quaternionf().rotationAxis((float)Math.toRadians(angle),new org.joml.Vector3f(x,y,z).normalize()));
+        pose.mulPose(techguns.util.MathCompat.axis((float)Math.toRadians(angle),techguns.util.MathCompat.norm(new com.mojang.math.Vector3f(x,y,z))));
     }
     protected void enableFXLighting() { savedLights.push(light);light=net.minecraft.client.renderer.LightTexture.FULL_BRIGHT; }
     protected void disableFXLighting() { light=savedLights.pop(); }
@@ -83,7 +83,7 @@ public abstract class ModelMultipart {
 
     public abstract void render(Entity entity, float limbSwing, float limbSwingAmount, float age,
                                 float yaw, float pitch, float scale, int ammo, float reload,
-                                ItemDisplayContext context, int part, float fire, float charge);
+                                ItemTransforms.TransformType context, int part, float fire, float charge);
 
     protected void setRotation(LegacyModelPart model, float x, float y, float z) {
         model.rotateAngleX = x;

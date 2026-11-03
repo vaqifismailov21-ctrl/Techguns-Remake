@@ -90,7 +90,7 @@ public final class NoiseTerrain {
         var states=new BlockState[16*16*height];
         var noiseSettings=settings.noiseSettings().clampToHeightAccessor(heightAccessor);
         int cellWidth=noiseSettings.getCellWidth(),cellHeight=noiseSettings.getCellHeight(),cellsXZ=16/cellWidth;
-        int minCellY=Mth.floorDiv(noiseSettings.minY(),cellHeight),cellCountY=Mth.floorDiv(noiseSettings.height(),cellHeight);
+        int minCellY=Math.floorDiv(noiseSettings.minY(),cellHeight),cellCountY=Math.floorDiv(noiseSettings.height(),cellHeight);
         int minX=chunkX*16,minZ=chunkZ*16;
         var noise=new Chunk(cellsXZ,randomState,minX,minZ,noiseSettings,NO_BEARD,settings,fluidPicker(settings),Blender.empty());
         noise.initializeForFirstCellX();

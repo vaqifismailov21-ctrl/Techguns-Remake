@@ -21,7 +21,7 @@ public final class InventoryUtil {
         }
         for (int i = start; i < end && !remaining.isEmpty(); i++) if (inventory.get(i).isEmpty()) {
             int count = Math.min(remaining.getCount(), remaining.getMaxStackSize());
-            inventory.set(i, remaining.copyWithCount(count));
+            inventory.set(i, techguns.util.Compat.copyWithCount(remaining, count));
             remaining.shrink(count);
         }
         return remaining.getCount();
@@ -34,7 +34,7 @@ public final class InventoryUtil {
     }
     public static int addAmmoToPlayerInventory(Player player, ItemStack stack) {
         int remaining = addAmmoToAmmoInventory(player, stack);
-        if (remaining > 0) remaining = addItemToInventory(player.getInventory().items, stack.copyWithCount(remaining), 0, player.getInventory().items.size());
+        if (remaining > 0) remaining = addItemToInventory(player.getInventory().items, techguns.util.Compat.copyWithCount(stack, remaining), 0, player.getInventory().items.size());
         player.getInventory().setChanged();
         return remaining;
     }
@@ -66,7 +66,7 @@ public final class InventoryUtil {
         if (!canConsumeAmmoPlayer(player, wanted)) return false;
         var extra = TGExtendedPlayer.get(player).tg_inventory;
         int remaining = consumeItem(extra.inventory, wanted, 7, 15);
-        if (remaining > 0) consumeItem(player.getInventory().items, wanted.copyWithCount(remaining), 0, player.getInventory().items.size());
+        if (remaining > 0) consumeItem(player.getInventory().items, techguns.util.Compat.copyWithCount(wanted, remaining), 0, player.getInventory().items.size());
         extra.setChanged(); player.getInventory().setChanged();
         return true;
     }

@@ -8,7 +8,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.*;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import techguns.plugins.jei.RecipeDisplays.*;
 
@@ -28,9 +28,9 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
         }
     }
     private List<Component> details(Display recipe){var lines=new ArrayList<Component>();if(recipe.ticks()>0)lines.add(Component.translatable("techguns.jei.duration",RecipeDisplays.number(recipe.ticks()/20D)));if(recipe.power()>0)lines.add(Component.translatable(kind==Kind.REACTION?"techguns.jei.energy_step":"techguns.jei.energy_tick",recipe.power()));lines.addAll(recipe.details());return lines;}
-    @Override public void draw(Display recipe,IRecipeSlotsView slots,GuiGraphics graphics,double mouseX,double mouseY){
-        if(kind==Kind.CAMO||kind==Kind.REPAIR){graphics.fill(0,0,162,63,0xffc6c6c6);graphics.drawString(Minecraft.getInstance().font,">",70,5,0x404040,false);}else panel.draw(graphics);
-        if(recipe.power()>0)power.draw(graphics,1,2);drawProgress(graphics);
+    @Override public void draw(Display recipe,IRecipeSlotsView slots,com.mojang.blaze3d.vertex.PoseStack graphics__pose,double mouseX,double mouseY){GuiGraphics graphics=new GuiGraphics(graphics__pose);
+        if(kind==Kind.CAMO||kind==Kind.REPAIR){graphics.fill(0,0,162,63,0xffc6c6c6);graphics.drawString(Minecraft.getInstance().font,">",70,5,0x404040,false);}else panel.draw(graphics__pose);
+        if(recipe.power()>0)power.draw(graphics__pose,1,2);drawProgress(graphics);
         int y=65;for(var line:details(recipe)){var font=Minecraft.getInstance().font;float scale=Math.min(1,162f/Math.max(1,font.width(line)));graphics.pose().pushPose();graphics.pose().translate(0,y,0);graphics.pose().scale(scale,scale,1);graphics.drawString(font,line,0,0,0x404040,false);graphics.pose().popPose();y+=11;}
     }
     private void drawProgress(GuiGraphics graphics){

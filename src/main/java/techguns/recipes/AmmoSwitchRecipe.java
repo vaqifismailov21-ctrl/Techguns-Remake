@@ -14,10 +14,10 @@ import techguns.items.guns.GenericGun;
 /** Original shapeless ammunition switch, preserving the weapon's complete independent NBT. */
 public final class AmmoSwitchRecipe extends ShapelessRecipe {
     private AmmoSwitchRecipe(ShapelessRecipe recipe) {
-        super(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.getResultItem(RegistryAccess.EMPTY), recipe.getIngredients());
+        super(recipe.getId(), recipe.getGroup(), recipe.getResultItem(), recipe.getIngredients());
     }
     @Override public RecipeSerializer<?> getSerializer() { return TGRecipeSerializers.AMMO_SWITCH.get(); }
-    @Override public ItemStack assemble(CraftingContainer input, RegistryAccess registries) {
+    @Override public ItemStack assemble(CraftingContainer input) {
         ItemStack weapon = ItemStack.EMPTY, ammunition = ItemStack.EMPTY;
         for (int slot = 0; slot < input.getContainerSize(); slot++) {
             var stack = input.getItem(slot);
@@ -25,7 +25,7 @@ public final class AmmoSwitchRecipe extends ShapelessRecipe {
             else if (!stack.isEmpty()) ammunition = stack;
         }
         if (!(weapon.getItem() instanceof GenericGun gun) || ammunition.isEmpty()) return ItemStack.EMPTY;
-        ItemStack result = super.assemble(input, registries);
+        ItemStack result = super.assemble(input);
         if (weapon.hasTag()) result.setTag(weapon.getTag().copy());
         gun.setAmmo(result, gun.getAmmoCount()>1?1:gun.clipsize);
         result.getOrCreateTag().putString("ammovariant", gun.getAmmoType().getAmmoVariantKeyfor(ammunition, 0));

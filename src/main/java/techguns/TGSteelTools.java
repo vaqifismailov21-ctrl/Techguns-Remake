@@ -13,10 +13,10 @@ import techguns.api.damagesystem.DamageType;
 import techguns.deatheffects.EntityDeathUtils.DeathType;
 /** Original Steel tier: harvest 2, durability 1000, speed 7.5, damage bonus 2.5, enchantability 12. */
 public final class TGSteelTools {
-    private static final Tier STEEL=TierSortingRegistry.registerTier(new ForgeTier(2,1000,7.5F,2.5F,12,BlockTags.NEEDS_IRON_TOOL,()->Ingredient.of(TGItems.INGOT_STEEL.get())),ResourceLocation.fromNamespaceAndPath("techguns","steel"),java.util.List.of(Tiers.IRON),java.util.List.of(Tiers.DIAMOND));
+    private static final Tier STEEL=TierSortingRegistry.registerTier(new ForgeTier(2,1000,7.5F,2.5F,12,BlockTags.NEEDS_IRON_TOOL,()->Ingredient.of(TGItems.INGOT_STEEL.get())),new ResourceLocation("techguns","steel"),java.util.List.of(Tiers.IRON),java.util.List.of(Tiers.DIAMOND));
     public static final RegistryObject<Item> COMBAT_KNIFE=TGItems.ITEMS.register("combatknife",Knife::new);
     public static final RegistryObject<Item> CROWBAR=TGItems.ITEMS.register("crowbar",Crowbar::new);
-    private static TGDamageSource source(Player player){var source=new TGDamageSource(player.level(),"tg_melee",player,player,DamageType.PHYSICAL,DeathType.GORE);source.goreChance=0.25F;return source;}
+    private static TGDamageSource source(Player player){var source=new TGDamageSource(player.level,"tg_melee",player,player,DamageType.PHYSICAL,DeathType.GORE);source.goreChance=0.25F;return source;}
     private static final class Knife extends SwordItem implements LegacyMeleeWeapon {
         Knife(){super(STEEL,3,-2.4F,new Properties());}
         @Override public TGDamageSource getMeleeDamageSource(Player player,ItemStack stack){return source(player);}

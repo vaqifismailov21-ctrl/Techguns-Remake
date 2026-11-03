@@ -10,7 +10,7 @@ import techguns.world.structures.camp.CampStructure.BiomeColorType;
 /** Mechanically adapted from the original camp source; layout, dimensions and random-call order retained. */
 public class Barracks extends CampStructure {
 	
-	private static final ResourceLocation CHEST_LOOT = ResourceLocation.parse("techguns:chests/militarybase_barracks");
+	private static final ResourceLocation CHEST_LOOT = new ResourceLocation("techguns:chests/militarybase_barracks");
 	
 	CampBlock b_pillar = new CampBlock(CampBlocks.state("BARRACKS_WOOD_PILLAR")); 
 	CampBlock b_wall = new CampBlock(CampBlocks.state("BARRACKS_WOOD_WALL")); 

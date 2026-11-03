@@ -151,9 +151,9 @@ public class TurretTileEnt extends BlockEntity implements MenuProvider {
         for(int i=0;i<emptyMag.length;i++){
             if(TurretInventory.consumeAmmo(inventory,ammo[i],SLOT_INPUT1,SLOT_INPUT1+INPUTS_SIZE)){
                 if(!emptyMag[i].isEmpty()){
-                    int tooMuch=TurretInventory.addItemToInventory(inventory,emptyMag[i].copyWithCount(1),SLOT_OUTPUT1,SLOT_OUTPUT1+OUTPUTS_SIZE);
+                    int tooMuch=TurretInventory.addItemToInventory(inventory,techguns.util.Compat.copyWithCount(emptyMag[i], 1),SLOT_OUTPUT1,SLOT_OUTPUT1+OUTPUTS_SIZE);
                     // Original: whatever does not fit into the outputs is dropped above the base.
-                    if(tooMuch>0&&level!=null&&!level.isClientSide)level.addFreshEntity(new ItemEntity(level,worldPosition.getX(),worldPosition.getY()+1,worldPosition.getZ(),emptyMag[i].copyWithCount(tooMuch)));
+                    if(tooMuch>0&&level!=null&&!level.isClientSide)level.addFreshEntity(new ItemEntity(level,worldPosition.getX(),worldPosition.getY()+1,worldPosition.getZ(),techguns.util.Compat.copyWithCount(emptyMag[i], tooMuch)));
                 }
                 if(gun.getAmmoCount()>1){
                     int j=1;

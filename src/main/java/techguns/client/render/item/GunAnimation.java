@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 
 public class GunAnimation {
 
@@ -143,7 +143,7 @@ public class GunAnimation {
 		@Override
 		public void apply(PoseStack pose, float f, boolean mirror) {
 			//System.out.printf("Rotate: angle = %.3f, x/y/z= %.3f/%.3f/%.2f\n", angle, x, y, z));
-			pose.mulPose(new Quaternionf().rotationAxis((float) Math.toRadians(f*angle), new Vector3f(x, mirror ? -y : y, mirror ? -z : z).normalize()));
+			pose.mulPose(techguns.util.MathCompat.axis((float) Math.toRadians(f*angle), techguns.util.MathCompat.norm(new Vector3f(x, mirror ? -y : y, mirror ? -z : z))));
 		}		
 	}	
 	

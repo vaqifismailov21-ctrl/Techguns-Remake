@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original ZombieSoldier; equipment branches and damage values are retained. */
 public class ZombieSoldier extends GenericNPCUndead {
 public ZombieSoldier(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(5.0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/zombiesoldier");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/zombiesoldier");
 protected void addRandomArmor(int difficulty) {
 
 		

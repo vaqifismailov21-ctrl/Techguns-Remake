@@ -28,8 +28,8 @@ public final class TGArmorMaterial implements ArmorMaterial {
     public TGArmorMaterial setPenetrationResistance(float v){penetrationResistance=v;return this;}
     public float getPenetrationResistance(){return penetrationResistance;}
     public float armor(EquipmentSlot slot,DamageType type){return armor.getOrDefault(type,0F)*switch(slot){case HEAD,LEGS->0.25F;case CHEST->0.30F;case FEET->0.20F;default->0;};}
-    @Override public int getDurabilityForType(ArmorItem.Type type){return Math.round(baseDur*55*0.25F);}
-    @Override public int getDefenseForType(ArmorItem.Type type){return 0;}
+    @Override public int getDurabilityForSlot(net.minecraft.world.entity.EquipmentSlot slot){return Math.round(baseDur*55*0.25F);}
+    @Override public int getDefenseForSlot(net.minecraft.world.entity.EquipmentSlot slot){return 0;}
     @Override public int getEnchantmentValue(){return enchantability;}
     @Override public SoundEvent getEquipSound(){return sound;}
     @Override public Ingredient getRepairIngredient(){return Ingredient.EMPTY;}

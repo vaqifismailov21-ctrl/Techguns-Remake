@@ -41,7 +41,7 @@ public final class NpcSpawnerEntity extends BlockEntity {
                 var entity=EntityType.loadEntityRecursive(chosen.entity.copy(),world,e->{e.moveTo(worldPosition.getX()+(world.random.nextDouble()-world.random.nextDouble())*spawnRange+.5,worldPosition.getY()+1+spawnHeightOffset,worldPosition.getZ()+(world.random.nextDouble()-world.random.nextDouble())*spawnRange+.5,0,0);return e;});
                 if(entity instanceof Mob mob){
                     // Preserve Forge spawn hooks and source equipment initialization.
-                    ForgeEventFactory.onFinalizeSpawn(mob,world,world.getCurrentDifficultyAt(mob.blockPosition()),MobSpawnType.SPAWNER,null,null);
+                    mob.finalizeSpawn(world,world.getCurrentDifficultyAt(mob.blockPosition()),MobSpawnType.SPAWNER,null,null);
                     if(mob instanceof PathfinderMob pathfinder)pathfinder.restrictTo(worldPosition,10);
                     var link=new CompoundTag();link.putLong("pos",worldPosition.asLong());link.putString("dimension",world.dimension().location().toString());mob.getPersistentData().put("TGSpawner",link);
                     if(!weaponOverride.isEmpty())mob.setItemSlot(EquipmentSlot.MAINHAND,weaponOverride.copy());
@@ -50,7 +50,7 @@ public final class NpcSpawnerEntity extends BlockEntity {
                 }else delay=spawnDelay;
             }else delay=spawnDelay;
         }else if(delay<=0){
-            delay=spawnDelay;active.values().removeIf(mob->!mob.isAlive()||mob.level()!=world);
+            delay=spawnDelay;active.values().removeIf(mob->!mob.isAlive()||mob.level!=world);
         }
         if(mobsLeft<=0)world.removeBlock(worldPosition,false);
     }

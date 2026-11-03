@@ -18,8 +18,8 @@ final class DynamicCraftingExtension implements ICraftingCategoryExtension {
     DynamicCraftingExtension(CraftingRecipe recipe){this.recipe=recipe;}
     private ItemStack output(List<ItemStack> ingredients){
         var menu=new AbstractContainerMenu(null,0){@Override public boolean stillValid(Player player){return true;}@Override public ItemStack quickMoveStack(Player player,int slot){return ItemStack.EMPTY;}};
-        var grid=new TransientCraftingContainer(menu,3,3);for(int i=0;i<ingredients.size();i++)grid.setItem(i,ingredients.get(i).copy());
-        return recipe.assemble(grid,Minecraft.getInstance().level.registryAccess());
+        var grid=new CraftingContainer(menu,3,3);for(int i=0;i<ingredients.size();i++)grid.setItem(i,ingredients.get(i).copy());
+        return recipe.assemble(grid);
     }
     @Override public void setRecipe(IRecipeLayoutBuilder builder,ICraftingGridHelper helper,IFocusGroup focuses){
         var choices=recipe.getIngredients().stream().map(i->Arrays.asList(i.getItems())).toList();helper.createAndSetInputs(builder,choices,0,0);

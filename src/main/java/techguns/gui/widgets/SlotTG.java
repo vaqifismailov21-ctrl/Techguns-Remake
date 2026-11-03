@@ -24,6 +24,6 @@ public final class SlotTG extends Slot {
             default -> null;
         };
         return icon == null ? null : Pair.of(InventoryMenu.BLOCK_ATLAS,
-                ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "gui/emptyslots/emptyslot_" + icon));
+                new ResourceLocation(Techguns.MODID, "gui/emptyslots/emptyslot_" + icon));
     }
 }

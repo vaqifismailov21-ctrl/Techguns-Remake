@@ -29,15 +29,15 @@ public final class TGProjectilePackets {
                         () -> () -> techguns.client.ClientProjectileEffects.impact(message))).add();
     }
     public static void attach(net.minecraft.world.entity.LivingEntity entity,String name,Vec3 offset,boolean charging) {
-        if(entity.level().isClientSide)return;
+        if(entity.level.isClientSide)return;
         TGPackets.NETWORK.send(PacketDistributor.TRACKING_ENTITY.with(()->entity),new AttachedEffect(entity.getId(),entity.getUUID(),name,offset,charging));
     }
     public static void effect(Entity source,String name,Vec3 position,float pitch,float yaw) {
-        effect(source.level(),name,position,pitch,yaw);
+        effect(source.level,name,position,pitch,yaw);
     }
     public static void scaledEffect(Entity source,String name,Vec3 position,float scale){
-        if(source.level().isClientSide)return;
-        TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(position.x,position.y,position.z,160,source.level().dimension())),new Effect(name,position,0,0,scale));
+        if(source.level.isClientSide)return;
+        TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(position.x,position.y,position.z,160,source.level.dimension())),new Effect(name,position,0,0,scale));
     }
     public static void effect(net.minecraft.world.level.Level level,String name,Vec3 position,float pitch,float yaw) {
         if(level.isClientSide)return;
@@ -58,7 +58,7 @@ public final class TGProjectilePackets {
                 : sound == SoundType.GLASS ? 2 : sound == SoundType.METAL || sound == SoundType.ANVIL ? 3
                 : sound == SoundType.GRAVEL || sound == SoundType.SAND ? 4 : -1);
         TGPackets.NETWORK.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(location.x, location.y, location.z,
-                128, projectile.level().dimension())), new Impact(material, location.x, location.y, location.z,
+                128, projectile.level.dimension())), new Impact(material, location.x, location.y, location.z,
                         impactPitch(hit.getDirection()),impactYaw(hit.getDirection()),projectile instanceof techguns.entities.projectiles.GenericProjectileIncendiary));
     }
     private TGProjectilePackets() {}

@@ -23,7 +23,7 @@ public final class AccessoryItem extends Item implements ITGSpecialSlot,ICamoCha
     public ItemStack emptyAmmo(){return switch(kind){case JUMPPACK,SCUBA->TGItems.COMPRESSED_AIR_TANK_EMPTY.get().getDefaultInstance();case NIGHTVISION->TGItems.REDSTONE_BATTERY_EMPTY.get().getDefaultInstance();case TACTICAL_MASK->TGItems.ENERGY_CELL_EMPTY.get().getDefaultInstance();case JETPACK->TGItems.FUEL_TANK_EMPTY.get().getDefaultInstance();case ANTIGRAV->TGItems.NUCLEAR_POWERCELL_EMPTY.get().getDefaultInstance();default->ItemStack.EMPTY;};}
     public boolean reload(ItemStack stack,Player p){
         if(ammo().isEmpty()||!InventoryUtil.consumeAmmoPlayer(p,new ItemStack[]{ammo()}))return false;
-        stack.setDamageValue(0);var empty=emptyAmmo();if(!empty.isEmpty()){int left=InventoryUtil.addAmmoToPlayerInventory(p,empty);if(left>0&&!p.level().isClientSide)p.drop(empty.copyWithCount(left),false);}return true;
+        stack.setDamageValue(0);var empty=emptyAmmo();if(!empty.isEmpty()){int left=InventoryUtil.addAmmoToPlayerInventory(p,empty);if(left>0&&!p.level.isClientSide)p.drop(techguns.util.Compat.copyWithCount(empty, left),false);}return true;
     }
     private static boolean ready(ItemStack stack){return !stack.isDamageableItem()||stack.getDamageValue()<stack.getMaxDamage();}
     @Override public void onPlayerTick(ItemStack stack,Player p){
@@ -46,15 +46,15 @@ public final class AccessoryItem extends Item implements ITGSpecialSlot,ICamoCha
         }
     }
     public static void glide(Player p){
-        if(p.level().isClientSide&&!p.isLocalPlayer())return;
+        if(p.level.isClientSide&&!p.isLocalPlayer())return;
         TGExtendedPlayer.get(p).isGliding=false;
-        if(!p.onGround()&&p.isShiftKeyDown()){
+        if(!p.isOnGround()&&p.isShiftKeyDown()){
             var v=p.getDeltaMovement();if(v.y< -0.1F){TGExtendedPlayer.get(p).isGliding=true;double amount=Math.min(0.08,-0.1-v.y);var look=p.getLookAngle();p.setDeltaMovement(v.add(look.x*amount,amount,look.z*amount));}
             p.fallDistance=0;
         }
     }
     /** Modern travel takes air acceleration as a method value instead of the old mutable jumpMovementFactor. */
-    public static void glideSteering(Player player,float strafe,float forward){var stack=TGExtendedPlayer.get(player).tg_inventory.getItem(1);if(stack.getItem() instanceof AccessoryItem device&&(device.kind==Kind.GLIDER||device.kind==Kind.JETPACK&&ready(stack))&&!player.onGround()&&player.isShiftKeyDown()&&player.getDeltaMovement().y<-.1)player.moveRelative(.03f,new net.minecraft.world.phys.Vec3(strafe,0,forward));}
+    public static void glideSteering(Player player,float strafe,float forward){var stack=TGExtendedPlayer.get(player).tg_inventory.getItem(1);if(stack.getItem() instanceof AccessoryItem device&&(device.kind==Kind.GLIDER||device.kind==Kind.JETPACK&&ready(stack))&&!player.isOnGround()&&player.isShiftKeyDown()&&player.getDeltaMovement().y<-.1)player.moveRelative(.03f,new net.minecraft.world.phys.Vec3(strafe,0,forward));}
     @Override public float getBonus(TGArmorBonus type,ItemStack stack,boolean consume,Player p){
         if(!ready(stack))return 0;
         if((kind==Kind.NIGHTVISION||kind==Kind.TACTICAL_MASK)&&type==TGArmorBonus.NIGHTVISION)return 1;
@@ -64,7 +64,7 @@ public final class AccessoryItem extends Item implements ITGSpecialSlot,ICamoCha
             if(type==TGArmorBonus.FREEHEIGHT)return 8;
             if(type==TGArmorBonus.JUMP||type==TGArmorBonus.FALLDMG){
                 if(consume){if(!TGExtendedPlayer.get(p).enableJetpack||stack.getDamageValue()+1>stack.getMaxDamage())return 0;stack.setDamageValue(stack.getDamageValue()+1);
-                    if(!p.level().isClientSide){TGProjectilePackets.effect(p,type==TGArmorBonus.JUMP?"JumpPackBoost":"JumpPackFall",p.position(),0,0);if(type==TGArmorBonus.JUMP)p.level().playSound(null,p.getX(),p.getY(),p.getZ(),TGSounds.STEAM_JUMP_2.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);}}
+                    if(!p.level.isClientSide){TGProjectilePackets.effect(p,type==TGArmorBonus.JUMP?"JumpPackBoost":"JumpPackFall",p.position(),0,0);if(type==TGArmorBonus.JUMP)p.level.playSound(null,p.getX(),p.getY(),p.getZ(),TGSounds.STEAM_JUMP_2.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);}}
                 return type==TGArmorBonus.JUMP?0.8F:0.2F;
             }
         }return 0;

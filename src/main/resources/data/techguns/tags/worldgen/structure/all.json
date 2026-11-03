@@ -1,25 +1,88 @@
 {
   "values": [
-    "techguns:military_base",
-    "techguns:castle",
-    "techguns:aircraftcarrier",
-    "techguns:alien_bug_nest",
-    "techguns:policestation",
-    "techguns:survivor_hideout",
-    "techguns:orecluster_spike",
-    "techguns:orecluster_meteorbase",
-    "techguns:desert_oil_cluster",
-    "techguns:factory_building_small",
-    "techguns:small_trainstation",
-    "techguns:small_mine",
-    "techguns:gasstation",
-    "techguns:nether_altar_medium",
-    "techguns:nether_ghast_spawner",
-    "techguns:nether_orecluster_castle",
-    "techguns:nether_altar_small",
-    "techguns:nether_soul_platform",
-    "techguns:nether_loot_01",
-    "techguns:nether_acid_hole",
-    "techguns:nether_orecluster_small"
+    {
+      "id": "techguns:military_base",
+      "required": false
+    },
+    {
+      "id": "techguns:castle",
+      "required": false
+    },
+    {
+      "id": "techguns:aircraftcarrier",
+      "required": false
+    },
+    {
+      "id": "techguns:alien_bug_nest",
+      "required": false
+    },
+    {
+      "id": "techguns:policestation",
+      "required": false
+    },
+    {
+      "id": "techguns:survivor_hideout",
+      "required": false
+    },
+    {
+      "id": "techguns:orecluster_spike",
+      "required": false
+    },
+    {
+      "id": "techguns:orecluster_meteorbase",
+      "required": false
+    },
+    {
+      "id": "techguns:desert_oil_cluster",
+      "required": false
+    },
+    {
+      "id": "techguns:factory_building_small",
+      "required": false
+    },
+    {
+      "id": "techguns:small_trainstation",
+      "required": false
+    },
+    {
+      "id": "techguns:small_mine",
+      "required": false
+    },
+    {
+      "id": "techguns:gasstation",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_altar_medium",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_ghast_spawner",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_orecluster_castle",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_altar_small",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_soul_platform",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_loot_01",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_acid_hole",
+      "required": false
+    },
+    {
+      "id": "techguns:nether_orecluster_small",
+      "required": false
+    }
   ]
 }

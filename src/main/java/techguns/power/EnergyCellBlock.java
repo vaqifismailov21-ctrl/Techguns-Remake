@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 /** Energy cell: its front (the side facing the player when placed) gives energy, all other sides take it. Keeps its charge when broken. */
 public final class EnergyCellBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING=BlockStateProperties.FACING;
-    public EnergyCellBlock(){super(Properties.of().strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
+    public EnergyCellBlock(){super(Properties.of(net.minecraft.world.level.material.Material.METAL).strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FACING);}
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){return defaultBlockState().setValue(FACING,context.getNearestLookingDirection().getOpposite());}
     @Override public BlockState rotate(BlockState state,Rotation rotation){return state.setValue(FACING,rotation.rotate(state.getValue(FACING)));}

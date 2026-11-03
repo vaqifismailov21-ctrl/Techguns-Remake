@@ -71,8 +71,8 @@ public final class TGPlayerInventoryContainer extends AbstractContainerMenu {
         boolean moved;
         if (id < TGPlayerInventory.NUMSLOTS) moved = moveItemStackTo(moving, MAIN_START, MAIN_END, false);
         else if (id >= MAIN_START && moving.getItem() instanceof ArmorItem armor
-                && !slots.get(15 + (3 - armor.getEquipmentSlot().getIndex())).hasItem()) {
-            int target = 15 + (3 - armor.getEquipmentSlot().getIndex());
+                && !slots.get(15 + (3 - armor.getSlot().getIndex())).hasItem()) {
+            int target = 15 + (3 - armor.getSlot().getIndex());
             moved = moveItemStackTo(moving, target, target + 1, false);
         } else {
             int first = -1, size = 1;

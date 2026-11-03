@@ -15,24 +15,24 @@ public final class BioGunProjectile extends GenericProjectile {
     public BioGunProjectile(Level level,LivingEntity owner,float damage,float speed,int ttl,float spread,float start,float end,float minimum,float penetration,boolean blocks,EnumBulletFirePos side,int power) {
         this(TGEntities.BIO.get(),level);init(owner,damage,speed,ttl,spread,start,end,minimum,penetration,blocks,side);this.power=power;gravity=0.01;
     }
-    @Override public void tick() {if(level().isClientSide&&!trail){trail=true;techguns.client.particle.WeaponEffects.attach("BioGunTrail",this);}super.tick();if(isInWater())discard();}
+    @Override public void tick() {if(level.isClientSide&&!trail){trail=true;techguns.client.particle.WeaponEffects.attach("BioGunTrail",this);}super.tick();if(isInWater())discard();}
     @Override protected TGDamageSource getProjectileDamageSource() {var source=TGDamageSource.causePoisonDamage(this,shooter,DeathType.BIO);source.goreChance=1;source.armorPenetration=penetration;source.setNoKnockback();return source;}
     @Override protected void onHitEffect(LivingEntity target,HitResult hit) {target.addEffect(new MobEffectInstance(MobEffects.POISON,100,3,false,true));impact(hit);}
     private void impact(HitResult hit) {
-        if(level().isClientSide)return;var p=hit.getLocation();
-        level().playSound(null,p.x,p.y,p.z,TGSounds.BIOGUN_IMPACT.get(),net.minecraft.sounds.SoundSource.AMBIENT,1,1);
+        if(level.isClientSide)return;var p=hit.getLocation();
+        level.playSound(null,p.x,p.y,p.z,TGSounds.BIOGUN_IMPACT.get(),net.minecraft.sounds.SoundSource.AMBIENT,1,1);
         TGProjectilePackets.effect(this,"biogunImpact",p,hit instanceof BlockHitResult block?TGProjectilePackets.impactPitch(block.getDirection()):-getXRot(),hit instanceof BlockHitResult block?TGProjectilePackets.impactYaw(block.getDirection()):-getYRot());
     }
     @Override protected void hitBlock(BlockHitResult hit) {
-        if(!level().isClientSide) {
-            if(level().getBlockEntity(hit.getBlockPos()) instanceof BioBlobBlockEntity blob)blob.hitBlob(power,shooter);
+        if(!level.isClientSide) {
+            if(level.getBlockEntity(hit.getBlockPos()) instanceof BioBlobBlockEntity blob)blob.hitBlob(power,shooter);
             else {
                 var pos=hit.getBlockPos().relative(hit.getDirection());
-                if(level().getBlockEntity(pos) instanceof BioBlobBlockEntity blob)blob.hitBlob(power,shooter);
-                else if(blockdamage&&level().isEmptyBlock(pos)) {
-                    var snapshot=net.minecraftforge.common.util.BlockSnapshot.create(level().dimension(),level(),pos);
+                if(level.getBlockEntity(pos) instanceof BioBlobBlockEntity blob)blob.hitBlob(power,shooter);
+                else if(blockdamage&&level.isEmptyBlock(pos)) {
+                    var snapshot=net.minecraftforge.common.util.BlockSnapshot.create(level.dimension(),level,pos);
                     if(!net.minecraftforge.event.ForgeEventFactory.onBlockPlace(shooter,snapshot,hit.getDirection())) {
-                        level().setBlockAndUpdate(pos,TGWeaponBlocks.BIOBLOB.get().defaultBlockState().setValue(BioBlobBlock.FACING,hit.getDirection().getOpposite()).setValue(BioBlobBlock.SIZE,net.minecraft.util.Mth.clamp(power-1,0,2)));
+                        level.setBlockAndUpdate(pos,TGWeaponBlocks.BIOBLOB.get().defaultBlockState().setValue(BioBlobBlock.FACING,hit.getDirection().getOpposite()).setValue(BioBlobBlock.SIZE,net.minecraft.util.Mth.clamp(power-1,0,2)));
                     }
                 }
             }

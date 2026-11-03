@@ -1,7 +1,7 @@
 package techguns.machines;
 import java.util.*;
 import java.util.function.Consumer;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,7 +22,7 @@ public final class BenchMenu extends AbstractContainerMenu {
     private int playerStart;
     private static final EquipmentSlot[] ARMOR={EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET};
     public BenchMenu(int id,Inventory inventory,FriendlyByteBuf buffer){this(id,inventory,require(inventory,buffer));}
-    private static BenchEntity require(Inventory inventory,FriendlyByteBuf buffer){var entity=inventory.player.level().getBlockEntity(buffer.readBlockPos());if(!(entity instanceof BenchEntity bench))throw new IllegalArgumentException("Workbench menu requires its block entity");return bench;}
+    private static BenchEntity require(Inventory inventory,FriendlyByteBuf buffer){var entity=inventory.player.level.getBlockEntity(buffer.readBlockPos());if(!(entity instanceof BenchEntity bench))throw new IllegalArgumentException("Workbench menu requires its block entity");return bench;}
     public BenchMenu(int id,Inventory inventory,BenchEntity bench){
         super(TGMenuTypes.BENCH.get(),id);this.bench=bench;player=inventory.player;
         switch(bench.kind){
@@ -37,9 +37,9 @@ public final class BenchMenu extends AbstractContainerMenu {
     }
     private void input(int index,int x,int y){addSlot(new SlotItemHandler(bench.inventory,index,x,y){@Override public boolean mayPlace(ItemStack stack){return bench.accepts(index,stack);}@Override public int getMaxStackSize(){return bench.kind==BenchKind.UPGRADE&&index==0?1:super.getMaxStackSize();}});}
     public int xpCost(){return xp.get();}
-    @Override public void broadcastChanges(){if(!player.level().isClientSide&&bench.kind==BenchKind.UPGRADE){var preview=ArmorUpgrades.result(bench.inventory.getStackInSlot(0),bench.inventory.getStackInSlot(1));result.setItem(0,preview.stack());xp.set(preview.xp());}super.broadcastChanges();}
-    @Override public boolean stillValid(Player p){return bench.getLevel()!=null&&bench.getLevel().getBlockEntity(bench.getBlockPos())==bench&&p.distanceToSqr(bench.getBlockPos().getCenter())<=64&&bench.access.allows(p);}
-    @Override public boolean clickMenuButton(Player p,int id){if(!stillValid(p))return false;if(id==1){if(!p.level().isClientSide)return bench.access.toggle(p);return true;}if(p.level().isClientSide)return true;
+    @Override public void broadcastChanges(){if(!player.level.isClientSide&&bench.kind==BenchKind.UPGRADE){var preview=ArmorUpgrades.result(bench.inventory.getStackInSlot(0),bench.inventory.getStackInSlot(1));result.setItem(0,preview.stack());xp.set(preview.xp());}super.broadcastChanges();}
+    @Override public boolean stillValid(Player p){return bench.getLevel()!=null&&bench.getLevel().getBlockEntity(bench.getBlockPos())==bench&&p.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(bench.getBlockPos()))<=64&&bench.access.allows(p);}
+    @Override public boolean clickMenuButton(Player p,int id){if(!stillValid(p))return false;if(id==1){if(!p.level.isClientSide)return bench.access.toggle(p);return true;}if(p.level.isClientSide)return true;
         if(bench.kind==BenchKind.REPAIR){if(id>=2&&id<=5)bench.repair(p.getItemBySlot(ARMOR[id-2]));else if(id==6)bench.repair(p.getOffhandItem());else if(id==7)bench.repair(bench.inventory.getStackInSlot(9));else return false;}
         else if(bench.kind==BenchKind.CAMO){
             if(id==2||id==3)change(bench.inventory.getStackInSlot(0),id==3,stack->bench.inventory.setStackInSlot(0,stack));
@@ -50,10 +50,10 @@ public final class BenchMenu extends AbstractContainerMenu {
     }
     private static final String[] COLORS={"white","orange","magenta","light_blue","yellow","lime","pink","gray","light_gray","cyan","purple","blue","brown","green","red","black"};
     public static void change(ItemStack stack,boolean backwards,Consumer<ItemStack> set){if(stack.getItem() instanceof ICamoChangeable camo&&camo.getCamoCount()>0){set.accept(camo.cycleStack(stack,backwards));return;}
-        var id=BuiltInRegistries.ITEM.getKey(stack.getItem());if(!id.getNamespace().equals("minecraft"))return;String name=id.getPath();for(String family:new String[]{"wool","concrete","concrete_powder","terracotta","stained_glass","stained_glass_pane","carpet"})for(int i=0;i<COLORS.length;i++)if(name.equals(COLORS[i]+"_"+family)){var item=BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("minecraft",COLORS[Math.floorMod(i+(backwards?-1:1),16)]+"_"+family));var output=new ItemStack(item,stack.getCount());if(stack.hasTag())output.setTag(stack.getTag().copy());set.accept(output);return;}}
+        var id=net.minecraft.core.Registry.ITEM.getKey(stack.getItem());if(!id.getNamespace().equals("minecraft"))return;String name=id.getPath();for(String family:new String[]{"wool","concrete","concrete_powder","terracotta","stained_glass","stained_glass_pane","carpet"})for(int i=0;i<COLORS.length;i++)if(name.equals(COLORS[i]+"_"+family)){var item=net.minecraft.core.Registry.ITEM.get(new ResourceLocation("minecraft",COLORS[Math.floorMod(i+(backwards?-1:1),16)]+"_"+family));var output=new ItemStack(item,stack.getCount());if(stack.hasTag())output.setTag(stack.getTag().copy());set.accept(output);return;}}
     @Override public ItemStack quickMoveStack(Player p,int index){if(index<0||index>=slots.size())return ItemStack.EMPTY;var slot=slots.get(index);if(!slot.hasItem()||!slot.mayPickup(p))return ItemStack.EMPTY;var stack=slot.getItem();var original=stack.copy();
         if(index<playerStart||index>=playerStart+36){if(!moveItemStackTo(stack,playerStart,playerStart+36,false))return ItemStack.EMPTY;}
         else {boolean moved=false;for(int i=0;i<bench.inventory.getSlots()&&!stack.isEmpty();i++)if(bench.accepts(i,stack))moved=moveItemStackTo(stack,i,i+1,false)||moved;if(!moved)return ItemStack.EMPTY;}
-        if(stack.isEmpty())slot.setByPlayer(ItemStack.EMPTY);else slot.setChanged();slot.onTake(p,original);broadcastChanges();return original;
+        if(stack.isEmpty())slot.set(ItemStack.EMPTY);else slot.setChanged();slot.onTake(p,original);broadcastChanges();return original;
     }
 }

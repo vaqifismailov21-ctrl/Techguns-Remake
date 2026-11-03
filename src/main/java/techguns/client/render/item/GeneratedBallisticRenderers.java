@@ -15,120 +15,120 @@ final class GeneratedBallisticRenderers {
 					{0.0f,0.0f,0}, 
 					{0.0f,0.0f,0}, 
 					{0,0,0f} 
-				},0.2F,25F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.16F,-0.75F,0.9F,0F,0F,0F,0.03F,-0.59F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
+				},0.2F,25F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.16F,-0.75F,0.9F,0F,0F,0F,0.03F,-0.59F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
         result.put(TGuns.sawedoff.get(),new BasicGunRenderer(new ModelSawedOff(),"sawedoff",true,1F,0.45F,new float[]{0F,-0.2F,-0.037500000000000006F},new float[][]{
 					{0f,0f,0f}, 
 					{0f,-0.04f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.2F,20F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.16F,-0.75F,1.05F,0F,0F,0F,0.06F,-0.49F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
+				},0.2F,20F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.16F,-0.75F,1.05F,0F,0F,0F,0.06F,-0.49F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
         result.put(TGuns.revolver.get(),new BasicGunRenderer(new ModelRevolver(),"revolver",true,0.75F,0.75F,new float[]{-0.35F,-0.2F,-0.06875F},new float[][]{
 					{0f,0.14f,0.01f}, 
 					{0f,0.0f,0.0f}, 
 					{0.05f,0.01f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,0f} 
-				},0.1F,10F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.25F,-0.41F,0.5F,0F,0F,0F,0.09F,-0.3F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.1F,10F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.25F,-0.41F,0.5F,0F,0F,0F,0.09F,-0.3F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.ak47.get(),new BasicGunRenderer(new ModelAK(),"ak47texture",false,0.75F,0.35F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0.06f,-0.02f}, 
 					{0f,0f,-0.08f}, 
 					{0.06f,-0.01f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.18F,-1.36F,0.8F,0.02F,0.02F,0.1F,0.08F,-1.02F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.1F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.18F,-1.36F,0.8F,0.02F,0.02F,0.1F,0.08F,-1.02F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.m4.get(),new BasicGunRenderer(new ModelM4(),"m4texture",false,1F,0.35F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0f,-0.05f}, 
 					{0f,0.01f,-0.1f}, 
 					{0f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.18F,-1.29F,0.75F,0.02F,0.02F,0.1F,0.13F,-1F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
-        result.put(TGuns.thompson.get(),new BasicGunRenderer(new ModelThompson(),"thompson",true,1F,0.45F,new float[]{0F,-0.2F,-0.06875F},new float[][]{{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,-0.05F}},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.14F,-0.75F,0.55F,0.02F,0.02F,0.1F,0.1F,-0.59F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.1F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.18F,-1.29F,0.75F,0.02F,0.02F,0.1F,0.13F,-1F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+        result.put(TGuns.thompson.get(),new BasicGunRenderer(new ModelThompson(),"thompson",true,1F,0.45F,new float[]{0F,-0.2F,-0.06875F},new float[][]{{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,-0.05F}},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.14F,-0.75F,0.55F,0.02F,0.02F,0.1F,0.1F,-0.59F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.pistol.get(),new BasicGunRenderer(new ModelPistol(),"pistol3",false,1.2F,0.9F,new float[]{0.03125F,-0.3F,-0.4F},new float[][]{
 					{0,0.09f,-0.02f}, 
 					{0.0f,-0.03f,0.0f}, 
 					{0.02f,-0.08f,0}, 
 					{0.02f,-0.08f,0}, 
 					{0,0,0f} 
-				},0.025F,12F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0.03F,-0.03F,0.2F,-0.5F,0.55F,0.01F,0.01F,0.05F,0.07F,-0.26F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
+				},0.025F,12F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0.03F,-0.03F,0.2F,-0.5F,0.55F,0.01F,0.01F,0.05F,0.07F,-0.26F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.lmg.get(),new BasicGunRenderer(new ModelLMG(),"mg2_texture",false,1F,0.35F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0.02f,-0.09f}, 
 					{0f,0f,-0.06f}, 
 					{0.05f,-0.03f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.01F,2F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.21F,-1.5F,0.78F,0.03F,0.03F,0.1F,0.14F,-1.02F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.01F,2F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.21F,-1.5F,0.78F,0.03F,0.03F,0.1F,0.14F,-1.02F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.boltaction.get(),new BasicGunRenderer(new ModelBoltaction(),"boltactionrifle",true,1.35F,0.35F,new float[]{0F,-0.2F,-0.037500000000000006F},new float[][]{
 					{0f,-0.02f,-0.09f}, 
 					{0f,-0.04f,-0.11f}, 
 					{0.1f,-0.08f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.025f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.21F,-1.48F,0.9F,0F,0F,0F,0.12F,-1.13F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.2F,2F));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.21F,-1.48F,0.9F,0F,0F,0F,0.12F,-1.13F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.2F,2F));
         result.put(TGuns.flamethrower.get(),new BasicGunRenderer(new ModelFlamethrower(),"flamethrower",true,1F,0.45F,new float[]{0F,-0.2F,-0.037500000000000006F},new float[][]{
 					{0f,0f,0f}, 
 					{0f,0f,-0.08f}, 
 					{0.05f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.025F,2.5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/flamethrower.png"),16,0F,0F,0.16F,-0.9F,0.45F,0F,0F,0F,0.1F,-0.63F,4,4,false,true)).parts(1).recoil(GunAnimation.swayRecoil));
+				},0.025F,2.5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/flamethrower.png"),16,0F,0F,0.16F,-0.9F,0.45F,0F,0F,0F,0.1F,-0.63F,4,4,false,true)).parts(1).recoil(GunAnimation.swayRecoil));
         result.put(TGuns.biogun.get(),new BasicGunRenderer(new ModelBiogun(),"biogun",true,1F,0.45F,new float[]{0.35F,-0.2F,-0.037500000000000006F},new float[][]{
 					{0f,0.16f,0.05f}, 
 					{0f,0.07f,-0.05f}, 
 					{0f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/lensflare1.png"),1,0F,0F,0.23F,-0.51F,0.55F,0F,0F,0F,0.1F,-0.51F,1,1,false,false).tinted(0.5F,1F,0.25F,true)).parts(1).recoil(GunAnimation.genericRecoil).chargeTranslation(0.05F));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/lensflare1.png"),1,0F,0F,0.23F,-0.51F,0.55F,0F,0F,0F,0.1F,-0.51F,1,1,false,false).tinted(0.5F,1F,0.25F,true)).parts(1).recoil(GunAnimation.genericRecoil).chargeTranslation(0.05F));
         result.put(TGuns.rocketlauncher.get(),new BasicGunRenderer(new ModelRocketLauncher(),"rocketlauncher",true,1F,0.45F,new float[]{-0.4F,-0.2F,-0.03125F},new float[][]{
 					{-0.13f,0.3f,0.32f}, 
 					{0,0.02f,0.07f}, 
 					{-0.06f,0.0f,0.0f}, 
 					{0.0f,0.0f,0}, 
 					{0,0,0f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.39F,-0.6F,0.87F,0F,0F,0F,0.09F,-0.26F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.39F,-0.6F,0.87F,0F,0F,0F,0.09F,-0.26F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.minigun.get(),new BasicGunRenderer(new ModelMinigun(),"minigun",true,1.2F,0.3F,new float[]{0F,-0.2F,0.03125F},new float[][]{
 					{0f,-0.16f,0.1f}, 
 					{0f,-0.53f,0.2f}, 
 					{0.12f,-0.02f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.05F,3F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflash_minigun.png"),4,-0.04F,0.04F,0.05F,-1.25F,0.8F,0F,0F,0F,-0.38F,-0.78F,2,2,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
+				},0.05F,3F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflash_minigun.png"),4,-0.04F,0.04F,0.05F,-1.25F,0.8F,0F,0F,0F,-0.38F,-0.78F,2,2,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.combatshotgun.get(),new BasicGunRenderer(new ModelCombatShotgun(),"combatshotgun",true,1F,0.45F,new float[]{0F,-0.2F,-0.037500000000000006F},new float[][]{
 					{0f,0.03f,0f}, 
 					{0f,-0.01f,-0.10f}, 
 					{0.05f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.3F,15F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.21F,-0.91F,0.75F,0F,0F,0F,0.12F,-0.81F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
+				},0.3F,15F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.21F,-0.91F,0.75F,0F,0F,0F,0.12F,-0.81F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.grimreaper.get(),new BasicGunRenderer(new ModelGrimReaper(),"grimreaper",true,1.25F,0.3F,new float[]{0.3F,-0.2F,0.03125F},new float[][]{
 					{0f,0.25f,0.18f}, 
 					{0,0.13f,0.1f}, 
 					{-0.02f,0.01f,0.0f}, 
 					{0.0f,0.1f,0}, 
 					{0,0,0f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.39F,-0.61F,0.75F,0F,0F,0F,0.24F,-0.56F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).firstScale(0.4F).groundAndFrame(0.35F).chargeTranslation(0.025F));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.39F,-0.61F,0.75F,0F,0F,0F,0.24F,-0.56F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).firstScale(0.4F).groundAndFrame(0.35F).chargeTranslation(0.025F));
         result.put(TGuns.pdw.get(),new BasicGunRenderer(new ModelPDW(),"pdw",true,1F,0.55F,new float[]{0F,-0.2F,-0.0062500000000000056F},new float[][]{
 					{0.0f, 0.09f, -0.04f}, 
 					{0f, 0.06f, -0.02f}, 
 					{0f, 0f, 0f}, 
 					{0f, 0f, 0f}, 
 					{0f,0f,-0.05f} 
-				},0.06F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/bluemuzzleflash.png"),8,0F,0F,0.13F,-0.58F,0.55F,0.01F,0.01F,0.1F,0.11F,-0.41F,4,4,true,true)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.06F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/bluemuzzleflash.png"),8,0F,0F,0.13F,-0.58F,0.55F,0.01F,0.01F,0.1F,0.11F,-0.41F,4,4,true,true)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.as50.get(),new BasicGunRenderer(new ModelAS50(),"as50texture",false,0.85F,0.3F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0.06f,-0.1f}, 
 					{0f,0.0f,-0.05f}, 
 					{0.13f,-0.09f,-0.05f}, 
 					{0f,0f,0f}, 
 					{0f,-0.2f,-0.05f} 
-				},0.25F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.29F,-1.82F,1.15F,0F,0F,0F,0.17F,-1.29F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.2F,2F));
+				},0.25F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.29F,-1.82F,1.15F,0F,0F,0F,0.17F,-1.29F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.2F,2F));
         result.put(TGuns.teslagun.get(),new BasicGunRenderer(new ModelTeslaGun(),"teslagun",true,1F,0.45F,new float[]{0.25F,-0.2F,-0.027499999999999997F},new float[][]{
 					{0f,0.15f,0.04f}, 
 					{0f,0.05f,-0.08f}, 
 					{0.03f,0.01f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.2F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/teslaflare01.png"),14,0F,0F,0.26F,-0.67F,0.5F,0F,0F,0F,0.12F,-0.65F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.2F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/teslaflare01.png"),14,0F,0F,0.26F,-0.67F,0.5F,0F,0F,0F,0.12F,-0.65F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.m4_infiltrator.get(),new BasicGunRenderer(new ModelM4Infiltrator(),"m4_uq_texture",false,1F,0.35F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0f,-0.05f}, 
 					{0f,0.01f,-0.1f}, 
@@ -142,42 +142,42 @@ final class GeneratedBallisticRenderers {
 					{0.05f,0.01f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,0f} 
-				},0.1F,15F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.25F,-0.41F,0.5F,0F,0F,0F,0.09F,-0.3F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.1F,15F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.25F,-0.41F,0.5F,0F,0F,0F,0.09F,-0.3F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.pulserifle.get(),new BasicGunRenderer(new ModelPulseRifle(),"pulserifle",true,1F,0.45F,new float[]{0F,-0.2F,0.0037500000000000033F},new float[][]{
 					{0f,0.16f,0.01f}, 
 					{0f,0.05f,0.08f}, 
 					{0.05f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.25F,10F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/bluemuzzleflash.png"),8,0F,0F,0.22F,-0.76F,0.6F,0F,0F,0F,0.1F,-0.5F,4,4,true,true)).parts(1).recoil(GunAnimation.pulseRifleRecoil).scope("techscope",2.125F,true).scopeRecoil(GunAnimation.scopeRecoil,0.1F,1.5F));
+				},0.25F,10F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/bluemuzzleflash.png"),8,0F,0F,0.22F,-0.76F,0.6F,0F,0F,0F,0.1F,-0.5F,4,4,true,true)).parts(1).recoil(GunAnimation.pulseRifleRecoil).scope("techscope",2.125F,true).scopeRecoil(GunAnimation.scopeRecoil,0.1F,1.5F));
         result.put(TGuns.lasergun.get(),new BasicGunRenderer(new ModelLasergun(),"lasergun",true,1.1F,0.4F,new float[]{0.25F,-0.2F,-0.06875F},new float[][]{
 					{0f,0.15f,0.04f}, 
 					{0f,0.02f,0.01f}, 
 					{0.13f,0.01f,0f}, 
 					{0f,0f,0.15f}, 
 					{-0.18f,0f,-0.05f} 
-				},0.2F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.3F,-1.06F,0.5F,0F,0F,0F,0.11F,-0.83F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.2F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.3F,-1.06F,0.5F,0F,0F,0F,0.11F,-0.83F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.alienblaster.get(),new BasicGunRenderer(new ModelAlienBlaster(),"alien_blaster",false,0.75F,0.75F,new float[]{0.03125F,-0.3F,-0.2F},new float[][]{
 					{0,0.06f,-0.02f}, 
 					{0.0f,-0.07f,-0.01f}, 
 					{0.02f,-0.08f,0}, 
 					{0.02f,-0.08f,0}, 
 					{-0.04f,-0.09f,0f} 
-				},0.025F,10F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/alienflare.png"),14,0F,0F,0.28F,-0.52F,0.55F,0F,0F,0F,0.07F,-0.36F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
+				},0.025F,10F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/alienflare.png"),14,0F,0F,0.28F,-0.52F,0.55F,0F,0F,0F,0.07F,-0.36F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
         result.put(TGuns.netherblaster.get(),new BasicGunRenderer(new ModelNetherBlaster(),"cyberdemonblaster",false,1F,0.6F,new float[]{0F,-0.2F,-0.027499999999999997F},new float[][]{
 					{0f,0.15f,0.04f}, 
 					{0f,-0.16f,-0.24f}, 
 					{-0.10f,0.01f,0f}, 
 					{0f,0f,-0.11f}, 
 					{0.16f,-0.07f,-0.16f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/fireball_4x4_alpha.png"),16,0F,0F,0.29F,-0.33F,0.5F,0F,0F,0F,-0.06F,-0.45F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/fireball_4x4_alpha.png"),16,0F,0F,0.29F,-0.33F,0.5F,0F,0F,0F,-0.06F,-0.45F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.blasterrifle.get(),new BasicGunRenderer(new ModelBlasterRifle(),"blasterrifle",false,0.9F,0.45F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0.11f,-0.20f}, 
 					{0f,0.0f,-0.04f}, 
 					{0f,0f,0.03f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.24F,-0.93F,0.75F,0F,0F,0F,0.09F,-0.57F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.05F,1F));
+				},0.1F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.24F,-0.93F,0.75F,0F,0F,0F,0.09F,-0.57F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.05F,1F));
         result.put(TGuns.powerhammer.get(),new BasicGunRenderer(new ModelPowerHammer(),"powerhammer",true,1.25F,0.45F,new float[]{0.15F,-0.2F,-0.027499999999999997F},new float[][]{
 					{0f,0.18f,0.09f}, 
 					{0f,0.04f,0.04f}, 
@@ -191,21 +191,21 @@ final class GeneratedBallisticRenderers {
 					{-0.05f,0.08f,0f}, 
 					{0f,0.05f,-0.09f}, 
 					{0.11f,0.01f,-0.05f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.22F,-0.63F,0.5F,0F,0F,0F,0.07F,-0.61F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).objRotation());
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.22F,-0.63F,0.5F,0F,0F,0F,0.07F,-0.61F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).objRotation());
         result.put(TGuns.aug.get(),new BasicGunRenderer(new ModelAUG(),"augtexture",false,1F,0.35F,new float[]{0.03125F,-0.1F,0.1F},new float[][]{
 					{0f,0.01f,-0.15f}, 
 					{0f,0.0f,-0.01f}, 
 					{0f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0.02f,0f,-0.05f} 
-				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.19F,-1.45F,0.75F,0.02F,0.02F,0.1F,0.12F,-0.87F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.075F,1F));
+				},0.1F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.19F,-1.45F,0.75F,0.02F,0.02F,0.1F,0.12F,-0.87F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.075F,1F));
         result.put(TGuns.sonicshotgun.get(),new BasicGunRenderer(new ModelSonicShotgun(),"sonicshotgun",true,1F,0.35F,new float[]{0F,-0.2F,-0.06875F},new float[][]{
 					{0f,0.10f,0.04f}, 
 					{0f,-0.01f,-0.03f}, 
 					{0.08f,0.0f,0f}, 
 					{0f,0.05f,0.15f}, 
 					{-0.18f,0f,-0.05f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/sonicwave4x4.png"),16,0F,0F,0.28F,-0.98F,0.5F,0F,0F,0F,0.11F,-0.81F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/sonicwave4x4.png"),16,0F,0F,0.28F,-0.98F,0.5F,0F,0F,0F,0.11F,-0.81F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.chainsaw.get(),new BasicGunRenderer(new ModelChainsaw(),"chainsaw",true,0.95F,0.45F,new float[]{-0.4F,-0.2F,-0.027499999999999997F},new float[][]{
 					{0f,-0.08f,0.15f}, 
 					{0f,-0.5f,0.04f}, 
@@ -219,56 +219,56 @@ final class GeneratedBallisticRenderers {
 					{0f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
-				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.22F,-1.09F,0.75F,0F,0F,0F,0.14F,-0.82F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.1F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.22F,-1.09F,0.75F,0F,0F,0F,0.14F,-0.82F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.nucleardeathray.get(),new BasicGunRenderer(new ModelNDR(),"ndr",true,1.2F,0.4F,new float[]{1F,-0.2F,0.0037500000000000033F},new float[][]{
 					{0f,0.02f,0.09f}, 
 					{-0.01f,0.04f,0.3f}, 
 					{0.11f,-0.08f,0f}, 
 					{0f,0f,0.15f}, 
 					{-0.23f,-0.08f,-0.05f} 
-				},0.025F,0.75F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/nukebeamflare.png"),16,0F,0F,0.19F,-0.91F,0.65F,0F,0F,0F,0.11F,-0.83F,4,4,false,false)).parts(1).recoil(GunAnimation.swayRecoil));
+				},0.025F,0.75F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/nukebeamflare.png"),16,0F,0F,0.19F,-0.91F,0.65F,0F,0F,0F,0.11F,-0.83F,4,4,false,false)).parts(1).recoil(GunAnimation.swayRecoil));
         result.put(TGuns.mac10.get(),new BasicGunRenderer(new ModelMac10(),"mac10texture",false,1.2F,0.55F,new float[]{0.03125F,-0.45F,-0.3F},new float[][]{
 					{0f,0f,-0.05f}, 
 					{0f,-0.10f,0.01f}, 
 					{-0.02f,-0.02f,0f}, 
 					{0f,0.03f,0f}, 
 					{0f,-0.05f,-0.05f} 
-				},0.06F,3F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.23F,-0.46F,0.5F,0.02F,0.05F,0.1F,0.07F,-0.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.06F,3F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.23F,-0.46F,0.5F,0.02F,0.05F,0.1F,0.07F,-0.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.mibgun.get(),new BasicGunRenderer(new ModelMibGun(),"mibgun",false,1.2F,0.75F,new float[]{0F,-0.56F,-0.02F},new float[][]{
 					{0,0.10f,-0.02f}, 
 					{0.0f,-0.04f,-0.01f}, 
 					{0.02f,-0.08f,0}, 
 					{0.02f,-0.08f,0}, 
 					{-0.04f,-0.09f,0f} 
-				},0.025F,10F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/alienflare.png"),14,0F,0F,0.26F,-0.42F,0.55F,0F,0F,0F,0.06F,-0.31F,4,4,false,false).tinted(0.15686F,1F,0.549F,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
+				},0.025F,10F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/alienflare.png"),14,0F,0F,0.26F,-0.42F,0.55F,0F,0F,0F,0.06F,-0.31F,4,4,false,false).tinted(0.15686F,1F,0.549F,false)).parts(1).recoil(GunAnimation.genericRecoil).reload(GunAnimation.breechReload,-0.15F,55F).reloadThird(GunAnimation.breechReload,0F,55F));
         result.put(TGuns.scar.get(),new BasicGunRenderer(new ModelScar(),"scar_texture",false,1F,0.35F,new float[]{0.03125F,-0.1F,0.1F},new float[][]{
 					{0f,0.04f,-0.15f}, 
 					{0f,0.02f,-0.11f}, 
 					{0.05f,0f,0f}, 
 					{0f,0f,0f}, 
 					{0.02f,-0.09f,-0.05f} 
-				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.23F,-1.48F,0.78F,0.02F,0.02F,0.1F,0.14F,-1.04F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.05F,2F));
+				},0.1F,4F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.23F,-1.48F,0.78F,0.02F,0.02F,0.1F,0.14F,-1.04F,4,4,false,false)).parts(2).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.05F,2F));
         result.put(TGuns.vector.get(),new BasicGunRenderer(new ModelVector(),"vector_texture",false,1.1F,0.45F,new float[]{0.03125F,-0.57F,-0.2F},new float[][]{
 					{0f,-0.17f,0.0f}, 
 					{0f,-0.2f,-0.04f}, 
 					{-0.08f,-0.09f,0f}, 
 					{0f,0f,0f}, 
 					{0.05f,-0.17f,-0.05f} 
-				},0.05F,2F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.1F,-0.72F,0.6F,0.02F,0.02F,0.1F,0F,-0.53F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.05F,2F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_add.png"),12,0F,0F,0.1F,-0.72F,0.6F,0.02F,0.02F,0.1F,0F,-0.53F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.gaussrifle.get(),new BasicGunRenderer(new techguns.client.models.LegacyObjModel(true,false,"gaussrifle"),"gaussrifle",false,0.9F,0.25F,new float[]{0.6F,0F,-0.05875F},new float[][]{
 					{0f,0.12f,-0.1f}, 
 					{0f,0.05f,-0.17f}, 
 					{0.f,0.06f,0.06f}, 
 					{0f,0f,0.f}, 
 					{0f,0f,-0.05f} 
-				},0.25F,7.5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/sonicwave4x4.png"),16,0F,0F,0.21F,-1.56F,1F,0F,0F,0F,0.09F,-1.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).objRotation(-90F).scope("techscope",2.125F,true).scopeRecoil(GunAnimation.scopeRecoil,0.15F,1F));
+				},0.25F,7.5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/sonicwave4x4.png"),16,0F,0F,0.21F,-1.56F,1F,0F,0F,0F,0.09F,-1.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).objRotation(-90F).scope("techscope",2.125F,true).scopeRecoil(GunAnimation.scopeRecoil,0.15F,1F));
         result.put(TGuns.guidedmissilelauncher.get(),new BasicGunRenderer(new ModelGuidedMissileLauncher(),"guidedmissilelauncher",true,1F,0.35F,new float[]{-0.4F,-0.2F,0.03125F},new float[][]{
 					{-0.13f,0.3f,0.62f}, 
 					{0,0.09f,0.28f}, 
 					{0.0f,0.03f,0.0f}, 
 					{0.0f,0.0f,0}, 
 					{0,0,-0.04f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.39F,-0.6F,0.87F,0F,0F,0F,0.09F,-0.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).chargeTranslation(0F));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/muzzleflashnew_2_add_2.png"),11,0F,0F,0.39F,-0.6F,0.87F,0F,0F,0F,0.09F,-0.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).chargeTranslation(0F));
         result.put(TGuns.miningdrill.get(),new BasicGunRenderer(new ModelMiningDrill(),"miningdrill_obsidian",true,2F,0.35F,new float[]{0F,-0.2F,-0.03125F},new float[][]{
 					{0f,-0.03f,0.0f}, 
 					{0f,-0.57f,0.08f}, 
@@ -282,14 +282,14 @@ final class GeneratedBallisticRenderers {
 					{0.04f,-0.04f,0f}, 
 					{0f,0f,0f}, 
 					{-0.07f,0f,-0.05f} 
-				},0.15F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/tfg_flare.png"),16,0F,0F,0.18F,-0.87F,0.9F,0F,0F,0F,0.09F,-1.14F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).firstScale(0.45F).chargeTranslation(0.05F));
+				},0.15F,5F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/tfg_flare.png"),16,0F,0F,0.18F,-0.87F,0.9F,0F,0F,0F,0.09F,-1.14F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil).firstScale(0.45F).chargeTranslation(0.05F));
         result.put(TGuns.laserpistol.get(),new BasicGunRenderer(new ModelLaserPistol(),"laser_pistol",false,1.2F,0.7F,new float[]{0.03125F,-0.3F,-0.4F},new float[][]{
 					{0,0.09f,-0.02f}, 
 					{0.0f,-0.03f,0.0f}, 
 					{0.02f,-0.08f,0}, 
 					{0.02f,-0.08f,0}, 
 					{0,0,0f} 
-				},0.0125F,6F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/laserflare02.png"),7,0.03F,-0.03F,0.2F,-0.5F,0.55F,0F,0F,0F,0.07F,-0.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
+				},0.0125F,6F,new PistolMuzzleFlash.Specification(new ResourceLocation("techguns","textures/fx/laserflare02.png"),7,0.03F,-0.03F,0.2F,-0.5F,0.55F,0F,0F,0F,0.07F,-0.26F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
         result.put(TGuns.shishkebap.get(),new BasicGunRenderer(new ModelShishkebap(),"shishkebab_texture",false,1F,0.3F,new float[]{0F,0F,0F},new float[][]{
 					{0f,0.0f,0.0f}, 
 					{0f,0.0f,0.0f}, 

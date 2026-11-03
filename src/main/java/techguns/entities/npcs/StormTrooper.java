@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original StormTrooper; equipment branches and damage values are retained. */
 public class StormTrooper extends GenericNPCGearSpecificStats {
 public StormTrooper(EntityType<? extends GenericNPC> type,Level level){super(type,level);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/stormtrooper");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/stormtrooper");
 protected void addRandomArmor(int difficulty) {
 
 		

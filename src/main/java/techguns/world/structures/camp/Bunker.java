@@ -10,7 +10,7 @@ import techguns.world.structures.camp.CampStructure.BiomeColorType;
 /** Mechanically adapted from the original camp source; layout, dimensions and random-call order retained. */
 public class Bunker extends CampStructure {
 
-	private static final ResourceLocation CHEST_LOOT = ResourceLocation.parse("techguns:chests/militarybase_bunker");
+	private static final ResourceLocation CHEST_LOOT = new ResourceLocation("techguns:chests/militarybase_bunker");
 	
 	 CampBlock groundBlock = new CampBlock(CampBlocks.state("inline_13"));
 	 CampBlock stairsblock = new CampBlock(CampBlocks.state("inline_12"));

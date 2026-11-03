@@ -1,7 +1,7 @@
 package techguns.client.models.guns;
 
 import techguns.client.models.LegacyModelPart;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.Entity;
 import techguns.client.models.ModelMultipart;
 
@@ -289,7 +289,7 @@ public class ModelSonicShotgun extends ModelMultipart {
 		
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, int ammoLeft,
-			float reloadProgress, ItemDisplayContext transformType, int part, float fireProgress, float chargeProgress) {
+			float reloadProgress, ItemTransforms.TransformType transformType, int part, float fireProgress, float chargeProgress) {
 		
 	    this.Shape13_9.render(scale);
         this.Shape13_1.render(scale);

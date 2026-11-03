@@ -2,7 +2,7 @@ package techguns;
 import java.util.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +18,7 @@ public final class TGOreClusters {
     private static void item(List<Entry> entries,ItemLikeValue item,int weight){entries.add(new Entry(item.stack(),FluidStack.EMPTY,weight));}
     @FunctionalInterface private interface ItemLikeValue {ItemStack stack();}
     private static void tag(List<Entry> entries,String id,int weight){
-        var values=ForgeRegistries.ITEMS.tags().getTag(TagKey.create(Registries.ITEM,ResourceLocation.parse("forge:ores/"+id)));
+        var values=ForgeRegistries.ITEMS.tags().getTag(TagKey.create(net.minecraft.core.Registry.ITEM_REGISTRY,new ResourceLocation("forge:ores/"+id)));
         var first=values.iterator();if(first.hasNext()){var stack=new ItemStack(first.next());if(entries.stream().noneMatch(e->ItemStack.isSameItemSameTags(e.item,stack)))entries.add(new Entry(stack,FluidStack.EMPTY,weight));}
     }
     public static List<Entry> entries(ClusterKind kind){

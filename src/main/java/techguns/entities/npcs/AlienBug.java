@@ -37,7 +37,7 @@ public final class AlienBug extends Spider implements ITGNpcTeam,INpcTGDamageSys
         BugTarget(AlienBug bug,Class<T> target){super(bug,target,true);}
         @Override public void start(){super.start();mob.playSound(TGSounds.ALIENBUG_AGGRO.get(),1,1);}
     }
-    @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);attackTimer=10;if(!level().isClientSide){playSound(TGSounds.ALIENBUG_BITE.get(),2,1);level().broadcastEntityEvent(this,(byte)4);}return hit;}
+    @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);attackTimer=10;if(!level.isClientSide){playSound(TGSounds.ALIENBUG_BITE.get(),2,1);level.broadcastEntityEvent(this,(byte)4);}return hit;}
     public int getAttackTimer(){return attackTimer;}
     @Override public void aiStep(){super.aiStep();if(attackTimer>0)attackTimer--;}
     @Override public void handleEntityEvent(byte event){if(event==4)attackTimer=10;else super.handleEntityEvent(event);}

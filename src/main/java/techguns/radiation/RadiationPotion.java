@@ -35,7 +35,7 @@ public final class RadiationPotion extends MobEffect {
                 }
             }
         } else if (entity instanceof Mob && amount * 0.5F >= 1.0F) {
-            entity.hurt(TGDamageSource.causeRadiationDamage(entity.level(), null, null, DeathType.BIO), amount * 0.5F);
+            entity.hurt(TGDamageSource.causeRadiationDamage(entity.level, null, null, DeathType.BIO), amount * 0.5F);
         }
     }
     @Override public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {

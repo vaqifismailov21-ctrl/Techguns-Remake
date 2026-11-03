@@ -1,9 +1,10 @@
 package techguns.client.render.entities.npcs;
+import com.mojang.math.Vector3f;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import techguns.client.models.npcs.*;
 import techguns.entities.npcs.*;
 
@@ -20,7 +21,7 @@ public final class NpcModel extends HumanoidModel<GenericNPC> implements techgun
         super.setupAnim(npc,limb,amount,age,yaw,pitch);geometry.syncNpc(this);
     }
     @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,float r,float g,float b,float alpha){
-        geometry.renderModel(pose,new techguns.client.models.TintedVertexConsumer(vertices,r,g,b,alpha),light,overlay,ItemDisplayContext.NONE,holder,0,0,0,0,0);
+        geometry.renderModel(pose,new techguns.client.models.TintedVertexConsumer(vertices,r,g,b,alpha),light,overlay,ItemTransforms.TransformType.NONE,holder,0,0,0,0,0);
     }
     @Override public java.util.List<techguns.client.models.MeshSnapshot> deathParts(PoseStack pose){return geometry.captureParts(vertices->renderToBuffer(pose,vertices,0xf000f0,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,1,1,1,1));}
     @Override public void translateToHand(HumanoidArm hand,PoseStack pose){
@@ -28,8 +29,8 @@ public final class NpcModel extends HumanoidModel<GenericNPC> implements techgun
         float scale=holder instanceof SuperMutantBasic mutant?mutant.getModelScale():1;
         var arm=hand==HumanoidArm.RIGHT?geometry.bipedRightArm:geometry.bipedLeftArm;
         pose.translate(arm.rotationPointX*scale/16,arm.rotationPointY*scale/16,arm.rotationPointZ*scale/16);
-        if(arm.rotateAngleZ!=0)pose.mulPose(com.mojang.math.Axis.ZP.rotation(arm.rotateAngleZ));
-        if(arm.rotateAngleY!=0)pose.mulPose(com.mojang.math.Axis.YP.rotation(arm.rotateAngleY));
-        if(arm.rotateAngleX!=0)pose.mulPose(com.mojang.math.Axis.XP.rotation(arm.rotateAngleX));
+        if(arm.rotateAngleZ!=0)pose.mulPose(com.mojang.math.Vector3f.ZP.rotation(arm.rotateAngleZ));
+        if(arm.rotateAngleY!=0)pose.mulPose(com.mojang.math.Vector3f.YP.rotation(arm.rotateAngleY));
+        if(arm.rotateAngleX!=0)pose.mulPose(com.mojang.math.Vector3f.XP.rotation(arm.rotateAngleX));
     }
 }

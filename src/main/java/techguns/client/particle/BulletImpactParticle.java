@@ -12,8 +12,8 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import java.util.Random;
 import techguns.client.render.fx.LegacyFxRenderTypes;
 
@@ -74,13 +74,13 @@ public final class BulletImpactParticle extends Particle {
         float u1=frame%definition.columns/(float)definition.columns,u2=u1+1F/definition.columns,v1=frame/definition.columns/(float)definition.columns,v2=v1+1F/definition.columns;
         float radius=0.1F*Mth.lerp(partial,previousSize,size),rotation=(angle+partial*angleRate)*(float)Math.PI/180;
         var centre=interpolated(partial);Vector3f[] points={new Vector3f(-radius,-radius,0),new Vector3f(-radius,radius,0),new Vector3f(radius,radius,0),new Vector3f(radius,-radius,0)};
-        if(rotation>0.0001F)for(var p:points)p.rotateZ(-rotation);
+        if(rotation>0.0001F)for(var p:points)techguns.util.MathCompat.rotZ(p,-rotation);
         float[][] uv={{u2,v2},{u2,v1},{u1,v1},{u1,v2}};int rgb=definition.rgb(progress);float alpha=definition.alpha(progress);
         var vertices=buffers.getBuffer(renderType);
         for(int plane=0;plane<(third?3:1);plane++)for(int i=0;i<4;i++) {
-            var p=points[i];float px=(float)centre.x+p.x,py=(float)centre.y+p.y,pz=(float)centre.z+p.z;
+            var p=points[i];float px=(float)centre.x+p.x(),py=(float)centre.y+p.y(),pz=(float)centre.z+p.z();
             if(plane==1) {float swap=px;px=pz;pz=swap;}
-            if(plane==2) {py=(float)centre.y;pz=-points[(i+1)%4].x+(float)centre.x;}
+            if(plane==2) {py=(float)centre.y;pz=-points[(i+1)%4].x()+(float)centre.x;}
             vertices.vertex(pose.last().pose(),px,py,pz).color((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).uv(uv[i][0],uv[i][1]).endVertex();
         }
     }
@@ -94,13 +94,13 @@ public final class BulletImpactParticle extends Particle {
         var cameraPos=camera.getPosition();
         float px=(float)(Mth.lerp(partial,xo,x)-cameraPos.x),py=(float)(Mth.lerp(partial,yo,y)-cameraPos.y),pz=(float)(Mth.lerp(partial,zo,z)-cameraPos.z);
         float rotation=(angle+partial*angleRate)*(float)Math.PI/180;
-        var quaternion=new Quaternionf(camera.rotation());
+        var quaternion=new Quaternion(camera.rotation());
         // TGParticle only rotates positive angles; preserve that original branch.
-        if (rotation>0.0001F) quaternion.rotateZ(-rotation);
+        if (rotation>0.0001F) techguns.util.MathCompat.rotZ(quaternion,-rotation);
         Vector3f[] corners={new Vector3f(-1,-1,0),new Vector3f(-1,1,0),new Vector3f(1,1,0),new Vector3f(1,-1,0)};
         if(definition.groundAligned) {
             corners=new Vector3f[]{new Vector3f(-1,0,-1),new Vector3f(1,0,-1),new Vector3f(1,0,1),new Vector3f(-1,0,1)};
-            quaternion=new Quaternionf();if(rotation>0.0001F)quaternion.rotateY(-rotation);
+            quaternion=techguns.util.MathCompat.identity();if(rotation>0.0001F)techguns.util.MathCompat.rotY(quaternion,-rotation);
         }
         float[][] uv={{u2,v2},{u2,v1},{u1,v1},{u1,v2}};
         int rgb=definition.rgb(progress); float alpha=definition.alpha(progress);
@@ -109,8 +109,8 @@ public final class BulletImpactParticle extends Particle {
         Vector3f[] trail=null;
         if(definition.streak) {
             var here=interpolated(partial).subtract(cameraPos);var there=previous.interpolated(partial).subtract(cameraPos);
-            var view=new Vector3f(0,0,-1).rotate(camera.rotation());
-            var width=new Vec3(view.x,view.y,view.z).cross(there.subtract(here).normalize()).normalize();
+            var view=techguns.util.MathCompat.rot(new Vector3f(0,0,-1),camera.rotation());
+            var width=new Vec3(view.x(),view.y(),view.z()).cross(there.subtract(here).normalize()).normalize();
             double oldRadius=0.1F*Mth.lerp(partial,previous.previousSize,previous.size);
             var points=new Vec3[]{here.add(width.scale(radius)),here.subtract(width.scale(radius)),there.subtract(width.scale(oldRadius)),there.add(width.scale(oldRadius))};
             trail=new Vector3f[4];for(int i=0;i<4;i++)trail[i]=new Vector3f((float)points[i].x,(float)points[i].y,(float)points[i].z);
@@ -119,8 +119,8 @@ public final class BulletImpactParticle extends Particle {
         renderType.setupRenderState();
         builder.begin(VertexFormat.Mode.QUADS,DefaultVertexFormat.POSITION_COLOR_TEX);
         for(int i=0;i<4;i++) {
-            var p=trail==null?corners[i].rotate(quaternion).mul(radius).add(px,py,pz):trail[i];
-            builder.vertex(p.x,p.y,p.z).color((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).uv(uv[i][0],uv[i][1]).endVertex();
+            var p=trail==null?techguns.util.MathCompat.add(techguns.util.MathCompat.mul(techguns.util.MathCompat.rot(corners[i].copy(),quaternion),radius),px,py,pz):trail[i];
+            builder.vertex(p.x(),p.y(),p.z()).color((rgb>>16&255)/255F*rCol,(rgb>>8&255)/255F*gCol,(rgb&255)/255F*bCol,alpha).uv(uv[i][0],uv[i][1]).endVertex();
         }
         BufferUploader.drawWithShader(builder.end()); renderType.clearRenderState();
     }

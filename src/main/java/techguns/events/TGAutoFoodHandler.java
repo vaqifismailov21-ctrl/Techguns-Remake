@@ -31,7 +31,7 @@ public final class TGAutoFoodHandler {
         for (var effect : food.getEffects()) if (player.getRandom().nextFloat() < effect.getSecond()) {
             player.addEffect(new MobEffectInstance(effect.getFirst()));
         }
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 1, 1);
+        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 1, 1);
         int used = Math.min(needed, food.getNutrition());
         player.getFoodData().eat(used, food.getSaturationModifier());
         data.foodleft = (short) Math.max(0, food.getNutrition() - needed);

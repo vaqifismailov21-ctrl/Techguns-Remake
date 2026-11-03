@@ -18,6 +18,22 @@ import techguns.client.gui.TGPlayerInventoryScreen;
 
 @Mod.EventBusSubscriber(modid = Techguns.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientModEvents {
+    /**
+     * 1.19.2 has no atlas source files yet: the sprites listed in assets/minecraft/atlases/blocks.json (the 1.20.1 list,
+     * kept as the single source) are added to the block atlas while it is stitched.
+     */
+    @net.minecraftforge.eventbus.api.SubscribeEvent public static void stitchBlockAtlas(net.minecraftforge.client.event.TextureStitchEvent.Pre event) {
+        if (!event.getAtlas().location().equals(net.minecraft.client.renderer.texture.TextureAtlas.LOCATION_BLOCKS)) return;
+        try (var stream = ClientModEvents.class.getResourceAsStream("/assets/minecraft/atlases/blocks.json")) {
+            if (stream == null) return;
+            var json = com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
+            for (var source : json.getAsJsonArray("sources")) {
+                var object = source.getAsJsonObject();
+                if ("minecraft:single".equals(object.get("type").getAsString())) event.addSprite(new net.minecraft.resources.ResourceLocation(object.get("resource").getAsString()));
+            }
+        } catch (java.io.IOException error) { throw new java.io.UncheckedIOException(error); }
+    }
+
     public static final KeyMapping NIGHT_VISION = key("toggleNightvision", GLFW.GLFW_KEY_N);
     public static final KeyMapping SAFE_MODE = key("toggleSafemode", GLFW.GLFW_KEY_B);
     public static final KeyMapping STEP_ASSIST = key("toggleStepassist", GLFW.GLFW_KEY_V);
@@ -38,7 +54,7 @@ public final class ClientModEvents {
         MenuScreens.register(TGMenuTypes.DOOR.get(),techguns.client.gui.DoorScreen::new);
         MenuScreens.register(TGMenuTypes.CHARGE.get(),techguns.client.gui.ChargeScreen::new);
         techguns.TGArmors.SHIELDS.values().forEach(item -> net.minecraft.client.renderer.item.ItemProperties.register(item.get(),
-                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "blocking"),
+                new net.minecraft.resources.ResourceLocation(Techguns.MODID, "blocking"),
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0));
     }); }
     @SubscribeEvent public static void renderers(EntityRenderersEvent.RegisterRenderers event) {

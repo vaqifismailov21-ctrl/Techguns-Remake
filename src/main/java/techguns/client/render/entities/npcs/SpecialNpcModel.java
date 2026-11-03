@@ -2,12 +2,12 @@ package techguns.client.render.entities.npcs;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import techguns.client.models.ModelMultipart;
 public final class SpecialNpcModel<T extends LivingEntity> extends EntityModel<T> implements techguns.client.models.LegacyDeathModel {
     private final ModelMultipart geometry;private T holder;private float limb,amount,age,yaw,pitch;
     public SpecialNpcModel(ModelMultipart geometry){this.geometry=geometry;}
     @Override public void setupAnim(T entity,float limb,float amount,float age,float yaw,float pitch){holder=entity;this.limb=limb;this.amount=amount;this.age=age;this.yaw=yaw;this.pitch=pitch;}
-    @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,float red,float green,float blue,float alpha){geometry.renderAnimatedModel(pose,new techguns.client.models.TintedVertexConsumer(vertices,red,green,blue,alpha),light,overlay,ItemDisplayContext.NONE,holder,limb,amount,age,yaw,pitch);}
+    @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,float red,float green,float blue,float alpha){geometry.renderAnimatedModel(pose,new techguns.client.models.TintedVertexConsumer(vertices,red,green,blue,alpha),light,overlay,ItemTransforms.TransformType.NONE,holder,limb,amount,age,yaw,pitch);}
     @Override public java.util.List<techguns.client.models.MeshSnapshot> deathParts(PoseStack pose){return geometry.captureParts(vertices->renderToBuffer(pose,vertices,0xf000f0,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,1,1,1,1));}
 }

@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original ZombiePoliceman; equipment branches and damage values are retained. */
 public class ZombiePoliceman extends GenericNPCUndead {
 public ZombiePoliceman(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(5.0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/zombiepoliceman");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/zombiepoliceman");
 protected void addRandomArmor(int difficulty) {
 		
 		int camo=5;

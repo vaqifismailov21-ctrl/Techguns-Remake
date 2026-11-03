@@ -1,6 +1,6 @@
 package techguns.radiation;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -16,7 +16,7 @@ public final class RadiationTagEvents {
     @SubscribeEvent public static void tags(TagsUpdatedEvent event) {
         if (!TGRadiationSystem.isEnabled()) return;
         for (String name : new String[]{"ores/uranium", "ingots/uranium"}) {
-            TagKey<Item> tag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("forge", name));
+            TagKey<Item> tag = TagKey.create(net.minecraft.core.Registry.ITEM_REGISTRY, new ResourceLocation("forge", name));
             for (Item item : ForgeRegistries.ITEMS.tags().getTag(tag)) {
                 if (ItemRadiationRegistry.getRadiationDataFor(item, (short) 0) == null) ItemRadiationRegistry.addRadiationData(item, 0, 1, 100);
             }

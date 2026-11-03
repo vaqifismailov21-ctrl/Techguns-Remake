@@ -3,7 +3,7 @@ package techguns.client;
 import java.util.*;
 import java.lang.reflect.*;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -47,7 +47,7 @@ public final class DeathEffects {
     }
     @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event){
         if(event.phase!=TickEvent.Phase.END)return;var level=Minecraft.getInstance().level;
-        active.values().removeIf(s->s.entity.level()!=level||s.entity.isRemoved()||s.entity.deathTime>=20||s.entity.isAlive()&&s.entity.tickCount>0&&s.entity.hurtTime==0);
+        active.values().removeIf(s->s.entity.level!=level||s.entity.isRemoved()||s.entity.deathTime>=20||s.entity.isAlive()&&s.entity.tickCount>0&&s.entity.hurtTime==0);
     }
     @SuppressWarnings({"rawtypes","unchecked"})
     @SubscribeEvent(priority=EventPriority.HIGH) public static void render(RenderLivingEvent.Pre event){
@@ -57,12 +57,12 @@ public final class DeathEffects {
         float progress=Mth.clamp((entity.deathTime+partial)/20F,0,1),color=1-progress*progress,alpha=(1-progress)*(1-progress);
         var pose=event.getPoseStack();pose.pushPose();
         try{
-            pose.mulPose(Axis.YP.rotationDegrees(180-Mth.rotLerp(partial,entity.yBodyRotO,entity.yBodyRot)));pose.scale(-1,-1,1);
+            pose.mulPose(Vector3f.YP.rotationDegrees(180-Mth.rotLerp(partial,entity.yBodyRotO,entity.yBodyRot)));pose.scale(-1,-1,1);
             if(entity instanceof net.minecraft.world.entity.monster.Slime slime)pose.scale(slime.getSize(),slime.getSize(),slime.getSize());
             pose.translate(0,-1.501,0);model.young=entity.isBaby();model.riding=false;model.attackTime=0;model.prepareMobModel(entity,0,0,partial);model.setupAnim(entity,0,0,entity.tickCount+partial,entity.getYHeadRot()-entity.yBodyRot,entity.getXRot());
             var texture=renderer.getTextureLocation(entity);var buffers=event.getMultiBufferSource();
             float glow=(float)(.5+Math.sin((Math.sqrt(progress)+.75)*2*Math.PI)/2);
-            var overlay=ResourceLocation.fromNamespaceAndPath("techguns",state.type==DeathType.LASER?"textures/fx/laserdeath.png":"textures/fx/bio.png");
+            var overlay=new ResourceLocation("techguns",state.type==DeathType.LASER?"textures/fx/laserdeath.png":"textures/fx/bio.png");
             if(state.type==DeathType.BIO){
                 var random=new Random(entity.getId());var parts=bodyMeshes(model,new PoseStack());
                 if(parts.isEmpty()){
@@ -102,15 +102,15 @@ public final class DeathEffects {
         var texture=living.getTextureLocation(entity);var random=entity.getRandom();
         var capture=new PoseStack();capture.scale(-scale,-scale,scale);
         for(var mesh:bodyMeshes(model,capture)){
-            var velocity=motion.scale(.35).add((.5-random.nextDouble())*.35,(entity.onGround()?random.nextDouble():.5-random.nextDouble())*.35,(.5-random.nextDouble())*.35);
+            var velocity=motion.scale(.35).add((.5-random.nextDouble())*.35,(entity.isOnGround()?random.nextDouble():.5-random.nextDouble())*.35,(.5-random.nextDouble())*.35);
             mc.particleEngine.add(new Gib(entity,mesh,texture,entity.position().add(0,entity.getBbHeight()/2,0),velocity,color));
         }
     }
     private static int bloodColor(String id){return switch(id){case "zombie","husk","zombie_villager","zombiesoldier","zombiefarmer","zombieminer"->0x6e1529;case "skeleton","stray","ghast","skeletonsoldier","ghastling"->0xffffff;case "wither_skeleton"->0x323232;case "creeper"->0x32af39;case "spider","cave_spider","cyberdemon"->0x559c11;case "alienbug"->0xebff46;case "supermutantbasic","supermutantelite","supermutantheavy"->0x6d3c19;case "armysoldier","stormtrooper","commando","dictatordave","psychosteve","bandit"->0xa0151f;case "enderman"->0xa024a7;case "slime"->0x28ff28;case "magma_cube"->0x5c1a00;case "zombified_piglin","zombiepigmansoldier"->0x6e330b;default->0xaa1a25;};}
     private static final class Gib extends Particle {
-        final MeshSnapshot mesh;final ResourceLocation texture;final int blood;final org.joml.Vector3f axis;boolean landed;
+        final MeshSnapshot mesh;final ResourceLocation texture;final int blood;final com.mojang.math.Vector3f axis;boolean landed;
         Gib(LivingEntity entity,MeshSnapshot mesh,ResourceLocation texture,Vec3 position,Vec3 velocity,int blood){
-            super((net.minecraft.client.multiplayer.ClientLevel)entity.level(),position.x,position.y,position.z);this.mesh=mesh;this.texture=texture;this.blood=blood;xd=velocity.x;yd=velocity.y;zd=velocity.z;gravity=.03F;lifetime=75+random.nextInt(50);hasPhysics=true;setSize(.1F,.1F);axis=new org.joml.Vector3f(random.nextFloat(),random.nextFloat(),random.nextFloat()).normalize();
+            super((net.minecraft.client.multiplayer.ClientLevel)entity.level,position.x,position.y,position.z);this.mesh=mesh;this.texture=texture;this.blood=blood;xd=velocity.x;yd=velocity.y;zd=velocity.z;gravity=.03F;lifetime=75+random.nextInt(50);hasPhysics=true;setSize(.1F,.1F);axis=techguns.util.MathCompat.norm(new com.mojang.math.Vector3f(random.nextFloat(),random.nextFloat(),random.nextFloat()));
         }
         @Override public ParticleRenderType getRenderType(){return ParticleRenderType.CUSTOM;}
         @Override public void tick(){
@@ -118,7 +118,7 @@ public final class DeathEffects {
             if(!landed)WeaponEffects.spawnColored("GoreTrailFX_Blood",new Vec3(x,y,z),Vec3.ZERO,.6F,blood);
         }
         @Override public void render(com.mojang.blaze3d.vertex.VertexConsumer unused,net.minecraft.client.Camera camera,float partial){
-            var mc=Minecraft.getInstance();if(mc.level!=level)return;var pose=new PoseStack();var eye=camera.getPosition();pose.translate(Mth.lerp(partial,xo,x)-eye.x,Mth.lerp(partial,yo,y)-eye.y,Mth.lerp(partial,zo,z)-eye.z);pose.mulPose(new org.joml.Quaternionf().rotationAxis((age+partial)*.15F,axis));pose.translate(-mesh.centerX(),-mesh.centerY(),-mesh.centerZ());
+            var mc=Minecraft.getInstance();if(mc.level!=level)return;var pose=new PoseStack();var eye=camera.getPosition();pose.translate(Mth.lerp(partial,xo,x)-eye.x,Mth.lerp(partial,yo,y)-eye.y,Mth.lerp(partial,zo,z)-eye.z);pose.mulPose(techguns.util.MathCompat.axis((age+partial)*.15F,axis));pose.translate(-mesh.centerX(),-mesh.centerY(),-mesh.centerZ());
             float alpha=Mth.clamp((lifetime-age-partial)/10,0,1);var buffers=mc.renderBuffers().bufferSource();var type=RenderType.entityTranslucent(texture);mesh.render(pose,buffers.getBuffer(type),getLightColor(partial),OverlayTexture.NO_OVERLAY,1,1,1,alpha);buffers.endBatch(type);
         }
     }

@@ -1,6 +1,6 @@
 package techguns;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -68,7 +68,7 @@ public final class TGRadiationSystem {
         BrewingRecipeRegistry.addRecipe(new RadiationBrewing(RAD_POTION.get(), stack -> stack.is(Items.GLISTERING_MELON_SLICE), RAD_REGENERATION_POTION.get()));
     }
     private static java.util.function.Predicate<ItemStack> tag(String path) {
-        TagKey<Item> key = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("forge", path));
+        TagKey<Item> key = TagKey.create(net.minecraft.core.Registry.ITEM_REGISTRY, new ResourceLocation("forge", path));
         return stack -> stack.is(key);
     }
     private record RadiationBrewing(Potion input, java.util.function.Predicate<ItemStack> ingredient, Potion output) implements IBrewingRecipe {
@@ -98,7 +98,7 @@ public final class TGRadiationSystem {
         }
     }
     public static void tickPlayer(ServerPlayer player, TGExtendedPlayer data) {
-        long time = player.level().getGameTime();
+        long time = player.level.getGameTime();
         if (isEnabled() && time % INVENTORY_RADIATION_INVERVALL == 0) {
             int max = 0;
             for (ItemStack stack : player.getInventory().items) {
@@ -117,7 +117,7 @@ public final class TGRadiationSystem {
         if (data.radlevel >= LETHAL_POISONING) {
             player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 30, 1, false, false));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 1, false, false));
-            player.hurt(TGDamageSource.causeLethalRadPoisoningDamage(player.level(), null, null, DeathType.LASER), 2.0F);
+            player.hurt(TGDamageSource.causeLethalRadPoisoningDamage(player.level, null, null, DeathType.LASER), 2.0F);
         }
     }
     private TGRadiationSystem() {}

@@ -97,7 +97,7 @@ public final class TGExtendedPlayer implements ITGExtendedPlayer {
         markDirty();
     }
     public void enforcePermissions() {
-        if (!entity.level().isClientSide && !enableSafemode && !TGPermissions.canUseUnsafeMode(entity)) { enableSafemode = true; markDirty(); }
+        if (!entity.level.isClientSide && !enableSafemode && !TGPermissions.canUseUnsafeMode(entity)) { enableSafemode = true; markDirty(); }
     }
 
     public void saveToNBT(CompoundTag tag) { tag.merge(saveToNBT()); }

@@ -12,7 +12,7 @@ public final class TGFluids {
     public static final DeferredRegister<FluidType> TYPES=DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,Techguns.MODID);
     public static final DeferredRegister<Fluid> FLUIDS=DeferredRegister.create(ForgeRegistries.FLUIDS,Techguns.MODID);
     public static final RegistryObject<FluidType> ACID_TYPE=TYPES.register("creeper_acid",()->new FluidType(FluidType.Properties.create().density(100).viscosity(1000).descriptionId("techguns.fluid.creeperacid")){
-        @Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer){consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions(){public ResourceLocation getStillTexture(){return ResourceLocation.fromNamespaceAndPath("techguns","blocks/acid_still");}public ResourceLocation getFlowingTexture(){return ResourceLocation.fromNamespaceAndPath("techguns","blocks/acid_flow");}});}
+        @Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer){consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions(){public ResourceLocation getStillTexture(){return new ResourceLocation("techguns","blocks/acid_still");}public ResourceLocation getFlowingTexture(){return new ResourceLocation("techguns","blocks/acid_flow");}});}
     });
     public static final RegistryObject<FlowingFluid> ACID=FLUIDS.register("creeper_acid",()->new ForgeFlowingFluid.Source(properties()));
     public static final RegistryObject<FlowingFluid> ACID_FLOWING=FLUIDS.register("flowing_creeper_acid",()->new ForgeFlowingFluid.Flowing(properties()));
@@ -32,13 +32,13 @@ public final class TGFluids {
             public ResourceLocation getFlowingTexture(){return ResourceLocation.withDefaultNamespace("block/water_flow");}
             public ResourceLocation getOverlayTexture(){return ResourceLocation.withDefaultNamespace("block/water_overlay");}
             public int getTintColor(){return 0xFF16120E;}
-            public org.joml.Vector3f modifyFogColor(net.minecraft.client.Camera camera,float partialTick,net.minecraft.client.multiplayer.ClientLevel level,int renderDistance,float darkenWorldAmount,org.joml.Vector3f fluidFogColor){return new org.joml.Vector3f(.06f,.05f,.04f);}
+            public com.mojang.math.Vector3f modifyFogColor(net.minecraft.client.Camera camera,float partialTick,net.minecraft.client.multiplayer.ClientLevel level,int renderDistance,float darkenWorldAmount,com.mojang.math.Vector3f fluidFogColor){return new com.mojang.math.Vector3f(.06f,.05f,.04f);}
             public void modifyFogRender(net.minecraft.client.Camera camera,net.minecraft.client.renderer.FogRenderer.FogMode mode,float renderDistance,float partialTick,float nearDistance,float farDistance,com.mojang.blaze3d.shaders.FogShape shape){com.mojang.blaze3d.systems.RenderSystem.setShaderFogStart(0f);com.mojang.blaze3d.systems.RenderSystem.setShaderFogEnd(3f);}
         });}
     });
     public static final RegistryObject<FlowingFluid> OIL=FLUIDS.register("oil",()->new ForgeFlowingFluid.Source(oilProperties()));
     public static final RegistryObject<FlowingFluid> OIL_FLOWING=FLUIDS.register("flowing_oil",()->new ForgeFlowingFluid.Flowing(oilProperties()));
-    public static final RegistryObject<LiquidBlock> OIL_BLOCK=TGWeaponBlocks.BLOCKS.register("oil",()->new LiquidBlock(OIL,BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
+    public static final RegistryObject<LiquidBlock> OIL_BLOCK=TGWeaponBlocks.BLOCKS.register("oil",()->new LiquidBlock(OIL,BlockBehaviour.Properties.copy(Blocks.WATER).color(net.minecraft.world.level.material.MaterialColor.COLOR_BLACK)));
     /** Burns in furnaces and the fuel generator (lava bucket: 20000 ticks). */
     public static final RegistryObject<Item> OIL_BUCKET=TGItems.ITEMS.register("oil_bucket",()->new BucketItem(OIL,new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)){
         @Override public int getBurnTime(ItemStack stack,@org.jetbrains.annotations.Nullable net.minecraft.world.item.crafting.RecipeType<?> type){return 16000;}

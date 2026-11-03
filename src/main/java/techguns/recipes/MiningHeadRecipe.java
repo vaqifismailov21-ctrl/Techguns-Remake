@@ -10,12 +10,12 @@ import techguns.TGRecipeSerializers;
 import techguns.items.guns.MiningGun;
 /** Original head upgrade recipe, copying all weapon NBT before replacing the mining head. */
 public final class MiningHeadRecipe extends ShapelessRecipe {
-    private MiningHeadRecipe(ShapelessRecipe source){super(source.getId(),source.getGroup(),source.category(),source.getResultItem(RegistryAccess.EMPTY),source.getIngredients());}
-    @Override public ItemStack assemble(CraftingContainer input,RegistryAccess registries) {
+    private MiningHeadRecipe(ShapelessRecipe source){super(source.getId(),source.getGroup(),source.getResultItem(),source.getIngredients());}
+    @Override public ItemStack assemble(CraftingContainer input) {
         ItemStack weapon=ItemStack.EMPTY,head=ItemStack.EMPTY;
         for(int i=0;i<input.getContainerSize();i++){var stack=input.getItem(i);if(stack.getItem() instanceof MiningGun)weapon=stack;else if(!stack.isEmpty())head=stack;}
         if(!(weapon.getItem() instanceof MiningGun gun)||gun.getMiningHeadLevelForHead(head)==0)return ItemStack.EMPTY;
-        var result=super.assemble(input,registries);gun.getCurrentAmmo(weapon);result.setTag(weapon.getTag().copy());result.getOrCreateTag().putInt("miningHead",gun.getMiningHeadLevelForHead(head));return result;
+        var result=super.assemble(input);gun.getCurrentAmmo(weapon);result.setTag(weapon.getTag().copy());result.getOrCreateTag().putInt("miningHead",gun.getMiningHeadLevelForHead(head));return result;
     }
     @Override public RecipeSerializer<?> getSerializer(){return TGRecipeSerializers.MINING_HEAD.get();}
     public static final class Serializer implements RecipeSerializer<MiningHeadRecipe> {

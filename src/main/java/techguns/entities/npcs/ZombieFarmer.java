@@ -12,7 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original ZombieFarmer; equipment branches and damage values are retained. */
 public class ZombieFarmer extends GenericNPCUndead {
 public ZombieFarmer(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(0f, 0f);}
-public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/zombiefarmer");
+public static final ResourceLocation LOOT=new ResourceLocation(Techguns.MODID,"entities/zombiefarmer");
 protected void addRandomArmor(int difficulty) {
 
 		

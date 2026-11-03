@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import techguns.client.render.fx.LegacyFxRenderTypes;
 import techguns.entities.projectiles.BioGunProjectile;
 public final class RenderBioProjectile extends EntityRenderer<BioGunProjectile> {
-    private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/entity/bioblob.png");
+    private static final ResourceLocation TEXTURE=new ResourceLocation("techguns","textures/entity/bioblob.png");
     public RenderBioProjectile(EntityRendererProvider.Context context){super(context);}
     @Override public ResourceLocation getTextureLocation(BioGunProjectile entity){return TEXTURE;}
     @Override public void render(BioGunProjectile entity,float yaw,float partial,PoseStack pose,MultiBufferSource buffers,int light) {

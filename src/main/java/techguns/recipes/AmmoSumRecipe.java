@@ -10,10 +10,10 @@ import techguns.TGRecipeSerializers;
 import techguns.items.guns.GenericGun;
 /** Four missile launchers contribute their remaining missiles to the original Grim Reaper recipe. */
 public final class AmmoSumRecipe extends ShapedRecipe {
-    private AmmoSumRecipe(ShapedRecipe source){super(source.getId(),source.getGroup(),source.category(),source.getWidth(),source.getHeight(),source.getIngredients(),source.getResultItem(RegistryAccess.EMPTY),source.showNotification());}
-    @Override public ItemStack assemble(CraftingContainer input,RegistryAccess registries) {
+    private AmmoSumRecipe(ShapedRecipe source){super(source.getId(),source.getGroup(),source.getWidth(),source.getHeight(),source.getIngredients(),source.getResultItem());}
+    @Override public ItemStack assemble(CraftingContainer input) {
         int total=0;for(int i=0;i<input.getContainerSize();i++){var stack=input.getItem(i);if(stack.getItem() instanceof GenericGun gun)total+=gun.getCurrentAmmo(stack);}
-        var result=super.assemble(input,registries);if(result.getItem() instanceof GenericGun gun)gun.setAmmo(result,total);return result;
+        var result=super.assemble(input);if(result.getItem() instanceof GenericGun gun)gun.setAmmo(result,total);return result;
     }
     @Override public RecipeSerializer<?> getSerializer(){return TGRecipeSerializers.AMMO_SUM.get();}
     public static final class Serializer implements RecipeSerializer<AmmoSumRecipe> {

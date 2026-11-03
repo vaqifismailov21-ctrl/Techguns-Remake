@@ -82,7 +82,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         this.penetration = penetration; blockdamage = blockDamage;
     }
     public LivingEntity getShooter() {
-        if (shooter == null && shooterUuid != null && level() instanceof ServerLevel server && server.getEntity(shooterUuid) instanceof LivingEntity living) shooter = living;
+        if (shooter == null && shooterUuid != null && level instanceof ServerLevel server && server.getEntity(shooterUuid) instanceof LivingEntity living) shooter = living;
         return shooter;
     }
     protected void setShooter(LivingEntity owner){shooter=owner;shooterUuid=owner==null?null:owner.getUUID();}
@@ -102,7 +102,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
     }
     protected void initStartPos() { startX = getX(); startY = getY(); startZ = getZ(); posInitialized = true; }
     @Override public void tick() {
-        if (!posInitialized && !level().isClientSide) initStartPos();
+        if (!posInitialized && !level.isClientSide) initStartPos();
         xo = getX(); yo = getY(); zo = getZ();
         super.tick();
         getShooter();
@@ -114,7 +114,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         }
         ticksToLive--;
         Vec3 start = position(), end = start.add(motion);
-        HitResult hit = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        HitResult hit = level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         if (hit.getType() != HitResult.Type.MISS) end = hit.getLocation();
         EntityHitResult entityHit = findEntityOnPath(start, end);
         if (entityHit != null) hit = entityHit;
@@ -139,7 +139,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
     protected float inWaterUpdateBehaviour(float drag) {
         if (isInWater()) {
             var motion = getDeltaMovement();
-            for (int i = 0; i < 4; i++) level().addParticle(net.minecraft.core.particles.ParticleTypes.BUBBLE,
+            for (int i = 0; i < 4; i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.BUBBLE,
                     getX() - motion.x * 0.25, getY() - motion.y * 0.25, getZ() - motion.z * 0.25, motion.x, motion.y, motion.z);
             drag = 0.85F;
         }
@@ -148,7 +148,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
     }
     @Nullable protected EntityHitResult findEntityOnPath(Vec3 start, Vec3 end) {
         Entity closest = null; Vec3 point = null; double distance = 0;
-        var entities = level().getEntities(this, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1),
+        var entities = level.getEntities(this, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1),
                 entity -> !entity.isSpectator() && entity.isAlive() && entity.isPickable());
         for (Entity entity : entities) if (entity != shooter) {
             var intersection = entity.getBoundingBox().inflate(0.30000001192092896).clip(start, end);
@@ -160,7 +160,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         return closest == null ? null : new EntityHitResult(closest, point);
     }
     protected void onHit(HitResult hit) {
-        if (hit instanceof EntityHitResult entityHit && !level().isClientSide) {
+        if (hit instanceof EntityHitResult entityHit && !level.isClientSide) {
             Entity target = entityHit.getEntity();
             TGDamageSource source = getProjectileDamageSource();
             if (target instanceof LivingEntity living) {
@@ -177,8 +177,8 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
     }
     protected void onHitEffect(LivingEntity target, HitResult hit) {}
     protected void hitBlock(BlockHitResult hit) {
-        if (!level().isClientSide) {
-            SoundType sound = level().getBlockState(hit.getBlockPos()).getSoundType(level(), hit.getBlockPos(), this);
+        if (!level.isClientSide) {
+            SoundType sound = level.getBlockState(hit.getBlockPos()).getSoundType(level, hit.getBlockPos(), this);
             TGPackets.sendBulletImpact(this, hit, sound);
         }
     }
@@ -216,7 +216,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         posInitialized = tag.contains("startX");
         if (posInitialized) { startX = tag.getDouble("startX"); startY = tag.getDouble("startY"); startZ = tag.getDouble("startZ"); }
     }
-    @Override public Packet<ClientGamePacketListener> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }
+    @Override public Packet<?> getAddEntityPacket() { return NetworkHooks.getEntitySpawningPacket(this); }
     @Override public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeFloat(speed); var motion = getDeltaMovement(); buffer.writeDouble(motion.x); buffer.writeDouble(motion.y); buffer.writeDouble(motion.z);
         buffer.writeVarInt(shooter == null ? 0 : shooter.getId());
@@ -224,7 +224,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
     }
     @Override public void readSpawnData(FriendlyByteBuf buffer) {
         speed = buffer.readFloat(); setDeltaMovement(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
-        int owner = buffer.readVarInt(); if (level().getEntity(owner) instanceof LivingEntity living) shooter = living;
+        int owner = buffer.readVarInt(); if (level.getEntity(owner) instanceof LivingEntity living) shooter = living;
         gravity=buffer.readDouble();ticksToLive=lifetime=buffer.readVarInt();
     }
     @Override public void lerpMotion(double x, double y, double z) { /* Original bullet ignores post-spawn velocity updates. */ }

@@ -10,6 +10,7 @@ import techguns.TGEntities;
 import techguns.TGRadiationSystem;
 
 public final class EntityRadiation extends Entity {
+    @Override public net.minecraft.network.protocol.Packet<?> getAddEntityPacket() { return net.minecraftforge.network.NetworkHooks.getEntitySpawningPacket(this); }
     public static final int RAD_INTERVAL = 20;
     private int age, duration, strength, outerStrength, originalStrength, originalOuterStrength;
     private float radius, innerRadius;
@@ -18,7 +19,7 @@ public final class EntityRadiation extends Entity {
         this(TGEntities.RADIATION.get(), level); setPos(x, y, z); setRadiationValues(duration, innerRadius, strength, radius, outerStrength);
     }
     public EntityRadiation(Entity entity, int duration, float innerRadius, int strength, float radius, int outerStrength) {
-        this(entity.level(), entity.getX(), entity.getY(), entity.getZ(), duration, innerRadius, strength, radius, outerStrength);
+        this(entity.level, entity.getX(), entity.getY(), entity.getZ(), duration, innerRadius, strength, radius, outerStrength);
     }
     public EntityRadiation(BlockEntity block, int duration, float innerRadius, int strength, float radius, int outerStrength) {
         this(block.getLevel(), block.getBlockPos().getX() + 0.5, block.getBlockPos().getY() + 0.5,
@@ -43,13 +44,13 @@ public final class EntityRadiation extends Entity {
     @Override public void tick() {
         super.tick(); age++;
         if (age > duration) { discard(); return; }
-        if (!level().isClientSide && age % RAD_INTERVAL == 0) {
+        if (!level.isClientSide && age % RAD_INTERVAL == 0) {
             if (age * 2 >= duration) {
                 double factor = 1.0 - ((age - duration * 0.5) / (duration * 0.5));
                 strength = Math.max((int) Math.round(originalStrength * factor), 0);
                 outerStrength = Math.max((int) Math.round(originalOuterStrength * factor), 0);
             }
-            TGRadiationSystem.applyRadToEntities(level(), getX(), getY(), getZ(), radius, RAD_INTERVAL + 2, strength, innerRadius, outerStrength);
+            TGRadiationSystem.applyRadToEntities(level, getX(), getY(), getZ(), radius, RAD_INTERVAL + 2, strength, innerRadius, outerStrength);
         }
     }
     @Override public boolean isPickable() { return false; }

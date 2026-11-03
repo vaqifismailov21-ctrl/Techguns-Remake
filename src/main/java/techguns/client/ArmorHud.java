@@ -1,7 +1,7 @@
 package techguns.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -17,7 +17,7 @@ public final class ArmorHud {
         var mc=Minecraft.getInstance();
         if(event.getOverlay()!=VanillaGuiOverlay.ARMOR_LEVEL.type()||mc.player==null||mc.options.hideGui||!(mc.gui instanceof ForgeGui gui)||!gui.shouldDrawSurvivalElements()||!techguns.damagesystem.DamageSystem.hasSuitArmor(mc.player))return;
         event.setCanceled(true);gui.setupOverlayRenderState(true,false);
-        render(event.getGuiGraphics(),ArmorDisplay.points(mc.player),event.getGuiGraphics().guiWidth()/2-91,event.getGuiGraphics().guiHeight()-gui.leftHeight);
+        render(new techguns.client.gui.compat.GuiGraphics(event.getPoseStack()),ArmorDisplay.points(mc.player),new techguns.client.gui.compat.GuiGraphics(event.getPoseStack()).guiWidth()/2-91,new techguns.client.gui.compat.GuiGraphics(event.getPoseStack()).guiHeight()-gui.leftHeight);
         gui.leftHeight+=10;
     }
     public static void render(GuiGraphics graphics,int points,int x,int y){

@@ -16,7 +16,7 @@ public final class TGArmors {
 
     private static RegistryObject<GenericShield> shield(String id, int durability, int camos, String tag, ShieldStats stats) {
         var item = TGItems.ITEMS.register(id, () -> new GenericShield(id, durability, camos,
-                ResourceLocation.fromNamespaceAndPath("forge", tag), 3, stats));
+                new ResourceLocation("forge", tag), 3, stats));
         SHIELDS.put(id, item);
         return item;
     }

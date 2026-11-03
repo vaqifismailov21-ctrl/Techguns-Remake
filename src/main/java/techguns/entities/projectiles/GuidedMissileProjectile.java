@@ -22,7 +22,7 @@ public final class GuidedMissileProjectile extends RocketProjectile {
     @Override protected String explosionEffect() {return "GuidedMissileExplosion";}
     @Override protected String trailEffect() {return "GuidedMissileExhaust";}
     @Override public void tick() {
-        if(target==null&&targetUuid!=null&&level() instanceof net.minecraft.server.level.ServerLevel server)target=server.getEntity(targetUuid);
+        if(target==null&&targetUuid!=null&&level instanceof net.minecraft.server.level.ServerLevel server)target=server.getEntity(targetUuid);
         if(target!=null) {
             var motion=getDeltaMovement();double speed=motion.length();var from=motion.normalize();
             var to=target.position().add(0,target.getBbHeight()*0.5,0).subtract(position()).normalize();
@@ -37,7 +37,7 @@ public final class GuidedMissileProjectile extends RocketProjectile {
         super.tick();
     }
     @Override public void writeSpawnData(FriendlyByteBuf b) {super.writeSpawnData(b);b.writeBoolean(highVelocity);b.writeVarInt(target==null?-1:target.getId());}
-    @Override public void readSpawnData(FriendlyByteBuf b) {super.readSpawnData(b);highVelocity=b.readBoolean();target=level().getEntity(b.readVarInt());}
+    @Override public void readSpawnData(FriendlyByteBuf b) {super.readSpawnData(b);highVelocity=b.readBoolean();target=level.getEntity(b.readVarInt());}
     @Override protected void addAdditionalSaveData(CompoundTag tag) {super.addAdditionalSaveData(tag);tag.putBoolean("highVelocity",highVelocity);if(targetUuid!=null)tag.putUUID("target",targetUuid);}
     @Override protected void readAdditionalSaveData(CompoundTag tag) {super.readAdditionalSaveData(tag);highVelocity=tag.getBoolean("highVelocity");targetUuid=tag.hasUUID("target")?tag.getUUID("target"):null;}
 }

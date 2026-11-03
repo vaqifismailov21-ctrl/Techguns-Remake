@@ -35,8 +35,8 @@ public final class TurretInventory {
             ItemStack slot=inv.getStackInSlot(i);
             if(!slot.isEmpty()&&slot.getItem()==item.getItem()&&slot.getCount()<item.getMaxStackSize()){
                 int total=slot.getCount()+item.getCount();
-                if(total<=item.getMaxStackSize()){inv.setStackInSlot(i,slot.copyWithCount(total));return 0;}
-                inv.setStackInSlot(i,slot.copyWithCount(item.getMaxStackSize()));item.setCount(total-item.getMaxStackSize());
+                if(total<=item.getMaxStackSize()){inv.setStackInSlot(i,techguns.util.Compat.copyWithCount(slot, total));return 0;}
+                inv.setStackInSlot(i,techguns.util.Compat.copyWithCount(slot, item.getMaxStackSize()));item.setCount(total-item.getMaxStackSize());
             }
         }
         if(item.getCount()>0)for(int i=start;i<end;i++)if(inv.getStackInSlot(i).isEmpty()){inv.setStackInSlot(i,item.copy());return 0;}

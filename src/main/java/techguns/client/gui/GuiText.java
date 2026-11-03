@@ -1,6 +1,6 @@
 package techguns.client.gui;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.network.chat.Component;
 /** Keep translated labels inside their allocated area without moving the slots. */
 final class GuiText {

@@ -41,13 +41,13 @@ public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCT
             else if(distance<host.getAttributeValue(Attributes.FOLLOW_RANGE)*host.getAttributeValue(Attributes.FOLLOW_RANGE)){
                 if(time<=0){
                     ++step;if(step==1){time=30;host.setAttacking(true);}else if(step<=4)time=6;else{time=50;step=0;host.setAttacking(false);}
-                    if(step>1){host.level().levelEvent(null,1018,host.blockPosition(),0);host.level().addFreshEntity(new EnergyProjectile(host.level(),host,EnergyProjectile.Mode.ALIEN,6,1.5f,200,.05f,200,200,6,0,false,EnumBulletFirePos.CENTER));}
+                    if(step>1){host.level.levelEvent(null,1018,host.blockPosition(),0);host.level.addFreshEntity(new EnergyProjectile(host.level,host,EnergyProjectile.Mode.ALIEN,6,1.5f,200,.05f,200,200,6,0,false,EnumBulletFirePos.CENTER));}
                 }
                 host.getLookControl().setLookAt(target,10,10);
             }else{host.getNavigation().stop();host.getMoveControl().setWantedPosition(target.getX(),target.getY(),target.getZ(),1);}
         }
     }
-    @Override protected ResourceLocation getDefaultLootTable(){return ResourceLocation.parse("techguns:entities/ghastling");}
+    @Override protected ResourceLocation getDefaultLootTable(){return new ResourceLocation("techguns:entities/ghastling");}
     @Override protected float getStandingEyeHeight(Pose pose,EntityDimensions dimensions){return 1.5f;}
     @Override protected SoundEvent getAmbientSound(){return SoundEvents.GHAST_AMBIENT;}
     @Override protected SoundEvent getHurtSound(DamageSource source){return SoundEvents.GHAST_HURT;}

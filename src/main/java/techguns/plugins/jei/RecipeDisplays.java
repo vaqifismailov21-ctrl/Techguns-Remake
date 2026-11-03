@@ -1,7 +1,7 @@
 package techguns.plugins.jei;
 
 import java.util.*;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -20,7 +20,7 @@ public final class RecipeDisplays {
         public String id(){return machine!=null?machine.id:bench!=null?bench.id:"oredrill";}
         public Component title(){return Component.translatable(machine!=null?machine.titleKey():bench!=null?bench.titleKey():"techguns.container.oredrill");}
         public ItemStack icon(){return (machine!=null?TGMachines.ITEMS.get(machine):bench!=null?TGBenches.ITEMS.get(bench):TGOreDrill.ITEMS.get(techguns.oredrill.OreDrillType.CONTROLLER)).get().getDefaultInstance();}
-        public ResourceLocation texture(){return ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+(machine!=null?machine.texture():bench!=null?bench.texture():"ore_drill")+"_gui.png");}
+        public ResourceLocation texture(){return new ResourceLocation("techguns","textures/gui/"+(machine!=null?machine.texture():bench!=null?bench.texture():"ore_drill")+"_gui.png");}
         static Kind machine(MachineKind kind){return Arrays.stream(values()).filter(k->k.machine==kind).findFirst().orElseThrow();}
     }
     public enum Role {INPUT,OUTPUT,CATALYST}
@@ -31,7 +31,7 @@ public final class RecipeDisplays {
         public boolean available(){return slots.stream().allMatch(Slot::available);}
     }
     private static Slot item(Role role,int x,int y,List<ItemStack> items,Component note){return new Slot(role,x-7,y-15,List.copyOf(items),FluidStack.EMPTY,note);}
-    private static Slot input(int x,int y,Ingredient ingredient,int amount){return item(Role.INPUT,x,y,Arrays.stream(ingredient.getItems()).filter(s->!s.isEmpty()).map(s->s.copyWithCount(amount)).toList(),null);}
+    private static Slot input(int x,int y,Ingredient ingredient,int amount){return item(Role.INPUT,x,y,Arrays.stream(ingredient.getItems()).filter(s->!s.isEmpty()).map(s->techguns.util.Compat.copyWithCount(s, amount)).toList(),null);}
     private static Slot output(int x,int y,ItemStack stack){return item(Role.OUTPUT,x,y,List.of(stack.copy()),null);}
     private static Slot fluid(Role role,int x,int y,FluidStack stack,Component note){return new Slot(role,x-7,y-15,List.of(),stack.copy(),note);}
     public static Map<Kind,List<Display>> all(){
@@ -51,7 +51,7 @@ public final class RecipeDisplays {
         }
         var grinding=new ArrayList<>(GrindingRecipe.all());for(var entry:TGEquipment.ARMOR.values()){var recipe=GrindingRecipe.find(entry.get().getDefaultInstance());if(recipe!=null)grinding.add(recipe);}
         index=0;for(var recipe:grinding){var slots=new ArrayList<Slot>();slots.add(item(Role.INPUT,18,17,List.of(recipe.input().getDefaultInstance()),null));for(int i=0;i<recipe.outputs().length;i++){
-            var stack=recipe.outputs()[i];double expected=stack.getCount()*(recipe.chances()==null?1:recipe.chances()[i]);if(expected<=0)continue;int[] p=MachineKind.GRINDER.slots[2+i];slots.add(item(Role.OUTPUT,p[0],p[1],List.of(stack.copyWithCount((int)Math.ceil(expected))),recipe.chances()==null?null:Component.translatable("techguns.jei.average",number(expected))));
+            var stack=recipe.outputs()[i];double expected=stack.getCount()*(recipe.chances()==null?1:recipe.chances()[i]);if(expected<=0)continue;int[] p=MachineKind.GRINDER.slots[2+i];slots.add(item(Role.OUTPUT,p[0],p[1],List.of(techguns.util.Compat.copyWithCount(stack, (int)Math.ceil(expected))),recipe.chances()==null?null:Component.translatable("techguns.jei.average",number(expected))));
         }add(result,new Display("grinding_"+index++,Kind.GRINDER,slots,100,5,recipe.input() instanceof TGSuitArmor?List.of(Component.translatable("techguns.jei.wear_yield")):List.of()));}
         index=0;for(var upgrade:ArmorUpgrades.all())for(var registered:TGEquipment.ARMOR.values()){
             var armor=registered.get().getDefaultInstance();var applied=ArmorUpgrades.result(armor,upgrade.ingredient().getDefaultInstance());if(applied.stack().isEmpty())continue;
@@ -59,10 +59,10 @@ public final class RecipeDisplays {
         }
         index=0;for(var registered:TGItems.ITEMS.getEntries()){
             Item item=registered.get();if(item instanceof ICamoChangeable camo&&camo.getCamoCount()>1){var stack=item.getDefaultInstance();for(int i=0;i<camo.getCamoCount();i++){var before=stack.copy();var after=new ItemStack[]{stack.copy()};BenchMenu.change(after[0],false,s->after[0]=s);if(!ItemStack.isSameItemSameTags(before,after[0]))add(result,new Display("camo_"+index++,Kind.CAMO,List.of(item(Role.INPUT,17,18,List.of(before),null),output(130,18,after[0])),0,0,List.of(Component.translatable("techguns.jei.camo"))));stack=after[0];}}
-            if(item instanceof TGSuitArmor||item instanceof GenericShield){var damaged=item.getDefaultInstance();damaged.setDamageValue(damaged.getMaxDamage()-1);var materials=item instanceof TGSuitArmor a?a.repairMaterials(damaged):((GenericShield)item).getRepairMats(damaged);if(materials.isEmpty())continue;var slots=new ArrayList<Slot>();slots.add(item(Role.INPUT,8,18,List.of(damaged),null));for(int i=0;i<materials.size();i++)slots.add(item(Role.INPUT,8+i*18,57,List.of(materials.get(i)),null));slots.add(output(116,18,item.getDefaultInstance()));add(result,new Display("repair_"+BuiltInRegistries.ITEM.getKey(item).getPath(),Kind.REPAIR,slots,0,0,List.of(Component.translatable("techguns.jei.repair_cost"))));}
+            if(item instanceof TGSuitArmor||item instanceof GenericShield){var damaged=item.getDefaultInstance();damaged.setDamageValue(damaged.getMaxDamage()-1);var materials=item instanceof TGSuitArmor a?a.repairMaterials(damaged):((GenericShield)item).getRepairMats(damaged);if(materials.isEmpty())continue;var slots=new ArrayList<Slot>();slots.add(item(Role.INPUT,8,18,List.of(damaged),null));for(int i=0;i<materials.size();i++)slots.add(item(Role.INPUT,8+i*18,57,List.of(materials.get(i)),null));slots.add(output(116,18,item.getDefaultInstance()));add(result,new Display("repair_"+net.minecraft.core.Registry.ITEM.getKey(item).getPath(),Kind.REPAIR,slots,0,0,List.of(Component.translatable("techguns.jei.repair_cost"))));}
         }
         for(String family:new String[]{"wool","concrete","concrete_powder","terracotta","stained_glass","stained_glass_pane","carpet"})for(var color:DyeColor.values()){
-            var item=BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(color.getName()+"_"+family));var before=item.getDefaultInstance();var after=new ItemStack[]{before.copy()};BenchMenu.change(after[0],false,s->after[0]=s);add(result,new Display("dye_"+color.getName()+"_"+family,Kind.CAMO,List.of(item(Role.INPUT,17,18,List.of(before),null),output(130,18,after[0])),0,0,List.of(Component.translatable("techguns.jei.camo"))));
+            var item=net.minecraft.core.Registry.ITEM.get(ResourceLocation.withDefaultNamespace(color.getName()+"_"+family));var before=item.getDefaultInstance();var after=new ItemStack[]{before.copy()};BenchMenu.change(after[0],false,s->after[0]=s);add(result,new Display("dye_"+color.getName()+"_"+family,Kind.CAMO,List.of(item(Role.INPUT,17,18,List.of(before),null),output(130,18,after[0])),0,0,List.of(Component.translatable("techguns.jei.camo"))));
         }
         oreDrill(result);
         return result;
@@ -70,7 +70,7 @@ public final class RecipeDisplays {
     /** Original OreDrillJeiRecipe/OreDrillMachineRecipe: one display per cluster entry with its weight chance and power per ore. */
     private static void oreDrill(Map<Kind,List<Display>> result){
         var heads=java.util.stream.Stream.of(TGItems.OREDRILLHEAD_STEEL,TGItems.OREDRILLHEAD_OBSIDIANSTEEL,TGItems.OREDRILLHEAD_CARBON,TGItems.OREDRILLHEAD_MEDIUM_STEEL,TGItems.OREDRILLHEAD_MEDIUM_OBSIDIANSTEEL,TGItems.OREDRILLHEAD_MEDIUM_CARBON,TGItems.OREDRILLHEAD_LARGE_STEEL,TGItems.OREDRILLHEAD_LARGE_OBSIDIANSTEEL,TGItems.OREDRILLHEAD_LARGE_CARBON).map(r->r.get().getDefaultInstance()).toList();
-        var fuels=BuiltInRegistries.ITEM.stream().map(Item::getDefaultInstance).filter(stack->!stack.isEmpty()&&net.minecraftforge.common.ForgeHooks.getBurnTime(stack,null)>0).toList();
+        var fuels=net.minecraft.core.Registry.ITEM.stream().map(Item::getDefaultInstance).filter(stack->!stack.isEmpty()&&net.minecraftforge.common.ForgeHooks.getBurnTime(stack,null)>0).toList();
         FluidStack fuelFluid=FluidStack.EMPTY;
         for(String name:TGConfig.fluidListFuel){for(var fluid:net.minecraftforge.registries.ForgeRegistries.FLUIDS.getValues()){var id=net.minecraftforge.registries.ForgeRegistries.FLUIDS.getKey(fluid);if(id!=null&&id.getPath().equals(name)&&fluid.isSource(fluid.defaultFluidState())){fuelFluid=new FluidStack(fluid,16000);break;}}if(!fuelFluid.isEmpty())break;}
         int index=0;
@@ -85,7 +85,7 @@ public final class RecipeDisplays {
                 slots.add(item(Role.INPUT,77,56,List.of(TGWorld.CLUSTERS.get(cluster).get().asItem().getDefaultInstance()),null));
                 slots.add(item(Role.INPUT,30,51,fuels,null));
                 if(!fuelFluid.isEmpty())slots.add(fluid(Role.INPUT,16,17,fuelFluid,null));
-                if(!entry.item().isEmpty())slots.add(item(Role.OUTPUT,102,17,List.of(entry.item().copyWithCount(1)),chance));
+                if(!entry.item().isEmpty())slots.add(item(Role.OUTPUT,102,17,List.of(techguns.util.Compat.copyWithCount(entry.item(), 1)),chance));
                 if(!entry.fluid().isEmpty())slots.add(fluid(Role.OUTPUT,158,17,entry.fluid(),chance));
                 add(result,new Display("oredrill_"+index++,Kind.ORE_DRILL,slots,0,0,List.of(Component.translatable("techguns.oredrill.powerperore").append(": "+(int)((powerTick*20*60*60)/orePerHour)+" FE"))));
             }

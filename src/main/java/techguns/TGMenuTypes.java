@@ -1,6 +1,5 @@
 package techguns;
 
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,6 +15,6 @@ public final class TGMenuTypes {
     public static final RegistryObject<MenuType<techguns.oredrill.OreDrillMenu>> ORE_DRILL=MENUS.register("oredrill",()->net.minecraftforge.common.extensions.IForgeMenuType.create(techguns.oredrill.OreDrillMenu::new));
     public static final RegistryObject<MenuType<techguns.machines.BenchMenu>> BENCH=MENUS.register("workbench",()->net.minecraftforge.common.extensions.IForgeMenuType.create(techguns.machines.BenchMenu::new));
     public static final RegistryObject<MenuType<TGPlayerInventoryContainer>> PLAYER_INVENTORY = MENUS.register(
-            "player_inventory", () -> new MenuType<>(TGPlayerInventoryContainer::new, FeatureFlags.DEFAULT_FLAGS));
+            "player_inventory", () -> new MenuType<>(TGPlayerInventoryContainer::new));
     private TGMenuTypes() {}
 }

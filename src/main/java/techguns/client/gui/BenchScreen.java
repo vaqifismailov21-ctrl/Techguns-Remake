@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -30,11 +30,11 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
     private final ResourceLocation texture;
     private final int securityY;
     public BenchScreen(BenchMenu menu,Inventory inventory,Component title){
-        super(menu,inventory,title);texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+menu.bench.kind.texture()+"_gui.png");imageHeight=166;
+        super(menu,inventory,title);texture=new ResourceLocation("techguns","textures/gui/"+menu.bench.kind.texture()+"_gui.png");imageHeight=166;
         securityY=switch(menu.bench.kind){case CAMO->95+25;case REPAIR->10;default->SECURITY_Y;};
     }
     private void send(int id){minecraft.gameMode.handleInventoryButtonClick(menu.containerId,id);}
-    private void text(String label,int id,int x,int y,int size){addRenderableWidget(Button.builder(Component.literal(label),b->send(id)).bounds(leftPos+x,topPos+y,size,size).build());}
+    private void text(String label,int id,int x,int y,int size){addRenderableWidget(new Button(leftPos+x,topPos+y,size,size,Component.literal(label),b->send(id)));}
     private byte security(){return (byte)(menu.bench.access.restricted()?3:0);}
 
     @Override protected void init(){
@@ -50,15 +50,15 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
                 int[] xs={90,110,130,150,65,9};
                 for(int i=0;i<xs.length;i++){int id=2+i;
                     // GuiButtonRepair: always enabled, 12x12 hammer icon from the repair bench sheet.
-                    addRenderableWidget(new Button(leftPos+xs[i],topPos+39,14,14,Component.empty(),b->send(id),s->s.get()){
-                        @Override protected void renderWidget(GuiGraphics graphics,int mouseX,int mouseY,float partial){super.renderWidget(graphics,mouseX,mouseY,partial);graphics.blit(texture,getX()+1,getY()+1,176,0,12,12);}
+                    addRenderableWidget(new Button(leftPos+xs[i],topPos+39,14,14,Component.empty(),b->send(id)){
+                        @Override public void renderButton(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);super.renderButton(graphics.pose(),mouseX,mouseY,partial);graphics.blit(texture,x+1,y+1,176,0,12,12);}
                     });}
             }
             default->{}
         }
     }
 
-    @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
+    @Override protected void renderBg(com.mojang.blaze3d.vertex.PoseStack graphics__pose,float partial,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         int k=leftPos,l=topPos;
         graphics.blit(texture,k,l,0,0,imageWidth,imageHeight);
         drawSecurityPanel(graphics,k,l,securityY);
@@ -68,7 +68,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
                 graphics.blit(texture,k-45,l+6,178,0,45,84);
                 graphics.blit(texture,k-18,l+93,7,83,18,18);
                 graphics.enableScissor(k-42,l+9,k-3,l+86);
-                try{InventoryScreen.renderEntityInInventoryFollowsMouse(graphics,k-20,l+77,30,k-mouseX,l-mouseY,minecraft.player);}finally{graphics.disableScissor();}
+                try{InventoryScreen.renderEntityInInventory(k-20,l+77,30,k-mouseX,l-mouseY,minecraft.player);}finally{graphics.disableScissor();}
             }
             case UPGRADE->{
                 if(!menu.result.getItem(0).isEmpty()){
@@ -81,7 +81,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
         }
     }
 
-    @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
+    @Override protected void renderLabels(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         int color=4210752;
         // TGBaseGui.drawInventoryContainerName; the repair bench hides the inventory label.
         if(menu.bench.kind!=BenchKind.REPAIR)graphics.drawString(font,playerInventoryTitle,8,imageHeight-96+2,color,false);
@@ -145,12 +145,12 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
     /** InventoryUtil.canConsumeItem(...)>0: the bench inventory does not hold enough of this material. */
     private boolean missing(ItemStack mat){
         int need=mat.getCount();var inv=menu.bench.inventory;
-        for(int i=0;i<inv.getSlots()&&need>0;i++){var s=inv.getStackInSlot(i);if(ItemStack.isSameItem(s,mat))need-=s.getCount();}
+        for(int i=0;i<inv.getSlots()&&need>0;i++){var s=inv.getStackInSlot(i);if(techguns.util.Compat.isSameItem(s,mat))need-=s.getCount();}
         return need>0;
     }
 
-    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){
-        renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
+    @Override public void render(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
+        renderBackground(graphics.pose());super.render(graphics.pose(),mouseX,mouseY,partial);renderTooltip(graphics.pose(),mouseX,mouseY);
         var tooltip=hoverTooltip(mouseX-leftPos,mouseY-topPos);if(tooltip!=null)graphics.renderComponentTooltip(font,tooltip,mouseX,mouseY);
     }
 }

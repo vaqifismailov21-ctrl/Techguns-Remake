@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.function.IntSupplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,7 @@ import techguns.TGConfig;
 
 /** Shared pieces of the original OwnedTileEntGui/RedstoneTileEntGui/PoweredTileEntGui/TGBaseGui layers. */
 public final class LegacyMachineGui {
-    public static final ResourceLocation MACHINE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/ammo_press_gui.png");
+    public static final ResourceLocation MACHINE=new ResourceLocation("techguns","textures/gui/ammo_press_gui.png");
     public static final int SECURITY_Y=40;
     private LegacyMachineGui(){}
 
@@ -27,8 +27,8 @@ public final class LegacyMachineGui {
 
     /** GuiButtonExt with a 16x16 icon over the vanilla button (GuiButtonRedstoneState/Security/TargetAnimals/PvPSetting). */
     public static Button iconButton(int x,int y,Runnable press,ResourceLocation texture,int u,IntSupplier v){
-        return new Button(x,y,20,20,Component.empty(),b->press.run(),s->s.get()){
-            @Override protected void renderWidget(GuiGraphics graphics,int mouseX,int mouseY,float partial){super.renderWidget(graphics,mouseX,mouseY,partial);graphics.blit(texture,getX()+2,getY()+2,u,v.getAsInt(),16,16);}
+        return new Button(x,y,20,20,Component.empty(),b->press.run()){
+            @Override public void renderButton(com.mojang.blaze3d.vertex.PoseStack graphics__pose,int mouseX,int mouseY,float partial){techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);super.renderButton(graphics.pose(),mouseX,mouseY,partial);graphics.blit(texture,x+2,y+2,u,v.getAsInt(),16,16);}
         };
     }
 
@@ -79,7 +79,7 @@ public final class LegacyMachineGui {
         if(fluid.isEmpty()||px<=0)return;
         var still=IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture(fluid);
         TextureAtlasSprite tex=Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
-        int iconHeight=tex.contents().height();int offset=0,len=iconHeight;
+        int iconHeight=tex.getHeight();int offset=0,len=iconHeight;
         var pose=graphics.pose().last().pose();
         while(offset<px){
             if(offset+len>px)len=px-offset;

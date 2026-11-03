@@ -173,8 +173,8 @@ public class ModelJetPack extends ModelAdditionalSlotBase {
 				/*if(entityPlayer!=self){
 					offsetY=+0.7f;
 				}*/
-				techguns.client.particle.WeaponEffects.spawnLegacy("FlamethrowerTrailFlames", entityPlayer.level(), entityPlayer.getX()+offsetX,entityPlayer.getY()+offsetY, entityPlayer.getZ()+offsetZ,0,motiony,0);
-				techguns.client.particle.WeaponEffects.spawnLegacy("FlamethrowerTrailFlames", entityPlayer.level(), entityPlayer.getX()+offsetX2,entityPlayer.getY()+offsetY, entityPlayer.getZ()+offsetZ2,0,motiony,0);
+				techguns.client.particle.WeaponEffects.spawnLegacy("FlamethrowerTrailFlames", entityPlayer.level, entityPlayer.getX()+offsetX,entityPlayer.getY()+offsetY, entityPlayer.getZ()+offsetZ,0,motiony,0);
+				techguns.client.particle.WeaponEffects.spawnLegacy("FlamethrowerTrailFlames", entityPlayer.level, entityPlayer.getX()+offsetX2,entityPlayer.getY()+offsetY, entityPlayer.getZ()+offsetZ2,0,motiony,0);
 			}
 		}
 		

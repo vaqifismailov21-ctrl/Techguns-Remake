@@ -45,7 +45,7 @@ public final class LegacySurfaceStructure extends Structure {
     private record PlanKey(RandomState state,String kind,long seed,long chunk){}
     /** /locate first asks whether a start can exist and then generates the chunk, which plans the same start again; a few recent plans are kept. */
     private static final Map<PlanKey,Optional<GenerationStub>> RECENT=Collections.synchronizedMap(new LinkedHashMap<>(16,.75f,true){@Override protected boolean removeEldestEntry(Map.Entry<PlanKey,Optional<GenerationStub>> eldest){return size()>16;}});
-    @Override protected Optional<GenerationStub> findGenerationPoint(GenerationContext context){
+    @Override public Optional<GenerationStub> findGenerationPoint(GenerationContext context){
         var key=new PlanKey(context.randomState(),kind,context.seed(),context.chunkPos().toLong());var cached=RECENT.get(key);if(cached!=null)return cached;
         var result=findGenerationPoint0(context);
         if(result.isPresent())RECENT.put(key,result);return result;

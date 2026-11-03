@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import techguns.client.models.LegacyHumanoidGeometry;
 /** Forge armor-model hook using original suit geometry and the current player animation pose. */
 public final class SuitArmorModel extends HumanoidModel<LivingEntity> {
@@ -24,6 +24,6 @@ public final class SuitArmorModel extends HumanoidModel<LivingEntity> {
     }
     public void select(EquipmentSlot slot){this.slot=slot;}
     @Override public void renderToBuffer(PoseStack pose,VertexConsumer vertices,int light,int overlay,float red,float green,float blue,float alpha){
-        geometry.sync(this,slot);geometry.renderModel(pose,vertices,light,overlay,ItemDisplayContext.NONE);
+        geometry.sync(this,slot);geometry.renderModel(pose,vertices,light,overlay,ItemTransforms.TransformType.NONE);
     }
 }

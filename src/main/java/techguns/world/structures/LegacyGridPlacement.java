@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
@@ -34,6 +33,6 @@ public final class LegacyGridPlacement extends RandomSpreadStructurePlacement {
     @Override public int spacing(){return Math.max(1,switch(grid){case "small"->TGConfig.spawnWeightTGStructureSmall;case "medium"->TGConfig.spawnWeightTGStructureMedium;default->TGConfig.spawnWeightTGStructureBig;});}
     @Override public int separation(){return 0;}
     @Override public ChunkPos getPotentialStructureChunk(long seed,int x,int z){int size=spacing();return new ChunkPos(Math.floorDiv(x,size)*size,Math.floorDiv(z,size)*size);}
-    @Override protected boolean isPlacementChunk(ChunkGeneratorStructureState state,int x,int z){return TGConfig.doWorldspawn&&Math.floorMod(x,spacing())==0&&Math.floorMod(z,spacing())==0;}
+    @Override protected boolean isPlacementChunk(net.minecraft.world.level.chunk.ChunkGenerator generator,net.minecraft.world.level.levelgen.RandomState randomState,long seed,int x,int z){return TGConfig.doWorldspawn&&Math.floorMod(x,spacing())==0&&Math.floorMod(z,spacing())==0;}
     @Override public StructurePlacementType<?> type(){return TGWorld.GRID_PLACEMENT.get();}
 }

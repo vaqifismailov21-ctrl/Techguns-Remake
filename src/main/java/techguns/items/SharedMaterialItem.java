@@ -86,7 +86,7 @@ public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
     private static void giveOrDrop(Player player, ItemStack stack) {
         if (stack.isEmpty()) return;
         int remaining = InventoryUtil.addAmmoToPlayerInventory(player, stack);
-        if (remaining > 0) player.drop(stack.copyWithCount(remaining), false);
+        if (remaining > 0) player.drop(techguns.util.Compat.copyWithCount(stack, remaining), false);
     }
 
     @Override

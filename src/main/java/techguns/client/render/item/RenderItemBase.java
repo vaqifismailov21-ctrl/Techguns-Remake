@@ -1,11 +1,11 @@
 package techguns.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import techguns.client.models.ModelMultipart;
 
 /** Original material renderer transforms, expressed with PoseStack instead of OpenGL globals. */
@@ -37,12 +37,12 @@ public class RenderItemBase {
         return this;
     }
 
-    protected void setBaseRotation(PoseStack pose, ItemDisplayContext context) {
-        pose.mulPose(Axis.XP.rotationDegrees(-180));
-        pose.mulPose(Axis.YP.rotationDegrees(180));
+    protected void setBaseRotation(PoseStack pose, ItemTransforms.TransformType context) {
+        pose.mulPose(Vector3f.XP.rotationDegrees(-180));
+        pose.mulPose(Vector3f.YP.rotationDegrees(180));
     }
 
-    public final void render(ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers,
+    public final void render(ItemTransforms.TransformType context, PoseStack pose, MultiBufferSource buffers,
                               int light, int overlay) {
         pose.pushPose();
         // ItemRenderer has moved the item origin to the lower corner; legacy renderers use its centre.
@@ -55,14 +55,14 @@ public class RenderItemBase {
             case FIXED -> 4;
             default -> -1;
         };
-        boolean left = context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+        boolean left = context == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || context == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND;
         if (index >= 0) pose.translate(translations[index][0] * (left ? -1 : 1), translations[index][1], translations[index][2]);
         applyAnimation(pose, context);
-        if (context == ItemDisplayContext.GUI) {
-            pose.mulPose(Axis.YP.rotationDegrees(40));
-            pose.mulPose(Axis.XP.rotationDegrees(20));
-        } else if (context == ItemDisplayContext.FIXED) {
-            pose.mulPose(Axis.YP.rotationDegrees(-90));
+        if (context == ItemTransforms.TransformType.GUI) {
+            pose.mulPose(Vector3f.YP.rotationDegrees(40));
+            pose.mulPose(Vector3f.XP.rotationDegrees(20));
+        } else if (context == ItemTransforms.TransformType.FIXED) {
+            pose.mulPose(Vector3f.YP.rotationDegrees(-90));
         }
         float scale = baseScale * switch (context) {
             case FIRST_PERSON_LEFT_HAND, FIRST_PERSON_RIGHT_HAND -> firstPersonScale;
@@ -78,8 +78,8 @@ public class RenderItemBase {
         renderContents(context, pose, buffers, light, overlay);
         pose.popPose();
     }
-    protected void applyAnimation(PoseStack pose, ItemDisplayContext context) {}
-    protected void renderContents(ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+    protected void applyAnimation(PoseStack pose, ItemTransforms.TransformType context) {}
+    protected void renderContents(ItemTransforms.TransformType context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         model.renderModel(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(texture)), light, overlay, context);
     }
 }

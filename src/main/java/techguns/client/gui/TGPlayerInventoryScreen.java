@@ -1,7 +1,7 @@
 package techguns.client.gui;
 
 import java.util.ArrayList;
-import net.minecraft.client.gui.GuiGraphics;
+import techguns.client.gui.compat.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
@@ -15,7 +15,7 @@ import techguns.gui.player.TGPlayerInventoryContainer;
 
 /** Original inventory texture, preview, radiation bar, and five toggle positions. */
 public final class TGPlayerInventoryScreen extends AbstractContainerScreen<TGPlayerInventoryContainer> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "textures/gui/tgplayerinventory.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Techguns.MODID, "textures/gui/tgplayerinventory.png");
     public TGPlayerInventoryScreen(TGPlayerInventoryContainer menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
     }
@@ -33,7 +33,7 @@ public final class TGPlayerInventoryScreen extends AbstractContainerScreen<TGPla
         addRenderableWidget(new TGGuiTabButton(leftPos + 33, topPos - 26, true, TGItems.PISTOL_ROUNDS.get().getDefaultInstance(), () -> {}));
         for (int i = 0; i < 5; i++) addRenderableWidget(new TGGuiToggleButton(leftPos - 8, topPos + 7 + i * 11, i));
     }
-    @Override protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+    @Override protected void renderBg(com.mojang.blaze3d.vertex.PoseStack graphics__pose, float partialTick, int mouseX, int mouseY) {techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
         graphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         var player = minecraft.player;
         if (player == null) return;
@@ -42,14 +42,14 @@ public final class TGPlayerInventoryScreen extends AbstractContainerScreen<TGPla
         int radiation = state.radlevel;
         if (radiation > 0) graphics.blit(TEXTURE, leftPos + 116, topPos + 8, 177, 0, (int) Math.ceil(radiation / 1000.0 * 52), 4);
         graphics.enableScissor(leftPos+26,topPos+8,leftPos+75,topPos+79);
-        try{InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, leftPos + 51, topPos + 75, 30,
+        try{InventoryScreen.renderEntityInInventory( leftPos + 51, topPos + 75, 30,
                 leftPos + 51 - mouseX, topPos + 25 - mouseY, player);}finally{graphics.disableScissor();}
     }
-    @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {}
-    @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics);
-        super.render(graphics, mouseX, mouseY, partialTick);
-        renderTooltip(graphics, mouseX, mouseY);
+    @Override protected void renderLabels(com.mojang.blaze3d.vertex.PoseStack graphics__pose, int mouseX, int mouseY) {techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);}
+    @Override public void render(com.mojang.blaze3d.vertex.PoseStack graphics__pose, int mouseX, int mouseY, float partialTick) {techguns.client.gui.compat.GuiGraphics graphics=new techguns.client.gui.compat.GuiGraphics(graphics__pose);
+        renderBackground(graphics.pose());
+        super.render(graphics.pose(), mouseX, mouseY, partialTick);
+        renderTooltip(graphics.pose(), mouseX, mouseY);
         if (minecraft.player != null && mouseX >= leftPos + 115 && mouseX < leftPos + 169 && mouseY >= topPos + 7 && mouseY < topPos + 13) {
             var state=TGExtendedPlayer.find(minecraft.player).orElse(null);
             if(state==null) return;
