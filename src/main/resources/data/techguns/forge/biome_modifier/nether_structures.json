@@ -1,6 +1,3 @@
 {
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_nether",
-  "features": "techguns:nether_structures",
-  "step": "top_layer_modification"
+  "type": "forge:none"
 }

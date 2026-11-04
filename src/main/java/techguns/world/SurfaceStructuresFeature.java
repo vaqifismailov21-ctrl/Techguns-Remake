@@ -19,8 +19,7 @@ public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfigura
     private static Spawn spawn(String id,int weight){return new Spawn(id,weight,false,false,false);}
     private static final List<Spawn> SMALL=List.of(spawn("factory_building_small",10),spawn("small_trainstation",10),spawn("small_mine",10),spawn("gasstation",10));
     private static final List<Spawn> MEDIUM=List.of(new Spawn("alien_bug_nest",20,false,true,false),spawn("policestation",10),spawn("survivor_hideout",10),new Spawn("orecluster_spike",10,true,false,false),new Spawn("orecluster_meteorbase",5,true,false,false),new Spawn("desert_oil_cluster",15,true,true,true));
-    /** Buildings this generator places itself; the structure entries for them only mark the site for /locate. */
-    public static final Set<String> IMPLEMENTED=Set.of("factory_building_small","small_trainstation","small_mine","gasstation","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster");
+    private static final Set<String> IMPLEMENTED=Set.of("factory_building_small","small_trainstation","small_mine","gasstation","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster");
     /** Every original Overworld structure id of the grid tables. */
     public static final Set<String> IDS=Set.of("aircraftcarrier","military_base","castle","alien_bug_nest","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster","factory_building_small","small_trainstation","small_mine","gasstation");
     public SurfaceStructuresFeature(){super(NoneFeatureConfiguration.CODEC);}

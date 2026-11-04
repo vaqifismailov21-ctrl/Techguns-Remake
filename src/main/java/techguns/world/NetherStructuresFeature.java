@@ -32,8 +32,7 @@ public final class NetherStructuresFeature extends Feature<NoneFeatureConfigurat
     }
     @Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context){
         var world=context.level();if(!world.getLevel().dimension().equals(Level.NETHER))return false;int cx=context.origin().getX()>>4,cz=context.origin().getZ()>>4;
-        // same seeded choice as the /locate site marker (LegacySurfaceStructure)
-        var selection=SurfaceStructuresFeature.selectionRandom(world.getSeed(),cx,cz);var id=choose(cx,cz,selection);if(id==null)return false;var structure=ScannedStructure.load(id);int turns=selection.nextInt(4),centerX=structure.sizeX/2,centerZ=structure.sizeZ/2;
+        var id=choose(cx,cz,context.random());if(id==null)return false;var structure=ScannedStructure.load(id);int turns=context.random().nextInt(4),centerX=structure.sizeX/2,centerZ=structure.sizeZ/2;
         int minX=Integer.MAX_VALUE,minZ=Integer.MAX_VALUE;for(var corner:List.of(new BlockPos(0,0,0),new BlockPos(structure.sizeX,0,0),new BlockPos(0,0,structure.sizeZ),new BlockPos(structure.sizeX,0,structure.sizeZ))){var point=ScannedStructure.rotate(corner,centerX,centerZ,turns);minX=Math.min(minX,point.getX());minZ=Math.min(minZ,point.getZ());}
         int height=caveHeight(world,cx,cz);if(height<0)return false;structure.place(world,new BlockPos(cx*16+minX,height-1,cz*16+minZ),turns,world.getRandom());return true;
     }
