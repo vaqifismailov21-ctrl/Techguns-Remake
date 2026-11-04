@@ -45,6 +45,7 @@ public final class PowerVisualVerifier {
     private static final List<Shot> shots=new ArrayList<>();
     private static final List<String> saved=new ArrayList<>();
     private static BlockPos nuclear,fuel,liquid;
+    private static String expected="";
 
     public static boolean enabled(){return Boolean.getBoolean("techguns.verifyPower");}
     public static void begin(){
@@ -126,11 +127,13 @@ public final class PowerVisualVerifier {
         });
     }
     private static void openMenu(net.minecraft.server.MinecraftServer server,BlockPos pos){
-        server.execute(()->{var player=server.getPlayerList().getPlayers().get(0);NetworkHooks.openScreen(player,new GeneratorMenu.Provider((EnergySource)server.overworld().getBlockEntity(pos)),buf->buf.writeBlockPos(pos));});
+        server.execute(()->{var player=server.getPlayerList().getPlayers().get(0);player.closeContainer();player.teleportTo(server.overworld(),pos.getX()+.5,pos.getY(),pos.getZ()+2.5,180,30);
+            NetworkHooks.openScreen(player,new GeneratorMenu.Provider((EnergySource)server.overworld().getBlockEntity(pos)),buf->buf.writeBlockPos(pos));});
+        expected=Minecraft.getInstance().level.getBlockState(pos).getBlock().getName().getString();
         stage=6;frames=0;
     }
     @SubscribeEvent public static void screen(ScreenEvent.Render.Post event){
-        if(!enabled()||stage!=6||++frames<4)return;
+        if(!enabled()||stage!=6||!event.getScreen().getTitle().getString().equals(expected)||++frames<8)return;
         var mc=Minecraft.getInstance();mc.options.hideGui=false;event.getGuiGraphics().flush();
         save(mc,"power-gui-"+List.of("nuclear","fuel","liquid").get(menu));menu++;mc.player.closeContainer();
         var server=mc.getSingleplayerServer();

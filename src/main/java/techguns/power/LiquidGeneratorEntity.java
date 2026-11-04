@@ -50,7 +50,7 @@ public final class LiquidGeneratorEntity extends EnergySource {
         boolean wasBurning=burnEnergy>0;
         var stack=container.getStackInSlot(0);
         if(!stack.isEmpty()){var result=FluidUtil.tryEmptyContainer(stack,tank,tank.getSpace(),null,true);if(result.isSuccess())container.setStackInSlot(0,result.getResult());}
-        if(burnEnergy<=0&&energy.getEnergyStored()+PowerBlocks.LIQUID_RATE<=energy.getMaxEnergyStored()&&!tank.isEmpty()){
+        if(burnEnergy<PowerBlocks.LIQUID_RATE&&energy.getEnergyStored()+PowerBlocks.LIQUID_RATE<=energy.getMaxEnergyStored()&&!tank.isEmpty()){
             int perMb=energyPerMb(tank.getFluid().getFluid());var drawn=tank.drain(PowerBlocks.LIQUID_DRAW,IFluidHandler.FluidAction.EXECUTE);burnEnergy+=drawn.getAmount()*perMb;
         }
         if(burnEnergy>0){int made=Math.min(PowerBlocks.LIQUID_RATE,burnEnergy);burnEnergy-=made;produce(made);}
