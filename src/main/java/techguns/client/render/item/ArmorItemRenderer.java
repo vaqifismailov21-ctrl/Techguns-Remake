@@ -32,9 +32,7 @@ public final class ArmorItemRenderer extends BlockEntityWithoutLevelRenderer {
         pose.translate(0.5,0.5,0.5);
         if(context.firstPerson())pose.translate(0,0.1,0);else if(context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)pose.translate(0,0.04,0);else if(context==ItemDisplayContext.FIXED)pose.translate(0,0,0.07);
         if(context==ItemDisplayContext.GUI)pose.mulPose(Axis.YP.rotationDegrees(180));
-        if(context==ItemDisplayContext.GROUND)pose.translate(0,.125,0);
-        // GROUND also carried the generated item model ground transform (scale 0.5) in the original.
-        float scale=switch(context){case GUI,FIXED->1.5F;case GROUND->slot==EquipmentSlot.HEAD?.625F:.75F;default->1;};
+        float scale=switch(context){case GUI,FIXED->1.5F;case GROUND->slot==EquipmentSlot.HEAD?.5F:.6F;default->1;};
         pose.scale(scale,scale,scale);pose.mulPose(Axis.XP.rotationDegrees(-180));pose.mulPose(Axis.YP.rotationDegrees(180));
         pose.translate(0,switch(slot){case HEAD->-0.54;case CHEST->-0.9;case LEGS->-1.29;case FEET->-1.42;default->0;},0);
     }
