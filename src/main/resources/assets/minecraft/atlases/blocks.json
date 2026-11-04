@@ -1735,6 +1735,14 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:blocks/oil_flow"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/bandages"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/medkit"
     }
   ]
 }
