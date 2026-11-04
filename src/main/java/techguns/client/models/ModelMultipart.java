@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 public abstract class ModelMultipart {
     public int textureWidth = 64;
     public int textureHeight = 32;
+    /** Counts cubes so coplanar faces of different boxes get a stable, sub-pixel depth order. */
+    int cubeOrder;
     PoseStack pose;
     VertexConsumer vertices;
     int light;

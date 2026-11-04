@@ -39,8 +39,11 @@ public final class LegacyModelPart {
 
     public void addBox(float x, float y, float z, int width, int height, int depth, float inflation) {
         // Capture UV dimensions/mirror when addBox is called, as ModelRenderer did in 1.12.2.
+        // Boxes that share a face plane flickered against each other; a tiny growing inset
+        // (at most 0.0225 px) keeps the later box in front, as with the old draw order.
+        float grow = inflation + 0.0015F * (model.cubeOrder++ % 16);
         cubes.add(new ModelPart.Cube(textureU, textureV, x, y, z, width, height, depth,
-                inflation, inflation, inflation, mirror, textureWidth, textureHeight, EnumSet.allOf(Direction.class)));
+                grow, grow, grow, mirror, textureWidth, textureHeight, EnumSet.allOf(Direction.class)));
     }
 
     public void setTextureSize(int width, int height) {
