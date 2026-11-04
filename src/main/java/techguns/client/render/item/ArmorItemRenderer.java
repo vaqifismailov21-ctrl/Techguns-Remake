@@ -26,11 +26,10 @@ public final class ArmorItemRenderer extends BlockEntityWithoutLevelRenderer {
         var texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/models/armor/"+armor.textures[0]+".png");
         pose.pushPose();
         if(context==ItemDisplayContext.GUI){
-            // The 1.12 icons fit the slot with one scale per suit (the chestplate fills it, helmet, legs and boots stay
-            // smaller), each piece centred. The raw 1.12 numbers overflowed the slot under the 1.20 GUI projection.
+            // Each piece fills the slot, centred, as the 1.12 icons did (the raw 1.12 numbers overflowed under the 1.20 GUI).
             var mesh=new techguns.client.models.MeshSnapshot();var capture=new PoseStack();transforms(capture,context,slot);model.renderModel(capture,mesh,light,overlay,context);
             if(!mesh.vertices.isEmpty()){
-                float fit=familyFit(armor);pose.translate(.5,.5,.5);pose.scale(fit,fit,fit);pose.translate(-mesh.centerX(),-mesh.centerY(),-mesh.centerZ());
+                float fit=.92F/Math.max(1e-4F,Math.max(mesh.maxX-mesh.minX,mesh.maxY-mesh.minY));pose.translate(.5,.5,.5);pose.scale(fit,fit,fit);pose.translate(-mesh.centerX(),-mesh.centerY(),-mesh.centerZ());
                 mesh.render(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,overlay,1,1,1,1);
             }
             pose.popPose();return;

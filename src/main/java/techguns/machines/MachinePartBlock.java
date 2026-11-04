@@ -16,10 +16,18 @@ public final class MachinePartBlock extends BaseEntityBlock {
     public final boolean glass;
     public final boolean reactor;
     public MachinePartBlock(boolean glass){this(glass,false);}
-    public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of().strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion().dynamicShape().isViewBlocking((st,l,p)->false).isSuffocating((st,l,p)->false));this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false));}
+    public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of().strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion().dynamicShape().isViewBlocking((st,l,p)->false).isSuffocating((st,l,p)->false));this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false).setValue(PipeBlock.NORTH,false).setValue(PipeBlock.SOUTH,false).setValue(PipeBlock.EAST,false).setValue(PipeBlock.WEST,false).setValue(PipeBlock.UP,false).setValue(PipeBlock.DOWN,false));}
     /** Glass like vanilla glass: the faces between two glass parts are not drawn (they fought each other and flickered). */
     @Override public boolean skipRendering(BlockState state,BlockState adjacent,Direction side){return glass&&adjacent.is(this)||super.skipRendering(state,adjacent,side);}
-    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(MachineBlock.FORMED);}
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(MachineBlock.FORMED,PipeBlock.NORTH,PipeBlock.SOUTH,PipeBlock.EAST,PipeBlock.WEST,PipeBlock.UP,PipeBlock.DOWN);}
+    /** Glass joins with neighbouring glass of the same kind: the frame edges between them are left out, so a wall reads as one window. */
+    private BlockState connect(BlockState state,LevelAccessor level,BlockPos pos){
+        if(!glass)return state;
+        for(var side:Direction.values())state=state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(side),level.getBlockState(pos.relative(side)).is(this));
+        return state;
+    }
+    @Override public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context){return connect(defaultBlockState(),context.getLevel(),context.getClickedPos());}
+    @Override public BlockState updateShape(BlockState state,Direction side,BlockState other,LevelAccessor level,BlockPos pos,BlockPos otherPos){return glass?state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(side),other.is(this)):state;}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new MachinePartEntity(pos,state);}
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,techguns.TGFabricator.ENTITY.get(),(l,p,s,part)->{if(l.getGameTime()%20==0)part.validateLink();});}

@@ -1,10 +1,199 @@
 {
-  "variants": {
-    "formed=false": {
-      "model": "techguns:block/reactionchamber_glass"
-    },
-    "formed=true": {
-      "model": "techguns:block/reactionchamber_glass_formed"
-    }
+ "variants": {
+  "formed=true": {
+   "model": "techguns:block/reactionchamber_glass_formed"
+  },
+  "formed=false,north=false,south=false,east=false,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000000"
+  },
+  "formed=false,north=false,south=false,east=false,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000001"
+  },
+  "formed=false,north=false,south=false,east=false,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000010"
+  },
+  "formed=false,north=false,south=false,east=false,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000011"
+  },
+  "formed=false,north=false,south=false,east=false,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000100"
+  },
+  "formed=false,north=false,south=false,east=false,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000101"
+  },
+  "formed=false,north=false,south=false,east=false,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000110"
+  },
+  "formed=false,north=false,south=false,east=false,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_000111"
+  },
+  "formed=false,north=false,south=false,east=true,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001000"
+  },
+  "formed=false,north=false,south=false,east=true,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001001"
+  },
+  "formed=false,north=false,south=false,east=true,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001010"
+  },
+  "formed=false,north=false,south=false,east=true,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001011"
+  },
+  "formed=false,north=false,south=false,east=true,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001100"
+  },
+  "formed=false,north=false,south=false,east=true,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001101"
+  },
+  "formed=false,north=false,south=false,east=true,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001110"
+  },
+  "formed=false,north=false,south=false,east=true,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_001111"
+  },
+  "formed=false,north=false,south=true,east=false,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010000"
+  },
+  "formed=false,north=false,south=true,east=false,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010001"
+  },
+  "formed=false,north=false,south=true,east=false,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010010"
+  },
+  "formed=false,north=false,south=true,east=false,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010011"
+  },
+  "formed=false,north=false,south=true,east=false,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010100"
+  },
+  "formed=false,north=false,south=true,east=false,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010101"
+  },
+  "formed=false,north=false,south=true,east=false,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010110"
+  },
+  "formed=false,north=false,south=true,east=false,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_010111"
+  },
+  "formed=false,north=false,south=true,east=true,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011000"
+  },
+  "formed=false,north=false,south=true,east=true,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011001"
+  },
+  "formed=false,north=false,south=true,east=true,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011010"
+  },
+  "formed=false,north=false,south=true,east=true,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011011"
+  },
+  "formed=false,north=false,south=true,east=true,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011100"
+  },
+  "formed=false,north=false,south=true,east=true,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011101"
+  },
+  "formed=false,north=false,south=true,east=true,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011110"
+  },
+  "formed=false,north=false,south=true,east=true,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_011111"
+  },
+  "formed=false,north=true,south=false,east=false,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100000"
+  },
+  "formed=false,north=true,south=false,east=false,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100001"
+  },
+  "formed=false,north=true,south=false,east=false,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100010"
+  },
+  "formed=false,north=true,south=false,east=false,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100011"
+  },
+  "formed=false,north=true,south=false,east=false,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100100"
+  },
+  "formed=false,north=true,south=false,east=false,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100101"
+  },
+  "formed=false,north=true,south=false,east=false,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100110"
+  },
+  "formed=false,north=true,south=false,east=false,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_100111"
+  },
+  "formed=false,north=true,south=false,east=true,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101000"
+  },
+  "formed=false,north=true,south=false,east=true,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101001"
+  },
+  "formed=false,north=true,south=false,east=true,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101010"
+  },
+  "formed=false,north=true,south=false,east=true,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101011"
+  },
+  "formed=false,north=true,south=false,east=true,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101100"
+  },
+  "formed=false,north=true,south=false,east=true,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101101"
+  },
+  "formed=false,north=true,south=false,east=true,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101110"
+  },
+  "formed=false,north=true,south=false,east=true,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_101111"
+  },
+  "formed=false,north=true,south=true,east=false,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110000"
+  },
+  "formed=false,north=true,south=true,east=false,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110001"
+  },
+  "formed=false,north=true,south=true,east=false,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110010"
+  },
+  "formed=false,north=true,south=true,east=false,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110011"
+  },
+  "formed=false,north=true,south=true,east=false,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110100"
+  },
+  "formed=false,north=true,south=true,east=false,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110101"
+  },
+  "formed=false,north=true,south=true,east=false,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110110"
+  },
+  "formed=false,north=true,south=true,east=false,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_110111"
+  },
+  "formed=false,north=true,south=true,east=true,west=false,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111000"
+  },
+  "formed=false,north=true,south=true,east=true,west=false,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111001"
+  },
+  "formed=false,north=true,south=true,east=true,west=false,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111010"
+  },
+  "formed=false,north=true,south=true,east=true,west=false,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111011"
+  },
+  "formed=false,north=true,south=true,east=true,west=true,up=false,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111100"
+  },
+  "formed=false,north=true,south=true,east=true,west=true,up=false,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111101"
+  },
+  "formed=false,north=true,south=true,east=true,west=true,up=true,down=false": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111110"
+  },
+  "formed=false,north=true,south=true,east=true,west=true,up=true,down=true": {
+   "model": "techguns:block/glass_ctm/reactionchamber_glass_111111"
   }
+ }
 }

@@ -15,7 +15,9 @@ public class PowerBlockItem extends BlockItem {
         tooltip.add(net.minecraft.network.chat.Component.translatable("techguns.power.tooltip."+net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(getBlock()).getPath()).withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     @Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer){
-        if(boxModel)consumer.accept(new net.minecraftforge.client.extensions.common.IClientItemExtensions(){
+        // Runs inside the Item constructor, before boxModel is assigned, so it cannot depend on the field.
+        // Items without a builtin/entity model (the cable) never ask for this renderer.
+        consumer.accept(new net.minecraftforge.client.extensions.common.IClientItemExtensions(){
             @Override public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer(){return techguns.client.render.item.PowerItemRenderer.get();}
         });
     }
