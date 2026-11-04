@@ -10,6 +10,8 @@ import techguns.*;
 public final class ChemicalRecipes {
  private static List<ChemicalRecipe> recipes;
  public static List<ChemicalRecipe> all(){if(recipes==null){recipes=new ArrayList<>();
+        // 1.7.10: wool + 500 mB water -> bandages
+        recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(net.minecraft.tags.ItemTags.WOOL),Ingredient.EMPTY,Ingredient.EMPTY},new int[]{1,0,0},new FluidStack(Fluids.WATER,500),FluidStack.EMPTY,new ItemStack(TGItems.BANDAGES.get(),1),false,5));
         recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:dusts/redstone"),Ingredient.of(new ItemStack(Items.COAL,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,250),FluidStack.EMPTY,new ItemStack(Items.GUNPOWDER,1),true,5));
         recipes.add(new ChemicalRecipe(new Ingredient[]{MachineRecipes.tag("forge:item_raw_rubber"),Ingredient.of(new ItemStack(Items.COAL,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,1000),FluidStack.EMPTY,new ItemStack(TGItems.RAW_PLASTIC.get(),1),true,25));
         recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.BIOMASS.get())),Ingredient.of(new ItemStack(Items.GUNPOWDER,1)),Ingredient.EMPTY},new int[]{1,1,0},new FluidStack(Fluids.WATER,1000),new FluidStack(TGFluids.ACID.get(),1000),ItemStack.EMPTY,true,20));

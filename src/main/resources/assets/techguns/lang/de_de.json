@@ -1035,5 +1035,8 @@
   "block.techguns.energy_bank": "Energiebank",
   "block.techguns.energy_cable": "Energiekabel",
   "block.techguns.floodlight": "Flutlicht",
-  "block.techguns.floodlight_light": "Flutlichtstrahl"
+  "block.techguns.floodlight_light": "Flutlichtstrahl",
+  "item.techguns.bandages": "Verbände",
+  "item.techguns.medkit": "Medikit",
+  "techguns.tooltip.medkit.heal": "Heilt Herzen: %s"
 }

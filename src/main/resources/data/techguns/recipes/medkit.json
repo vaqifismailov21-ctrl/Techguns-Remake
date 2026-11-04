@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "hbh",
+    "bwb",
+    "hbh"
+  ],
+  "key": {
+    "h": {
+      "item": "techguns:heavycloth"
+    },
+    "b": {
+      "item": "techguns:bandages"
+    },
+    "w": {
+      "type": "forge:partial_nbt",
+      "item": "minecraft:potion",
+      "nbt": {
+        "Potion": "minecraft:water"
+      }
+    }
+  },
+  "result": {
+    "item": "techguns:medkit",
+    "count": 2
+  }
+}

@@ -39,4 +39,24 @@ public final class RadiationGameTests {
         helper.assertTrue(player.getInventory().countItem(TGItems.INFUSION_BAG.get()) == 1, "Using RadAway must return exactly one infusion bag");
         helper.succeed();
     }
+
+    @GameTest(template = "empty")
+    public static void medkitAndBandagesHealAndRegenerateLikeTechguns17(GameTestHelper helper) {
+        var player = new FakePlayer(helper.getLevel(), new GameProfile(UUID.randomUUID(), "medkit-test"));
+        player.setHealth(4F);
+        var kit = new net.minecraft.world.item.ItemStack(TGItems.MEDKIT.get(), 2);
+        TGItems.MEDKIT.get().finishUsingItem(kit, helper.getLevel(), player);
+        var regen = player.getEffect(net.minecraft.world.effect.MobEffects.REGENERATION);
+        helper.assertTrue(kit.getCount() == 1, "Medkit must consume one item");
+        helper.assertTrue(Math.abs(player.getHealth() - 10F) < 0.001F, "Medkit must heal three hearts");
+        helper.assertTrue(regen != null && regen.getDuration() == 400 && regen.getAmplifier() == 1, "Medkit must give Regeneration II for 20 s");
+        player.removeAllEffects(); player.setHealth(4F);
+        var bandage = new net.minecraft.world.item.ItemStack(TGItems.BANDAGES.get(), 1);
+        TGItems.BANDAGES.get().finishUsingItem(bandage, helper.getLevel(), player);
+        regen = player.getEffect(net.minecraft.world.effect.MobEffects.REGENERATION);
+        helper.assertTrue(bandage.isEmpty() && Math.abs(player.getHealth() - 6F) < 0.001F, "Bandages must heal one heart");
+        helper.assertTrue(regen != null && regen.getDuration() == 300 && regen.getAmplifier() == 0, "Bandages must give Regeneration I for 15 s");
+        helper.assertTrue(TGItems.MEDKIT.get().getMaxStackSize(kit) == 16, "Medical items stack to 16");
+        helper.succeed();
+    }
 }

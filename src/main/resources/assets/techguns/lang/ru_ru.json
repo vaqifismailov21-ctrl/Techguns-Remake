@@ -1501,5 +1501,8 @@
   "subtitles.techguns.power.nuclear_generator": "Гудит ядерный генератор",
   "subtitles.techguns.power.wind_turbine": "Крутится ветрогенератор",
   "subtitles.techguns.power.floodlight_on": "Прожектор включается",
-  "subtitles.techguns.power.energy_cell_full": "Энергоячейка заряжена"
+  "subtitles.techguns.power.energy_cell_full": "Энергоячейка заряжена",
+  "item.techguns.bandages": "Бинты",
+  "item.techguns.medkit": "Аптечка",
+  "techguns.tooltip.medkit.heal": "Лечит сердец: %s"
 }

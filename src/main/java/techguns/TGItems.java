@@ -19,6 +19,8 @@ public final class TGItems {
     private static final Map<String, BooleanSupplier> ENABLED = new LinkedHashMap<>();
     public static final RegistryObject<ItemRadAway> RAD_AWAY = ITEMS.register("radaway", () -> new ItemRadAway(new Item.Properties()));
     public static final RegistryObject<ItemRadpills> RAD_PILLS = ITEMS.register("radpills", () -> new ItemRadpills(new Item.Properties()));
+    public static final RegistryObject<techguns.items.MedkitItem> BANDAGES = ITEMS.register("bandages", () -> new techguns.items.MedkitItem(60, 2F, 300, 0, new Item.Properties()));
+    public static final RegistryObject<techguns.items.MedkitItem> MEDKIT = ITEMS.register("medkit", () -> new techguns.items.MedkitItem(50, 6F, 400, 1, new Item.Properties()));
     public static final RegistryObject<SharedMaterialItem> STONE_BULLETS = shared("stonebullets", 0, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> PISTOL_ROUNDS = shared("pistolrounds", 1, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SHOTGUN_ROUNDS = shared("shotgunrounds", 2, TGSlotType.AMMOSLOT, 64, () -> true);

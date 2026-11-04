@@ -1504,5 +1504,8 @@
   "subtitles.techguns.power.nuclear_generator": "Nuclear generator hums",
   "subtitles.techguns.power.wind_turbine": "Wind turbine turns",
   "subtitles.techguns.power.floodlight_on": "Floodlight switches on",
-  "subtitles.techguns.power.energy_cell_full": "Energy cell is full"
+  "subtitles.techguns.power.energy_cell_full": "Energy cell is full",
+  "item.techguns.bandages": "Bandages",
+  "item.techguns.medkit": "Medkit",
+  "techguns.tooltip.medkit.heal": "Heals %s hearts"
 }
