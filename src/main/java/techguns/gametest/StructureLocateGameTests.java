@@ -78,12 +78,22 @@ public final class StructureLocateGameTests {
                 // Another kind at the same site never starts: one original decision per grid site.
                 for(var otherId:ids)if(!otherId.equals(id)&&NetherStructuresFeature.IDS.contains(otherId)==nether){var random=RandomState.create(settings.value(),access.registryOrThrow(Registries.NOISE).asLookup(),seed-1);
                     h.assertTrue(!structure(h,otherId).generate(access,generator,source,random,level.getStructureManager(),seed-1,chunk,0,level,b->true).isValid(),"Only the chosen structure may start at "+chunk+": "+otherId);}
+                var context=StructurePieceSerializationContext.fromLevel(level);
+                if(nether||SurfaceStructuresFeature.IMPLEMENTED.contains(id)){
+                    // Built later by the Techguns generator on the real terrain; the start only marks the site for /locate.
+                    h.assertTrue(start.getPieces().size()==1&&start.getPieces().get(0) instanceof techguns.world.structures.SiteMarkerPiece,"techguns:"+id+" start is a single site marker");
+                    var box=start.getPieces().get(0).getBoundingBox();var scan=ScannedStructure.load(id);
+                    h.assertTrue(box.getXSpan()>=Math.min(scan.sizeX,scan.sizeZ)&&box.getZSpan()>=Math.min(scan.sizeX,scan.sizeZ),"techguns:"+id+" marker covers the building footprint");
+                    var loaded=StructureStart.loadStaticStart(context,start.createTag(context,chunk),seed-1);
+                    h.assertTrue(loaded!=null&&loaded.isValid(),"techguns:"+id+" marker survives save/reload");
+                    report.put(id,box.getXSpan()*box.getZSpan());continue;
+                }
                 var scan=ScannedStructure.load(id);var cells=new LinkedHashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
                 for(var piece:start.getPieces()){h.assertTrue(piece instanceof PlannedStructurePiece,"Scanned structures are saved as source plan pieces");((PlannedStructurePiece)piece).forEachCell(cells::put);
                     var box=piece.getBoundingBox();h.assertTrue(box.minX()>>4==box.maxX()>>4&&box.minZ()>>4==box.maxZ()>>4,"Every piece stays inside one chunk");}
                 long solid=cells.values().stream().filter(state->!state.isAir()).count();
                 h.assertTrue(solid>=Math.min(15,scan.blockCount()/2)&&cells.size()>=scan.blockCount(),"techguns:"+id+" must plan the whole original scan: "+cells.size()+" cells, "+solid+" solid, scan "+scan.blockCount());
-                var context=StructurePieceSerializationContext.fromLevel(level);var loaded=StructureStart.loadStaticStart(context,start.createTag(context,chunk),seed-1);
+                var loaded=StructureStart.loadStaticStart(context,start.createTag(context,chunk),seed-1);
                 h.assertTrue(loaded!=null&&loaded.isValid()&&loaded.getPieces().size()==start.getPieces().size(),"techguns:"+id+" start survives save/reload");
                 report.put(id,cells.size());
             }
