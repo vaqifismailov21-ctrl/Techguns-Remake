@@ -11,10 +11,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.network.NetworkHooks;
 public final class MachinePartBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public final boolean glass;
     public final boolean reactor;
     public MachinePartBlock(boolean glass){this(glass,false);}
-    public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of().strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion().dynamicShape());this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false));}
+    public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of().strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion().dynamicShape().isViewBlocking((st,l,p)->false).isSuffocating((st,l,p)->false));this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false));}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(MachineBlock.FORMED);}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new MachinePartEntity(pos,state);}

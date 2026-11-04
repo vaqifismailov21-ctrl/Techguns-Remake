@@ -21,7 +21,10 @@ public final class AttackHelicopter extends GenericFlyingMob {
     public static AttributeSupplier.Builder attributes(){return Mob.createMobAttributes().add(Attributes.MAX_HEALTH,100).add(Attributes.FOLLOW_RANGE,128).add(Attributes.ARMOR,16).add(Attributes.ARMOR_TOUGHNESS,5);}
     @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(ATTACKING,false);}
     public boolean isAttacking(){return entityData.get(ATTACKING);}public void setAttacking(boolean value){entityData.set(ATTACKING,value);}
-    @Override protected void registerGoals(){goalSelector.addGoal(5,new RandomFly(this));goalSelector.addGoal(7,new LookAround(this));goalSelector.addGoal(7,new HelicopterAttack(this));targetSelector.addGoal(1,new NearestAttackableTargetGoal<>(this,Player.class,true));}
+    @Override protected void registerGoals(){goalSelector.addGoal(5,new RandomFly(this));goalSelector.addGoal(7,new LookAround(this));goalSelector.addGoal(7,new HelicopterAttack(this));targetSelector.addGoal(1,new NearestAttackableTargetGoal<>(this,Player.class,true){
+        // vanilla searches only 4 blocks up/down; flying 24 blocks above the ground it never found anyone
+        @Override protected net.minecraft.world.phys.AABB getTargetSearchArea(double range){return mob.getBoundingBox().inflate(range,getTargetFlyHeight()*2,range);}
+    });}
     public static final class HelicopterAttack extends Goal {
         private final AttackHelicopter host;private int timer;
         public HelicopterAttack(AttackHelicopter host){this.host=host;}
@@ -31,18 +34,41 @@ public final class AttackHelicopter extends GenericFlyingMob {
             var target=host.getTarget();if(target==null)return;
             if(host.distanceToSqr(target)<4096&&host.getSensing().hasLineOfSight(target)){
                 ++timer;
-                if(timer>=14&&timer<24&&timer%2==0){if(timer==14)host.playSound(TGSounds.HELICOPTER_BURST.get(),8,1);host.level().addFreshEntity(new GenericProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,EnumBulletFirePos.CENTER));}
-                else if(timer==35){host.playSound(TGSounds.ROCKET_FIRE.get(),8,1);host.level().addFreshEntity(new RocketProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,"default"));}
+                if(timer>=14&&timer<24&&timer%2==0){if(timer==14)host.playSound(TGSounds.HELICOPTER_BURST.get(),8,1);var bullet=new GenericProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,EnumBulletFirePos.CENTER);aim(bullet,target,8);host.level().addFreshEntity(bullet);}
+                else if(timer==35){host.playSound(TGSounds.ROCKET_FIRE.get(),8,1);var rocket=new RocketProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,"default");aim(rocket,target,4);host.level().addFreshEntity(rocket);}
                 else if(timer>35)timer=-30;
             }else if(timer>0)--timer;
             host.setAttacking(timer>10);
         }
+        /** The body pitch follows the target only loosely, so shots went along it and missed: aim at the target's middle instead. */
+        private static void aim(GenericProjectile shot,net.minecraft.world.entity.LivingEntity target,float spread){
+            shot.shoot(target.getX()-shot.getX(),target.getY()+target.getBbHeight()*.5-shot.getY(),target.getZ()-shot.getZ(),1.5F,spread);
+        }
+    }
+    /* Death loot is held back until the wreck explodes and then thrown out of the blast with the debris. */
+    private DamageSource heldLoot;private Player heldKiller;private int heldKillerTime;private boolean releasingLoot;
+    @Override protected void dropAllDeathLoot(DamageSource source){
+        if(releasingLoot){super.dropAllDeathLoot(source);return;}
+        heldLoot=source;heldKiller=lastHurtByPlayer;heldKillerTime=lastHurtByPlayerTime;
+    }
+    private void releaseLoot(){
+        if(heldLoot==null)return;
+        lastHurtByPlayer=heldKiller;lastHurtByPlayerTime=Math.max(heldKillerTime,1);releasingLoot=true;
+        try{super.dropAllDeathLoot(heldLoot);}finally{releasingLoot=false;heldLoot=null;}
+    }
+    @Override public net.minecraft.world.entity.item.ItemEntity spawnAtLocation(net.minecraft.world.item.ItemStack stack,float y){
+        var item=super.spawnAtLocation(stack,y);
+        if(item!=null&&releasingLoot){
+            item.setPos(getX(),getY()-8,getZ());double a=random.nextDouble()*Math.PI*2,v=.35+random.nextDouble()*.35;
+            item.setDeltaMovement(Math.cos(a)*v,.4+random.nextDouble()*.4,Math.sin(a)*v);
+        }
+        return item;
     }
     @Override public void baseTick(){super.baseTick();if(--ambientSoundTick<=0&&deathTime==0){playSound(TGSounds.HELICOPTER_ROTOR.get(),6,1);ambientSoundTick=61;}}
     @Override protected void tickDeath(){
         if(deathTime==0)playSound(TGSounds.HELICOPTER_DEATH.get(),6,1);++deathTime;
         if(deathTime==MAX_DEATH_TIME){
-            if(!level().isClientSide){dropExperience();TGProjectilePackets.effect(this,"HelicopterDeathExplosion",position().add(0,-8,0),0,0);}
+            if(!level().isClientSide){releaseLoot();dropExperience();TGProjectilePackets.effect(this,"HelicopterDeathExplosion",position().add(0,-8,0),0,0);}
             playSound(TGSounds.HELICOPTER_EXPLODE.get(),6,1);remove(RemovalReason.KILLED);
         }
     }

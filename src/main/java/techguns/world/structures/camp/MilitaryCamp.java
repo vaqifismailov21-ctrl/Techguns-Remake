@@ -169,24 +169,20 @@ public class MilitaryCamp {
 		}	
 		
 		
-		BlockState outerfencestate = new CampBlock(CampBlocks.state("MILBASE_FENCE")).getState();
-		for (int k = 1; k < outerFenceHeight+1; k++) {
-			for (int i = 0; i < sizeX; i++) {
-				if (maxHeightDiff != 0) posY = getGroundY(world, posX+i, posZ);
-				world.setBlockState(p.set(posX+i, posY+k, posZ), outerfencestate, 2);
-				if (maxHeightDiff != 0) posY = getGroundY(world, posX+i, posZ+sizeZ-1);
-				world.setBlockState(p.set(posX+i, posY+k, posZ+sizeZ-1), outerfencestate, 2);
-			}
-			for (int j = 1; j < sizeZ-1; j++) {
-				if (maxHeightDiff != 0) posY = getGroundY(world, posX, posZ+j);
-				world.setBlockState(p.set(posX, posY+k, posZ+j), outerfencestate, 2);
-				if (maxHeightDiff != 0) posY = getGroundY(world, posX+sizeX-1, posZ+j);
-				world.setBlockState(p.set(posX+sizeX-1, posY+k, posZ+j), outerfencestate, 2);
-			}
-		}
-		
-		
+		// The roads and buildings flatten the ground, so a fence placed first (as in 1.12) was left floating.
+		// Keep the 1.12 road height (the fence loop moved posY), build the roads, then put the fence on the final ground
+		// and cut the gates the roads asked for.
+		int fenceStartY = posY;
+		placeOuterFence(world, false);
+		int roadsY = posY;
+		fencePlaced = false;
 		this.rootSegment.setBlocks(world,rnd);
+		posY = fenceStartY;
+		placeOuterFence(world, true);
+		posY = roadsY;
+		fencePlaced = true;
+		for (int[] g : pendingGates) setFenceGateBlocks(world, g[0], g[1], g[2], g[3], g[4], g[5], g[6] != 0);
+		pendingGates.clear();
 		
 		initCampFlagEntity(world);
 		
@@ -279,7 +275,29 @@ public class MilitaryCamp {
 	}
 	
 
+	private boolean fencePlaced = true;
+	private final java.util.List<int[]> pendingGates = new java.util.ArrayList<>();
+	private void placeOuterFence(CampWorld world, boolean place) {
+		BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+		BlockState outerfencestate = new CampBlock(CampBlocks.state("MILBASE_FENCE")).getState();
+		for (int k = 1; k < outerFenceHeight+1; k++) {
+			for (int i = 0; i < sizeX; i++) {
+				if (maxHeightDiff != 0) posY = getGroundY(world, posX+i, posZ);
+				if (place) world.setBlockState(p.set(posX+i, posY+k, posZ), outerfencestate, 2);
+				if (maxHeightDiff != 0) posY = getGroundY(world, posX+i, posZ+sizeZ-1);
+				if (place) world.setBlockState(p.set(posX+i, posY+k, posZ+sizeZ-1), outerfencestate, 2);
+			}
+			for (int j = 1; j < sizeZ-1; j++) {
+				if (maxHeightDiff != 0) posY = getGroundY(world, posX, posZ+j);
+				if (place) world.setBlockState(p.set(posX, posY+k, posZ+j), outerfencestate, 2);
+				if (maxHeightDiff != 0) posY = getGroundY(world, posX+sizeX-1, posZ+j);
+				if (place) world.setBlockState(p.set(posX+sizeX-1, posY+k, posZ+j), outerfencestate, 2);
+			}
+		}
+	}
+
 	public void setFenceGateBlocks(CampWorld world, int x, int y, int z, int roadWidth, int length, int height, boolean alignment) {
+		if (!fencePlaced) { pendingGates.add(new int[]{x, y, z, roadWidth, length, height, alignment ? 1 : 0}); return; }
 		int a,b;
 		BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
 		

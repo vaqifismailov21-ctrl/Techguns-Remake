@@ -23,6 +23,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /** Solar panel of tier 0..2; the panel tilts toward its front. Right click shows the current output and why it is lower than the best. */
 public final class SolarPanelBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape[] SHAPES={Block.box(0,0,0,16,10,16),Block.box(0,0,0,16,12,16),Block.box(0,0,0,16,13,16)};
     public final int tier;

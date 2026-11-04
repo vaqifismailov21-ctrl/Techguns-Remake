@@ -27,6 +27,8 @@ import techguns.tileentities.TurretTileEnt;
 
 /** The original BasicMachine turret variant: an invisible block rendered by its tile renderer, owned and wrenchable. */
 public final class TurretBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final ToolAction WRENCH=ToolAction.get("wrench");
     public TurretBlock(){super(Properties.of().strength(4.0f).sound(SoundType.METAL).noOcclusion());}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}

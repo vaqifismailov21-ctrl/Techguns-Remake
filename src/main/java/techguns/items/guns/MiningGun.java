@@ -28,6 +28,7 @@ import techguns.items.guns.ammo.AmmoType;
 /** Common original pneumatic/fuel tool mechanics, retaining distinct attack and mining settings. */
 public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeapon {
     public enum Tool {POWERHAMMER,CHAINSAW,MININGDRILL,SHISHKEBAP}
+    public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> SHISHKEBAP_CUTS=BlockTags.create(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(techguns.Techguns.MODID,"mineable/shishkebap"));
     private final Tool tool;
     private final Map<String,Integer> miningLevels=new LinkedHashMap<>();
     private float poweredDamage=6,emptyDamage=2,digSpeed=1;
@@ -60,6 +61,8 @@ public final class MiningGun extends GenericGunCharge implements LegacyMeleeWeap
     private int harvestLevel(ItemStack stack){return miningLevels.values().stream().mapToInt(Integer::intValue).max().orElse(0)+getMiningHeadLevel(stack);}
     public boolean isEffectiveToolForState(ItemStack stack,BlockState state) {
         if(getCurrentAmmo(stack)<1)return false;
+        // 1.12 bricks had no harvest tool, so the Shishkebap cut through them; 1.20 makes them pickaxe-only
+        if(tool==Tool.SHISHKEBAP&&state.is(SHISHKEBAP_CUTS))return true;
         if(state.is(BlockTags.MINEABLE_WITH_PICKAXE))return miningLevels.containsKey("pickaxe");
         if(state.is(BlockTags.MINEABLE_WITH_SHOVEL))return miningLevels.containsKey("shovel");
         if(state.is(BlockTags.MINEABLE_WITH_AXE))return miningLevels.containsKey("axe");

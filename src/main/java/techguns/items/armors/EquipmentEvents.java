@@ -57,9 +57,14 @@ public final class EquipmentEvents {
         if(player.level().isClientSide)player.getAbilities().setFlyingSpeed(0.05F*(1+(state.enableJetpack?TGEquipmentBonuses.getBonus(player,TGArmorBonus.FLYSPEED,false):0)));
         else if(changed)player.onUpdateAbilities();
     }
+    private static final java.util.Map<Player,double[]> LAST_POSITION=java.util.Collections.synchronizedMap(new java.util.WeakHashMap<>());
     public static void distributePower(Player player){
         var chest=player.getItemBySlot(EquipmentSlot.CHEST);var powerChest=chest.getItem() instanceof TGSuitArmor a&&a.powered()?a:null;
-        boolean moving=Math.abs(player.getDeltaMovement().x)>0.001||Math.abs(player.getDeltaMovement().z)>0.001;
+        // A server player's delta movement stays 0 while walking (movement comes from packets), so power was never used up.
+        // Compare positions between ticks instead (server side only, called once per tick).
+        double[] last=LAST_POSITION.get(player);
+        boolean moving=last!=null&&(Math.abs(player.getX()-last[0])>0.001||Math.abs(player.getZ()-last[1])>0.001);
+        LAST_POSITION.put(player,new double[]{player.getX(),player.getZ()});
         boolean consume=player.level().getGameTime()%20==0&&moving;
         for(var slot:new EquipmentSlot[]{EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD}){
             var stack=player.getItemBySlot(slot);if(!(stack.getItem() instanceof TGSuitArmor armor)||!armor.powered())continue;

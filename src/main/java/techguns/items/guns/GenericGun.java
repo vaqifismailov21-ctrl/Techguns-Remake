@@ -241,7 +241,8 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
             if(ring>0){
                 var dir=new net.minecraft.world.phys.Vec3(1,0,0).yRot(0.075F*ring).xRot((float)(Math.PI*2/(5*ring)*i));
                 double p=Math.toRadians(player.getXRot());dir=new net.minecraft.world.phys.Vec3(dir.x*Math.cos(p)-dir.y*Math.sin(p),dir.x*Math.sin(p)+dir.y*Math.cos(p),dir.z).yRot((float)Math.toRadians(-player.getYHeadRot()-90));
-                projectile.setDeltaMovement(dir.scale(speed));
+                // the centre shot flies at 1.5x speed (GenericProjectile.shoot); rings at 1x lagged behind the visible wave
+                projectile.setDeltaMovement(dir.scale(speed*1.5));
             }
             if(offset>0)projectile.shiftForward(offset/speed);level.addFreshEntity(projectile);
         }

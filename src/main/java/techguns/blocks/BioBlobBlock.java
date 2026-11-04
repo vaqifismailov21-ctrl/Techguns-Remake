@@ -9,6 +9,8 @@ import net.minecraft.world.phys.shapes.*;
 import techguns.TGWeaponBlocks;
 import techguns.tileentities.BioBlobBlockEntity;
 public final class BioBlobBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final DirectionProperty FACING=BlockStateProperties.FACING;
     public static final IntegerProperty SIZE=IntegerProperty.create("size",0,2);
     public BioBlobBlock() {super(Properties.of().strength(2).sound(SoundType.SLIME_BLOCK).lightLevel(s->7).noOcclusion());registerDefaultState(stateDefinition.any().setValue(FACING,Direction.DOWN).setValue(SIZE,0));}

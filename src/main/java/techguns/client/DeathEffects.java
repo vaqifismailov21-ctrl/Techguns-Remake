@@ -52,6 +52,8 @@ public final class DeathEffects {
     @SuppressWarnings({"rawtypes","unchecked"})
     @SubscribeEvent(priority=EventPriority.HIGH) public static void render(RenderLivingEvent.Pre event){
         var entity=event.getEntity();var state=active.get(entity.getUUID());if(state==null||!TGConfig.cl_enableDeathFX)return;
+        // a respawned player keeps its UUID; never hide a different or living entity
+        if(state.entity!=entity||!entity.isDeadOrDying())return;
         if(state.type==DeathType.GORE){if(TGConfig.cl_enableDeathFX_Gore)event.setCanceled(true);return;}
         event.setCanceled(true);var renderer=event.getRenderer();EntityModel model=renderer.getModel();float partial=event.getPartialTick();
         float progress=Mth.clamp((entity.deathTime+partial)/20F,0,1),color=1-progress*progress,alpha=(1-progress)*(1-progress);

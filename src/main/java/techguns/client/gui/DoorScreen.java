@@ -30,8 +30,8 @@ public final class DoorScreen extends AbstractContainerScreen<DoorMenu> {
         super.init();
         addRenderableWidget(iconButton(leftPos-22,topPos+SECURITY_Y,()->send(3),MACHINE,234,()->58+16*security()));
         addRenderableWidget(iconButton(leftPos-22,topPos+10,()->send(2),MACHINE,234,()->10+16*redstoneMode()));
-        addRenderableWidget(Button.builder(Component.translatable("techguns.mode"),b->send(0)).bounds(leftPos+8,topPos+16,32,16).build());
-        autoClose=addRenderableWidget(Button.builder(Component.empty(),b->send(1)).bounds(leftPos+8,topPos+16+20,32,16).build());
+        addRenderableWidget(LegacyButton.legacy(Component.translatable("techguns.mode"),b->send(0)).bounds(leftPos+8,topPos+16,32,16).build());
+        autoClose=addRenderableWidget(LegacyButton.legacy(Component.empty(),b->send(1)).bounds(leftPos+8,topPos+16+20,32,16).build());
     }
     @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
         graphics.blit(TEXTURE,leftPos,topPos,0,0,imageWidth,imageHeight);

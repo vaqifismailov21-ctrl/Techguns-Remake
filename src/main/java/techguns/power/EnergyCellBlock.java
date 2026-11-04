@@ -27,6 +27,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * sides take it. Keeps its charge when broken. CHARGE (0..4) drives the charge bars of the model.
  */
 public final class EnergyCellBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final DirectionProperty FACING=BlockStateProperties.FACING;
     public static final IntegerProperty CHARGE=IntegerProperty.create("charge",0,4);
     public final boolean bank;

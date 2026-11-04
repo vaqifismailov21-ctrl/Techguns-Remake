@@ -36,6 +36,7 @@ public final class BenchMenu extends AbstractContainerMenu {
         if(bench.kind!=BenchKind.UPGRADE)addSlot(new Slot(inventory,40,bench.kind==BenchKind.CAMO?-17:64,bench.kind==BenchKind.CAMO?94:18));addDataSlot(xp);
     }
     private void input(int index,int x,int y){addSlot(new SlotItemHandler(bench.inventory,index,x,y){@Override public boolean mayPlace(ItemStack stack){return bench.accepts(index,stack);}@Override public int getMaxStackSize(){return bench.kind==BenchKind.UPGRADE&&index==0?1:super.getMaxStackSize();}});}
+    private boolean toBench(ItemStack stack){boolean moved=false;for(int i=0;i<bench.inventory.getSlots()&&!stack.isEmpty();i++)if(bench.accepts(i,stack))moved=moveItemStackTo(stack,i,i+1,false)||moved;return moved;}
     public int xpCost(){return xp.get();}
     @Override public void broadcastChanges(){if(!player.level().isClientSide&&bench.kind==BenchKind.UPGRADE){var preview=ArmorUpgrades.result(bench.inventory.getStackInSlot(0),bench.inventory.getStackInSlot(1));result.setItem(0,preview.stack());xp.set(preview.xp());}super.broadcastChanges();}
     @Override public boolean stillValid(Player p){return bench.getLevel()!=null&&bench.getLevel().getBlockEntity(bench.getBlockPos())==bench&&p.distanceToSqr(bench.getBlockPos().getCenter())<=64&&bench.access.allows(p);}
@@ -52,8 +53,16 @@ public final class BenchMenu extends AbstractContainerMenu {
     public static void change(ItemStack stack,boolean backwards,Consumer<ItemStack> set){if(stack.getItem() instanceof ICamoChangeable camo&&camo.getCamoCount()>0){set.accept(camo.cycleStack(stack,backwards));return;}
         var id=BuiltInRegistries.ITEM.getKey(stack.getItem());if(!id.getNamespace().equals("minecraft"))return;String name=id.getPath();for(String family:new String[]{"wool","concrete","concrete_powder","terracotta","stained_glass","stained_glass_pane","carpet"})for(int i=0;i<COLORS.length;i++)if(name.equals(COLORS[i]+"_"+family)){var item=BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("minecraft",COLORS[Math.floorMod(i+(backwards?-1:1),16)]+"_"+family));var output=new ItemStack(item,stack.getCount());if(stack.hasTag())output.setTag(stack.getTag().copy());set.accept(output);return;}}
     @Override public ItemStack quickMoveStack(Player p,int index){if(index<0||index>=slots.size())return ItemStack.EMPTY;var slot=slots.get(index);if(!slot.hasItem()||!slot.mayPickup(p))return ItemStack.EMPTY;var stack=slot.getItem();var original=stack.copy();
-        if(index<playerStart||index>=playerStart+36){if(!moveItemStackTo(stack,playerStart,playerStart+36,false))return ItemStack.EMPTY;}
-        else {boolean moved=false;for(int i=0;i<bench.inventory.getSlots()&&!stack.isEmpty();i++)if(bench.accepts(i,stack))moved=moveItemStackTo(stack,i,i+1,false)||moved;if(!moved)return ItemStack.EMPTY;}
+        if(index<playerStart){if(!moveItemStackTo(stack,playerStart,playerStart+36,false))return ItemStack.EMPTY;}
+        else if(index>=playerStart+36){
+            // worn armor / Techguns / offhand slots: into the bench first (camo or upgrade input), else the player inventory
+            if(!toBench(stack)&&!moveItemStackTo(stack,playerStart,playerStart+36,false))return ItemStack.EMPTY;
+        }
+        else if(!toBench(stack)){
+            // nothing in the bench takes it: shift-click equips armor into its free armor slot
+            int armor=stack.getItem() instanceof net.minecraft.world.item.ArmorItem a?java.util.Arrays.asList(ARMOR).indexOf(a.getEquipmentSlot()):-1;
+            if(armor<0||!moveItemStackTo(stack,playerStart+36+armor,playerStart+37+armor,false))return ItemStack.EMPTY;
+        }
         if(stack.isEmpty())slot.setByPlayer(ItemStack.EMPTY);else slot.setChanged();slot.onTake(p,original);broadcastChanges();return original;
     }
 }

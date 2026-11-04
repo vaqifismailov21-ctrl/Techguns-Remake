@@ -34,7 +34,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
         securityY=switch(menu.bench.kind){case CAMO->95+25;case REPAIR->10;default->SECURITY_Y;};
     }
     private void send(int id){minecraft.gameMode.handleInventoryButtonClick(menu.containerId,id);}
-    private void text(String label,int id,int x,int y,int size){addRenderableWidget(Button.builder(Component.literal(label),b->send(id)).bounds(leftPos+x,topPos+y,size,size).build());}
+    private void text(String label,int id,int x,int y,int size){addRenderableWidget(LegacyButton.legacy(Component.literal(label),b->send(id)).bounds(leftPos+x,topPos+y,size,size).build());}
     private byte security(){return (byte)(menu.bench.access.restricted()?3:0);}
 
     @Override protected void init(){

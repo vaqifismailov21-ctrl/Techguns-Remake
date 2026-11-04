@@ -23,7 +23,7 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     public MachineScreen(MachineMenu menu,Inventory inventory,Component title){super(menu,inventory,title);texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+menu.machine.kind.texture()+"_gui.png");imageHeight=166;}
     private void send(int id){minecraft.gameMode.handleInventoryButtonClick(menu.containerId,id);}
     private void text(String label,int id,int x,int y,int width,int height){text(Component.literal(label),id,x,y,width,height);}
-    private void text(Component label,int id,int x,int y,int width,int height){addRenderableWidget(Button.builder(label,b->send(id)).bounds(leftPos+x,topPos+y,width,height).build());}
+    private void text(Component label,int id,int x,int y,int width,int height){addRenderableWidget(LegacyButton.legacy(label,b->send(id)).bounds(leftPos+x,topPos+y,width,height).build());}
     private byte security(){return (byte)(menu.machine.access.restricted()?3:0);}
 
     @Override protected void init(){

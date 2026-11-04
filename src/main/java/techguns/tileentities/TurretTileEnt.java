@@ -84,7 +84,8 @@ public class TurretTileEnt extends BlockEntity implements MenuProvider {
     protected boolean allowItemInSlot(int slot,ItemStack stack){
         if(slot==SLOT_WEAPON)return stack.getItem() instanceof GenericGun;
         if(slot==SLOT_ARMOR)return stack.getItem() instanceof ITGSpecialSlot special&&special.getSlot(stack)==TGSlotType.TURRETARMOR;
-        return slot>=SLOT_INPUT1&&slot<SLOT_INPUT1+INPUTS_SIZE;
+        // the original took anything here; only gun ammo now
+        return slot>=SLOT_INPUT1&&slot<SLOT_INPUT1+INPUTS_SIZE&&techguns.items.guns.ammo.AmmoType.isAmmo(stack);
     }
     protected boolean allowExtractFromSlot(int slot){return slot>=SLOT_OUTPUT1&&slot<SLOT_OUTPUT1+OUTPUTS_SIZE;}
     private IItemHandler createAutomation(){return new IItemHandler(){

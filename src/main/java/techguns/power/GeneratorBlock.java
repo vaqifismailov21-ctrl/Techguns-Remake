@@ -24,6 +24,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 /** Fuel (solid) or liquid generator; drawn by PowerRenderer (fire, flywheel, pistons and oil level move while it runs). */
 public final class GeneratorBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT=BlockStateProperties.LIT;
     public final boolean liquid;

@@ -21,6 +21,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 /** Energy cable: joins other cables and every block that takes or gives Forge Energy on the touching side. */
 public final class EnergyCableBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final Map<Direction,BooleanProperty> SIDES=PipeBlock.PROPERTY_BY_DIRECTION;
     private static final VoxelShape CORE=Block.box(5,5,5,11,11,11);
     private static final Map<Direction,VoxelShape> ARMS=Map.of(

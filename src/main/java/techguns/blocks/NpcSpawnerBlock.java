@@ -11,6 +11,8 @@ import techguns.*;
 import techguns.tileentities.NpcSpawnerEntity;
 
 public final class NpcSpawnerBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public final boolean soldier;
     public NpcSpawnerBlock(boolean soldier){super(Properties.copy(Blocks.STONE).strength(-1,2).noOcclusion().noCollission().noLootTable());this.soldier=soldier;}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}

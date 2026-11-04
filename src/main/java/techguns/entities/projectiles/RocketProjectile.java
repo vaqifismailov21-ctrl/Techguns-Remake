@@ -23,6 +23,7 @@ public class RocketProjectile extends GenericProjectile {
     public boolean isHighVelocity() {return getType()==TGEntities.ROCKET_HV.get();}
     protected double blockFactor() {return 0.5;}
     protected String explosionEffect() {return isNuclear()?"NukeExplosion":"RocketExplosion";}
+    @Override protected void onStoppedInWater() { explodeRocket(); }
     protected void explodeRocket() {
         if(!level().isClientSide) {
             var explosion=new TGExplosion(level(),getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,blockdamage?blockFactor():0);

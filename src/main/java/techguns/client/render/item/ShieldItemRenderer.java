@@ -37,7 +37,8 @@ public final class ShieldItemRenderer extends BlockEntityWithoutLevelRenderer {
         var texture = ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "textures/armors/" + def.textures[camo] + ".png");
         pose.pushPose();
         pose.scale(1, -1, -1);
-        def.model.renderModel(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(texture)), light, overlay, context);
+        // visors and windows are half transparent in the textures (1.12 drew items with blending)
+        def.model.renderModel(pose, buffers.getBuffer(RenderType.entityTranslucent(texture)), light, overlay, context);
         pose.popPose();
     }
 }

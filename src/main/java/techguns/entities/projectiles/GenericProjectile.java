@@ -102,7 +102,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
     }
     protected void initStartPos() { startX = getX(); startY = getY(); startZ = getZ(); posInitialized = true; }
     @Override public void tick() {
-        if (!posInitialized && !level().isClientSide) initStartPos();
+        if (!posInitialized && !level().isClientSide) { initStartPos(); if (blockedBeforeMuzzle()) return; }
         xo = getX(); yo = getY(); zo = getZ();
         super.tick();
         getShooter();
@@ -135,6 +135,23 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         setPos(next);
         checkInsideBlocks();
         if (ticksToLive <= 0) discard();
+        else if (!level().isClientSide && isAlive() && gravity == 0 && isInWater() && getDeltaMovement().lengthSqr() < 0.0025) onStoppedInWater();
+    }
+    /** Water drag (0.85 per tick) brings straight projectiles to a stop after a few blocks; they no longer hang there until timeout. */
+    protected void onStoppedInWater() { discard(); }
+    /**
+     * Shots spawn beside and ahead of the eyes. With the gun pushed against a thin block (pane, bars, door, fence)
+     * the spawn point was already behind it and the shot went through. Trace eyes -> spawn and hit the first block.
+     */
+    protected boolean blockedBeforeMuzzle() {
+        if (shooter == null) return false;
+        Vec3 eyes = shooter.getEyePosition(), spawn = position();
+        if (eyes.distanceToSqr(spawn) < 1.0E-6) return false;
+        var hit = level().clip(new ClipContext(eyes, spawn, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        if (hit.getType() != HitResult.Type.BLOCK) return false;
+        Vec3 at = hit.getLocation().subtract(spawn.subtract(eyes).normalize().scale(0.05));
+        setPos(at.x, at.y, at.z); initStartPos(); onHit(hit);
+        return true;
     }
     protected float inWaterUpdateBehaviour(float drag) {
         if (isInWater()) {

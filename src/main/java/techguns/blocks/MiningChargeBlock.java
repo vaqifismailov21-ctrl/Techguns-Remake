@@ -16,6 +16,8 @@ import net.minecraftforge.network.NetworkHooks;
 import techguns.*;
 import techguns.tileentities.MiningChargeEntity;
 public final class MiningChargeBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final DirectionProperty FACING=BlockStateProperties.FACING;public static final BooleanProperty ARMED=BooleanProperty.create("armed");
     public final boolean advanced;
     public MiningChargeBlock(boolean advanced){super(Properties.copy(Blocks.IRON_BLOCK).strength(2).noOcclusion());this.advanced=advanced;registerDefaultState(stateDefinition.any().setValue(FACING,Direction.DOWN).setValue(ARMED,false));}

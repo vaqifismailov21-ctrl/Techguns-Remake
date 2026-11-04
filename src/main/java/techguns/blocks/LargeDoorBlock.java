@@ -17,6 +17,8 @@ import net.minecraftforge.network.NetworkHooks;
 import techguns.*;
 import techguns.tileentities.LargeDoorEntity;
 public final class LargeDoorBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public enum Phase implements StringRepresentable {CLOSED,OPENED,OPENING,CLOSING;public String getSerializedName(){return name().toLowerCase(java.util.Locale.ROOT);}public boolean open(){return this==OPENED||this==OPENING;}public boolean moving(){return this==OPENING||this==CLOSING;}}
     public static final BooleanProperty ZPLANE=BooleanProperty.create("zplane");
     public static final IntegerProperty ROW=IntegerProperty.create("row",0,2),COLUMN=IntegerProperty.create("column",0,2);

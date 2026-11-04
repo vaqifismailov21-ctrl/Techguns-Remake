@@ -30,6 +30,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * masts, the top piece is the head with the rotor. The part follows from the neighbours, so the column just gets stacked.
  */
 public final class WindTurbineBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public enum Part implements StringRepresentable {
         BASE,MAST,HEAD;
         @Override public String getSerializedName(){return name().toLowerCase(java.util.Locale.ROOT);}

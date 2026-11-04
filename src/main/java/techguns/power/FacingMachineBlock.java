@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 /** Base of the new power blocks: horizontal front toward the player, LIT while working, drawn by PowerRenderer. */
 public abstract class FacingMachineBlock extends BaseEntityBlock {
+    /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
+    @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT=BlockStateProperties.LIT;
     protected FacingMachineBlock(int light){

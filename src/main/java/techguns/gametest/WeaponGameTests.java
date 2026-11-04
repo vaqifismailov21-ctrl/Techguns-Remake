@@ -279,12 +279,12 @@ public final class WeaponGameTests {
         var player=helper.makeMockSurvivalPlayer();
         player.setPos(100,70,-200);
         float[] angles={0,90,180,270};
-        double[][] offsets={{1,0},{0,1},{-1,0},{0,-1}};
+        double[][] offsets={{0,1},{-1,0},{0,-1},{1,0}};
         for(int i=0;i<angles.length;i++) {
             player.setYHeadRot(angles[i]);
             var position=techguns.util.GunSoundPosition.of(player);
             helper.assertTrue(position.distanceTo(new Vec3(100+offsets[i][0],70+player.getBbHeight()*0.5,-200+offsets[i][1]))<0.00001,
-                    "Observer sound must preserve the original TGSound cos/sin gun offset at yaw "+angles[i]);
+                    "Observer gun sound must come from one block in front of the shooter at yaw "+angles[i]);
         }
         helper.succeed();
     }
