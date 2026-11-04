@@ -1,3 +1,6 @@
 {
-  "parent": "techguns:block/liquid_generator"
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "techguns:blocks/liquid_generator_side"
+  }
 }

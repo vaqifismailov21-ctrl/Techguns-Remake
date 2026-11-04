@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "facing=north,part=base": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=north,part=mast": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=north,part=head": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=east,part=base": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=east,part=mast": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=east,part=head": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=south,part=base": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=south,part=mast": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=south,part=head": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=west,part=base": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=west,part=mast": {
+      "model": "techguns:block/wind_turbine"
+    },
+    "facing=west,part=head": {
+      "model": "techguns:block/wind_turbine"
+    }
+  }
+}

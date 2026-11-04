@@ -1,0 +1,31 @@
+{
+  "name": "Энергоячейка и энергобанк",
+  "icon": "techguns:energy_cell",
+  "category": "techguns:power",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:energy_cell",
+      "text": "Энергоячейка хранит 1 000 000 FE и пропускает 1 000 FE/т. Принимает со всех сторон, кроме лицевой, отдаёт через лицевую. Лицевая сторона смотрит на игрока при установке."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:energy_bank",
+      "text": "Энергобанк хранит 10 000 000 FE и пропускает 10 000 FE/т. Работает так же, как ячейка."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Полоски спереди показывают заряд, лампа красная, жёлтая или зелёная. Сломанный блок сохраняет заряд в предмете.",
+      "title": "Заряд"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:energy_cell"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:energy_bank"
+    }
+  ]
+}

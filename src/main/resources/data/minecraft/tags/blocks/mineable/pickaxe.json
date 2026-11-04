@@ -77,6 +77,14 @@
     "techguns:fuel_generator",
     "techguns:liquid_generator",
     "techguns:solar_panel",
-    "techguns:energy_cell"
+    "techguns:energy_cell",
+    "techguns:geothermal_generator",
+    "techguns:nuclear_generator",
+    "techguns:floodlight",
+    "techguns:wind_turbine",
+    "techguns:solar_panel_advanced",
+    "techguns:solar_panel_industrial",
+    "techguns:energy_bank",
+    "techguns:energy_cable"
   ]
 }

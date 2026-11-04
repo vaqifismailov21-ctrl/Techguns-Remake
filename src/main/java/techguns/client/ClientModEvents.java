@@ -49,6 +49,14 @@ public final class ClientModEvents {
         techguns.TGNpcs.TYPES.forEach((id,type)->event.registerEntityRenderer(type.get(),context->new techguns.client.render.entities.npcs.NpcRenderer(context,id)));
         event.registerBlockEntityRenderer(techguns.TGDoors.ENTITY.get(),techguns.client.render.tileentities.LargeDoorRenderer::new);
         event.registerBlockEntityRenderer(techguns.TGMachines.ENTITY.get(),techguns.client.render.tileentities.ProcessingMachineRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.FUEL_GENERATOR_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.LIQUID_GENERATOR_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.GEOTHERMAL_GENERATOR_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.NUCLEAR_GENERATOR_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.SOLAR_PANEL_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.ENERGY_CELL_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.WIND_TURBINE_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.PowerBlocks.FLOODLIGHT_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.TGTurrets.ENTITY.get(),techguns.client.render.tileentities.TurretBaseRenderer::new);
         event.registerEntityRenderer(techguns.TGTurrets.TURRET.get(),techguns.client.render.entities.npcs.NPCTurretRenderer::new);
         event.registerBlockEntityRenderer(techguns.TGOreDrill.MASTER.get(),techguns.client.render.tileentities.OreDrillRenderer::new);

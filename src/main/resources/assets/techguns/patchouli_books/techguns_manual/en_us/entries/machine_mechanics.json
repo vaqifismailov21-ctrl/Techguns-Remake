@@ -28,7 +28,7 @@
       "type": "patchouli:text",
       "title": "Power",
       "anchor": "power",
-      "text": "The left bar shows stored Forge Energy (FE). Supply it with compatible cables and a generator from another mod; Techguns has no generator. The machinesNeedNoPower option in techguns-common.toml can disable the energy requirement."
+      "text": "The left bar shows stored Forge Energy (FE). Generators from the $(l:power/power_basics)Energy$(/l) chapter supply it: place one against the machine or run an energy cable. Generators of other mods work too. The machinesNeedNoPower option in techguns-common.toml can disable the energy requirement."
     },
     {
       "type": "patchouli:text",

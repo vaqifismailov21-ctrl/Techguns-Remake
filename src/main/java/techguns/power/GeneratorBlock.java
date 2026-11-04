@@ -22,20 +22,20 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.network.NetworkHooks;
 
-/** Fuel (solid) or liquid generator: a furnace-like block with a front that glows while burning. */
+/** Fuel (solid) or liquid generator; drawn by PowerRenderer (fire, flywheel, pistons and oil level move while it runs). */
 public final class GeneratorBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT=BlockStateProperties.LIT;
     public final boolean liquid;
     public GeneratorBlock(boolean liquid){
-        super(Properties.of().strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops().lightLevel(state->state.getValue(LIT)?13:0));this.liquid=liquid;
+        super(Properties.of().strength(3.5f,10).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().lightLevel(state->state.getValue(LIT)?13:0));this.liquid=liquid;
         registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH).setValue(LIT,false));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FACING,LIT);}
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){return defaultBlockState().setValue(FACING,context.getHorizontalDirection().getOpposite());}
     @Override public BlockState rotate(BlockState state,Rotation rotation){return state.setValue(FACING,rotation.rotate(state.getValue(FACING)));}
     @Override public BlockState mirror(BlockState state,Mirror mirror){return state.rotate(mirror.getRotation(state.getValue(FACING)));}
-    @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
+    @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return liquid?new LiquidGeneratorEntity(pos,state):new FuelGeneratorEntity(pos,state);}
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){
         if(level.isClientSide)return null;

@@ -58,6 +58,10 @@ public abstract class EnergySource extends BlockEntity {
     protected void resetHandles(){for(int i=0;i<handles.length;i++)if(handles[i]!=null){handles[i].invalidate();handles[i]=null;}}
     @Override public void invalidateCaps(){super.invalidateCaps();resetHandles();}
     @Override public void setBlockState(BlockState state){super.setBlockState(state);resetHandles();}
+    /** Sends the block entity data to watching clients (the renderer shows tank levels, rotor speed and so on). */
+    protected void sync(){if(level!=null&&!level.isClientSide)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);}
+    @Override public CompoundTag getUpdateTag(){return saveWithoutMetadata();}
+    @Override public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket(){return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);}
     @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.putInt("Energy",energy.getEnergyStored());}
     @Override public void load(CompoundTag tag){super.load(tag);if(tag.contains("Energy"))energy.deserializeNBT(net.minecraft.nbt.IntTag.valueOf(Math.min(tag.getInt("Energy"),energy.getMaxEnergyStored())));}
 }

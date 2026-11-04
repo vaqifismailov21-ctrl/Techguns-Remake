@@ -1,0 +1,22 @@
+{
+  "name": "Энергокабель",
+  "icon": "techguns:energy_cable",
+  "category": "techguns:power",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:energy_cable",
+      "text": "Сам соединяется с другими кабелями и с любыми блоками, которые принимают или отдают FE. Пропускает до 5 000 FE/т без потерь."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Каждый кусок держит немного энергии, выравнивает её с соседними кабелями и отдаёт машинам и ячейкам рядом. Генераторам и лицевой стороне ячейки кабель энергию не отдаёт.",
+      "title": "Работа"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:energy_cable"
+    }
+  ]
+}

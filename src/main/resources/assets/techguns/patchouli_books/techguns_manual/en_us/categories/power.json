@@ -1,0 +1,6 @@
+{
+  "name": "Energy",
+  "description": "Techguns generators, storage and cables. All of them use Forge Energy (FE) and work with the machines of Techguns and other mods.",
+  "icon": "techguns:fuel_generator",
+  "sortnum": 4
+}

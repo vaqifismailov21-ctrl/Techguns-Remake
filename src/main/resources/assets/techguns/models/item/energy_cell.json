@@ -1,3 +1,6 @@
 {
-  "parent": "techguns:block/energy_cell"
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "techguns:blocks/energy_cell_side"
+  }
 }

@@ -18,6 +18,8 @@ public final class TGConfig {
     public static boolean disableAutofeeder = false;
     private static final BooleanValue disableAutofeeder_VALUE;
     public static boolean machinesNeedNoPower = false;
+    public static boolean nuclearGeneratorExplodes = false;
+    private static final BooleanValue nuclearGeneratorExplodes_VALUE;
     private static final BooleanValue machinesNeedNoPower_VALUE;
     public static boolean keepLavaRecipesWhenFuelIsPresent = false;
     private static final BooleanValue keepLavaRecipesWhenFuelIsPresent_VALUE;
@@ -182,6 +184,7 @@ public final class TGConfig {
         limitUnsafeModeToOP_VALUE = builder.comment("Only opped players can use the unsafe mode of guns, this OVERRIDES the permission setting 'techguns.allowunsafemode'").define(java.util.List.of("general", "RestrictUnsafeModeToOP"), false);
         disableAutofeeder_VALUE = builder.comment("Disable automatic feeding of Food in the Techguns tab. Disable autofeeding if you think it breaks the balance").define(java.util.List.of("general", "disableAutofeeder"), false);
         machinesNeedNoPower_VALUE = builder.comment("Machines don't need power, activate this if you don't want to install a mod with generators and still be able to use the machines").define(java.util.List.of("general", "machinesNeedNoPower"), false);
+        nuclearGeneratorExplodes_VALUE = builder.comment("The nuclear generator explodes when it overheats instead of just shutting down").define(java.util.List.of("general", "nuclearGeneratorExplodes"), false);
         keepLavaRecipesWhenFuelIsPresent_VALUE = builder.comment("Keep recipes with lava instead of fuel even when fuel is present. Fuels need to be added by other mods").define(java.util.List.of("general", "keepLavaRecipesWhenFuelIsPresent"), false);
         addCopperIngots_VALUE = builder.comment("Add copper ingots.").define(java.util.List.of("Disable Items", "addCopperIngot"), true);
         addCopperNuggets_VALUE = builder.comment("Add copper nuggets.").define(java.util.List.of("Disable Items", "addCopperNugget"), true);
@@ -272,6 +275,7 @@ public final class TGConfig {
             limitUnsafeModeToOP = limitUnsafeModeToOP_VALUE.get();
             disableAutofeeder = disableAutofeeder_VALUE.get();
             machinesNeedNoPower = machinesNeedNoPower_VALUE.get();
+            nuclearGeneratorExplodes = nuclearGeneratorExplodes_VALUE.get();
             keepLavaRecipesWhenFuelIsPresent = keepLavaRecipesWhenFuelIsPresent_VALUE.get();
             addCopperIngots = addCopperIngots_VALUE.get();
             addCopperNuggets = addCopperNuggets_VALUE.get();

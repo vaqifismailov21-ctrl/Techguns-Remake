@@ -1,0 +1,22 @@
+{
+  "name": "Geothermal Generator",
+  "icon": "techguns:geothermal_generator",
+  "category": "techguns:power",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:geothermal_generator",
+      "text": "Runs on lava without using it up. $(b)15 FE/t$() for every lava source below it or on its four sides, up to 75 FE/t. Half again more in the Nether."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Only lava sources count, flowing lava does not. The fan on top turns and the front window glows while it works. Buffer 50,000 FE.",
+      "title": "Use"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:geothermal_generator"
+    }
+  ]
+}

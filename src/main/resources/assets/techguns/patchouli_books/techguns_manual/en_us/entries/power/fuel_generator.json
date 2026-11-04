@@ -1,0 +1,22 @@
+{
+  "name": "Fuel Generator",
+  "icon": "techguns:fuel_generator",
+  "category": "techguns:power",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:fuel_generator",
+      "text": "Burns anything that burns in a furnace: coal, charcoal, wood, blaze rods. $(b)40 FE/t$(), buffer 100,000 FE, gives up to 400 FE/t."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "While burning, fire shows in the firebox, the flywheel on the side turns and the green lamp is on. Fuel goes in through its window or a hopper.",
+      "title": "Use"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fuel_generator"
+    }
+  ]
+}

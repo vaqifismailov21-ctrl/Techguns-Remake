@@ -1,0 +1,27 @@
+{
+  "name": "Ядерный генератор",
+  "icon": "techguns:nuclear_generator",
+  "category": "techguns:power",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:nuclear_generator",
+      "text": "Сжигает ядерные микрореакторы Techguns. $(b)400 FE/т$(), один микрореактор даёт 4 800 000 FE (10 минут). Истощённый микрореактор попадает во второй слот."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Во время работы генератор нагревается. Вода с любой стороны охлаждает его быстрее, чем он греется. Без воды примерно за минуту он перегревается и останавливается, пока не остынет наполовину. Шкала нагрева видна в окне.",
+      "title": "Охлаждение"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Взрыв при перегреве по умолчанию выключен. Его включает параметр nuclearGeneratorExplodes в techguns-common.toml. Если включена система радиации, работающий генератор облучает всех в радиусе 4 блоков.",
+      "title": "Опасность"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:nuclear_generator"
+    }
+  ]
+}

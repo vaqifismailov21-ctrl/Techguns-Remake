@@ -1,0 +1,22 @@
+{
+  "name": "Liquid Generator",
+  "icon": "techguns:liquid_generator",
+  "category": "techguns:power",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:liquid_generator",
+      "text": "Burns liquids from its 8,000 mB tank: fuel (500 FE per mB), oil (200) and lava (100). $(b)80 FE/t$(), buffer 200,000 FE."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Fill it with a bucket right on the block, through the slot in its window or with pipes. The level shows in the glass tank and the pistons move while it runs. The fluid lists are in techguns-common.toml.",
+      "title": "Use"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:liquid_generator"
+    }
+  ]
+}

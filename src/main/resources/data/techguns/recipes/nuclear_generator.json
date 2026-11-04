@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "POP",
+    "ERE",
+    "POP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/obsidian_steel"
+    },
+    "O": {
+      "item": "techguns:coil"
+    },
+    "E": {
+      "tag": "forge:circuits/elite"
+    },
+    "R": {
+      "item": "techguns:enricheduranium"
+    }
+  },
+  "result": {
+    "item": "techguns:nuclear_generator",
+    "count": 1
+  }
+}

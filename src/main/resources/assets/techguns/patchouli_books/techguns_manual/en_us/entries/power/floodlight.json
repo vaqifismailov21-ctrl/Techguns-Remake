@@ -1,0 +1,22 @@
+{
+  "name": "Floodlight",
+  "icon": "techguns:floodlight",
+  "category": "techguns:power",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:floodlight",
+      "text": "Uses 2 FE/t and lights 24 blocks ahead until a wall stops the beam. Light level 15, like glowstone."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It turns on by itself when it gets energy. Without energy the glass goes dark and the beam light goes away.",
+      "title": "Use"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:floodlight"
+    }
+  ]
+}

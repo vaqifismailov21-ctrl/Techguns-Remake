@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CPC",
+    "PEP",
+    "CPC"
+  ],
+  "key": {
+    "C": {
+      "item": "techguns:energy_cell"
+    },
+    "P": {
+      "tag": "forge:plates/titanium"
+    },
+    "E": {
+      "tag": "forge:circuits/elite"
+    }
+  },
+  "result": {
+    "item": "techguns:energy_bank",
+    "count": 1
+  }
+}

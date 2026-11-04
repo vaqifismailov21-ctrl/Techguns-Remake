@@ -1,0 +1,30 @@
+{
+  "name": "Solar Panels",
+  "icon": "techguns:solar_panel",
+  "category": "techguns:power",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:solar_panel",
+      "text": "Work in daylight under open sky: half in rain, a fifth in thunder, nothing at night or under a roof."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Solar panel: $(b)20 FE/t$(), buffer 20,000 FE.$(li)Advanced: $(b)60 FE/t$(), buffer 60,000 FE.$(li)Industrial: $(b)160 FE/t$(), buffer 160,000 FE.$(br2)Each tier is made from three of the one before.",
+      "title": "Tiers"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:solar_panel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:solar_panel_advanced"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:solar_panel_industrial"
+    }
+  ]
+}

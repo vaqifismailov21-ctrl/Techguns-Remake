@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SIS",
+    " E "
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "E": {
+      "item": "techguns:electricengine"
+    }
+  },
+  "result": {
+    "item": "techguns:wind_turbine",
+    "count": 3
+  }
+}

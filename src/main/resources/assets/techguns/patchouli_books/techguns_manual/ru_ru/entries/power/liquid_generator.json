@@ -1,0 +1,22 @@
+{
+  "name": "Жидкостный генератор",
+  "icon": "techguns:liquid_generator",
+  "category": "techguns:power",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:liquid_generator",
+      "text": "Сжигает жидкости из бака на 8 000 mB: топливо (500 FE за mB), нефть (200) и лаву (100). $(b)80 FE/т$(), запас 200 000 FE."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Залить можно ведром прямо по блоку, через слот в окне или трубами. Уровень жидкости виден в стеклянном баке, поршни ходят, пока он работает. Списки жидкостей настраиваются в techguns-common.toml.",
+      "title": "Работа"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:liquid_generator"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Energy Cell and Energy Bank",
+  "icon": "techguns:energy_cell",
+  "category": "techguns:power",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:energy_cell",
+      "text": "The energy cell stores 1,000,000 FE and moves 1,000 FE/t. It takes energy on every side but the front and gives it through the front, which faces the player when placed."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:energy_bank",
+      "text": "The energy bank stores 10,000,000 FE and moves 10,000 FE/t. It works like the cell."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The bars on the front show the charge; the lamp is red, yellow or green. A broken block keeps its charge in the item.",
+      "title": "Charge"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:energy_cell"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:energy_bank"
+    }
+  ]
+}

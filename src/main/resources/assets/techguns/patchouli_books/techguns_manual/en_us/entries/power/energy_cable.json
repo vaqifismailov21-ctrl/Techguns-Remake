@@ -1,0 +1,22 @@
+{
+  "name": "Energy Cable",
+  "icon": "techguns:energy_cable",
+  "category": "techguns:power",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:energy_cable",
+      "text": "Joins other cables and every block that takes or gives FE. Moves up to 5,000 FE/t without losses."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Every piece holds a little energy, evens it out with the cables next to it and gives it to machines and cells around it. It never gives energy to generators or to the front of a cell.",
+      "title": "Use"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:energy_cable"
+    }
+  ]
+}

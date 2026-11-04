@@ -1,0 +1,22 @@
+{
+  "name": "Прожектор",
+  "icon": "techguns:floodlight",
+  "category": "techguns:power",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:floodlight",
+      "text": "Тратит 2 FE/т и светит вперёд на 24 блока, пока его не перекроет стена. Свет 15, как у светокамня."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Включается сам, когда к нему приходит энергия. Без энергии стекло гаснет, свет луча пропадает.",
+      "title": "Работа"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:floodlight"
+    }
+  ]
+}

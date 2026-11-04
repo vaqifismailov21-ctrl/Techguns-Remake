@@ -1,0 +1,30 @@
+{
+  "name": "Солнечные панели",
+  "icon": "techguns:solar_panel",
+  "category": "techguns:power",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:solar_panel",
+      "text": "Работают днём под открытым небом. В дождь вдвое меньше, в грозу впятеро, ночью и под крышей не работают."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Солнечная панель: $(b)20 FE/т$(), запас 20 000 FE.$(li)Улучшенная: $(b)60 FE/т$(), запас 60 000 FE.$(li)Промышленная: $(b)160 FE/т$(), запас 160 000 FE.$(br2)Каждая следующая крафтится из трёх предыдущих.",
+      "title": "Тиры"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:solar_panel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:solar_panel_advanced"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:solar_panel_industrial"
+    }
+  ]
+}

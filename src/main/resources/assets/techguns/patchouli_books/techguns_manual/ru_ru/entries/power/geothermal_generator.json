@@ -1,0 +1,22 @@
+{
+  "name": "Геотермальный генератор",
+  "icon": "techguns:geothermal_generator",
+  "category": "techguns:power",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:geothermal_generator",
+      "text": "Работает от лавы и не тратит её. $(b)15 FE/т$() за каждый источник лавы снизу или с четырёх сторон, до 75 FE/т. В Незере в полтора раза больше."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Считаются только источники, текущая лава не подходит. Сверху крутится вентилятор, окно спереди светится, пока он работает. Запас 50 000 FE.",
+      "title": "Работа"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:geothermal_generator"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Nuclear Generator",
+  "icon": "techguns:nuclear_generator",
+  "category": "techguns:power",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:nuclear_generator",
+      "text": "Burns Techguns nuclear micro reactors. $(b)400 FE/t$(); one micro reactor gives 4,800,000 FE (10 minutes). The depleted reactor goes to the second slot."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It heats up while running. Water on any side cools it faster than it heats. Without water it overheats in about a minute and stops until it has cooled to half. The heat bar is in its window.",
+      "title": "Cooling"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Exploding on overheating is off by default; nuclearGeneratorExplodes in techguns-common.toml turns it on. With the radiation system enabled, a running generator irradiates everyone within 4 blocks.",
+      "title": "Danger"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:nuclear_generator"
+    }
+  ]
+}

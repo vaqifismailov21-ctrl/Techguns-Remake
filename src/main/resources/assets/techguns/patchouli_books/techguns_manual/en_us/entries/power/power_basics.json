@@ -1,0 +1,22 @@
+{
+  "name": "How Energy Works",
+  "icon": "techguns:energy_cable",
+  "category": "techguns:power",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Techguns machines run on Forge Energy (FE). Every tick a generator gives energy to the blocks next to it that accept it: a machine, an energy cell or a cable.$(br2)Place the generator against the machine or run a cable.",
+      "title": "Basics"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Generators only give energy. The energy cell and the energy bank take it on every side but the front and give it through the front.$(br2)Right clicking most power blocks tells how much they make and why it is less than the best."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For reference: presses and the chemical laboratory need 10-20 FE/t, the heaviest recipes up to 800 FE/t.$(br2)Generators that burn something stop burning while their buffer is full.",
+      "title": "How Much"
+    }
+  ]
+}

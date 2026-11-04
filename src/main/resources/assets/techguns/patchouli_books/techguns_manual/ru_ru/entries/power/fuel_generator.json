@@ -1,0 +1,22 @@
+{
+  "name": "Топливный генератор",
+  "icon": "techguns:fuel_generator",
+  "category": "techguns:power",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:fuel_generator",
+      "text": "Сжигает всё, что горит в печи: уголь, древесный уголь, дерево, огненные стержни. $(b)40 FE/т$(), запас 100 000 FE, отдаёт до 400 FE/т."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Пока горит, в топке видно пламя, крутится маховик сбоку и горит зелёная лампа. Топливо кладётся в окно по ПКМ или воронкой.",
+      "title": "Работа"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fuel_generator"
+    }
+  ]
+}

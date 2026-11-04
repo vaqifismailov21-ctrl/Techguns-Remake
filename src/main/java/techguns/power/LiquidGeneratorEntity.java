@@ -42,6 +42,9 @@ public final class LiquidGeneratorEntity extends EnergySource {
     private final LazyOptional<IItemHandler> containerHandle=LazyOptional.of(()->container);
     /** Energy left from the last fluid drawn. */
     public int burnEnergy;
+    private int shownLevel=-1;
+    /** Fill of the tank, 0..1, for the oil level in the model. */
+    public float fill(){return tank.getFluidAmount()/(float)PowerBlocks.LIQUID_TANK;}
     public LiquidGeneratorEntity(BlockPos pos,BlockState state){super(PowerBlocks.LIQUID_GENERATOR_ENTITY.get(),pos,state,PowerBlocks.LIQUID_CAPACITY,PowerBlocks.LIQUID_OUTPUT);}
     public void tick(){
         boolean wasBurning=burnEnergy>0;
@@ -52,6 +55,7 @@ public final class LiquidGeneratorEntity extends EnergySource {
         }
         if(burnEnergy>0){int made=Math.min(PowerBlocks.LIQUID_RATE,burnEnergy);burnEnergy-=made;produce(made);}
         distribute();
+        int shown=tank.getFluidAmount()*9/PowerBlocks.LIQUID_TANK;if(shown!=shownLevel){shownLevel=shown;sync();}
         boolean burning=burnEnergy>0;
         if(burning!=wasBurning&&level!=null)level.setBlock(worldPosition,getBlockState().setValue(GeneratorBlock.LIT,burning),3);
     }

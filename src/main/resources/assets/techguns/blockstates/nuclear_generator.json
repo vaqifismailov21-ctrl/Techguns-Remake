@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=north,lit=true": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=east,lit=false": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=east,lit=true": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=south,lit=false": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=south,lit=true": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=west,lit=false": {
+      "model": "techguns:block/nuclear_generator"
+    },
+    "facing=west,lit=true": {
+      "model": "techguns:block/nuclear_generator"
+    }
+  }
+}

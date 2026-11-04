@@ -1,3 +1,6 @@
 {
-  "parent": "techguns:block/fuel_generator"
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "techguns:blocks/generator_side"
+  }
 }

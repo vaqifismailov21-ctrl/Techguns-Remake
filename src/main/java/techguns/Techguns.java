@@ -46,7 +46,7 @@ public final class Techguns {
                         TGBenches.ITEMS.values().forEach(item->output.accept(item.get()));
                         output.accept(TGFabricator.HOUSING_ITEM.get());output.accept(TGFabricator.GLASS_ITEM.get());
                         output.accept(TGFabricator.REACTION_HOUSING_ITEM.get());output.accept(TGFabricator.REACTION_GLASS_ITEM.get());
-                        output.accept(TGFluids.ACID_BUCKET.get());output.accept(TGFluids.OIL_BUCKET.get());output.accept(techguns.power.PowerBlocks.FUEL_GENERATOR_ITEM.get());output.accept(techguns.power.PowerBlocks.LIQUID_GENERATOR_ITEM.get());output.accept(techguns.power.PowerBlocks.SOLAR_PANEL_ITEM.get());output.accept(techguns.power.PowerBlocks.ENERGY_CELL_ITEM.get());
+                        output.accept(TGFluids.ACID_BUCKET.get());output.accept(TGFluids.OIL_BUCKET.get());techguns.power.PowerBlocks.tabItems().forEach(item->output.accept(item.get()));
                         output.accept(TGDoors.BUNKER_ITEM.get());TGDoors.ITEMS.forEach(item->output.accept(item.get()));
                         TGDecorations.ITEMS.values().forEach(item->output.accept(item.get()));
                         output.accept(TGCharges.TNT_ITEM.get());output.accept(TGCharges.ADVANCED_ITEM.get());

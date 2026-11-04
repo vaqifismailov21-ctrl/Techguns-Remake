@@ -1,0 +1,70 @@
+{
+  "credit": "Techguns Remake",
+  "parent": "block/block",
+  "textures": {
+    "cable_arm": "techguns:blocks/cable_arm",
+    "particle": "techguns:blocks/cable_arm"
+  },
+  "elements": [
+    {
+      "__comment": "arm_north",
+      "from": [
+        6,
+        6,
+        0
+      ],
+      "to": [
+        10,
+        10,
+        5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#cable_arm"
+        },
+        "east": {
+          "uv": [
+            11,
+            6,
+            16,
+            10
+          ],
+          "texture": "#cable_arm"
+        },
+        "west": {
+          "uv": [
+            0,
+            6,
+            5,
+            10
+          ],
+          "texture": "#cable_arm"
+        },
+        "up": {
+          "uv": [
+            6,
+            0,
+            10,
+            5
+          ],
+          "texture": "#cable_arm"
+        },
+        "down": {
+          "uv": [
+            6,
+            11,
+            10,
+            16
+          ],
+          "texture": "#cable_arm"
+        }
+      }
+    }
+  ]
+}

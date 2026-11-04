@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PCP",
+    "MGM",
+    "PBP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "item": "techguns:coil"
+    },
+    "M": {
+      "item": "techguns:mechanicalpartsiron"
+    },
+    "G": {
+      "item": "techguns:fuel_generator"
+    },
+    "B": {
+      "item": "minecraft:magma_block"
+    }
+  },
+  "result": {
+    "item": "techguns:geothermal_generator",
+    "count": 1
+  }
+}

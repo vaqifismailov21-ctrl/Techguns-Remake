@@ -1639,6 +1639,18 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:items/yellowcake"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/cable_core"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/cable_arm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/cable_end"
     }
   ]
 }

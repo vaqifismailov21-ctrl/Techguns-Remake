@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "charge=0,facing=north": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=0,facing=east": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=0,facing=south": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=0,facing=west": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=0,facing=up": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=0,facing=down": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=1,facing=north": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=1,facing=east": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=1,facing=south": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=1,facing=west": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=1,facing=up": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=1,facing=down": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=2,facing=north": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=2,facing=east": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=2,facing=south": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=2,facing=west": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=2,facing=up": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=2,facing=down": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=3,facing=north": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=3,facing=east": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=3,facing=south": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=3,facing=west": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=3,facing=up": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=3,facing=down": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=4,facing=north": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=4,facing=east": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=4,facing=south": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=4,facing=west": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=4,facing=up": {
+      "model": "techguns:block/energy_bank"
+    },
+    "charge=4,facing=down": {
+      "model": "techguns:block/energy_bank"
+    }
+  }
+}

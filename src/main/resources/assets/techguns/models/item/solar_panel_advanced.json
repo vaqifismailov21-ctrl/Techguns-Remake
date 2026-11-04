@@ -1,0 +1,6 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "techguns:blocks/solar_panel_side"
+  }
+}

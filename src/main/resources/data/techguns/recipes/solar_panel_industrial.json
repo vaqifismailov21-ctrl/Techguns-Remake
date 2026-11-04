@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "PCP",
+    "PGP"
+  ],
+  "key": {
+    "S": {
+      "item": "techguns:solar_panel_advanced"
+    },
+    "P": {
+      "tag": "forge:plates/titanium"
+    },
+    "C": {
+      "tag": "forge:circuits/elite"
+    },
+    "G": {
+      "tag": "forge:glass_panes"
+    }
+  },
+  "result": {
+    "item": "techguns:solar_panel_industrial",
+    "count": 1
+  }
+}

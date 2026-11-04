@@ -1,0 +1,26 @@
+{
+  "name": "Wind Turbine",
+  "icon": "techguns:wind_turbine",
+  "category": "techguns:power",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:wind_turbine",
+      "text": "Built as a column of the same block: the bottom one becomes the base, the middle ones masts, the top one the head with the rotor. It needs 1 to 6 masts."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "There is no wind below Y 64. Above, the output grows up to $(b)100 FE/t$() at Y 128. Every block in the 5x5x3 space around the head takes a tenth off, so build it in the open. Rain adds a fifth, thunder a half.",
+      "title": "Output"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Only the base gives energy; connect the cable to it. Right clicking any part shows the output and what is in the way."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wind_turbine"
+    }
+  ]
+}

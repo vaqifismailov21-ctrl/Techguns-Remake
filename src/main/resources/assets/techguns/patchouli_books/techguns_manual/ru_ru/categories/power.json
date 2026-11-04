@@ -1,0 +1,6 @@
+{
+  "name": "Энергия",
+  "description": "Генераторы, хранилища и кабели Techguns. Все блоки работают с Forge Energy (FE) и подходят к машинам Techguns и других модов.",
+  "icon": "techguns:fuel_generator",
+  "sortnum": 4
+}

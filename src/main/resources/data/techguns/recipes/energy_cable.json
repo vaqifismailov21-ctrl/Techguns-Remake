@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RWR"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:sheets/plastic"
+    },
+    "W": {
+      "item": "techguns:copperwire"
+    }
+  },
+  "result": {
+    "item": "techguns:energy_cable",
+    "count": 8
+  }
+}

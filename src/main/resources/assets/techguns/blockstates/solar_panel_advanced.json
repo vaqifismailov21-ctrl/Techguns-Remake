@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "techguns:block/solar_panel_advanced"
+    },
+    "facing=east": {
+      "model": "techguns:block/solar_panel_advanced"
+    },
+    "facing=south": {
+      "model": "techguns:block/solar_panel_advanced"
+    },
+    "facing=west": {
+      "model": "techguns:block/solar_panel_advanced"
+    }
+  }
+}

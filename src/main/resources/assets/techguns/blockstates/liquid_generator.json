@@ -4,31 +4,25 @@
       "model": "techguns:block/liquid_generator"
     },
     "facing=north,lit=true": {
-      "model": "techguns:block/liquid_generator_on"
+      "model": "techguns:block/liquid_generator"
     },
     "facing=east,lit=false": {
-      "model": "techguns:block/liquid_generator",
-      "y": 90
+      "model": "techguns:block/liquid_generator"
     },
     "facing=east,lit=true": {
-      "model": "techguns:block/liquid_generator_on",
-      "y": 90
+      "model": "techguns:block/liquid_generator"
     },
     "facing=south,lit=false": {
-      "model": "techguns:block/liquid_generator",
-      "y": 180
+      "model": "techguns:block/liquid_generator"
     },
     "facing=south,lit=true": {
-      "model": "techguns:block/liquid_generator_on",
-      "y": 180
+      "model": "techguns:block/liquid_generator"
     },
     "facing=west,lit=false": {
-      "model": "techguns:block/liquid_generator",
-      "y": 270
+      "model": "techguns:block/liquid_generator"
     },
     "facing=west,lit=true": {
-      "model": "techguns:block/liquid_generator_on",
-      "y": 270
+      "model": "techguns:block/liquid_generator"
     }
   }
 }

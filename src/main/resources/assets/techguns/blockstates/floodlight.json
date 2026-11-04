@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=north,lit=true": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=east,lit=false": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=east,lit=true": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=south,lit=false": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=south,lit=true": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=west,lit=false": {
+      "model": "techguns:block/floodlight"
+    },
+    "facing=west,lit=true": {
+      "model": "techguns:block/floodlight"
+    }
+  }
+}

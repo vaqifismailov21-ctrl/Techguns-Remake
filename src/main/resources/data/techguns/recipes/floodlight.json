@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "PLP",
+    " I "
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "G": {
+      "tag": "forge:glass_panes"
+    },
+    "L": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:floodlight",
+    "count": 1
+  }
+}
