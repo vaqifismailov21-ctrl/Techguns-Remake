@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/panel_large_border",
+    "empty": "techguns:blocks/ctm/panel_large_border_empty",
+    "vertical": "techguns:blocks/ctm/panel_large_border_vertical",
+    "horizontal": "techguns:blocks/ctm/panel_large_border_horizontal",
+    "center": "techguns:blocks/ctm/panel_large_border_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/panel_large_border"
+  },
+  "render_type": "minecraft:cutout"
+}

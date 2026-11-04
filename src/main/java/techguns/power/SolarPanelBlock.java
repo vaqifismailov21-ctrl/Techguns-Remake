@@ -43,4 +43,8 @@ public final class SolarPanelBlock extends BaseEntityBlock {
             player.displayClientMessage(Component.translatable("techguns.power.solar_status",panel.currentRate(),panel.energyStored(),panel.energyCapacity()).append(" ").append(panel.reason()),true);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
+    /** Like the original machines (isOpaqueCube false): light and sky light pass, no ambient occlusion shadow. */
+    @Override public float getShadeBrightness(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 1.0f;}
+    @Override public boolean propagatesSkylightDown(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return true;}
+    @Override public int getLightBlock(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 0;}
 }

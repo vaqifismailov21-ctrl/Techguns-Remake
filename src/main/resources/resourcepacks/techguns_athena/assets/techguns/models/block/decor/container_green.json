@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/container_green",
+    "empty": "techguns:blocks/ctm/container_green_empty",
+    "vertical": "techguns:blocks/ctm/container_green_vertical",
+    "horizontal": "techguns:blocks/ctm/container_green_horizontal",
+    "center": "techguns:blocks/ctm/container_green_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/container_green"
+  },
+  "render_type": "minecraft:cutout"
+}

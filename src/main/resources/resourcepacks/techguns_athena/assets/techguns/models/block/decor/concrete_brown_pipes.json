@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/concrete_brown_pipes",
+    "empty": "techguns:blocks/ctm/concrete_brown_pipes_empty",
+    "vertical": "techguns:blocks/ctm/concrete_brown_pipes_vertical",
+    "horizontal": "techguns:blocks/ctm/concrete_brown_pipes_horizontal",
+    "center": "techguns:blocks/ctm/concrete_brown_pipes_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/concrete_brown_pipes"
+  },
+  "render_type": "minecraft:cutout"
+}

@@ -75,4 +75,8 @@ public final class TurretBlock extends BaseEntityBlock {
     /** Only the two original mounting directions exist. */
     public static Direction facingFor(Direction clickedFace){return clickedFace==Direction.DOWN?Direction.DOWN:Direction.UP;}
     public static Block create(){return new TurretBlock();}
+    /** Like the original machines (isOpaqueCube false): light and sky light pass, no ambient occlusion shadow. */
+    @Override public float getShadeBrightness(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 1.0f;}
+    @Override public boolean propagatesSkylightDown(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return true;}
+    @Override public int getLightBlock(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 0;}
 }

@@ -1651,6 +1651,82 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:blocks/cable_end"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_brown_light_scaff-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/concrete_brown_pipes-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_blue-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_green-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_orange-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/container_red-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_engine_c-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_engine_top_c-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_frame_c-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_rod-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/drill_scaffold_c-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_border_alpha-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_border_red-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_plate_black-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/nethermetal_plate_red-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/panel_large_border-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/steelframe_blue-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/steelframe_dark-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/steelframe_scaffold-ctm"
     }
   ]
 }

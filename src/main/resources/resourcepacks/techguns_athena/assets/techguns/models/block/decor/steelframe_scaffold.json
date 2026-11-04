@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/steelframe_scaffold",
+    "empty": "techguns:blocks/ctm/steelframe_scaffold_empty",
+    "vertical": "techguns:blocks/ctm/steelframe_scaffold_vertical",
+    "horizontal": "techguns:blocks/ctm/steelframe_scaffold_horizontal",
+    "center": "techguns:blocks/ctm/steelframe_scaffold_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/steelframe_scaffold"
+  },
+  "render_type": "minecraft:cutout"
+}

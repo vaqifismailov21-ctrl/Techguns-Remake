@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/steelframe_dark",
+    "empty": "techguns:blocks/ctm/steelframe_dark_empty",
+    "vertical": "techguns:blocks/ctm/steelframe_dark_vertical",
+    "horizontal": "techguns:blocks/ctm/steelframe_dark_horizontal",
+    "center": "techguns:blocks/ctm/steelframe_dark_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/steelframe_dark"
+  },
+  "render_type": "minecraft:cutout"
+}

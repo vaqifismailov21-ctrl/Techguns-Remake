@@ -52,4 +52,8 @@ public final class EnergyCellBlock extends BaseEntityBlock {
     @Override public int getAnalogOutputSignal(BlockState state,Level level,BlockPos pos){return level.getBlockEntity(pos) instanceof EnergyCellEntity cell?cell.signal():0;}
     /** Charge bars shown for a stored amount: 0 only when empty. */
     public static int chargeLevel(int energy,int capacity){return energy<=0?0:Math.max(1,Math.min(4,(int)Math.ceil(energy*4.0/capacity)));}
+    /** Like the original machines (isOpaqueCube false): light and sky light pass, no ambient occlusion shadow. */
+    @Override public float getShadeBrightness(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 1.0f;}
+    @Override public boolean propagatesSkylightDown(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return true;}
+    @Override public int getLightBlock(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 0;}
 }

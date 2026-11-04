@@ -34,4 +34,8 @@ public abstract class FacingMachineBlock extends BaseEntityBlock {
     }
     /** Sets LIT when it changed. */
     public static void setLit(net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos,BlockState state,boolean lit){if(state.getValue(LIT)!=lit)level.setBlock(pos,state.setValue(LIT,lit),3);}
+    /** Like the original machines (isOpaqueCube false): light and sky light pass, no ambient occlusion shadow. */
+    @Override public float getShadeBrightness(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 1.0f;}
+    @Override public boolean propagatesSkylightDown(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return true;}
+    @Override public int getLightBlock(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 0;}
 }

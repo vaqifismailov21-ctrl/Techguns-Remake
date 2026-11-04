@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/concrete_brown_light_scaff",
+    "empty": "techguns:blocks/ctm/concrete_brown_light_scaff_empty",
+    "vertical": "techguns:blocks/ctm/concrete_brown_light_scaff_vertical",
+    "horizontal": "techguns:blocks/ctm/concrete_brown_light_scaff_horizontal",
+    "center": "techguns:blocks/ctm/concrete_brown_light_scaff_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/concrete_brown_light_scaff"
+  },
+  "render_type": "minecraft:cutout"
+}

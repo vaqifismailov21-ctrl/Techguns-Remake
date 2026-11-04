@@ -56,4 +56,8 @@ public final class GeneratorBlock extends BaseEntityBlock {
             if(entity instanceof LiquidGeneratorEntity generator)Containers.dropItemStack(level,pos.getX(),pos.getY(),pos.getZ(),generator.container.getStackInSlot(0));}
         super.onRemove(state,level,pos,next,moving);
     }
+    /** Like the original machines (isOpaqueCube false): light and sky light pass, no ambient occlusion shadow. */
+    @Override public float getShadeBrightness(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 1.0f;}
+    @Override public boolean propagatesSkylightDown(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return true;}
+    @Override public int getLightBlock(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.BlockGetter level,net.minecraft.core.BlockPos pos){return 0;}
 }

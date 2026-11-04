@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "athena:athena",
+  "athena:loader": "athena:ctm",
+  "ctm_textures": {
+    "particle": "techguns:blocks/drill_frame_c",
+    "empty": "techguns:blocks/ctm/drill_frame_c_empty",
+    "vertical": "techguns:blocks/ctm/drill_frame_c_vertical",
+    "horizontal": "techguns:blocks/ctm/drill_frame_c_horizontal",
+    "center": "techguns:blocks/ctm/drill_frame_c_center"
+  },
+  "textures": {
+    "particle": "techguns:blocks/drill_frame_c"
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_light_scaff_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_light_scaff_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_light_scaff_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_light_scaff_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_pipes_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_pipes_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_pipes_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/concrete_brown_pipes_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_blue_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_blue_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_blue_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_blue_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_green_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_green_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_green_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_green_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_orange_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_orange_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_orange_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_orange_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_red_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_red_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_red_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/container_red_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_border_red_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_border_red_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_border_red_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_border_red_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_black_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_black_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_black_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_black_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_red_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_red_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_red_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/nethermetal_plate_red_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/panel_large_border_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/panel_large_border_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/panel_large_border_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/panel_large_border_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_blue_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_blue_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_blue_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_blue_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_dark_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_dark_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_dark_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_dark_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_scaffold_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_scaffold_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_scaffold_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/steelframe_scaffold_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_frame_c_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_frame_c_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_frame_c_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_frame_c_center"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_scaffold_c_empty"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_scaffold_c_vertical"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_scaffold_c_horizontal"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/ctm/drill_scaffold_c_center"
+    }
+  ]
+}
