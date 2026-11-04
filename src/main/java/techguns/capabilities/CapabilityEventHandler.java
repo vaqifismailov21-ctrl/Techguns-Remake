@@ -52,6 +52,7 @@ public final class CapabilityEventHandler {
     @SubscribeEvent public static void death(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             var data = TGExtendedPlayer.get(player);
+            if (data != null) { data.lockOnEntity = null; data.lockOnTicks = 0; } // death forgets the missile lock
             data.foodleft = 0; data.lastSaturation = 0; data.addRadiation(-200); data.markDirty();
         }
     }

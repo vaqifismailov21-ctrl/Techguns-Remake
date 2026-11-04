@@ -15,10 +15,10 @@ public final class GuidedMissileLauncher extends GenericGunCharge {
     public GuidedMissileLauncher(int interval,int clip,int reload,int range,int recoil,float damage,float speed,float accuracy,float start,float end,float minimum,Supplier<AmmoType> ammo,Supplier<SoundEvent> fire,Supplier<SoundEvent> reloadSound,float fullCharge,int consumption) {
         super(interval,clip,reload,range,recoil,damage,speed,accuracy,start,end,minimum,ammo,fire,reloadSound,fullCharge,consumption);
     }
-    /** The lock only decays while aiming; with the launcher put away it stayed frozen and came back with the gun. */
+    /** As in the original the lock lives only while the trigger is held: released (missile fired), put away or dead, it is forgotten. */
     @Override public void inventoryTick(ItemStack stack,Level level,Entity entity,int slot,boolean selected){
         super.inventoryTick(stack,level,entity,slot,selected);
-        if(entity instanceof Player player&&!(player.getMainHandItem().getItem() instanceof GuidedMissileLauncher)){
+        if(entity instanceof Player player&&!(player.isUsingItem()&&player.getUseItem().getItem() instanceof GuidedMissileLauncher)){
             var state=TGExtendedPlayer.get(player);if(state!=null&&(state.lockOnEntity!=null||state.lockOnTicks!=0)){state.lockOnEntity=null;state.lockOnTicks=0;}
         }
     }

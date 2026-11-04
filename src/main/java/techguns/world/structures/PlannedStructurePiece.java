@@ -57,7 +57,7 @@ public final class PlannedStructurePiece extends StructurePiece {
             // Keep the complete source plan while writing; native postprocessing resolves ordinary attachments.
             world.setBlock(pos,state,18);
             var data=blockData.get(i/4);if(data!=null&&world.getBlockEntity(pos)!=null){var entity=world.getBlockEntity(pos);entity.load(data.copy());entity.setChanged();}
-            boolean postprocess=resolveAllShapes&&!state.isAir()&&state.getFluidState().isEmpty()||trail&&!state.is(TGWorld.SLIMY_TRAIL.get())||state.is(net.minecraft.tags.BlockTags.FENCES)||state.getBlock() instanceof net.minecraft.world.level.block.IronBarsBlock||state.getBlock() instanceof net.minecraft.world.level.block.DoorBlock||state.getBlock() instanceof net.minecraft.world.level.block.StairBlock;
+            boolean postprocess=resolveAllShapes&&!state.isAir()&&state.getFluidState().isEmpty()||trail&&!state.is(TGWorld.SLIMY_TRAIL.get())||state.is(net.minecraft.tags.BlockTags.FENCES)||state.getBlock() instanceof net.minecraft.world.level.block.IronBarsBlock||state.getBlock() instanceof net.minecraft.world.level.block.DoorBlock||state.getBlock() instanceof net.minecraft.world.level.block.StairBlock||state.getBlock() instanceof techguns.blocks.DecorSandbagsBlock;
             var chunkAccess=world.getChunk(pos);if(postprocess&&chunkAccess.getStatus()!=net.minecraft.world.level.chunk.ChunkStatus.FULL)chunkAccess.markPosForPostprocessing(pos);
         }
     }
