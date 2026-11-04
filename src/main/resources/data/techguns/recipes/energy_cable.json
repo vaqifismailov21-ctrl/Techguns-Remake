@@ -2,14 +2,24 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "RWR"
+    "RRR",
+    "WWW",
+    "RRR"
   ],
   "key": {
-    "R": {
-      "tag": "forge:sheets/plastic"
-    },
+    "R": [
+      {
+        "tag": "forge:sheets/plastic"
+      },
+      {
+        "tag": "forge:item_rubber"
+      },
+      {
+        "item": "minecraft:dried_kelp"
+      }
+    ],
     "W": {
-      "item": "techguns:copperwire"
+      "tag": "forge:wires/copper"
     }
   },
   "result": {

@@ -3,7 +3,7 @@
   "category": "misc",
   "pattern": [
     "PCP",
-    "MGM",
+    "UGU",
     "PBP"
   ],
   "key": {
@@ -13,8 +13,8 @@
     "C": {
       "item": "techguns:coil"
     },
-    "M": {
-      "item": "techguns:mechanicalpartsiron"
+    "U": {
+      "item": "techguns:pumpmechanism"
     },
     "G": {
       "item": "techguns:fuel_generator"

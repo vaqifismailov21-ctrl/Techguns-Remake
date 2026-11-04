@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PBP",
+    "PUP",
     "MGM",
     "PCP"
   ],
@@ -10,8 +10,8 @@
     "P": {
       "tag": "forge:plates/steel"
     },
-    "B": {
-      "item": "minecraft:bucket"
+    "U": {
+      "item": "techguns:pumpmechanism"
     },
     "M": {
       "item": "techguns:mechanicalpartsiron"

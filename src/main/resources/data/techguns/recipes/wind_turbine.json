@@ -2,19 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    " S ",
-    "SIS",
-    " E "
+    "SSS",
+    " E ",
+    "PIP"
   ],
   "key": {
     "S": {
       "tag": "forge:plates/steel"
     },
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
     "E": {
       "item": "techguns:electricengine"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "I": {
+      "tag": "forge:ingots/steel"
     }
   },
   "result": {

@@ -2,13 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PRP",
+    "PBP",
     "RCR",
-    "PRP"
+    "PBP"
   ],
   "key": {
     "P": {
       "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "techguns:redstone_battery"
     },
     "R": {
       "tag": "forge:storage_blocks/redstone"

@@ -23,15 +23,15 @@ public final class TGFluids {
     /**
      * Crude oil (added at the user's request; the original only used oil fluids of other mods). Its source is named "oil",
      * so the default FluidListOilWorldspawn ("oil", "crude_oil") finds it: desert oil clusters spawn with oil pools and
-     * ore drills pump it from oil clusters. Uses the water textures, tinted black.
+     * ore drills pump it from oil clusters. Has its own dark, glossy animated textures (also shown in the bucket).
      */
     public static final RegistryObject<FluidType> OIL_TYPE=TYPES.register("oil",()->new FluidType(FluidType.Properties.create().density(900).viscosity(6000).motionScale(.007).canExtinguish(false).supportsBoating(true).fallDistanceModifier(0f).descriptionId("block.techguns.oil")
             .sound(net.minecraftforge.common.SoundActions.BUCKET_FILL,net.minecraft.sounds.SoundEvents.BUCKET_FILL).sound(net.minecraftforge.common.SoundActions.BUCKET_EMPTY,net.minecraft.sounds.SoundEvents.BUCKET_EMPTY)){
         @Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer){consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions(){
-            public ResourceLocation getStillTexture(){return ResourceLocation.withDefaultNamespace("block/water_still");}
-            public ResourceLocation getFlowingTexture(){return ResourceLocation.withDefaultNamespace("block/water_flow");}
+            public ResourceLocation getStillTexture(){return ResourceLocation.fromNamespaceAndPath("techguns","blocks/oil_still");}
+            public ResourceLocation getFlowingTexture(){return ResourceLocation.fromNamespaceAndPath("techguns","blocks/oil_flow");}
             public ResourceLocation getOverlayTexture(){return ResourceLocation.withDefaultNamespace("block/water_overlay");}
-            public int getTintColor(){return 0xFF16120E;}
+            public int getTintColor(){return 0xFFFFFFFF;}
             public org.joml.Vector3f modifyFogColor(net.minecraft.client.Camera camera,float partialTick,net.minecraft.client.multiplayer.ClientLevel level,int renderDistance,float darkenWorldAmount,org.joml.Vector3f fluidFogColor){return new org.joml.Vector3f(.06f,.05f,.04f);}
             public void modifyFogRender(net.minecraft.client.Camera camera,net.minecraft.client.renderer.FogRenderer.FogMode mode,float renderDistance,float partialTick,float nearDistance,float farDistance,com.mojang.blaze3d.shaders.FogShape shape){com.mojang.blaze3d.systems.RenderSystem.setShaderFogStart(0f);com.mojang.blaze3d.systems.RenderSystem.setShaderFogEnd(3f);}
         });}

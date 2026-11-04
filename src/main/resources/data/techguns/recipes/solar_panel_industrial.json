@@ -2,22 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "SSS",
-    "PCP",
-    "PGP"
+    "GGG",
+    "SCS",
+    "PQP"
   ],
   "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
     "S": {
       "item": "techguns:solar_panel_advanced"
-    },
-    "P": {
-      "tag": "forge:plates/titanium"
     },
     "C": {
       "tag": "forge:circuits/elite"
     },
-    "G": {
-      "tag": "forge:glass_panes"
+    "P": {
+      "tag": "forge:plates/titanium"
+    },
+    "Q": {
+      "tag": "forge:storage_blocks/quartz"
     }
   },
   "result": {

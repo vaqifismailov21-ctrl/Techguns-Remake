@@ -4,7 +4,7 @@
   "pattern": [
     "PPP",
     "MFM",
-    "PCP"
+    "WCW"
   ],
   "key": {
     "P": {
@@ -16,8 +16,11 @@
     "F": {
       "item": "minecraft:furnace"
     },
+    "W": {
+      "tag": "forge:wires/copper"
+    },
     "C": {
-      "item": "techguns:circuitboard"
+      "item": "techguns:coil"
     }
   },
   "result": {

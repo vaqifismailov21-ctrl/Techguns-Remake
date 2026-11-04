@@ -1727,6 +1727,14 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:blocks/steelframe_scaffold-ctm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/oil_still"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/oil_flow"
     }
   ]
 }

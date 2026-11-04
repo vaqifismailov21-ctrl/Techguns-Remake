@@ -4,7 +4,7 @@
   "pattern": [
     "GGG",
     "LCL",
-    "PRP"
+    "PWP"
   ],
   "key": {
     "G": {
@@ -19,8 +19,8 @@
     "P": {
       "tag": "forge:plates/iron"
     },
-    "R": {
-      "tag": "forge:dusts/redstone"
+    "W": {
+      "tag": "forge:wires/copper"
     }
   },
   "result": {

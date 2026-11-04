@@ -2,22 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "SSS",
-    "PCP",
-    "PEP"
+    "GGG",
+    "SCS",
+    "PWP"
   ],
   "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
     "S": {
       "item": "techguns:solar_panel"
-    },
-    "P": {
-      "tag": "forge:plates/steel"
     },
     "C": {
       "item": "techguns:circuitboard"
     },
-    "E": {
-      "item": "techguns:energy_cell"
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "tag": "forge:wires/gold"
     }
   },
   "result": {

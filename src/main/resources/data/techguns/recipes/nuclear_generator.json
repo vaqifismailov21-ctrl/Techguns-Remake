@@ -2,22 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "POP",
+    "PCP",
     "ERE",
-    "POP"
+    "PUP"
   ],
   "key": {
     "P": {
       "tag": "forge:plates/obsidian_steel"
     },
-    "O": {
+    "C": {
       "item": "techguns:coil"
     },
     "E": {
       "tag": "forge:circuits/elite"
     },
     "R": {
-      "item": "techguns:enricheduranium"
+      "tag": "forge:ingots/uranium_enriched"
+    },
+    "U": {
+      "item": "techguns:pumpmechanism"
     }
   },
   "result": {
