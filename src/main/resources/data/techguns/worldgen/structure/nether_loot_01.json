@@ -3,6 +3,6 @@
   "kind": "nether_loot_01",
   "biomes": "#minecraft:is_nether",
   "spawn_overrides": {},
-  "step": "surface_structures",
+  "step": "top_layer_modification",
   "terrain_adaptation": "none"
 }

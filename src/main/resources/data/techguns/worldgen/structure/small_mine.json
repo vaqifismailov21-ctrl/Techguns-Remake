@@ -3,6 +3,6 @@
   "kind": "small_mine",
   "biomes": "#minecraft:is_overworld",
   "spawn_overrides": {},
-  "step": "surface_structures",
+  "step": "top_layer_modification",
   "terrain_adaptation": "none"
 }

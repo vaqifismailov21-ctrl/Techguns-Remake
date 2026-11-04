@@ -3,6 +3,6 @@
   "kind": "nether_acid_hole",
   "biomes": "#minecraft:is_nether",
   "spawn_overrides": {},
-  "step": "surface_structures",
+  "step": "top_layer_modification",
   "terrain_adaptation": "none"
 }

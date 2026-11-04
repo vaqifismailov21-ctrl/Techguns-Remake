@@ -34,8 +34,8 @@ public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfigura
     private static boolean tag(Holder<Biome> biome,String id){return biome.is(TagKey.create(net.minecraft.core.registries.Registries.BIOME,ResourceLocation.parse(id)));}
     public static boolean desert(Holder<Biome> biome){return biome.is(Biomes.DESERT)||tag(biome,"forge:is_sandy")||tag(biome,"forge:is_wasteland");}
     public static int biomeColor(Holder<Biome> biome){
-        // snow variants only where it snows: the forge cold tag also covers taiga and windswept hills, which gave snow-block buildings on grass
-        if(tag(biome,"forge:is_snowy")||biome.value().getBaseTemperature()<.15f)return 1;
+        // Techguns rule (WorldgenStructure.coldTypes): COLD or SNOWY biomes use the snow palette
+        if(tag(biome,"forge:is_cold")||tag(biome,"forge:is_cold/overworld")||tag(biome,"forge:is_snowy")||biome.value().getBaseTemperature()<.15f)return 1;
         if(desert(biome)||biome.is(BiomeTags.IS_BEACH)||biome.is(BiomeTags.IS_BADLANDS))return 2;
         return biome.is(BiomeTags.IS_NETHER)?3:0;
     }
