@@ -61,7 +61,7 @@ public final class PowerGameTests {
         h.succeed();
     }
     @GameTest(template="empty",batch="power",timeoutTicks=100) public static void geothermalGeneratorRunsOnLavaWithoutUsingItUp(GameTestHelper h){
-        h.setBlock(2,1,2,Blocks.LAVA);h.setBlock(3,2,2,Blocks.LAVA);h.setBlock(2,2,2,PowerBlocks.GEOTHERMAL_GENERATOR.get());
+        contained(h,new BlockPos(2,1,2),Blocks.LAVA);contained(h,new BlockPos(3,2,2),Blocks.LAVA);h.setBlock(2,2,2,PowerBlocks.GEOTHERMAL_GENERATOR.get());
         var generator=(GeothermalGeneratorEntity)h.getBlockEntity(new BlockPos(2,2,2));
         h.runAfterDelay(30,()->{
             h.assertTrue(generator.lava==2&&generator.rate==2*PowerBlocks.GEOTHERMAL_PER_LAVA,"Two lava sources: "+generator.lava+" sources, "+generator.rate+" FE/t");
@@ -72,8 +72,8 @@ public final class PowerGameTests {
         });
     }
     @GameTest(template="empty",batch="power",timeoutTicks=200) public static void nuclearGeneratorBurnsMicroReactorsAndNeedsWater(GameTestHelper h){
-        h.setBlock(1,1,1,PowerBlocks.NUCLEAR_GENERATOR.get());h.setBlock(3,1,1,PowerBlocks.NUCLEAR_GENERATOR.get());h.setBlock(4,1,1,Blocks.WATER);
-        var dry=(NuclearGeneratorEntity)h.getBlockEntity(new BlockPos(1,1,1));var wet=(NuclearGeneratorEntity)h.getBlockEntity(new BlockPos(3,1,1));
+        h.setBlock(0,1,0,PowerBlocks.NUCLEAR_GENERATOR.get());h.setBlock(4,1,3,PowerBlocks.NUCLEAR_GENERATOR.get());contained(h,new BlockPos(3,1,3),Blocks.WATER);
+        var dry=(NuclearGeneratorEntity)h.getBlockEntity(new BlockPos(0,1,0));var wet=(NuclearGeneratorEntity)h.getBlockEntity(new BlockPos(4,1,3));
         h.assertTrue(dry.slots.insertItem(0,new ItemStack(Items.COAL),true).getCount()==1,"Only micro reactors go in");
         dry.slots.setStackInSlot(0,new ItemStack(techguns.TGItems.NUCLEAR_POWERCELL.get(),2));wet.slots.setStackInSlot(0,new ItemStack(techguns.TGItems.NUCLEAR_POWERCELL.get()));
         h.runAfterDelay(40,()->{
@@ -83,7 +83,7 @@ public final class PowerGameTests {
             dry.heat=PowerBlocks.NUCLEAR_HEAT_MAX-1;
             h.runAfterDelay(5,()->{
                 h.assertTrue(dry.overheated&&!dry.running(),"At the heat limit it shuts down");
-                h.assertTrue(h.getBlockState(new BlockPos(1,1,1)).is(PowerBlocks.NUCLEAR_GENERATOR.get()),"No explosion with the default config");
+                h.assertTrue(h.getBlockState(new BlockPos(0,1,0)).is(PowerBlocks.NUCLEAR_GENERATOR.get()),"No explosion with the default config");
                 h.succeed();
             });
         });
@@ -98,7 +98,11 @@ public final class PowerGameTests {
             if(h.absolutePos(new BlockPos(2,4,2)).getY()<64)h.assertTrue(base.problem==3&&base.rate==0,"No wind below Y 64");
             h.assertTrue(WindTurbineEntity.findBase(h.getLevel(),h.absolutePos(new BlockPos(2,4,2)))==base,"The head finds its base");
             h.setBlock(2,4,2,Blocks.AIR);
-            h.runAfterDelay(2,()->{base.survey();h.assertTrue(base.problem==1&&base.rate==0,"Without a head it does not work");h.succeed();});
+            h.runAfterDelay(2,()->{
+                base.survey();h.assertTrue(part.apply(3)==WindTurbineBlock.Part.HEAD&&base.masts==1,"Taking the head off makes the top mast the head");
+                h.setBlock(2,3,2,Blocks.AIR);h.setBlock(2,2,2,Blocks.AIR);
+                h.runAfterDelay(2,()->{base.survey();h.assertTrue(base.problem==1&&base.rate==0,"A base alone does not work");h.succeed();});
+            });
         });
     }
     @GameTest(template="empty",batch="power",timeoutTicks=60) public static void energyCellAndBankShowTheirCharge(GameTestHelper h){
@@ -127,6 +131,7 @@ public final class PowerGameTests {
     }
     @GameTest(template="empty",batch="power",timeoutTicks=120) public static void floodlightLightsItsBeamOnlyWithEnergy(GameTestHelper h){
         h.setBlock(0,1,2,PowerBlocks.FLOODLIGHT.get().defaultBlockState().setValue(FacingMachineBlock.FACING,Direction.EAST));
+        h.setBlock(4,1,2,Blocks.STONE);
         var light=(FloodlightEntity)h.getBlockEntity(new BlockPos(0,1,2));
         h.runAfterDelay(25,()->{
             h.assertTrue(!h.getBlockState(new BlockPos(0,1,2)).getValue(FacingMachineBlock.LIT)&&!h.getBlockState(new BlockPos(2,1,2)).is(PowerBlocks.FLOODLIGHT_LIGHT.get()),"No energy, no light");
@@ -144,6 +149,11 @@ public final class PowerGameTests {
         int[] best={20,60,160};int[] cap={20_000,60_000,160_000};
         for(int i=0;i<3;i++){var panel=(SolarPanelEntity)h.getBlockEntity(new BlockPos(i*2,1,0));h.assertTrue(panel.tier==i&&panel.bestRate()==best[i]&&panel.energyCapacity()==cap[i],"Tier "+i);}
         h.succeed();
+    }
+    /** Fluid source walled in with stone on every side but the top, so it does not run into other tests. */
+    private static void contained(GameTestHelper h,BlockPos pos,net.minecraft.world.level.block.Block fluid){
+        for(var side:new Direction[]{Direction.DOWN,Direction.NORTH,Direction.SOUTH,Direction.WEST,Direction.EAST}){var p=pos.relative(side);if(h.getBlockState(p).isAir())h.setBlock(p,Blocks.STONE);}
+        h.setBlock(pos,fluid);
     }
     private PowerGameTests(){}
 }
