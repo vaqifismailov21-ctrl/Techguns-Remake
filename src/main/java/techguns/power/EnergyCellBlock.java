@@ -43,11 +43,13 @@ public final class EnergyCellBlock extends BaseEntityBlock {
     @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return net.minecraft.world.phys.shapes.Shapes.block();}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new EnergyCellEntity(pos,state);}
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,PowerBlocks.ENERGY_CELL_ENTITY.get(),(world,pos,block,entity)->entity.tick());}
+    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return PowerBlocks.ticker(level,type,PowerBlocks.ENERGY_CELL_ENTITY.get(),EnergyCellEntity::tick);}
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(!level.isClientSide&&level.getBlockEntity(pos) instanceof EnergyCellEntity cell)player.displayClientMessage(Component.translatable(bank?"techguns.power.bank_status":"techguns.power.cell_status",cell.energyStored(),cell.energyCapacity()),true);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
+    @Override public boolean hasAnalogOutputSignal(BlockState state){return true;}
+    @Override public int getAnalogOutputSignal(BlockState state,Level level,BlockPos pos){return level.getBlockEntity(pos) instanceof EnergyCellEntity cell?cell.signal():0;}
     /** Charge bars shown for a stored amount: 0 only when empty. */
     public static int chargeLevel(int energy,int capacity){return energy<=0?0:Math.max(1,Math.min(4,(int)Math.ceil(energy*4.0/capacity)));}
 }

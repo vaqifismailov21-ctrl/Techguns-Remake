@@ -37,7 +37,7 @@ public final class SolarPanelBlock extends BaseEntityBlock {
     @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return SHAPES[tier];}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new SolarPanelEntity(pos,state);}
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,PowerBlocks.SOLAR_PANEL_ENTITY.get(),(world,pos,block,entity)->entity.tick());}
+    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:PowerBlocks.ticker(level,type,PowerBlocks.SOLAR_PANEL_ENTITY.get(),SolarPanelEntity::tick);}
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(!level.isClientSide&&level.getBlockEntity(pos) instanceof SolarPanelEntity panel)
             player.displayClientMessage(Component.translatable("techguns.power.solar_status",panel.currentRate(),panel.energyStored(),panel.energyCapacity()).append(" ").append(panel.reason()),true);

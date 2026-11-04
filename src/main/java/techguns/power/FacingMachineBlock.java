@@ -27,6 +27,11 @@ public abstract class FacingMachineBlock extends BaseEntityBlock {
     @Override public BlockState rotate(BlockState state,Rotation rotation){return state.setValue(FACING,rotation.rotate(state.getValue(FACING)));}
     @Override public BlockState mirror(BlockState state,Mirror mirror){return state.rotate(mirror.getRotation(state.getValue(FACING)));}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
+    /** World position of a point given in model block coordinates (front at z = 0) for a block facing {@code facing}. */
+    public static net.minecraft.world.phys.Vec3 local(net.minecraft.core.BlockPos pos,Direction facing,double x,double y,double z){
+        var right=facing.getClockWise();double forward=(8-z)/16,side=(x-8)/16;
+        return new net.minecraft.world.phys.Vec3(pos.getX()+.5+facing.getStepX()*forward+right.getStepX()*side,pos.getY()+y/16,pos.getZ()+.5+facing.getStepZ()*forward+right.getStepZ()*side);
+    }
     /** Sets LIT when it changed. */
     public static void setLit(net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos,BlockState state,boolean lit){if(state.getValue(LIT)!=lit)level.setBlock(pos,state.setValue(LIT,lit),3);}
 }

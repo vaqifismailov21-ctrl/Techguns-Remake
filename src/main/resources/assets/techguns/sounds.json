@@ -1227,5 +1227,75 @@
     "sounds": [
       "techguns:blocks/techdoor_state_finished"
     ]
+  },
+  "power.fuel_generator": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.fuel_generator",
+    "sounds": [
+      {
+        "name": "techguns:power/fuel_generator",
+        "stream": false
+      }
+    ]
+  },
+  "power.liquid_generator": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.liquid_generator",
+    "sounds": [
+      {
+        "name": "techguns:power/liquid_generator",
+        "stream": false
+      }
+    ]
+  },
+  "power.geothermal_generator": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.geothermal_generator",
+    "sounds": [
+      {
+        "name": "techguns:power/geothermal_generator",
+        "stream": false
+      }
+    ]
+  },
+  "power.nuclear_generator": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.nuclear_generator",
+    "sounds": [
+      {
+        "name": "techguns:power/nuclear_generator",
+        "stream": false
+      }
+    ]
+  },
+  "power.wind_turbine": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.wind_turbine",
+    "sounds": [
+      {
+        "name": "techguns:power/wind_turbine",
+        "stream": false
+      }
+    ]
+  },
+  "power.floodlight_on": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.floodlight_on",
+    "sounds": [
+      {
+        "name": "techguns:power/floodlight_on",
+        "stream": false
+      }
+    ]
+  },
+  "power.energy_cell_full": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.energy_cell_full",
+    "sounds": [
+      {
+        "name": "techguns:power/energy_cell_full",
+        "stream": false
+      }
+    ]
   }
 }

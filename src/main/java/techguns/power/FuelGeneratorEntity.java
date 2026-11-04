@@ -24,14 +24,17 @@ public final class FuelGeneratorEntity extends EnergySource {
     public FuelGeneratorEntity(BlockPos pos,BlockState state){super(PowerBlocks.FUEL_GENERATOR_ENTITY.get(),pos,state,PowerBlocks.GENERATOR_CAPACITY,PowerBlocks.GENERATOR_OUTPUT);}
     public void tick(){
         boolean wasBurning=burnTime>0;
-        if(burnTime<=0&&energy.getEnergyStored()+PowerBlocks.GENERATOR_RATE<=energy.getMaxEnergyStored()){
-            var stack=fuel.getStackInSlot(0);int time=stack.isEmpty()?0:ForgeHooks.getBurnTime(stack,RecipeType.SMELTING);
-            if(time>0){burnTime=burnTotal=time;var remainder=stack.getCraftingRemainingItem();stack.shrink(1);if(stack.isEmpty()&&!remainder.isEmpty())fuel.setStackInSlot(0,remainder);else fuel.setStackInSlot(0,stack);setChanged();}
-        }
+        refuel();
         if(burnTime>0){burnTime--;produce(PowerBlocks.GENERATOR_RATE);setChanged();}
+        refuel(); // the next fuel starts right away, so the generator does not flicker between two items
         distribute();
         boolean burning=burnTime>0;
         if(burning!=wasBurning&&level!=null)level.setBlock(worldPosition,getBlockState().setValue(GeneratorBlock.LIT,burning),3);
+    }
+    private void refuel(){
+        if(burnTime>0||energy.getEnergyStored()+PowerBlocks.GENERATOR_RATE>energy.getMaxEnergyStored())return;
+        var stack=fuel.getStackInSlot(0);int time=stack.isEmpty()?0:ForgeHooks.getBurnTime(stack,RecipeType.SMELTING);
+        if(time>0){burnTime=burnTotal=time;var remainder=stack.getCraftingRemainingItem();stack.shrink(1);if(stack.isEmpty()&&!remainder.isEmpty())fuel.setStackInSlot(0,remainder);else fuel.setStackInSlot(0,stack);setChanged();}
     }
     @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){if(capability==ForgeCapabilities.ITEM_HANDLER)return fuelHandle.cast();return super.getCapability(capability,side);}
     @Override public void invalidateCaps(){super.invalidateCaps();fuelHandle.invalidate();}

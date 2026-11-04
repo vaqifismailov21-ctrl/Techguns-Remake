@@ -120,6 +120,13 @@ public final class TGSounds {
     public static final RegistryObject<SoundEvent> REACTION_CHAMBER_HEATRAY_WORK = register("machines.rc_heatraywork");
     public static final RegistryObject<SoundEvent> REACTION_CHAMBER_BEEP = register("machines.rc_beep");
     public static final RegistryObject<SoundEvent> REACTION_CHAMBER_WARNING = register("machines.rc_warning");
+    public static final RegistryObject<SoundEvent> FUEL_GENERATOR_RUN = register("power.fuel_generator");
+    public static final RegistryObject<SoundEvent> LIQUID_GENERATOR_RUN = register("power.liquid_generator");
+    public static final RegistryObject<SoundEvent> GEOTHERMAL_GENERATOR_RUN = register("power.geothermal_generator");
+    public static final RegistryObject<SoundEvent> NUCLEAR_GENERATOR_RUN = register("power.nuclear_generator");
+    public static final RegistryObject<SoundEvent> WIND_TURBINE_RUN = register("power.wind_turbine");
+    public static final RegistryObject<SoundEvent> FLOODLIGHT_ON = register("power.floodlight_on");
+    public static final RegistryObject<SoundEvent> ENERGY_CELL_FULL = register("power.energy_cell_full");
     public static final RegistryObject<SoundEvent> BULLET_IMPACT_BRICKS = register("guns.impact.bricks");
     public static final RegistryObject<SoundEvent> BULLET_IMPACT_STONE = register("guns.impact.rock");
     public static final RegistryObject<SoundEvent> BULLET_IMPACT_WOOD = register("guns.impact.wood");

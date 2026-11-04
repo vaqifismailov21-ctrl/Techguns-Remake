@@ -23,8 +23,14 @@ public final class TechgunsJeiPlugin implements IModPlugin {
     @Override public ResourceLocation getPluginUid(){return ResourceLocation.fromNamespaceAndPath("techguns","original_recipes");}
     @Override public void registerCategories(IRecipeCategoryRegistration registration){for(var kind:Kind.values())registration.addRecipeCategories(new TechgunsRecipeCategory(registration.getJeiHelpers().getGuiHelper(),kind,TYPES.get(kind)));}
     @Override public void registerRecipes(IRecipeRegistration registration){
+        powerInfo(registration);
         recipes=RecipeDisplays.all();unavailable.clear();for(var kind:Kind.values()){var entries=recipes.get(kind);entries.stream().filter(r->!r.available()).forEach(r->unavailable.add(r.id()));registration.addRecipes(TYPES.get(kind),entries.stream().filter(Display::available).toList());}
         Techguns.LOGGER.info("TECHGUNS_JEI_REGISTERED: {} categories, {} available recipes; {} external-tag recipes unavailable",TYPES.size(),recipes.values().stream().flatMap(List::stream).filter(Display::available).count(),unavailable.size());
+    }
+    /** Power blocks have no machine recipes; JEI shows what they do on their info page. */
+    private static void powerInfo(IRecipeRegistration registration){
+        for(var item:techguns.power.PowerBlocks.tabItems()){var id=net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item.get()).getPath();
+            registration.addIngredientInfo(new net.minecraft.world.item.ItemStack(item.get()),mezz.jei.api.constants.VanillaTypes.ITEM_STACK,net.minecraft.network.chat.Component.translatable("techguns.power.jei."+id));}
     }
     @Override public void registerRecipeCatalysts(IRecipeCatalystRegistration registration){for(var kind:Kind.values())registration.addRecipeCatalyst(kind.icon(),TYPES.get(kind));}
     @Override public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration){var crafting=registration.getCraftingCategory();crafting.addCategoryExtension(techguns.recipes.AmmoSwitchRecipe.class,DynamicCraftingExtension::new);crafting.addCategoryExtension(techguns.recipes.MiningHeadRecipe.class,DynamicCraftingExtension::new);}

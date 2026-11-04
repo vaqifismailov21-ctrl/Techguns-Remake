@@ -63,7 +63,7 @@ public final class PowerBlocks {
     public static final RegistryObject<Item> SOLAR_PANEL_INDUSTRIAL_ITEM=item("solar_panel_industrial",SOLAR_PANEL_INDUSTRIAL);
     public static final RegistryObject<Item> ENERGY_CELL_ITEM=TGItems.ITEMS.register("energy_cell",()->new EnergyCellItem(ENERGY_CELL.get(),CELL_CAPACITY));
     public static final RegistryObject<Item> ENERGY_BANK_ITEM=TGItems.ITEMS.register("energy_bank",()->new EnergyCellItem(ENERGY_BANK.get(),BANK_CAPACITY));
-    public static final RegistryObject<Item> ENERGY_CABLE_ITEM=TGItems.ITEMS.register("energy_cable",()->new net.minecraft.world.item.BlockItem(ENERGY_CABLE.get(),new Item.Properties()));
+    public static final RegistryObject<Item> ENERGY_CABLE_ITEM=TGItems.ITEMS.register("energy_cable",()->new PowerBlockItem(ENERGY_CABLE.get(),new Item.Properties(),false));
     public static final RegistryObject<Item> FLOODLIGHT_ITEM=item("floodlight",FLOODLIGHT);
 
     public static final RegistryObject<BlockEntityType<FuelGeneratorEntity>> FUEL_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("fuel_generator",()->BlockEntityType.Builder.of(FuelGeneratorEntity::new,FUEL_GENERATOR.get()).build(null));
@@ -81,6 +81,16 @@ public final class PowerBlocks {
     public static java.util.List<RegistryObject<Item>> tabItems(){
         return java.util.List.of(FUEL_GENERATOR_ITEM,LIQUID_GENERATOR_ITEM,GEOTHERMAL_GENERATOR_ITEM,NUCLEAR_GENERATOR_ITEM,WIND_TURBINE_ITEM,SOLAR_PANEL_ITEM,
                 SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,FLOODLIGHT_ITEM);
+    }
+
+    /** Client tick of the power block entities (sounds); set by the client setup, does nothing on a server. */
+    public static java.util.function.Consumer<net.minecraft.world.level.block.entity.BlockEntity> clientTick=entity->{};
+    /** Ticker of a power block: the server logic, or the client hook on the client. */
+    public static <T extends net.minecraft.world.level.block.entity.BlockEntity,E extends net.minecraft.world.level.block.entity.BlockEntity> net.minecraft.world.level.block.entity.BlockEntityTicker<T> ticker(
+            net.minecraft.world.level.Level level,BlockEntityType<T> type,BlockEntityType<E> expected,java.util.function.Consumer<E> server){
+        if(type!=expected)return null;
+        @SuppressWarnings("unchecked") net.minecraft.world.level.block.entity.BlockEntityTicker<T> ticker=level.isClientSide?(world,pos,state,entity)->clientTick.accept(entity):(world,pos,state,entity)->server.accept((E)entity);
+        return ticker;
     }
 
     /** Class loading registers the entries above. */

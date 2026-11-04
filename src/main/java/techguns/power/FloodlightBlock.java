@@ -22,7 +22,7 @@ public final class FloodlightBlock extends FacingMachineBlock {
     public FloodlightBlock(){super(15);}
     @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return SHAPE;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new FloodlightEntity(pos,state);}
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,PowerBlocks.FLOODLIGHT_ENTITY.get(),(world,pos,block,entity)->entity.tick());}
+    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return PowerBlocks.ticker(level,type,PowerBlocks.FLOODLIGHT_ENTITY.get(),FloodlightEntity::tick);}
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(!level.isClientSide&&level.getBlockEntity(pos) instanceof FloodlightEntity light)player.displayClientMessage(Component.translatable(state.getValue(LIT)?"techguns.power.floodlight_on":"techguns.power.floodlight_off",light.energyStored(),light.energyCapacity()),true);
         return InteractionResult.sidedSuccess(level.isClientSide);

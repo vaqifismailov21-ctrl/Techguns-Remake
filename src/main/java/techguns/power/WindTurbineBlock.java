@@ -63,7 +63,7 @@ public final class WindTurbineBlock extends BaseEntityBlock {
     }
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new WindTurbineEntity(pos,state);}
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,PowerBlocks.WIND_TURBINE_ENTITY.get(),(world,pos,block,entity)->entity.tick());}
+    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return PowerBlocks.ticker(level,type,PowerBlocks.WIND_TURBINE_ENTITY.get(),WindTurbineEntity::tick);}
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         if(!level.isClientSide){
             var base=WindTurbineEntity.findBase(level,pos);

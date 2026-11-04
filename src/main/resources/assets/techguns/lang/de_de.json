@@ -1022,5 +1022,18 @@
   "item.minecraft.splash_potion.effect.radregenerationpotion": "Wurftrank der RAD Regeneration",
   "item.minecraft.tipped_arrow.effect.radpotion": "Pfeil der Verstrahlung",
   "item.minecraft.tipped_arrow.effect.radresistancepotion": "Pfeil der RAD Resistenz",
-  "item.minecraft.tipped_arrow.effect.radregenerationpotion": "Pfeil der RAD Regeneration"
+  "item.minecraft.tipped_arrow.effect.radregenerationpotion": "Pfeil der RAD Regeneration",
+  "block.techguns.fuel_generator": "Brennstoffgenerator",
+  "block.techguns.liquid_generator": "Flüssigbrennstoffgenerator",
+  "block.techguns.geothermal_generator": "Geothermiegenerator",
+  "block.techguns.nuclear_generator": "Kerngenerator",
+  "block.techguns.wind_turbine": "Windkraftanlage",
+  "block.techguns.solar_panel": "Solarmodul",
+  "block.techguns.solar_panel_advanced": "Verbessertes Solarmodul",
+  "block.techguns.solar_panel_industrial": "Industrielles Solarmodul",
+  "block.techguns.energy_cell": "Energiezelle",
+  "block.techguns.energy_bank": "Energiebank",
+  "block.techguns.energy_cable": "Energiekabel",
+  "block.techguns.floodlight": "Flutlicht",
+  "block.techguns.floodlight_light": "Flutlichtstrahl"
 }

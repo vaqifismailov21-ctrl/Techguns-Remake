@@ -56,11 +56,13 @@ public final class NuclearGeneratorEntity extends EnergySource {
         if(working){int made=Math.min(PowerBlocks.NUCLEAR_RATE,fuel);fuel-=made;produce(made);heat+=1;}
         if(cooled)heat-=2;else if(!working)heat-=1;
         heat=Math.max(0,heat);
+        boolean wasOverheated=overheated;
         if(heat>=PowerBlocks.NUCLEAR_HEAT_MAX){
             if(TGConfig.nuclearGeneratorExplodes){level.removeBlock(worldPosition,false);level.explode(null,worldPosition.getX()+.5,worldPosition.getY()+.5,worldPosition.getZ()+.5,6,Level.ExplosionInteraction.BLOCK);return;}
             overheated=true;
         }
         if(overheated&&heat<=PowerBlocks.NUCLEAR_HEAT_MAX/2)overheated=false;
+        if(wasOverheated!=overheated)sync();
         if(working&&level.getGameTime()%20==0&&TGRadiationSystem.isEnabled())TGRadiationSystem.applyRadToEntities(this,4,100,2,1.5,1);
         setChanged();
         distribute();

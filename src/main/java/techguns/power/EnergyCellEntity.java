@@ -15,8 +15,12 @@ public final class EnergyCellEntity extends EnergySource {
     @Override protected boolean gives(Direction side){return side==null||side==front();}
     @Override protected boolean takes(Direction side){return side==null||side!=front();}
     @Override protected int inputLimit(){return transfer;}
+    private int signal=-1;
+    /** Comparator signal: 0 when empty, 1..15 with the charge. */
+    public int signal(){int e=energy.getEnergyStored();return e<=0?0:1+(int)(14L*e/energy.getMaxEnergyStored());}
     public void tick(){
         distribute();
+        int now=signal();if(now!=signal&&level!=null){signal=now;level.updateNeighbourForOutputSignal(worldPosition,getBlockState().getBlock());}
         int charge=EnergyCellBlock.chargeLevel(energy.getEnergyStored(),energy.getMaxEnergyStored());
         if(level!=null&&getBlockState().getValue(EnergyCellBlock.CHARGE)!=charge)level.setBlock(worldPosition,getBlockState().setValue(EnergyCellBlock.CHARGE,charge),3);
     }

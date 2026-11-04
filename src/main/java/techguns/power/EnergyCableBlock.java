@@ -35,7 +35,7 @@ public final class EnergyCableBlock extends BaseEntityBlock {
     public boolean connects(BlockGetter level,BlockPos pos,Direction side){
         var other=pos.relative(side);if(level.getBlockState(other).is(this))return true;
         var entity=level.getBlockEntity(other);
-        return entity!=null&&entity.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).isPresent();
+        return entity!=null&&entity.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).map(h->h.canExtract()||h.canReceive()).orElse(false);
     }
     private BlockState connected(BlockState state,BlockGetter level,BlockPos pos){for(var e:SIDES.entrySet())state=state.setValue(e.getValue(),connects(level,pos,e.getKey()));return state;}
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){return connected(defaultBlockState(),context.getLevel(),context.getClickedPos());}
@@ -48,5 +48,5 @@ public final class EnergyCableBlock extends BaseEntityBlock {
     }
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new EnergyCableEntity(pos,state);}
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,PowerBlocks.ENERGY_CABLE_ENTITY.get(),(world,pos,block,entity)->entity.tick());}
+    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:PowerBlocks.ticker(level,type,PowerBlocks.ENERGY_CABLE_ENTITY.get(),EnergyCableEntity::tick);}
 }

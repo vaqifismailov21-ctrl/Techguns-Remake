@@ -32,6 +32,7 @@ public final class ClientModEvents {
         MenuScreens.register(TGMenuTypes.PLAYER_INVENTORY.get(), TGPlayerInventoryScreen::new);
         MenuScreens.register(TGMenuTypes.MACHINE.get(),techguns.client.gui.MachineScreen::new);
         MenuScreens.register(techguns.power.PowerBlocks.GENERATOR_MENU.get(),techguns.client.gui.GeneratorScreen::new);
+        techguns.power.PowerBlocks.clientTick=techguns.client.audio.PowerSounds::tick;
         MenuScreens.register(TGMenuTypes.TURRET.get(),techguns.client.gui.TurretScreen::new);
         MenuScreens.register(TGMenuTypes.ORE_DRILL.get(),techguns.client.gui.OreDrillScreen::new);
         MenuScreens.register(TGMenuTypes.BENCH.get(),techguns.client.gui.BenchScreen::new);

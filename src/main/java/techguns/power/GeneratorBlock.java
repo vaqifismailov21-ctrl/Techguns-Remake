@@ -38,8 +38,7 @@ public final class GeneratorBlock extends BaseEntityBlock {
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return liquid?new LiquidGeneratorEntity(pos,state):new FuelGeneratorEntity(pos,state);}
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){
-        if(level.isClientSide)return null;
-        return liquid?createTickerHelper(type,PowerBlocks.LIQUID_GENERATOR_ENTITY.get(),(world,pos,block,entity)->entity.tick()):createTickerHelper(type,PowerBlocks.FUEL_GENERATOR_ENTITY.get(),(world,pos,block,entity)->entity.tick());
+        return liquid?PowerBlocks.ticker(level,type,PowerBlocks.LIQUID_GENERATOR_ENTITY.get(),LiquidGeneratorEntity::tick):PowerBlocks.ticker(level,type,PowerBlocks.FUEL_GENERATOR_ENTITY.get(),FuelGeneratorEntity::tick);
     }
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
         var entity=level.getBlockEntity(pos);if(entity==null)return InteractionResult.PASS;
@@ -47,6 +46,9 @@ public final class GeneratorBlock extends BaseEntityBlock {
         if(entity instanceof LiquidGeneratorEntity generator&&FluidUtil.interactWithFluidHandler(player,hand,generator.tank))return InteractionResult.sidedSuccess(level.isClientSide);
         if(!level.isClientSide&&player instanceof ServerPlayer server&&entity instanceof EnergySource source)NetworkHooks.openScreen(server,new GeneratorMenu.Provider(source),buf->buf.writeBlockPos(pos));
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+    @Override public void animateTick(BlockState state,Level level,BlockPos pos,net.minecraft.util.RandomSource random){
+        if(state.getValue(LIT)&&!liquid&&random.nextInt(4)==0)level.playLocalSound(pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5,net.minecraft.sounds.SoundEvents.FURNACE_FIRE_CRACKLE,net.minecraft.sounds.SoundSource.BLOCKS,0.6F,1,false);
     }
     @Override public void onRemove(BlockState state,Level level,BlockPos pos,BlockState next,boolean moving){
         if(state.getBlock()!=next.getBlock()){var entity=level.getBlockEntity(pos);
