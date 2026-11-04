@@ -17,17 +17,37 @@ public final class ArmorItemRenderer extends BlockEntityWithoutLevelRenderer {
     public static ArmorItemRenderer get(){if(instance==null)instance=new ArmorItemRenderer();return instance;}
     @Override public void renderByItem(ItemStack stack,ItemDisplayContext context,PoseStack pose,MultiBufferSource buffers,int light,int overlay){
         if(!(stack.getItem() instanceof TGSuitArmor armor)||!armor.use3dIcon)return;
-        var model=models.computeIfAbsent(armor,a->{int type=a.slot==EquipmentSlot.LEGS?1:0;return a.modelKey.startsWith("steam")?new ModelSteamArmor(type):a.modelKey.startsWith("power_armor_mk2")?new ModelT4PowerArmorMk2(type):new ModelT3PowerArmor(type);});
+        var model=models.computeIfAbsent(armor,a->newModel(family(a.modelKey),a.slot==EquipmentSlot.LEGS?1:0));
         var slot=armor.slot;
         model.bipedHead.showModel=model.bipedHeadwear.showModel=slot==EquipmentSlot.HEAD;
         model.bipedBody.showModel=slot==EquipmentSlot.CHEST||slot==EquipmentSlot.LEGS;
         model.bipedRightArm.showModel=model.bipedLeftArm.showModel=slot==EquipmentSlot.CHEST;
         model.bipedRightLeg.showModel=model.bipedLeftLeg.showModel=slot==EquipmentSlot.LEGS||slot==EquipmentSlot.FEET;
-        pose.pushPose();
-        transforms(pose,context,slot);
         var texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/models/armor/"+armor.textures[0]+".png");
+        pose.pushPose();
+        if(context==ItemDisplayContext.GUI){
+            // The 1.12 icons fit the slot with one scale per suit (the chestplate fills it, helmet, legs and boots stay
+            // smaller), each piece centred. The raw 1.12 numbers overflowed the slot under the 1.20 GUI projection.
+            var mesh=new techguns.client.models.MeshSnapshot();var capture=new PoseStack();transforms(capture,context,slot);model.renderModel(capture,mesh,light,overlay,context);
+            if(!mesh.vertices.isEmpty()){
+                float fit=familyFit(armor);pose.translate(.5,.5,.5);pose.scale(fit,fit,fit);pose.translate(-mesh.centerX(),-mesh.centerY(),-mesh.centerZ());
+                mesh.render(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,overlay,1,1,1,1);
+            }
+            pose.popPose();return;
+        }
+        transforms(pose,context,slot);
         model.renderModel(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,overlay,context);pose.popPose();
     }
+    private final java.util.Map<String,Float> fits=new java.util.HashMap<>();
+    private static String family(String key){return key.startsWith("steam")?"steam":key.startsWith("power_armor_mk2")?"mk2":"t3";}
+    private static LegacyHumanoidGeometry newModel(String family,int type){return family.equals("steam")?new ModelSteamArmor(type):family.equals("mk2")?new ModelT4PowerArmorMk2(type):new ModelT3PowerArmor(type);}
+    /** Slot scale of a suit: its chestplate fills 0.95 of the slot. */
+    private float familyFit(TGSuitArmor armor){return fits.computeIfAbsent(family(armor.modelKey),f->{
+        var chest=newModel(f,0);chest.bipedHead.showModel=chest.bipedHeadwear.showModel=false;chest.bipedRightLeg.showModel=chest.bipedLeftLeg.showModel=false;
+        chest.bipedBody.showModel=chest.bipedRightArm.showModel=chest.bipedLeftArm.showModel=true;
+        var mesh=new techguns.client.models.MeshSnapshot();var capture=new PoseStack();transforms(capture,ItemDisplayContext.GUI,EquipmentSlot.CHEST);
+        chest.renderModel(capture,mesh,15728880,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,ItemDisplayContext.GUI);
+        float size=Math.max(mesh.maxX-mesh.minX,mesh.maxY-mesh.minY);return size>0?.95F/size:1F;});}
     private static void transforms(PoseStack pose,ItemDisplayContext context,EquipmentSlot slot){
         pose.translate(0.5,0.5,0.5);
         if(context.firstPerson())pose.translate(0,0.1,0);else if(context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)pose.translate(0,0.04,0);else if(context==ItemDisplayContext.FIXED)pose.translate(0,0,0.07);

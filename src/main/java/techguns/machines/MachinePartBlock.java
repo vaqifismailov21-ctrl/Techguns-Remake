@@ -17,6 +17,8 @@ public final class MachinePartBlock extends BaseEntityBlock {
     public final boolean reactor;
     public MachinePartBlock(boolean glass){this(glass,false);}
     public MachinePartBlock(boolean glass,boolean reactor){super(Properties.of().strength(4,20).sound(glass?SoundType.GLASS:SoundType.METAL).noOcclusion().dynamicShape().isViewBlocking((st,l,p)->false).isSuffocating((st,l,p)->false));this.glass=glass;this.reactor=reactor;registerDefaultState(stateDefinition.any().setValue(MachineBlock.FORMED,false));}
+    /** Glass like vanilla glass: the faces between two glass parts are not drawn (they fought each other and flickered). */
+    @Override public boolean skipRendering(BlockState state,BlockState adjacent,Direction side){return glass&&adjacent.is(this)||super.skipRendering(state,adjacent,side);}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(MachineBlock.FORMED);}
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new MachinePartEntity(pos,state);}

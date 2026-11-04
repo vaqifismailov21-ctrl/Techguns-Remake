@@ -1504,5 +1504,6 @@
   "subtitles.techguns.power.energy_cell_full": "Энергоячейка заряжена",
   "item.techguns.bandages": "Бинты",
   "item.techguns.medkit": "Аптечка",
-  "techguns.tooltip.medkit.heal": "Лечит сердец: %s"
+  "techguns.tooltip.medkit.heal": "Лечит сердец: %s",
+  "techguns.radiationResistance": "Защита от Радиации"
 }

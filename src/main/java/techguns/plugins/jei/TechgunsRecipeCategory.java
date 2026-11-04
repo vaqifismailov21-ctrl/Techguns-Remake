@@ -27,7 +27,8 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
             if(slot.note()!=null)target.addTooltipCallback((view,tooltip)->tooltip.add(slot.note()));
         }
     }
-    private List<Component> details(Display recipe){var lines=new ArrayList<Component>();if(recipe.ticks()>0)lines.add(Component.translatable("techguns.jei.duration",RecipeDisplays.number(recipe.ticks()/20D)));if(recipe.power()>0)lines.add(Component.translatable(kind==Kind.REACTION?"techguns.jei.energy_step":"techguns.jei.energy_tick",recipe.power()));lines.addAll(recipe.details());return lines;}
+    private List<Component> details(Display recipe){// the original JEI pages showed no time/energy lines
+        var lines=new ArrayList<Component>();lines.addAll(recipe.details());return lines;}
     @Override public void draw(Display recipe,IRecipeSlotsView slots,GuiGraphics graphics,double mouseX,double mouseY){
         if(kind==Kind.CAMO||kind==Kind.REPAIR){graphics.fill(0,0,162,63,0xffc6c6c6);graphics.drawString(Minecraft.getInstance().font,">",70,5,0x404040,false);}else panel.draw(graphics);
         if(recipe.power()>0)power.draw(graphics,1,2);drawProgress(graphics);
@@ -48,5 +49,5 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
         }
         graphics.pose().popPose();
     }
-    @Override public List<Component> getTooltipStrings(Display recipe,IRecipeSlotsView slots,double x,double y){return y>=64?details(recipe):List.of();}
+    @Override public List<Component> getTooltipStrings(Display recipe,IRecipeSlotsView slots,double x,double y){return List.of();}
 }

@@ -1507,5 +1507,6 @@
   "subtitles.techguns.power.energy_cell_full": "Energy cell is full",
   "item.techguns.bandages": "Bandages",
   "item.techguns.medkit": "Medkit",
-  "techguns.tooltip.medkit.heal": "Heals %s hearts"
+  "techguns.tooltip.medkit.heal": "Heals %s hearts",
+  "techguns.radiationResistance": "RAD Resistance"
 }

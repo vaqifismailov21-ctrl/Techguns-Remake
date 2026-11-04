@@ -1038,5 +1038,6 @@
   "block.techguns.floodlight_light": "Flutlichtstrahl",
   "item.techguns.bandages": "Verbände",
   "item.techguns.medkit": "Medikit",
-  "techguns.tooltip.medkit.heal": "Heilt Herzen: %s"
+  "techguns.tooltip.medkit.heal": "Heilt Herzen: %s",
+  "techguns.radiationResistance": "RAD Resistenz"
 }

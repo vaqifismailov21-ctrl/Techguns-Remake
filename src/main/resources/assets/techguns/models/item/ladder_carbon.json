@@ -1,3 +1,8 @@
 {
-  "parent": "techguns:block/decor/ladder_carbon"
+  "parent": "techguns:block/decor/ladder_item_base",
+  "textures": {
+    "texture": "techguns:blocks/metal_ladder_carbon",
+    "particle": "techguns:blocks/metal_ladder_carbon"
+  },
+  "render_type": "minecraft:cutout"
 }
