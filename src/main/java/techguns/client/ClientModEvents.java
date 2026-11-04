@@ -74,6 +74,7 @@ public final class ClientModEvents {
         for(String skin:event.getSkins()){net.minecraft.client.renderer.entity.player.PlayerRenderer renderer=event.getSkin(skin);renderer.addLayer(new techguns.client.render.entities.AccessoryLayer(renderer,skin.equals("slim")));}
     }
     @SubscribeEvent public static void layerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event){event.registerLayerDefinition(techguns.client.render.entities.npcs.NpcRenderer.LAYER,techguns.client.render.entities.npcs.NpcRenderer::layer);}
+    @SubscribeEvent public static void models(net.minecraftforge.client.event.ModelEvent.BakingCompleted event) { ClientResourceVerifier.verify(event); }
     @SubscribeEvent public static void extraModels(net.minecraftforge.client.event.ModelEvent.RegisterAdditional event){techguns.client.render.tileentities.LargeDoorRenderer.registerModels(event);}
     @SubscribeEvent public static void reload(net.minecraftforge.client.event.RegisterClientReloadListenersEvent event) {
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> techguns.client.particle.BulletImpactEffects.reload());

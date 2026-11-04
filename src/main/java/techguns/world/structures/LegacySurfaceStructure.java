@@ -56,9 +56,9 @@ public final class LegacySurfaceStructure extends Structure {
         var terrain=new NoiseTerrain(context.chunkGenerator(),context.randomState(),context.heightAccessor());
         var random=SurfaceStructuresFeature.selectionRandom(context.seed(),cx,cz);
         if(NetherStructuresFeature.IDS.contains(kind)){
-            var selected=NetherStructuresFeature.choose(cx,cz,random);if(!kind.equals(selected))return Optional.empty();
+            var selected=NetherStructuresFeature.choose(cx,cz,random);if(!kind.equals(selected))return Optional.empty();NaturalGenerationVerifier.considered("the_nether",cx,cz,selected);
             var scan=ScannedStructure.load(selected);int turns=random.nextInt(4);var corner=minCorner(scan,turns);
-            int height=NetherStructuresFeature.caveHeight(terrain::block,cx,cz);if(height<0){return Optional.empty();}
+            int height=NetherStructuresFeature.caveHeight(terrain::block,cx,cz);if(height<0){NaturalGenerationVerifier.skipped("the_nether",selected,cx,cz);return Optional.empty();}
             var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);
             var origin=new BlockPos(x+corner[0],height-1,z+corner[1]);scan.place(plan,context.heightAccessor(),origin,turns,plan.random,plan.random,0);
             return stub(plan,origin.above());
@@ -66,14 +66,14 @@ public final class LegacySurfaceStructure extends Structure {
         var biome=context.biomeSource().getNoiseBiome(QuartPos.fromBlock(x),QuartPos.fromBlock(64),QuartPos.fromBlock(z),context.randomState().sampler());
         var selected=SurfaceStructuresFeature.choose(cx,cz,biome.is(net.minecraft.tags.BiomeTags.IS_OCEAN),SurfaceStructuresFeature.desert(biome),TGOreClusters.worldOil()!=null,random);
         if(kind.equals("legacy")?!BIG.contains(selected):!kind.equals(selected))return Optional.empty();
-        
+        NaturalGenerationVerifier.considered("overworld",cx,cz,selected);
         if(!BIG.contains(selected)){
             var scan=ScannedStructure.load(selected);int turns=random.nextInt(4);var corner=minCorner(scan,turns);int sx=x+corner[0],sz=z+corner[1];
             int y=SurfaceStructuresFeature.surfaceHeight(new SurfaceStructuresFeature.HeightProbe(){
                 @Override public int height(int px,int pz){return terrain.height(px,pz,Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);}
                 @Override public boolean dry(int px,int py,int pz){return terrain.block(px,py,pz).getFluidState().isEmpty();}
             },sx,sz,turns%2==0?scan.sizeX:scan.sizeZ,turns%2==0?scan.sizeZ:scan.sizeX);
-            if(y<0){return Optional.empty();}
+            if(y<0){NaturalGenerationVerifier.skipped("overworld",selected,cx,cz);return Optional.empty();}
             var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);
             scan.place(plan,context.heightAccessor(),new BlockPos(sx,y-1,sz),turns,plan.random,RandomSource.create(random.nextLong()),SurfaceStructuresFeature.biomeColor(biome));
             return stub(plan,new BlockPos(sx,y,sz));

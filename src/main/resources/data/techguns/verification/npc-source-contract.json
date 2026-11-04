@@ -1,0 +1,512 @@
+{
+  "source": "Original NPC attribute methods and equipment branches",
+  "npcs": [
+    {
+      "id": "zombiesoldier",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.25D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "25"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "4"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        }
+      ],
+      "armor": "5.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "revolver",
+        "thompson"
+      ]
+    },
+    {
+      "id": "zombiefarmer",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.20D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "18"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "3"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        }
+      ],
+      "armor": "0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "handcannon"
+      ]
+    },
+    {
+      "id": "zombieminer",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.20D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "20"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "4"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        }
+      ],
+      "armor": "0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "handcannon"
+      ]
+    },
+    {
+      "id": "armysoldier",
+      "parent": "GenericNPC",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.30D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "25"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "4"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "75.0D"
+        }
+      ],
+      "armor": "8.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "m4",
+        "combatshotgun",
+        "boltaction"
+      ]
+    },
+    {
+      "id": "bandit",
+      "parent": "GenericNPC",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.30D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "20"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "5"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "40.0D"
+        }
+      ],
+      "armor": "5.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "pistol",
+        "ak47",
+        "sawedoff",
+        "thompson",
+        "revolver",
+        "boltaction"
+      ]
+    },
+    {
+      "id": "commando",
+      "parent": "GenericNPC",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.35D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "30"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "5"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "75.0D"
+        }
+      ],
+      "armor": "8.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "m4_infiltrator"
+      ]
+    },
+    {
+      "id": "dictatordave",
+      "parent": "GenericNPC",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.40D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "100"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "7"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "60.0D"
+        },
+        {
+          "name": "ARMOR_TOUGHNESS",
+          "value": "2D"
+        }
+      ],
+      "armor": "15.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "goldenrevolver"
+      ]
+    },
+    {
+      "id": "cyberdemon",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.35D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "30"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "7"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        },
+        {
+          "name": "ARMOR_TOUGHNESS",
+          "value": "1D"
+        }
+      ],
+      "armor": "10.0f, 0f",
+      "fireImmune": true,
+      "weaponChoices": [
+        "netherblaster"
+      ]
+    },
+    {
+      "id": "skeletonsoldier",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.25D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "25"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "4"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        }
+      ],
+      "armor": "0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "revolver",
+        "thompson",
+        "handcannon"
+      ]
+    },
+    {
+      "id": "psychosteve",
+      "parent": "GenericNPC",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.60D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "75"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "7"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "60.0D"
+        },
+        {
+          "name": "ARMOR_TOUGHNESS",
+          "value": "1D"
+        }
+      ],
+      "armor": "5.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "chainsaw"
+      ]
+    },
+    {
+      "id": "stormtrooper",
+      "parent": "GenericNPCGearSpecificStats",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.30D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "35"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "4"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "75.0D"
+        }
+      ],
+      "armor": null,
+      "fireImmune": false,
+      "weaponChoices": [
+        "blasterrifle",
+        "lasergun"
+      ]
+    },
+    {
+      "id": "outcast",
+      "parent": "GenericNPCGearSpecificStats",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.2D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "30"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "8"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "60.0D"
+        }
+      ],
+      "armor": null,
+      "fireImmune": false,
+      "weaponChoices": [
+        "lasergun",
+        "grimreaper",
+        "minigun",
+        "biogun",
+        "flamethrower",
+        "teslagun",
+        "lmg"
+      ]
+    },
+    {
+      "id": "zombiepigmansoldier",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.30D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "25"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "5"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        }
+      ],
+      "armor": "10.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "thompson",
+        "revolver",
+        "ak47",
+        "pistol",
+        "flamethrower",
+        "combatshotgun",
+        "lmg",
+        "rocketlauncher"
+      ]
+    },
+    {
+      "id": "supermutantbasic",
+      "parent": "GenericNPC",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.30D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "35"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "7"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        },
+        {
+          "name": "ARMOR_TOUGHNESS",
+          "value": "1D"
+        }
+      ],
+      "armor": "5.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "rocketlauncher",
+        "ak47",
+        "combatshotgun",
+        "lasergun"
+      ]
+    },
+    {
+      "id": "supermutantelite",
+      "parent": "SuperMutantBasic",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.20D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "60"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "11"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        },
+        {
+          "name": "ARMOR_TOUGHNESS",
+          "value": "2.5D"
+        }
+      ],
+      "armor": "15.0f, 1f",
+      "fireImmune": false,
+      "weaponChoices": []
+    },
+    {
+      "id": "supermutantheavy",
+      "parent": "SuperMutantBasic",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.25D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "45"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "9"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        },
+        {
+          "name": "ARMOR_TOUGHNESS",
+          "value": "2D"
+        }
+      ],
+      "armor": "10.0f, 0",
+      "fireImmune": false,
+      "weaponChoices": []
+    },
+    {
+      "id": "zombiepoliceman",
+      "parent": "GenericNPCUndead",
+      "attributes": [
+        {
+          "name": "MOVEMENT_SPEED",
+          "value": "0.25D"
+        },
+        {
+          "name": "MAX_HEALTH",
+          "value": "25"
+        },
+        {
+          "name": "ATTACK_DAMAGE",
+          "value": "4"
+        },
+        {
+          "name": "FOLLOW_RANGE",
+          "value": "50.0D"
+        }
+      ],
+      "armor": "5.0f, 0f",
+      "fireImmune": false,
+      "weaponChoices": [
+        "revolver",
+        "pistol"
+      ]
+    }
+  ]
+}

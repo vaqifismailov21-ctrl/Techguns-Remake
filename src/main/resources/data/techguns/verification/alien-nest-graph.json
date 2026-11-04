@@ -1,0 +1,320 @@
+[
+  {
+    "seed": 0,
+    "sizeX": 27,
+    "sizeZ": 29,
+    "rooms": [
+      {
+        "position": [
+          271,
+          80,
+          272
+        ],
+        "radius": 5,
+        "type": 0,
+        "neighbors": [
+          1,
+          2,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "position": [
+          269,
+          94,
+          270
+        ],
+        "radius": 2,
+        "type": 2,
+        "neighbors": []
+      },
+      {
+        "position": [
+          288,
+          79,
+          270
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": [
+          3
+        ]
+      },
+      {
+        "position": [
+          305,
+          84,
+          273
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          273,
+          75,
+          283
+        ],
+        "radius": 4,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          256,
+          80,
+          279
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          258,
+          75,
+          262
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": [
+          7
+        ]
+      },
+      {
+        "position": [
+          273,
+          78,
+          255
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": [
+          8
+        ]
+      },
+      {
+        "position": [
+          285,
+          74,
+          241
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      }
+    ]
+  },
+  {
+    "seed": 1729,
+    "sizeX": 25,
+    "sizeZ": 17,
+    "rooms": [
+      {
+        "position": [
+          270,
+          79,
+          266
+        ],
+        "radius": 5,
+        "type": 0,
+        "neighbors": [
+          1,
+          2,
+          4,
+          6,
+          7
+        ]
+      },
+      {
+        "position": [
+          268,
+          94,
+          264
+        ],
+        "radius": 2,
+        "type": 2,
+        "neighbors": []
+      },
+      {
+        "position": [
+          289,
+          71,
+          264
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": [
+          3
+        ]
+      },
+      {
+        "position": [
+          311,
+          69,
+          269
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          274,
+          78,
+          284
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": [
+          5
+        ]
+      },
+      {
+        "position": [
+          278,
+          83,
+          299
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          251,
+          73,
+          276
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          256,
+          81,
+          255
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": [
+          8
+        ]
+      },
+      {
+        "position": [
+          272,
+          76,
+          250
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": []
+      }
+    ]
+  },
+  {
+    "seed": 123456789,
+    "sizeX": 26,
+    "sizeZ": 28,
+    "rooms": [
+      {
+        "position": [
+          270,
+          78,
+          270
+        ],
+        "radius": 5,
+        "type": 0,
+        "neighbors": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ]
+      },
+      {
+        "position": [
+          269,
+          94,
+          270
+        ],
+        "radius": 2,
+        "type": 2,
+        "neighbors": []
+      },
+      {
+        "position": [
+          291,
+          75,
+          270
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          274,
+          75,
+          287
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          256,
+          72,
+          278
+        ],
+        "radius": 4,
+        "type": 1,
+        "neighbors": [
+          5,
+          6
+        ]
+      },
+      {
+        "position": [
+          238,
+          68,
+          277
+        ],
+        "radius": 5,
+        "type": 1,
+        "neighbors": []
+      },
+      {
+        "position": [
+          256,
+          76,
+          261
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": [
+          7
+        ]
+      },
+      {
+        "position": [
+          275,
+          78,
+          250
+        ],
+        "radius": 3,
+        "type": 1,
+        "neighbors": []
+      }
+    ]
+  }
+]

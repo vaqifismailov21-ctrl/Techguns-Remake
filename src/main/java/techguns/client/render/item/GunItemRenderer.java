@@ -34,9 +34,9 @@ public final class GunItemRenderer extends BlockEntityWithoutLevelRenderer {
         if(stack.getItem() instanceof GenericGun gun && others.containsKey(gun)) {
             others.get(gun).renderVerification(stack,context,pose,buffers,fire,reload,muzzle); return;
         }
-        renderer.preview = true; renderer.fire = fire; renderer.reload = reload; renderer.muzzle = muzzle;
+        renderer.verification = true; renderer.fire = fire; renderer.reload = reload; renderer.muzzle = muzzle;
         try { renderByItem(stack, context, pose, buffers, 15728880, net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY); }
-        finally { renderer.preview = false; }
+        finally { renderer.verification = false; }
     }
     public void renderMotionVerificationFrame(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers) {
         if(stack.getItem() instanceof GenericGun gun && others.containsKey(gun)) {
@@ -65,7 +65,7 @@ public final class GunItemRenderer extends BlockEntityWithoutLevelRenderer {
     private static final class PistolRenderer extends RenderItemBase {
         private ItemStack stack;
         private float fire, reload, muzzle;
-        private boolean preview;
+        private boolean verification;
         private PistolRenderer() {
             super(new ModelPistol(), ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "textures/guns/pistol3.png"));
             baseScale = 1.2F; guiScale = 0.9F; groundScale = 0.35F;
@@ -75,7 +75,7 @@ public final class GunItemRenderer extends BlockEntityWithoutLevelRenderer {
         @Override protected void applyAnimation(PoseStack pose, ItemDisplayContext context) {
             boolean first=context.firstPerson(),third=context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
             boolean left = context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
-            if (preview) {
+            if (verification) {
                 if (reload > 0) GunAnimation.genericReload.play(pose,reload,left,first?1:0,40);
                 else if (fire > 0) GunAnimation.genericRecoil.play(pose,fire,left,first?0.025F:0,first?12:5);
                 return;

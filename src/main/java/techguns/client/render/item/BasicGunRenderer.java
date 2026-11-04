@@ -24,7 +24,7 @@ public final class BasicGunRenderer extends RenderItemBase {
     private final float recoilTranslation,recoilAngle;
     private ItemStack stack;
     private float fire,reload,muzzle;
-    private boolean preview;
+    private boolean verification;
     private boolean scopeVerification;
     private int parts=1;
     private GunAnimation reloadAnimation=GunAnimation.genericReload,reloadThirdAnimation=GunAnimation.genericReload;
@@ -110,17 +110,17 @@ public final class BasicGunRenderer extends RenderItemBase {
         renderVerification(stack,ItemDisplayContext.FIRST_PERSON_RIGHT_HAND,pose,buffers,fire,reload,muzzle);
     }
     public void renderVerification(ItemStack stack,ItemDisplayContext context,PoseStack pose,MultiBufferSource buffers,float fire,float reload,float muzzle) {
-        preview=true;this.fire=fire;this.reload=reload;this.muzzle=muzzle;this.charge=0;
+        verification=true;this.fire=fire;this.reload=reload;this.muzzle=muzzle;this.charge=0;
         try { renderWeapon(stack,context,pose,buffers,15728880,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY); }
-        finally { preview=false; }
+        finally { verification=false; }
     }
     public void renderScopeVerification(ItemStack stack,PoseStack pose,MultiBufferSource buffers) {
         scopeVerification=true;try{renderVerification(stack,pose,buffers,0.35F,0,0);}finally{scopeVerification=false;}
     }
     public void renderChargeVerification(ItemStack stack,PoseStack pose,MultiBufferSource buffers) {
-        preview=true;fire=reload=muzzle=0;charge=1;
+        verification=true;fire=reload=muzzle=0;charge=1;
         try{renderWeapon(stack,ItemDisplayContext.FIRST_PERSON_RIGHT_HAND,pose,buffers,15728880,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY);}
-        finally{preview=false;charge=0;}
+        finally{verification=false;charge=0;}
     }
     @Override protected void setBaseRotation(PoseStack pose,ItemDisplayContext context) {
         if(obj) {pose.mulPose(Axis.YP.rotationDegrees(objRotation));return;}
@@ -132,7 +132,7 @@ public final class BasicGunRenderer extends RenderItemBase {
         var entity=first?Minecraft.getInstance().player:third?GunRenderContext.holder():null;
         // Original RenderGunBase turns the weapon into the hand for non-aiming NPC models (CyberDemon).
         if(third&&entity instanceof techguns.api.npc.INPCTechgunsShooter shooter&&!shooter.hasWeaponArmPose())pose.mulPose(Axis.XP.rotationDegrees(90));
-        if(!preview) {
+        if(!verification) {
             fire=reload=muzzle=charge=0;
             if(entity instanceof techguns.entities.npcs.GenericNPC npc){
                 var gun=(GenericGun)stack.getItem();float partial=Minecraft.getInstance().getFrameTime();
