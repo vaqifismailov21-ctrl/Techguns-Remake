@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "techguns:block/door_empty"
+      "model": "techguns:block/door_empty_nether"
     }
   }
 }

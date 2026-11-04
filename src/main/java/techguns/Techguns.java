@@ -30,6 +30,7 @@ public final class Techguns {
     public static final RegistryObject<CreativeModeTab> TAB = TABS.register("techguns", () ->
             CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.techguns"))
+                    .withSearchBar()
                     .icon(() -> TGItems.PISTOL_ROUNDS.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
                         TGItems.SHARED_ITEMS.forEach((id, item) -> { if (TGItems.enabled(id)) output.accept(item.get()); });

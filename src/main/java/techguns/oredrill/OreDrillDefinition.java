@@ -197,7 +197,7 @@ public final class OreDrillDefinition {
         return valid;
     }
     /** The original MultiblockInvalidPing particle system, sent only to the forming player. */
-    static void sendErrorPing(Player player,BlockPos p){
+    public static void sendErrorPing(Player player,BlockPos p){
         if(player instanceof ServerPlayer server)TGPackets.NETWORK.send(PacketDistributor.PLAYER.with(()->server),new TGProjectilePackets.Effect("MultiblockInvalidPing",Vec3.atCenterOf(p),0,0));
     }
     static void sendErrorMSG(Player player,int type){

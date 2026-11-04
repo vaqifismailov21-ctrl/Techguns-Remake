@@ -24,12 +24,37 @@ import techguns.util.InventoryUtil;
 public final class WeaponHud {
     private static final ResourceLocation CROSSHAIRS = ResourceLocation.fromNamespaceAndPath("techguns", "textures/gui/tg_crosshairs.png");
     private static final ResourceLocation INVENTORY = techguns.client.gui.TGPlayerInventoryScreen.TEXTURE;
+    private static final ResourceLocation LOCK_ON = ResourceLocation.fromNamespaceAndPath("techguns", "textures/gui/crosshairs.png");
+    /** Original TGGuiEvents lock-on reticle of guided launchers: closing corners, then the blinking locked frame and the target name. */
+    private static boolean lockOn(net.minecraft.client.gui.GuiGraphics graphics,Minecraft game,GenericGun gun) {
+        var state=techguns.capabilities.TGExtendedPlayer.find(game.player).orElse(null);
+        if(gun.getLockOnTicks()<=0||state==null||state.lockOnEntity==null||state.lockOnTicks<=0)return false;
+        float progress=Math.min(1f,state.lockOnTicks/(float)gun.getLockOnTicks());
+        int x=graphics.guiWidth()/2,y=graphics.guiHeight()/2;
+        graphics.flush();RenderSystem.disableBlend();
+        int offset=(int)(Math.max(0f,(1f-progress)*16f))+5;
+        graphics.blit(LOCK_ON,x-offset-3,y-offset-3,0,0,7,7);
+        graphics.blit(LOCK_ON,x+offset-3,y-offset-3,7,0,7,7);
+        graphics.blit(LOCK_ON,x-offset-3,y+offset-3,14,0,7,7);
+        graphics.blit(LOCK_ON,x+offset-3,y+offset-3,21,0,7,7);
+        graphics.blit(LOCK_ON,x,y,0,0,1,1);
+        String name=state.lockOnEntity.getName().getString();
+        if(progress<1f) graphics.drawString(game.font,"Locking... : "+name,x+2,y+10,0xFFFFFFFF,false);
+        else {
+            graphics.blit(LOCK_ON,x-6,y-6,28,0,13,13);
+            if(net.minecraft.Util.getMillis()/250%2==0)graphics.blit(LOCK_ON,x-9,y-9,41,0,19,19);
+            graphics.drawString(game.font,"Locked On: "+name,x+2,y+10,0xFFFF0000,false);
+        }
+        graphics.flush();RenderSystem.enableBlend();
+        return true;
+    }
     @SubscribeEvent public static void crosshair(RenderGuiOverlayEvent.Pre event) {
         var game = Minecraft.getInstance();
         if (!event.getOverlay().id().equals(VanillaGuiOverlay.CROSSHAIR.id()) || game.player == null || game.player.isSpectator()
                 || !game.options.getCameraType().isFirstPerson() || !(game.player.getMainHandItem().getItem() instanceof GenericGun gun)) return;
         var style=gun.getCrossHairStyle();
         if(ClientZoom.isZoomed(game.player,gun)&&techguns.client.render.item.GunItemRenderer.get().hasScope(gun)) {event.setCanceled(true);return;}
+        if(lockOn(event.getGuiGraphics(),game,gun)) {event.setCanceled(true);return;}
         if(style==techguns.items.guns.EnumCrosshairStyle.VANILLA) return;
         event.setCanceled(true);
         var graphics = event.getGuiGraphics();
