@@ -61,7 +61,7 @@ public final class LegacySurfaceStructure extends Structure {
             int height=NetherStructuresFeature.caveHeight(terrain::block,cx,cz);if(height<0){NaturalGenerationVerifier.skipped("the_nether",selected,cx,cz);return Optional.empty();}
             var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);
             var origin=new BlockPos(x+corner[0],height-1,z+corner[1]);scan.place(plan,context.heightAccessor(),origin,turns,plan.random,plan.random,0);
-            return stub(plan,origin.above());
+            return marker(plan,origin.above());
         }
         var biome=context.biomeSource().getNoiseBiome(QuartPos.fromBlock(x),QuartPos.fromBlock(64),QuartPos.fromBlock(z),context.randomState().sampler());
         var selected=SurfaceStructuresFeature.choose(cx,cz,biome.is(net.minecraft.tags.BiomeTags.IS_OCEAN),SurfaceStructuresFeature.desert(biome),TGOreClusters.worldOil()!=null,random);
@@ -76,7 +76,7 @@ public final class LegacySurfaceStructure extends Structure {
             if(y<0){NaturalGenerationVerifier.skipped("overworld",selected,cx,cz);return Optional.empty();}
             var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);
             scan.place(plan,context.heightAccessor(),new BlockPos(sx,y-1,sz),turns,plan.random,RandomSource.create(random.nextLong()),SurfaceStructuresFeature.biomeColor(biome));
-            return stub(plan,new BlockPos(sx,y,sz));
+            return SurfaceStructuresFeature.IMPLEMENTED.contains(selected)?marker(plan,new BlockPos(sx,y,sz)):stub(plan,new BlockPos(sx,y,sz));
         }
         if("castle".equals(selected)){
             int sx=32+random.nextInt(16),sz=32+random.nextInt(16),sy=24+random.nextInt(16),turns=random.nextInt(4);int minX=Integer.MAX_VALUE,minZ=Integer.MAX_VALUE;
@@ -112,6 +112,12 @@ public final class LegacySurfaceStructure extends Structure {
         var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);nest.setBlocks(plan);
         var pieces=PlannedStructurePiece.split(plan);if(pieces.isEmpty())return Optional.empty();
         return Optional.of(new GenerationStub(new BlockPos(x,y,z),builder->pieces.forEach(builder::addPiece)));
+    }
+    /** Site only (for /locate); the Techguns generator builds it later on the real terrain. */
+    private static Optional<GenerationStub> marker(LegacyStructurePlan plan,BlockPos position){
+        var pieces=PlannedStructurePiece.split(plan);if(pieces.isEmpty())return Optional.empty();
+        BoundingBox box=null;for(var piece:pieces)box=box==null?piece.getBoundingBox():BoundingBox.encapsulatingBoxes(List.of(box,piece.getBoundingBox())).orElseThrow();
+        var site=box;return Optional.of(new GenerationStub(position,builder->builder.addPiece(new SiteMarkerPiece(site))));
     }
     private static Optional<GenerationStub> stub(LegacyStructurePlan plan,BlockPos position){
         var pieces=PlannedStructurePiece.split(plan);if(pieces.isEmpty())return Optional.empty();
