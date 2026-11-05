@@ -40,7 +40,7 @@ public final class EnergyProjectile extends GenericProjectile {
             if(mode==Mode.NDR&&shooter!=null){
                 double yaw=Math.toRadians(shooter.getYHeadRot());
                 setPos(shooter.getX()-Math.cos(yaw)*0.16,shooter.getEyeY()-0.10000000149011612,shooter.getZ()-Math.sin(yaw)*0.16);
-                setDeltaMovement(shooter.getLookAngle().scale(speed));setYRot(shooter.getYHeadRot());setXRot(shooter.getXRot());
+                setDeltaMovement(shooter.getViewVector(1.0F).scale(speed));setYRot(shooter.getYHeadRot());setXRot(shooter.getXRot());
                 traceBeam();
             }
             if(--ticksToLive<=0)discard();
