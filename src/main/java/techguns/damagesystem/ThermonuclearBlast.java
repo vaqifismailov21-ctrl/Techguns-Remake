@@ -17,15 +17,15 @@ import net.minecraftforge.fml.common.Mod;
 import techguns.Techguns;
 
 /**
- * Thermonuclear rocket: a hundred times the tactical nuke's damage. Everything inside the blast radius takes it
- * regardless of cover, and the crater is dug out a few shells per tick so the server does not stall.
+ * Thermonuclear rocket. Everything inside KILL dies regardless of cover, damage falls off to the edge of BLAST.
+ * The crater is dug out shell by shell with a block budget per tick, so even the large one does not stall the server.
  */
 @Mod.EventBusSubscriber(modid=Techguns.MODID)
 public final class ThermonuclearBlast {
-    public static final int CRATER=32, KILL=48, BLAST=100, SHELLS_PER_TICK=1;
+    public static final int CRATER=96, KILL=150, BLAST=300, BLOCKS_PER_TICK=12000;
     private static final List<ThermonuclearBlast> ACTIVE=new ArrayList<>();
-    private static int[][] offsets;
-    private final ServerLevel level;private final BlockPos centre;private int index;private final long seed;
+    private final ServerLevel level;private final BlockPos centre;private final long seed;
+    private int radius;private long[] shell=new long[0];private int index;
 
     private ThermonuclearBlast(ServerLevel level,BlockPos centre){this.level=level;this.centre=centre;this.seed=centre.asLong();}
 
@@ -35,44 +35,49 @@ public final class ThermonuclearBlast {
         for(var entity:level.getEntities(projectile,new AABB(at,at).inflate(BLAST))){
             if(entity.ignoreExplosion()||entity.isSpectator()||!entity.isAlive()||!entity.isPickable())continue;
             double distance=at.distanceTo(entity.position());if(distance>BLAST)continue;
-            double amount=distance<=KILL?damage:damage*Math.pow(1-(distance-KILL)/(BLAST-KILL),2);
-            entity.hurt(tgs,(float)Math.max(1,amount));
-            if(distance<BLAST*0.75)entity.setSecondsOnFire(15);
-            var push=entity.position().subtract(at).normalize().scale(3*(1-distance/BLAST));entity.push(push.x,0.6+push.y,push.z);
+            double amount=distance<=KILL?damage:damage*Math.pow(1-(distance-KILL)/(BLAST-KILL),3);
+            entity.hurt(tgs,(float)Math.min(Float.MAX_VALUE/2,Math.max(1,amount)));
+            if(distance<BLAST*0.7)entity.setSecondsOnFire(20);
+            var push=entity.position().subtract(at).normalize().scale(4*(1-distance/BLAST));entity.push(push.x,0.8+push.y,push.z);
         }
-        if(techguns.TGRadiationSystem.isEnabled())level.addFreshEntity(new techguns.entities.special.EntityRadiation(level,at.x,at.y,at.z,12000,KILL,10,BLAST,4));
+        if(techguns.TGRadiationSystem.isEnabled())level.addFreshEntity(new techguns.entities.special.EntityRadiation(level,at.x,at.y,at.z,24000,KILL,10,BLAST,4));
         if(terrain)ACTIVE.add(new ThermonuclearBlast(level,BlockPos.containing(at)));
     }
 
-    /** Offsets of a sphere of radius CRATER, nearest first. */
-    private static int[][] offsets(){
-        if(offsets!=null)return offsets;
-        var list=new ArrayList<int[]>();
-        for(int x=-CRATER;x<=CRATER;x++)for(int y=-CRATER;y<=CRATER;y++)for(int z=-CRATER;z<=CRATER;z++){int d=x*x+y*y+z*z;if(d<=CRATER*CRATER)list.add(new int[]{x,y,z,d});}
-        list.sort((a,b)->Integer.compare(a[3],b[3]));
-        return offsets=list.toArray(new int[0][]);
+    /** Ragged edge: each direction of the crater ends between 80 % and 100 % of CRATER. */
+    private double edge(int x,int y,int z){
+        int cx=Math.floorDiv(x,6),cy=Math.floorDiv(y,6),cz=Math.floorDiv(z,6);
+        long h=seed^(cx*73856093L)^(cy*19349663L)^(cz*83492791L);h^=h>>>13;h*=0x5bd1e995L;h^=h>>>15;
+        return CRATER*(0.8+0.2*((h&1023)/1023.0));
     }
-    /** Ragged edge: each direction ends somewhere between 80 % and 100 % of the radius. */
-    private boolean inside(int[] o){
-        double d=Math.sqrt(o[3]);if(d<CRATER*0.8)return true;
-        long h=seed^(o[0]*73856093L)^(o[1]*19349663L)^(o[2]*83492791L);h^=h>>>13;h*=0x5bd1e995L;h^=h>>>15;
-        double edge=CRATER*(0.8+0.2*((h&1023)/1023.0));return d<=edge;
+    /** All positions with radius-1 < distance <= radius. */
+    private long[] shell(int r){
+        var list=new it.unimi.dsi.fastutil.longs.LongArrayList();
+        int rr=r*r,inner=(r-1)*(r-1);
+        for(int x=-r;x<=r;x++)for(int z=-r;z<=r;z++){
+            int q=x*x+z*z;if(q>rr)continue;
+            int top=(int)Math.floor(Math.sqrt(rr-q));
+            int low=inner-q<0?0:(int)Math.floor(Math.sqrt(inner-q))+1;
+            for(int y=low;y<=top;y++){
+                if(r>CRATER*0.8&&Math.sqrt(q+y*y)>edge(x,y,z))continue;
+                list.add(BlockPos.asLong(centre.getX()+x,centre.getY()+y,centre.getZ()+z));
+                if(y!=0){if(r>CRATER*0.8&&Math.sqrt(q+y*y)>edge(x,-y,z))continue;list.add(BlockPos.asLong(centre.getX()+x,centre.getY()-y,centre.getZ()+z));}
+            }
+        }
+        return list.toLongArray();
     }
     private boolean step(){
-        var all=offsets();if(index>=all.length)return true;
-        int limit=Math.min(all.length,index+1);double radius=Math.sqrt(all[index][3])+SHELLS_PER_TICK;
-        while(limit<all.length&&Math.sqrt(all[limit][3])<radius)limit++;
-        var pos=new BlockPos.MutableBlockPos();
-        for(;index<limit;index++){
-            var o=all[index];if(!inside(o))continue;
-            pos.set(centre.getX()+o[0],centre.getY()+o[1],centre.getZ()+o[2]);
+        var pos=new BlockPos.MutableBlockPos();int budget=BLOCKS_PER_TICK,checks=200_000;
+        while(budget>0&&checks-->0){
+            if(index>=shell.length){if(radius>=CRATER)return true;radius++;shell=shell(radius);index=0;continue;}
+            pos.set(shell[index++]);
             if(!level.isInWorldBounds(pos)||!level.isLoaded(pos))continue;
             var state=level.getBlockState(pos);
             if(state.isAir()||state.getDestroySpeed(level,pos)<0)continue;
             if(level.getBlockEntity(pos)!=null)level.removeBlockEntity(pos);
-            level.setBlock(pos,Blocks.AIR.defaultBlockState(),2|16);
+            level.setBlock(pos,Blocks.AIR.defaultBlockState(),2|16);budget--;
         }
-        return index>=all.length;
+        return false;
     }
     @SubscribeEvent
     public static void tick(TickEvent.LevelTickEvent event){
