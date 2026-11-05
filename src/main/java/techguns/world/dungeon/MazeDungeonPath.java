@@ -803,7 +803,7 @@ public class MazeDungeonPath implements IDungeonPath {
 			int pz = posZ+(seg.z*preset.getSizeXZ()+(int)(preset.getSizeXZ()*0.5f));
 			BlockPos pos = new BlockPos(px, py, pz);
 			if(pos.getY()>=1) {
-				BlockState state = TGWorld.SPAWNER_SOLDIER.get().defaultBlockState();
+				BlockState state = TGWorld.SPAWNER_HOLE.get().defaultBlockState(); // 1.12 placed the spawner's default type, the hole
 				world.setBlockState(pos, state, 2);
 				
 				DungeonSpawner te = world.getTileEntity(pos);
