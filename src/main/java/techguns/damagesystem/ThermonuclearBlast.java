@@ -23,10 +23,11 @@ import techguns.Techguns;
  */
 @Mod.EventBusSubscriber(modid=Techguns.MODID)
 public final class ThermonuclearBlast {
-    public static final int CRATER=96, MAX_CRATER=400, BLOCKS_PER_TICK=16000;
+    public static final int CRATER=96, MAX_CRATER=1000, BLOCKS_PER_TICK=16000;
     private static final List<ThermonuclearBlast> ACTIVE=new ArrayList<>();
     private final ServerLevel level;private final BlockPos centre;private final long seed;private final int crater;
-    private int radius;private long[] shell=new long[0];private int index;
+    /** Cursor of the shell being dug: radius and column; nothing is stored per block, so even a 1000 block crater needs no memory. */
+    private int radius,cx,cz;private boolean started;
 
     private ThermonuclearBlast(ServerLevel level,BlockPos centre,int crater){this.level=level;this.centre=centre;this.seed=centre.asLong();this.crater=crater;}
     public static int killRadius(int crater){return crater*3/2;}
@@ -61,32 +62,36 @@ public final class ThermonuclearBlast {
         long h=seed^(cx*73856093L)^(cy*19349663L)^(cz*83492791L);h^=h>>>13;h*=0x5bd1e995L;h^=h>>>15;
         return crater*(0.8+0.2*((h&1023)/1023.0));
     }
-    /** All positions with radius-1 < distance <= radius, inside the ragged edge. */
-    private long[] shell(int r){
-        var list=new it.unimi.dsi.fastutil.longs.LongArrayList();
-        long rr=(long)r*r,inner=(long)(r-1)*(r-1);boolean rim=r>crater*0.8;
-        for(int x=-r;x<=r;x++)for(int z=-r;z<=r;z++){
-            long q=(long)x*x+(long)z*z;if(q>rr)continue;
-            int top=(int)Math.floor(Math.sqrt(rr-q));
-            int low=inner-q<0?0:(int)Math.floor(Math.sqrt(inner-q))+1;
-            for(int y=low;y<=top;y++){
-                double d=Math.sqrt(q+(long)y*y);
-                if(!rim||d<=edge(x,y,z))list.add(BlockPos.asLong(centre.getX()+x,centre.getY()+y,centre.getZ()+z));
-                if(y!=0&&(!rim||d<=edge(x,-y,z)))list.add(BlockPos.asLong(centre.getX()+x,centre.getY()-y,centre.getZ()+z));
-            }
+    private final BlockPos.MutableBlockPos pos=new BlockPos.MutableBlockPos();
+    private int budget,checks;
+    /** Removes one block if it is breakable; counts against the tick budget. */
+    private void dig(int x,int y,int z){
+        checks--;
+        pos.set(centre.getX()+x,centre.getY()+y,centre.getZ()+z);
+        if(!level.isInWorldBounds(pos)||!level.isLoaded(pos))return;
+        var state=level.getBlockState(pos);
+        if(state.isAir()||state.getDestroySpeed(level,pos)<0)return;
+        if(level.getBlockEntity(pos)!=null)level.removeBlockEntity(pos);
+        level.setBlock(pos,Blocks.AIR.defaultBlockState(),2|16);budget--;
+    }
+    /** One column of the shell radius-1 < distance <= radius, inside the ragged edge. */
+    private void column(int r,int x,int z){
+        long rr=(long)r*r,inner=(long)(r-1)*(r-1),q=(long)x*x+(long)z*z;if(q>rr)return;
+        // columns entirely below the world or above the build limit hold nothing to dig
+        if(centre.getY()+r<level.getMinBuildHeight()||centre.getY()-r>level.getMaxBuildHeight())return;
+        boolean rim=r>crater*0.8;int top=(int)Math.floor(Math.sqrt(rr-q));int low=inner-q<0?0:(int)Math.floor(Math.sqrt(inner-q))+1;
+        for(int y=low;y<=top;y++){
+            double d=Math.sqrt(q+(long)y*y);
+            if(!rim||d<=edge(x,y,z))dig(x,y,z);
+            if(y!=0&&(!rim||d<=edge(x,-y,z)))dig(x,-y,z);
         }
-        return list.toLongArray();
     }
     private boolean step(){
-        var pos=new BlockPos.MutableBlockPos();int budget=BLOCKS_PER_TICK,checks=250_000;
-        while(budget>0&&checks-->0){
-            if(index>=shell.length){if(radius>=crater)return true;radius++;shell=shell(radius);index=0;continue;}
-            pos.set(shell[index++]);
-            if(!level.isInWorldBounds(pos)||!level.isLoaded(pos))continue;
-            var state=level.getBlockState(pos);
-            if(state.isAir()||state.getDestroySpeed(level,pos)<0)continue;
-            if(level.getBlockEntity(pos)!=null)level.removeBlockEntity(pos);
-            level.setBlock(pos,Blocks.AIR.defaultBlockState(),2|16);budget--;
+        budget=BLOCKS_PER_TICK;checks=300_000;
+        if(!started){started=true;dig(0,0,0);radius=1;cx=-1;cz=-1;}
+        while(budget>0&&checks>0){
+            checks--;column(radius,cx,cz);
+            if(++cz>radius){if(++cx>radius){if(radius>=crater)return true;radius++;cx=-radius;}cz=-radius;}
         }
         return false;
     }

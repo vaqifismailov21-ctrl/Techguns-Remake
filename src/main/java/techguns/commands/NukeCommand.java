@@ -15,7 +15,7 @@ import techguns.Techguns;
 import techguns.damagesystem.ThermonuclearBlast;
 
 /**
- * /tgnuke [radius] [position] - thermonuclear blast of any size up to 400 blocks crater radius (cheats required).
+ * /tgnuke [radius] [position] - thermonuclear blast of any size up to 1000 blocks crater radius (cheats required).
  * /tgnuke stop - stops the craters still being dug.
  */
 @Mod.EventBusSubscriber(modid=Techguns.MODID)
