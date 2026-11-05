@@ -27,7 +27,7 @@ public final class ArmorItemRenderer extends BlockEntityWithoutLevelRenderer {
         pose.pushPose();
         if(context==ItemDisplayContext.GUI){
             // Each piece fills the slot, centred, as the 1.12 icons did (the raw 1.12 numbers overflowed under the 1.20 GUI).
-            var mesh=new techguns.client.models.MeshSnapshot();var capture=new PoseStack();transforms(capture,context,slot);model.renderModel(capture,mesh,light,overlay,context);
+            var mesh=new techguns.client.models.MeshSnapshot();var capture=new PoseStack();transforms(capture,context,slot);model.child=false;model.renderModel(capture,mesh,light,overlay,context);
             if(!mesh.vertices.isEmpty()){
                 float fit=.92F/Math.max(1e-4F,Math.max(mesh.maxX-mesh.minX,mesh.maxY-mesh.minY));pose.translate(.5,.5,.5);pose.scale(fit,fit,fit);pose.translate(-mesh.centerX(),-mesh.centerY(),-mesh.centerZ());
                 mesh.render(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,overlay,1,1,1,1);
@@ -35,6 +35,8 @@ public final class ArmorItemRenderer extends BlockEntityWithoutLevelRenderer {
             pose.popPose();return;
         }
         transforms(pose,context,slot);
+        // 1.12 drew the item model with ModelBase.isChild left at its default (true); the original scales and translateBase values are for that layout
+        model.child=true;
         model.renderModel(pose,buffers.getBuffer(RenderType.entityCutoutNoCull(texture)),light,overlay,context);pose.popPose();
     }
     private final java.util.Map<String,Float> fits=new java.util.HashMap<>();
@@ -51,7 +53,7 @@ public final class ArmorItemRenderer extends BlockEntityWithoutLevelRenderer {
         pose.translate(0.5,0.5,0.5);
         if(context.firstPerson())pose.translate(0,0.1,0);else if(context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)pose.translate(0,0.04,0);else if(context==ItemDisplayContext.FIXED)pose.translate(0,0,0.07);
         if(context==ItemDisplayContext.GUI)pose.mulPose(Axis.YP.rotationDegrees(180));
-        float scale=switch(context){case GUI,FIXED->1.5F;case GROUND->slot==EquipmentSlot.HEAD?.5F:.6F;default->1;};
+        float scale=switch(context){case GUI,FIXED->1.5F;case GROUND->slot==EquipmentSlot.HEAD?1.25F:1.5F;default->1;};
         pose.scale(scale,scale,scale);pose.mulPose(Axis.XP.rotationDegrees(-180));pose.mulPose(Axis.YP.rotationDegrees(180));
         pose.translate(0,switch(slot){case HEAD->-0.54;case CHEST->-0.9;case LEGS->-1.29;case FEET->-1.42;default->0;},0);
     }

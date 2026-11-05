@@ -13,17 +13,17 @@ import net.minecraftforge.fml.common.Mod;
 import techguns.Techguns;
 
 /**
- * Connected textures for decor and ore drill blocks.
- * CTM reads the texture metadata shipped with the mod directly.
- * For Athena and Fusion a small built-in resource pack is added, only when that mod is installed.
+ * Connected textures are built into the mod (techguns.client.ctm), so the CTM, Athena and Fusion packs are no longer added;
+ * those mods joined stair and slab faces wrongly. CTM still reads the pillar metadata of the drill rod.
  */
 @Mod.EventBusSubscriber(modid = Techguns.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ConnectedTexturesCompat {
     private ConnectedTexturesCompat() {}
+    private static final boolean BUILT_IN = true;
 
     @SubscribeEvent
     public static void addPacks(AddPackFindersEvent event) {
-        if (event.getPackType() != PackType.CLIENT_RESOURCES) return;
+        if (event.getPackType() != PackType.CLIENT_RESOURCES || BUILT_IN) return;
         // Fusion works on the texture itself, so it also covers stairs; prefer it when both are present.
         if (ModList.get().isLoaded("fusion")) add(event, "techguns_fusion", "Techguns + Fusion");
         else if (ModList.get().isLoaded("athena")) add(event, "techguns_athena", "Techguns + Athena");

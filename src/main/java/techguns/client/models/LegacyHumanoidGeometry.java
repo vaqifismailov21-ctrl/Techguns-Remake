@@ -6,6 +6,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 /** ModelBiped geometry adapter. The actual animation pose comes from the modern humanoid model. */
 public class LegacyHumanoidGeometry extends ModelMultipart {
+    /** 1.12 ModelBase.isChild defaulted to true, so a ModelBiped drawn outside an entity renderer (the held armor item) used the child layout. */
+    public boolean child;
     public LegacyModelPart bipedHead,bipedHeadwear,bipedBody,bipedRightArm,bipedLeftArm,bipedRightLeg,bipedLeftLeg;
     public LegacyHumanoidGeometry(){this(0);}
     public LegacyHumanoidGeometry(float scale){this(scale,0,64,32);}
@@ -28,6 +30,12 @@ public class LegacyHumanoidGeometry extends ModelMultipart {
         render(entity,a,b,c,d,e,scale);
     }
     public void render(Entity entity,float a,float b,float c,float d,float e,float scale){
+        if(child){
+            pushMatrix();scale(.75,.75,.75);translate(0,16*scale,0);bipedHead.render(scale);popMatrix();
+            pushMatrix();scale(.5,.5,.5);translate(0,24*scale,0);
+            for(var bone:new LegacyModelPart[]{bipedBody,bipedRightArm,bipedLeftArm,bipedRightLeg,bipedLeftLeg,bipedHeadwear})bone.render(scale);
+            popMatrix();return;
+        }
         for(var bone:new LegacyModelPart[]{bipedHead,bipedHeadwear,bipedBody,bipedRightArm,bipedLeftArm,bipedRightLeg,bipedLeftLeg})bone.render(scale);
     }
 }
