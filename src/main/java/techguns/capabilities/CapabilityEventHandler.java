@@ -82,6 +82,7 @@ public final class CapabilityEventHandler {
         }
         if (event.player instanceof ServerPlayer player) {
             TGAutoFoodHandler.tick(player, data);
+            techguns.events.TGAutoHealHandler.tick(player, data);
             TGRadiationSystem.tickPlayer(player, data);
             data.detectEquipmentChanges();
             if (data.needsSync()) {

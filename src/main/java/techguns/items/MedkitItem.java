@@ -17,7 +17,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 /** Bandages and medkit from Techguns 1.7.10 (ItemMedkit): instant heal plus regeneration. */
-public final class MedkitItem extends GenericItemConsumable {
+public final class MedkitItem extends GenericItemConsumable implements techguns.api.tginventory.ITGSpecialSlot {
     public final float heal;
     public final int regenTicks, regenLevel;
 
@@ -39,10 +39,13 @@ public final class MedkitItem extends GenericItemConsumable {
         }
     }
 
-    @Override protected void onConsumed(ItemStack stack, Level level, Player player) {
+    @Override protected void onConsumed(ItemStack stack, Level level, Player player) { applyTo(player); }
+    public void applyTo(Player player) {
         player.heal(heal);
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, regenTicks, regenLevel, true, true));
     }
+    /** Goes into the healing slot of the Techguns inventory, which uses it by itself. */
+    @Override public techguns.api.tginventory.TGSlotType getSlot(ItemStack stack) { return techguns.api.tginventory.TGSlotType.HEALSLOT; }
 
     @Override public UseAnim getUseAnimation(ItemStack stack) { return UseAnim.NONE; }
 
