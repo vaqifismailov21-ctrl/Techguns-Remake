@@ -38,8 +38,11 @@ public final class ConnectedTextures {
     private static final Map<ResourceLocation,TextureAtlasSprite> sheets=new ConcurrentHashMap<>();
     private static final double EDGE=0.1,DEPTH=0.01;
 
+    /** Off: connected textures come from the CTM / Fusion / Athena compatibility (ConnectedTexturesCompat), as the user asked. */
+    public static final boolean ENABLED=false;
     @SubscribeEvent
     public static void bake(ModelEvent.ModifyBakingResult event){
+        if(!ENABLED)return;
         var resources=Minecraft.getInstance().getResourceManager();
         var known=new HashMap<ResourceLocation,Boolean>();
         var newGroups=new HashMap<BlockState,Set<ResourceLocation>>();
