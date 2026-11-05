@@ -18,10 +18,17 @@ public final class BunkerDoorBlock extends DoorBlock {
         BlockState lower=level.getBlockState(bottom);if(!lower.is(this))return InteractionResult.PASS;
         boolean opened=lower.getValue(OPEN);Direction side=lower.getValue(HINGE)==DoorHingeSide.LEFT?lower.getValue(FACING).getClockWise():lower.getValue(FACING).getCounterClockWise();
         BlockPos adjacent=bottom.relative(side);BlockState other=level.getBlockState(adjacent);
-        level.setBlock(bottom,lower.setValue(OPEN,!opened),10);
-        if(other.is(this)&&other.getValue(HALF)==DoubleBlockHalf.LOWER&&other.getValue(OPEN)==opened)level.setBlock(adjacent,other.setValue(OPEN,!opened),10);
+        toggle(level,bottom,lower,!opened);
+        // only a real double door opens together: same facing, mirrored hinge, its own partner side pointing back here
+        if(other.is(this)&&other.getValue(HALF)==DoubleBlockHalf.LOWER&&other.getValue(FACING)==lower.getValue(FACING)&&other.getValue(HINGE)!=lower.getValue(HINGE)&&other.getValue(OPEN)==opened)toggle(level,adjacent,other,!opened);
         level.playSound(null,bottom,TGSounds.BUNKER_DOOR_OPEN.get(),net.minecraft.sounds.SoundSource.BLOCKS,1,.9f+level.random.nextFloat()*.1f);
         level.gameEvent(player,!opened?net.minecraft.world.level.gameevent.GameEvent.BLOCK_OPEN:net.minecraft.world.level.gameevent.GameEvent.BLOCK_CLOSE,bottom);
         return InteractionResult.CONSUME;
+    }
+    /** Both halves are written, so the leaf never shows half open. */
+    private void toggle(Level level,BlockPos bottom,BlockState lower,boolean open){
+        var state=lower.setValue(OPEN,open);level.setBlock(bottom,state,10);
+        var top=bottom.above();var upper=level.getBlockState(top);
+        if(upper.is(this)&&upper.getValue(HALF)==DoubleBlockHalf.UPPER)level.setBlock(top,upper.setValue(OPEN,open),10);
     }
 }
