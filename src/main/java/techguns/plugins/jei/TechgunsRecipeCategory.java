@@ -13,8 +13,8 @@ import net.minecraft.network.chat.Component;
 import techguns.plugins.jei.RecipeDisplays.*;
 
 public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
-    private final Kind kind;private final RecipeType<Display> type;private final IDrawable background,icon,panel,power;
-    TechgunsRecipeCategory(IGuiHelper gui,Kind kind,RecipeType<Display> type){this.kind=kind;this.type=type;background=gui.createBlankDrawable(162,123);panel=gui.createDrawable(kind.texture(),7,15,162,63);icon=gui.createDrawableItemStack(kind.icon());power=gui.createAnimatedDrawable(gui.createDrawable(Kind.AMMO.texture(),251,1,4,48),100,IDrawableAnimated.StartDirection.TOP,true);}
+    private final Kind kind;private final RecipeType<Display> type;private final IDrawable background,icon,panel,power;private final IGuiHelper gui;
+    TechgunsRecipeCategory(IGuiHelper gui,Kind kind,RecipeType<Display> type){this.gui=gui;this.kind=kind;this.type=type;background=gui.createBlankDrawable(162,123);panel=gui.createDrawable(kind.texture(),7,15,162,63);icon=gui.createDrawableItemStack(kind.icon());power=gui.createAnimatedDrawable(gui.createDrawable(Kind.AMMO.texture(),251,1,4,48),100,IDrawableAnimated.StartDirection.TOP,true);}
     @Override public RecipeType<Display> getRecipeType(){return type;}
     @Override public Component getTitle(){return kind.title();}
     @Override public IDrawable getBackground(){return background;}
@@ -23,9 +23,27 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
         for(var slot:recipe.slots()){
             RecipeIngredientRole role=switch(slot.role()){case INPUT->RecipeIngredientRole.INPUT;case OUTPUT->RecipeIngredientRole.OUTPUT;case CATALYST->RecipeIngredientRole.CATALYST;};
             var target=builder.addSlot(role,slot.x(),slot.y());if(!slot.items().isEmpty())target.addItemStacks(slot.items()).setStandardSlotBackground();
-            else if(!slot.fluid().isEmpty())target.addFluidStack(slot.fluid().getFluid(),slot.fluid().getAmount()).setFluidRenderer(Math.max(1000,slot.fluid().getAmount()),false,10,50);
+            else if(!slot.fluid().isEmpty())target.addFluidStack(slot.fluid().getFluid(),slot.fluid().getAmount()).setFluidRenderer(capacity(slot),false,10,50).setOverlay(tankOverlay(slot),-1,0);
             if(slot.note()!=null)target.addTooltipCallback((view,tooltip)->tooltip.add(slot.note()));
         }
+    }
+    /** Tank sizes of the machines, so the fluid stands as high as it would in the machine (1.12 tank positions 19/158, y 17). */
+    private int capacity(RecipeDisplays.Slot slot){
+        int tank=switch(kind){case REACTION->10000;case CHEM->slot.role()==RecipeDisplays.Role.INPUT?8000:16000;case ORE_DRILL->16000;default->0;};
+        return Math.max(Math.max(1000,tank),slot.fluid().getAmount());
+    }
+    /** The tank scale is drawn over the fluid as in the machine GUI; the reaction chamber also marks the liquid level. */
+    private IDrawable tankOverlay(RecipeDisplays.Slot slot){
+        var texture=kind.texture();int v=kind==Kind.ORE_DRILL?40:32;int level=slot.fluid().getAmount()/1000;boolean marker=kind==Kind.REACTION;
+        return new IDrawable(){
+            @Override public int getWidth(){return 12;}
+            @Override public int getHeight(){return 52;}
+            @Override public void draw(GuiGraphics g,int x,int y){
+                if(kind!=Kind.CHEM&&kind!=Kind.REACTION&&kind!=Kind.ORE_DRILL)return;
+                g.blit(texture,x,y,176,v,12,52);
+                if(marker)g.blit(texture,x+1,y+50-Math.min(10,level)*5,177,32,7,1);
+            }
+        };
     }
     private List<Component> details(Display recipe){// the original JEI pages showed no time/energy lines
         var lines=new ArrayList<Component>();lines.addAll(recipe.details());return lines;}

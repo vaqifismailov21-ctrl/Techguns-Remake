@@ -40,12 +40,12 @@ public final class RecipeDisplays {
         for(var recipe:processing){var slots=new ArrayList<Slot>();for(int i=0;i<recipe.ingredients().length;i++){int[] p=recipe.kind().slots[i];slots.add(input(p[0],p[1],recipe.ingredients()[i],recipe.amounts()[i]));}int[] out=recipe.kind().slots[recipe.kind().output];slots.add(output(out[0],out[1],recipe.result()));add(result,new Display("processing_"+index++,Kind.machine(recipe.kind()),slots,recipe.ticks(),recipe.power(),List.of()));}
         index=0;for(var recipe:ChemicalRecipes.all()){
             var slots=new ArrayList<Slot>();for(int i=0;i<recipe.inputs().length;i++)if(recipe.amounts()[i]>0){int[] p=MachineKind.CHEM_LAB.slots[i];slots.add(input(p[0],p[1],recipe.inputs()[i],recipe.amounts()[i]));}
-            if(!recipe.output().isEmpty())slots.add(output(135,17,recipe.output()));if(!recipe.fluidInput().isEmpty())slots.add(fluid(Role.INPUT,20,18,recipe.fluidInput(),null));if(!recipe.fluidOutput().isEmpty())slots.add(fluid(Role.OUTPUT,159,18,recipe.fluidOutput(),null));
+            if(!recipe.output().isEmpty())slots.add(output(135,17,recipe.output()));if(!recipe.fluidInput().isEmpty())slots.add(fluid(Role.INPUT,19,17,recipe.fluidInput(),null));if(!recipe.fluidOutput().isEmpty())slots.add(fluid(Role.OUTPUT,158,17,recipe.fluidOutput(),null));
             add(result,new Display("chemical_"+index++,Kind.CHEM,slots,100,recipe.power(),List.of()));
         }
         for(var recipe:ReactionRecipe.all()){
             var slots=new ArrayList<Slot>();slots.add(input(35,17,recipe.input(),1));slots.add(item(Role.CATALYST,93,17,List.of(recipe.focus().getDefaultInstance()),Component.translatable("techguns.jei.catalyst")));
-            slots.add(fluid(Role.INPUT,21,18,new FluidStack(recipe.fluid(),recipe.liquidLevel()*1000),Component.translatable("techguns.jei.fluid_used",recipe.liquidConsumption())));
+            slots.add(fluid(Role.INPUT,19,17,new FluidStack(recipe.fluid(),recipe.liquidLevel()*1000),Component.translatable("techguns.jei.fluid_used",recipe.liquidConsumption())));
             for(int i=0;i<recipe.outputs().length;i++){int[] p=MachineKind.REACTION.slots[2+i];slots.add(output(p[0],p[1],recipe.outputs()[i]));}
             add(result,new Display(recipe.id(),Kind.REACTION,slots,recipe.ticks()*60,recipe.energy(),List.of(Component.translatable("techguns.jei.intensity",recipe.preferredIntensity(),recipe.liquidLevel()*10),Component.translatable("techguns.jei.reaction_steps",recipe.requiredCompletion(),recipe.ticks()),Component.translatable("techguns.jei.risk").append(": ").append(Component.translatable("techguns.jei.risk."+recipe.risk().name().toLowerCase(Locale.ROOT))))));
         }
