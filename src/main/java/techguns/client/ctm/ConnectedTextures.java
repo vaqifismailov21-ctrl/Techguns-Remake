@@ -70,8 +70,10 @@ public final class ConnectedTextures {
         return resources.getResource(ResourceLocation.fromNamespaceAndPath(name.getNamespace(),"textures/"+name.getPath()+"-ctm.png")).isPresent();
     }
     static boolean isConnected(TextureAtlasSprite sprite){return connected.contains(sprite.contents().name());}
-    private static TextureAtlasSprite sheet(ResourceLocation base){
-        return sheets.computeIfAbsent(base,b->Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getSprite(ResourceLocation.fromNamespaceAndPath(b.getNamespace(),b.getPath()+"-ctm")));
+    /** One tile of the sheet; the atlas unstitches the four tiles into own sprites so mipmaps do not bleed the neighbouring tile into the block joints. */
+    private static TextureAtlasSprite tile(ResourceLocation base,int col,int row){
+        var id=ResourceLocation.fromNamespaceAndPath(base.getNamespace(),base.getPath()+"-ctm_"+col+row);
+        return sheets.computeIfAbsent(id,b->Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getSprite(b));
     }
 
     /** Splits one quad into its four corners with the matching sheet tile. */
@@ -95,16 +97,15 @@ public final class ConnectedTextures {
             double tu=pu==0?(u0+um)/2:(um+u1)/2,tv=pv==0?v0-EDGE:v1+EDGE;
             boolean h=joins(level,pos,plane.at(su,sv),normal,name),w=joins(level,pos,plane.at(tu,tv),normal,name);
             boolean d=h&&w&&joins(level,pos,plane.at(su,tv),normal,name);
-            TextureAtlasSprite target;int col,row;
-            if(!h&&!w){target=sprite;col=-1;row=-1;}else{target=sheet(name);if(h&&w){col=d?0:1;row=d?0:1;}else if(w){col=1;row=0;}else{col=0;row=1;}}
+            TextureAtlasSprite target;
+            if(!h&&!w)target=sprite;else if(h&&w)target=d?tile(name,0,0):tile(name,1,1);else if(w)target=tile(name,1,0);else target=tile(name,0,1);
             float lo=pu==0?u0:um,hi=pu==0?um:u1,vlo=pv==0?v0:vm,vhi=pv==0?vm:v1;
             int[] piece=data.clone();
             for(int i=0;i<4;i++){
                 float pu2=cu[i]==0?lo:hi,pv2=cv[i]==0?vlo:vhi;double[] p=plane.at(pu2,pv2);int o=i*stride;
                 piece[o]=Float.floatToRawIntBits((float)p[0]);piece[o+1]=Float.floatToRawIntBits((float)p[1]);piece[o+2]=Float.floatToRawIntBits((float)p[2]);
                 float texU=pu==0?pu2-u0:16-(u1-pu2),texV=pv==0?pv2-v0:16-(v1-pv2);
-                if(col<0){piece[o+4]=Float.floatToRawIntBits(target.getU(texU));piece[o+5]=Float.floatToRawIntBits(target.getV(texV));}
-                else{piece[o+4]=Float.floatToRawIntBits(target.getU(col*8+texU/2));piece[o+5]=Float.floatToRawIntBits(target.getV(row*8+texV/2));}
+                piece[o+4]=Float.floatToRawIntBits(target.getU(texU));piece[o+5]=Float.floatToRawIntBits(target.getV(texV));
             }
             out.add(new BakedQuad(piece,quad.getTintIndex(),quad.getDirection(),target,quad.isShade(),quad.hasAmbientOcclusion()));
         }
