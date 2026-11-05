@@ -104,6 +104,7 @@ public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
         super.appendHoverText(stack, level, tooltip, flags);
+        if (stack.is(techguns.TGItems.ROCKET_THERMONUKE.get())) tooltip.add(Component.translatable("techguns.tooltip.rocket_thermonuke").withStyle(ChatFormatting.RED));
         if (slot != TGSlotType.NORMAL) {
             tooltip.add(Component.translatable("techguns.tooltip.slot")
                     .append(": ").append(slot.displayName()).withStyle(ChatFormatting.GRAY));

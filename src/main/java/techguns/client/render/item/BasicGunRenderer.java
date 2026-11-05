@@ -165,7 +165,7 @@ public final class BasicGunRenderer extends RenderItemBase {
             var partTexture=activeTexture;
             if(gun==TGuns.rocketlauncher.get()&&part==1) {
                 String variant=gun.getCurrentAmmoVariantKey(stack);
-                partTexture=ResourceLocation.fromNamespaceAndPath("techguns","textures/guns/"+(variant.equals("nuke")?"rocket_nuke":variant.equals("high_velocity")?"rocket_hv":"rocket")+".png");
+                partTexture=ResourceLocation.fromNamespaceAndPath("techguns","textures/guns/"+(variant.equals("thermonuke")?"rocket_thermonuke":variant.equals("nuke")?"rocket_nuke":variant.equals("high_velocity")?"rocket_hv":"rocket")+".png");
             }
             if(part==1&&gun instanceof techguns.items.guns.MiningGun tool) {
                 int head=tool.getMiningHeadLevel(stack);

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PNP",
+    "NWN",
+    "PNP"
+  ],
+  "key": {
+    "P": {
+      "item": "techguns:nuclearpowercell"
+    },
+    "N": {
+      "item": "techguns:rocket_nuke"
+    },
+    "W": {
+      "item": "techguns:tacticalnukewarhead"
+    }
+  },
+  "result": {
+    "item": "techguns:rocket_thermonuke"
+  }
+}

@@ -1505,5 +1505,8 @@
   "item.techguns.bandages": "Бинты",
   "item.techguns.medkit": "Аптечка",
   "techguns.tooltip.medkit.heal": "Лечит сердец: %s",
-  "techguns.radiationResistance": "Защита от Радиации"
+  "techguns.radiationResistance": "Защита от Радиации",
+  "item.techguns.rocket_thermonuke": "Ракета (Термоядерная)",
+  "item.techguns.rocket_thermonuke.name": "Ракета (Термоядерная)",
+  "techguns.tooltip.rocket_thermonuke": "В 100 раз сильнее тактической атомной. Стреляй с расстояния больше 100 блоков."
 }

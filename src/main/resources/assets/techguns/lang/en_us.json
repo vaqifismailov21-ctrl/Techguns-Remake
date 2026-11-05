@@ -1508,5 +1508,8 @@
   "item.techguns.bandages": "Bandages",
   "item.techguns.medkit": "Medkit",
   "techguns.tooltip.medkit.heal": "Heals %s hearts",
-  "techguns.radiationResistance": "RAD Resistance"
+  "techguns.radiationResistance": "RAD Resistance",
+  "item.techguns.rocket_thermonuke": "Rocket (Thermonuclear)",
+  "item.techguns.rocket_thermonuke.name": "Rocket (Thermonuclear)",
+  "techguns.tooltip.rocket_thermonuke": "100 times the tactical nuke. Fire it from more than 100 blocks away."
 }

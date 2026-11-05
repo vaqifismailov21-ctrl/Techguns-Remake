@@ -38,6 +38,7 @@ public final class TGEntities {
     public static final RegistryObject<EntityType<techguns.entities.projectiles.FlamethrowerProjectile>> FLAME=ENTITIES.register("flamethrowerprojectile",()->EntityType.Builder.<techguns.entities.projectiles.FlamethrowerProjectile>of(techguns.entities.projectiles.FlamethrowerProjectile::new,MobCategory.MISC).sized(0.25F,0.25F).fireImmune().clientTrackingRange(128).updateInterval(1).build("techguns:flamethrowerprojectile"));
     public static final RegistryObject<EntityType<techguns.entities.projectiles.RocketProjectile>> ROCKET_HV=rocket("rocketprojectilehv");
     public static final RegistryObject<EntityType<techguns.entities.projectiles.RocketProjectile>> ROCKET_NUKE=rocket("rocketprojectilenuke");
+    public static final RegistryObject<EntityType<techguns.entities.projectiles.RocketProjectile>> ROCKET_THERMONUKE=rocket("rocketprojectilethermonuke");
     public static final RegistryObject<EntityType<techguns.entities.projectiles.GrenadeProjectile>> GRENADE=grenade("grenadeprojectile");
     public static final RegistryObject<EntityType<techguns.entities.projectiles.GrenadeProjectile>> FRAG_GRENADE=grenade("fraggrenadeprojectile");
     public static final RegistryObject<EntityType<techguns.entities.projectiles.GrenadeProjectile>> GRENADE_40MM=grenade("grenade40mmprojectile");

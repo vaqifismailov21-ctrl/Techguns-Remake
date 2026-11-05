@@ -72,6 +72,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(TGEntities.GUIDED_MISSILE.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);
         event.registerEntityRenderer(TGEntities.ROCKET_HV.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);
         event.registerEntityRenderer(TGEntities.ROCKET_NUKE.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);
+        event.registerEntityRenderer(TGEntities.ROCKET_THERMONUKE.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);
         event.registerEntityRenderer(TGEntities.GRENADE.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);
         event.registerEntityRenderer(TGEntities.FRAG_GRENADE.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);
         event.registerEntityRenderer(TGEntities.GRENADE_40MM.get(),techguns.client.render.entities.projectiles.RenderExplosive::new);

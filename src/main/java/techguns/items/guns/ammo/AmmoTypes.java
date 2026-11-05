@@ -35,6 +35,7 @@ public class AmmoTypes{
 	public static final String TYPE_INCENDIARY = "incendiary";
 	public static final String TYPE_DEFAULT = "default";
 	public static final String TYPE_NUKE = "nuke";
+	public static final String TYPE_THERMONUKE = "thermonuke";
 	public static final String TYPE_EXPLOSIVE = "explosive";
 	public static final String TYPE_HV = "high_velocity";
 	
@@ -77,6 +78,7 @@ public class AmmoTypes{
 		ROCKETS = new AmmoType(TGItems.ROCKET.get().getDefaultInstance());
 		ROCKETS.addVariant(TYPE_NUKE, TGItems.ROCKET_NUKE.get().getDefaultInstance());
 		ROCKETS.addVariant(TYPE_HV, TGItems.ROCKET_HIGH_VELOCITY.get().getDefaultInstance());
+		ROCKETS.addVariant(TYPE_THERMONUKE, TGItems.ROCKET_THERMONUKE.get().getDefaultInstance());
 		
 		ROCKETS_NO_NUKES = new AmmoType(TGItems.ROCKET.get().getDefaultInstance());
 		ROCKETS_NO_NUKES.addVariant(TYPE_HV, TGItems.ROCKET_HIGH_VELOCITY.get().getDefaultInstance());
