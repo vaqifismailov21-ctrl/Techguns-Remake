@@ -115,6 +115,15 @@ public class NPCTurret extends PathfinderMob implements RangedAttackMob, INPCTec
     @Override public int getExperienceReward(){return 0;}
     @Override public boolean removeWhenFarAway(double distance){return false;}
 
+    /**
+     * 1.12 turned the body toward the head; the 1.20 control instead pulls a still head back to the body after half a second,
+     * which made turrets fire toward their fixed front. The stand simply follows the gun.
+     */
+    @Override protected net.minecraft.world.entity.ai.control.BodyRotationControl createBodyControl(){
+        return new net.minecraft.world.entity.ai.control.BodyRotationControl(this){
+            @Override public void clientTick(){NPCTurret.this.yBodyRot=NPCTurret.this.yHeadRot;NPCTurret.this.setYRot(NPCTurret.this.yHeadRot);}
+        };
+    }
     public void setTileEnt(TurretTileEnt tile){mountedTileEnt=tile;setCombatTask();}
 
     @Override public void tick(){
