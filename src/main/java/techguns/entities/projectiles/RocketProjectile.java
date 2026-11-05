@@ -31,8 +31,6 @@ public class RocketProjectile extends GenericProjectile {
     protected void explodeRocket() {
         if(!level().isClientSide&&isThermonuclear()) {
             techguns.damagesystem.ThermonuclearBlast.detonate(level(),getShooter(),this,getProjectileDamageSource(),position(),damage,blockdamage);
-            for(int i=0;i<9;i++){double a=i*Math.PI/4,r=i==0?0:techguns.damagesystem.ThermonuclearBlast.CRATER*0.4;TGProjectilePackets.effect(this,"NukeExplosion",position().add(Math.cos(a)*r,i==0?0:8,Math.sin(a)*r),0,0);}
-            level().playSound(null,getX(),getY(),getZ(),TGSounds.NUKE_EXPLOSION.get(),net.minecraft.sounds.SoundSource.BLOCKS,64,0.5F);
         } else if(!level().isClientSide) {
             var explosion=new TGExplosion(level(),getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,blockdamage?blockFactor():0);
             if(isNuclear()) {explosion.blockDropChance=0.05F;explosion.setDmgSrc(getProjectileDamageSource());}
