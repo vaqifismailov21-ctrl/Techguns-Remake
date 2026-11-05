@@ -41,7 +41,9 @@ public class LegacyButton extends Button {
     @Override protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         int s = state(this);
         drawBackground(g, getX(), getY(), width, height, s);
-        renderString(g, Minecraft.getInstance().font, TEXT[s] | 0xFF000000);
+        // centred like the 1.12 GuiButtonExt; the 1.20 scrolling label flickered and cut the "x" of the small 8x8 buttons
+        var font = Minecraft.getInstance().font;
+        g.drawCenteredString(font, getMessage(), getX() + width / 2, getY() + (height - 8) / 2, TEXT[s] | 0xFF000000);
     }
 
     public static final class LegacyBuilder {

@@ -2,5 +2,6 @@
   "parent": "builtin/entity",
   "textures": {
     "particle": "techguns:items/platecopper"
-  }
+  },
+  "gui_light": "front"
 }
