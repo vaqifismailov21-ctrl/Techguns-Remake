@@ -19,33 +19,33 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public final class PlantModel {
     private PlantModel(){}
     public enum Tex{CASING,CASING_LIGHT,CASING_DARK,GLASS,TOWER,COIL,BLADE,FRONT,LADDER,PIPE,VENT,HAZARD,PANEL,NONE}
-    /** Axis aligned box; rotY turns it around the vertical line through (px,pz) (it then collides with its turned footprint's bounds). */
-    public record Box(float x0,float y0,float z0,float x1,float y1,float z1,Tex tex,int argb,boolean solid,float rotY,float px,float pz){}
+    /** Axis aligned box; detail boxes sit on others and are drawn a hair larger so their faces never flicker against them; rotY turns it around the vertical line through (px,pz) (it then collides with its turned footprint's bounds). */
+    public record Box(float x0,float y0,float z0,float x1,float y1,float z1,Tex tex,int argb,boolean solid,float rotY,float px,float pz,boolean detail){}
     private static final int W=0xFFFFFFFF,GREY=0xFFB4B4B4,DARK=0xFF8C8C8C;
 
     private static final class B {
         final List<Box> list=new ArrayList<>();
-        void s(Tex t,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,W,true);}
-        void s(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,c,true);}
+        void s(Tex t,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,W,false);}
+        void s(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,c,false);}
         void d(Tex t,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,W,true);}
         void d(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,c,true);}
         /** Collision only, not drawn. */
-        void hit(double x0,double y0,double z0,double x1,double y1,double z1){add(Tex.NONE,x0,y0,z0,x1,y1,z1,0,true);}
+        void hit(double x0,double y0,double z0,double x1,double y1,double z1){add(Tex.NONE,x0,y0,z0,x1,y1,z1,0,false);}
         void rot(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1,double deg,double px,double pz){
-            list.add(new Box((float)x0,(float)y0,(float)z0,(float)x1,(float)y1,(float)z1,t,c,true,(float)deg,(float)px,(float)pz));}
-        private void add(Tex t,double x0,double y0,double z0,double x1,double y1,double z1,int c,boolean solid){
-            list.add(new Box((float)Math.min(x0,x1),(float)Math.min(y0,y1),(float)Math.min(z0,z1),(float)Math.max(x0,x1),(float)Math.max(y0,y1),(float)Math.max(z0,z1),t,c,solid,0,0,0));}
+            list.add(new Box((float)x0,(float)y0,(float)z0,(float)x1,(float)y1,(float)z1,t,c,true,(float)deg,(float)px,(float)pz,true));}
+        private void add(Tex t,double x0,double y0,double z0,double x1,double y1,double z1,int c,boolean detail){
+            list.add(new Box((float)Math.min(x0,x1),(float)Math.min(y0,y1),(float)Math.min(z0,z1),(float)Math.max(x0,x1),(float)Math.max(y0,y1),(float)Math.max(z0,z1),t,c,true,0,0,0,detail));}
         /** Vertical pipe with flanges. */
         void pipeY(double x,double z,double r,double y0,double y1,boolean solid){
-            add(Tex.PIPE,x-r,y0,z-r,x+r,y1,z+r,W,solid);
+            add(Tex.PIPE,x-r,y0,z-r,x+r,y1,z+r,W,false);
             for(double y=y0+0.25;y<y1-0.1;y+=0.75)d(Tex.CASING_DARK,x-r-0.025,y,z-r-0.025,x+r+0.025,y+0.06,z+r+0.025);
         }
         void pipeX(double y,double z,double r,double x0,double x1,boolean solid){
-            add(Tex.PIPE,x0,y-r,z-r,x1,y+r,z+r,W,solid);
+            add(Tex.PIPE,x0,y-r,z-r,x1,y+r,z+r,W,false);
             for(double x=x0+0.3;x<x1-0.1;x+=0.75)d(Tex.CASING_DARK,x,y-r-0.025,z-r-0.025,x+0.06,y+r+0.025,z+r+0.025);
         }
         void pipeZ(double x,double y,double r,double z0,double z1,boolean solid){
-            add(Tex.PIPE,x-r,y-r,z0,x+r,y+r,z1,W,solid);
+            add(Tex.PIPE,x-r,y-r,z0,x+r,y+r,z1,W,false);
             for(double z=z0+0.3;z<z1-0.1;z+=0.75)d(Tex.CASING_DARK,x-r-0.025,y-r-0.025,z,x+r+0.025,y+r+0.025,z+0.06);
         }
     }
@@ -85,7 +85,7 @@ public final class PlantModel {
         for(int i=1;i<=n;i++){
             float h=towerHalf(i,n);
             b.s(Tex.TOWER,-h,i,-h,h,i+1,h);
-            if(i%4==1)b.d(Tex.CASING,GREY,-h-0.03,i,-h-0.03,h+0.03,i+0.07,h+0.03);
+            b.d(Tex.CASING,GREY,-h-0.03,i,-h-0.03,h+0.03,i+0.07,h+0.03);
             b.d(Tex.LADDER,-0.13,i,h+0.005,0.13,i+1,h+0.03);
             for(double y:new double[]{i+0.15,i+0.65}){
                 b.d(Tex.CASING_DARK,-0.2,y,h+0.2,0.2,y+0.04,h+0.23);
@@ -159,7 +159,7 @@ public final class PlantModel {
         railX(b,-0.2,0.5,1.28,-0.16);
         // steam separator on the deck (front right) and its pipes into the turbine hall
         tank(b,Tex.TOWER,0xFFF0F0F0,0.9,0.18,0.32,1.28,2.35);
-        b.pipeZ(0.9,2.1,0.07,0.5,1.05,true);b.pipeY(0.9,1.05,0.07,1.9,2.1,true);
+        b.pipeX(2.2,0.18,0.07,0.2,0.9,true);b.pipeZ(0.2,2.2,0.07,0.18,0.62,true);b.pipeY(0.2,0.62,0.07,1.9,2.27,true);
         b.pipeX(1.62,0.18,0.06,0.15,0.58,true);valve(b,0.32,1.62,0.18);
         // lava pipes in front, a manifold and a valve
         b.pipeY(-1.3,-0.36,0.1,0,1.25,true);b.pipeY(1.3,-0.36,0.1,0,1.25,true);
@@ -168,11 +168,16 @@ public final class PlantModel {
         double cx=-0.55,cz=1.55;double[] r={0.82,0.72,0.64,0.58,0.55,0.56,0.6,0.66};
         for(int k=0;k<r.length;k++){double y0=1.9+k*0.22;b.d(Tex.TOWER,CONCRETE,cx-r[k],y0,cz-r[k],cx+r[k],y0+0.22,cz+r[k]);}
         b.d(Tex.CASING,cx-0.7,1.9+r.length*0.22,cz-0.7,cx+0.7,1.95+r.length*0.22,cz+0.7);
-        for(double fz:new double[]{0.95,1.95}){b.d(Tex.CASING,0.4,1.9,fz-0.42,1.32,2.12,fz+0.42);b.d(Tex.VENT,0.44,2.12,fz-0.38,1.28,2.14,fz+0.38);}
+        for(double fz:new double[]{0.95,1.95}){
+            b.d(Tex.CASING,0.4,1.9,fz-0.42,0.45,2.14,fz+0.42);b.d(Tex.CASING,1.27,1.9,fz-0.42,1.32,2.14,fz+0.42);
+            b.d(Tex.CASING,0.45,1.9,fz-0.42,1.27,2.14,fz-0.37);b.d(Tex.CASING,0.45,1.9,fz+0.37,1.27,2.14,fz+0.42);
+            b.d(Tex.CASING_DARK,0.45,1.9,fz-0.37,1.27,1.92,fz+0.37);b.d(Tex.CASING_DARK,0.82,1.92,fz-0.04,0.9,2.0,fz+0.04);
+            b.d(Tex.VENT,0.45,2.12,fz-0.37,1.27,2.13,fz+0.37);}
         // left: heat exchangers with headers, right: radiator fins; ladder at the back up to the roof
         for(int k=0;k<3;k++)b.d(Tex.PANEL,-1.5,0.3,0.15+k*0.75,-1.42,1.12,0.8+k*0.75);
         b.pipeZ(-1.48,1.16,0.045,-0.15,2.4,true);b.pipeZ(-1.48,0.22,0.045,-0.15,2.4,true);
-        for(int k=0;k<9;k++)b.d(Tex.VENT,1.42,0.3,0.1+k*0.25,1.52,1.12,0.16+k*0.25);
+        for(int k=0;k<3;k++)b.d(Tex.VENT,1.42,0.3,0.15+k*0.75,1.46,1.12,0.8+k*0.75);
+        b.pipeZ(1.48,1.16,0.045,-0.15,2.4,true);b.pipeZ(1.48,0.22,0.045,-0.15,2.4,true);
         b.d(Tex.LADDER,-0.2,0.14,2.46,0.2,1.9,2.49);
     }
 

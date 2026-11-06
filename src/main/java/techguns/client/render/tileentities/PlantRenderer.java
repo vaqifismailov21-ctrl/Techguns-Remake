@@ -24,9 +24,9 @@ import techguns.power.plant.PlantModel.Tex;
  */
 public final class PlantRenderer implements BlockEntityRenderer<PlantController> {
     private static ResourceLocation tex(String id){return ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/plant/"+id+".png");}
-    private static final Map<Tex,ResourceLocation> TEX=new EnumMap<>(Tex.class);
+    private static final Map<Tex,ResourceLocation> TEX=new EnumMap<>(Tex.class),TOP=new EnumMap<>(Tex.class);
     static{
-        TEX.put(Tex.CASING,tex("plant_casing"));TEX.put(Tex.CASING_LIGHT,tex("plant_casing_light"));TEX.put(Tex.CASING_DARK,tex("plant_casing_dark"));TEX.put(Tex.GLASS,tex("plant_glass"));
+        TEX.put(Tex.CASING,tex("plant_casing"));TEX.put(Tex.CASING_LIGHT,tex("plant_casing_light"));TOP.put(Tex.CASING,tex("plant_casing_top"));TOP.put(Tex.CASING_LIGHT,tex("plant_casing_light_top"));TEX.put(Tex.CASING_DARK,tex("plant_casing_dark"));TEX.put(Tex.GLASS,tex("plant_glass"));
         TEX.put(Tex.TOWER,tex("turbine_tower"));TEX.put(Tex.COIL,tex("fusion_coil"));TEX.put(Tex.BLADE,tex("turbine_blade"));
         TEX.put(Tex.LADDER,ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/metal_ladder.png"));
         TEX.put(Tex.PIPE,tex("plant_pipe"));TEX.put(Tex.VENT,tex("plant_vent"));TEX.put(Tex.HAZARD,tex("plant_hazard"));TEX.put(Tex.PANEL,tex("plant_panel"));
@@ -38,13 +38,17 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
     /** Axis aligned box; texture repeats once per block. */
     static void box(PoseStack pose,VertexConsumer vc,float x0,float y0,float z0,float x1,float y1,float z1,int light,int argb){box(pose,vc,x0,y0,z0,x1,y1,z1,light,argb,false);}
     /** Axis aligned box; fit stretches the whole texture over every face instead of repeating it per block. */
-    static void box(PoseStack pose,VertexConsumer vc,float x0,float y0,float z0,float x1,float y1,float z1,int light,int argb,boolean fit){
+    static void box(PoseStack pose,VertexConsumer vc,float x0,float y0,float z0,float x1,float y1,float z1,int light,int argb,boolean fit){box(pose,vc,x0,y0,z0,x1,y1,z1,light,argb,fit,ALL);}
+    static final int ALL=63,SIDES=15,TOPS=48;
+    /** faces: bit mask of the faces to draw, in the order -z, +z, -x, +x, +y, -y. */
+    static void box(PoseStack pose,VertexConsumer vc,float x0,float y0,float z0,float x1,float y1,float z1,int light,int argb,boolean fit,int faces){
         var m=pose.last().pose();var n=pose.last().normal();int a=argb>>>24,r=argb>>16&255,g=argb>>8&255,b=argb&255;
-        float[][] faces={
+        float[][] quads={
             {x0,y0,z0, x0,y1,z0, x1,y1,z0, x1,y0,z0, 0,0,-1},{x1,y0,z1, x1,y1,z1, x0,y1,z1, x0,y0,z1, 0,0,1},
             {x0,y0,z1, x0,y1,z1, x0,y1,z0, x0,y0,z0, -1,0,0},{x1,y0,z0, x1,y1,z0, x1,y1,z1, x1,y0,z1, 1,0,0},
             {x0,y1,z0, x0,y1,z1, x1,y1,z1, x1,y1,z0, 0,1,0},{x0,y0,z1, x0,y0,z0, x1,y0,z0, x1,y0,z1, 0,-1,0}};
-        for(var f:faces){
+        for(int fi=0;fi<6;fi++){
+            if((faces&(1<<fi))==0)continue;var f=quads[fi];
             float nx=f[12],ny=f[13],nz=f[14];
             for(int i=0;i<4;i++){
                 float px=f[i*3],py=f[i*3+1],pz=f[i*3+2];
@@ -75,11 +79,15 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         var model=plant.model();
         for(Tex t:Tex.values()){
             if(t==Tex.NONE||t==Tex.GLASS)continue;
-            VertexConsumer vc=null;
-            for(var box:model){
-                if(box.tex()!=t)continue;
-                if(vc==null)vc=buffers.getBuffer(RenderType.entityCutout(t==Tex.FRONT?front(plant.kind):TEX.get(t)));
-                draw(plant,pose,vc,box,light);
+            // steel boxes: the riveted side texture on the sides, the plain top texture up and down (one pass each)
+            boolean split=TOP.containsKey(t);
+            for(int pass=0;pass<(split?2:1);pass++){
+                VertexConsumer vc=null;int faces=split?(pass==0?SIDES:TOPS):ALL;
+                for(var box:model){
+                    if(box.tex()!=t)continue;
+                    if(vc==null)vc=buffers.getBuffer(RenderType.entityCutout(t==Tex.FRONT?front(plant.kind):pass==1?TOP.get(t):TEX.get(t)));
+                    draw(plant,pose,vc,box,light,faces);
+                }
             }
         }
         switch(plant.kind){
@@ -89,13 +97,14 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             case FUSION->fusion((FusionReactor)plant,pose,buffers,light,time);
         }
         VertexConsumer glass=null;
-        for(var box:model)if(box.tex()==Tex.GLASS){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(Tex.GLASS)));draw(plant,pose,glass,box,light);}
+        for(var box:model)if(box.tex()==Tex.GLASS){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(Tex.GLASS)));draw(plant,pose,glass,box,light,ALL);}
         pose.popPose();
     }
-    private static void draw(PlantController plant,PoseStack pose,VertexConsumer vc,PlantModel.Box b,int light){
+    private static void draw(PlantController plant,PoseStack pose,VertexConsumer vc,PlantModel.Box b,int light,int faces){
         int l=lightAt(plant,(b.x0()+b.x1())/2,(b.y0()+b.y1())/2+0.01F,(b.z0()+b.z1())/2,light);
         if(b.rotY()!=0){pose.pushPose();pose.translate(b.px(),0,b.pz());pose.mulPose(Axis.YP.rotationDegrees(b.rotY()));pose.translate(-b.px(),0,-b.pz());}
-        box(pose,vc,b.x0(),b.y0(),b.z0(),b.x1(),b.y1(),b.z1(),l,b.argb(),fit(b.tex()));
+        float e=b.detail()?0.002F:0;
+        box(pose,vc,b.x0()-e,b.y0()-e,b.z0()-e,b.x1()+e,b.y1()+e,b.z1()+e,l,b.argb(),fit(b.tex()),faces);
         if(b.rotY()!=0)pose.popPose();
     }
 
@@ -153,13 +162,14 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         if(on){var lamp=buffers.getBuffer(RenderType.eyes(GLOW));int amber=((int)(time/10))%2==0?0xFFFFA020:0x60FF8010;
             for(int sx=-1;sx<=1;sx+=2)box(pose,lamp,sx*0.4F-0.025F,0.905F,-0.245F,sx*0.4F+0.025F,0.955F,-0.24F,light,amber);
             box(pose,lamp,0.86F,2.49F,0.14F,0.94F,2.55F,0.22F,lightAt(p,0.9F,2.5F,0.18F,light),amber);}
-        // roof fans
+        // roof fans: five pitched blades turning inside the housing, under the grille
         var dark=buffers.getBuffer(RenderType.entityCutout(TEX.get(Tex.CASING_DARK)));float spin=on?time*18:0;
         for(float fz:new float[]{0.95F,1.95F}){
             int l=lightAt(p,0.86F,2.2F,fz,light);
-            pose.pushPose();pose.translate(0.86F,2.145F,fz);pose.mulPose(Axis.YP.rotationDegrees(spin+fz*40));
-            for(int k=0;k<4;k++){pose.mulPose(Axis.YP.rotationDegrees(90));box(pose,dark,-0.05F,0,0.02F,0.05F,0.015F,0.36F,l,WHITE);}
-            box(pose,dark,-0.06F,0,-0.06F,0.06F,0.03F,0.06F,l,WHITE);
+            pose.pushPose();pose.translate(0.86F,2.03F,fz);pose.mulPose(Axis.YP.rotationDegrees(spin));
+            box(pose,dark,-0.06F,-0.03F,-0.06F,0.06F,0.03F,0.06F,l,WHITE);
+            for(int k=0;k<5;k++){pose.pushPose();pose.mulPose(Axis.YP.rotationDegrees(k*72));pose.mulPose(Axis.ZP.rotationDegrees(25));
+                box(pose,dark,-0.07F,-0.006F,0.05F,0.07F,0.006F,0.34F,l,WHITE);pose.popPose();}
             pose.popPose();
         }
     }

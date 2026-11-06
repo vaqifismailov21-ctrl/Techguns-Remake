@@ -56,6 +56,15 @@ public final class PlantScreen extends AbstractContainerScreen<PlantMenu> {
             case FISSION->{lines.add(Component.translatable("techguns.plant.fission_reactor.fuel",menu.extra()/10));lines.add(Component.translatable("techguns.plant.heat",menu.heat(),FissionReactor.HEAT_MAX));}
             case FUSION->lines.add(menu.extra()>=1000?Component.translatable("techguns.plant.fusion_reactor.burning").withStyle(net.minecraft.ChatFormatting.DARK_PURPLE):Component.translatable("techguns.plant.fusion_reactor.ignition",menu.extra()/10));
         }
-        for(var line:lines)for(var part:font.split(line,width)){g.drawString(font,part,x,y,0x404040,false);y+=10;}
+        // fit the lines into the space above the inventory: shrink the text until everything fits (big fonts, long translations)
+        int bottom=inventoryLabelY-2;float scale=1;java.util.List<net.minecraft.util.FormattedCharSequence> parts=java.util.List.of();
+        for(float s:new float[]{1F,0.85F,0.75F,0.66F,0.58F,0.5F}){
+            scale=s;var list=new java.util.ArrayList<net.minecraft.util.FormattedCharSequence>();
+            for(var line:lines)list.addAll(font.split(line,(int)(width/s)));
+            parts=list;if(y+list.size()*(font.lineHeight+1)*s<=bottom)break;
+        }
+        g.pose().pushPose();g.pose().translate(x,y,0);g.pose().scale(scale,scale,1);
+        int ly=0;for(var part:parts){if(y+(ly+font.lineHeight)*scale>bottom)break;g.drawString(font,part,0,ly,0x404040,false);ly+=font.lineHeight+1;}
+        g.pose().popPose();
     }
 }
