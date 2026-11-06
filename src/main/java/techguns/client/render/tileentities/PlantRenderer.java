@@ -83,10 +83,10 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             boolean split=TOP.containsKey(t);
             for(int pass=0;pass<(split?2:1);pass++){
                 VertexConsumer vc=null;int faces=split?(pass==0?SIDES:TOPS):ALL;
-                for(var box:model){
-                    if(box.tex()!=t)continue;
+                for(int i=0;i<model.size();i++){
+                    var box=model.get(i);if(box.tex()!=t)continue;
                     if(vc==null)vc=buffers.getBuffer(RenderType.entityCutout(t==Tex.FRONT?front(plant.kind):pass==1?TOP.get(t):TEX.get(t)));
-                    draw(plant,pose,vc,box,light,faces);
+                    draw(plant,pose,vc,box,light,faces,i);
                 }
             }
         }
@@ -97,13 +97,18 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             case FUSION->fusion((FusionReactor)plant,pose,buffers,light,time);
         }
         VertexConsumer glass=null;
-        for(var box:model)if(box.tex()==Tex.GLASS){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(Tex.GLASS)));draw(plant,pose,glass,box,light,ALL);}
+        for(int i=0;i<model.size();i++)if(model.get(i).tex()==Tex.GLASS){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(Tex.GLASS)));draw(plant,pose,glass,model.get(i),light,ALL,i);}
         pose.popPose();
     }
-    private static void draw(PlantController plant,PoseStack pose,VertexConsumer vc,PlantModel.Box b,int light,int faces){
+    /**
+     * Every box is drawn a tiny bit larger, by an amount that differs from box to box (and is larger for detail boxes),
+     * so two faces never lie in the same plane and nothing flickers where boxes touch or overlap.
+     */
+    private static float inflate(PlantModel.Box b,int index){return 0.0003F*((index*7)%23)+(b.detail()?0.002F:0);}
+    private static void draw(PlantController plant,PoseStack pose,VertexConsumer vc,PlantModel.Box b,int light,int faces,int index){
         int l=lightAt(plant,(b.x0()+b.x1())/2,(b.y0()+b.y1())/2+0.01F,(b.z0()+b.z1())/2,light);
         if(b.rotY()!=0){pose.pushPose();pose.translate(b.px(),0,b.pz());pose.mulPose(Axis.YP.rotationDegrees(b.rotY()));pose.translate(-b.px(),0,-b.pz());}
-        float e=b.detail()?0.002F:0;
+        float e=inflate(b,index);
         box(pose,vc,b.x0()-e,b.y0()-e,b.z0()-e,b.x1()+e,b.y1()+e,b.z1()+e,l,b.argb(),fit(b.tex()),faces);
         if(b.rotY()!=0)pose.popPose();
     }
@@ -160,7 +165,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         for(int sx=-1;sx<=1;sx+=2)box(pose,vents,Math.min(sx*0.56F,sx*1.3F),0.3F,-0.2005F,Math.max(sx*0.56F,sx*1.3F),0.86F,-0.2F,light,glow);
         // warning lamps over the door and the beacon on the separator
         if(on){var lamp=buffers.getBuffer(RenderType.eyes(GLOW));int amber=((int)(time/10))%2==0?0xFFFFA020:0x60FF8010;
-            for(int sx=-1;sx<=1;sx+=2)box(pose,lamp,sx*0.4F-0.025F,0.905F,-0.245F,sx*0.4F+0.025F,0.955F,-0.24F,light,amber);
+            for(int sx=-1;sx<=1;sx+=2)box(pose,lamp,sx*0.4F-0.025F,0.905F,-0.255F,sx*0.4F+0.025F,0.955F,-0.25F,light,amber);
             box(pose,lamp,0.86F,2.49F,0.14F,0.94F,2.55F,0.22F,lightAt(p,0.9F,2.5F,0.18F,light),amber);}
         // roof fans: five pitched blades turning inside the housing, under the grille
         var dark=buffers.getBuffer(RenderType.entityCutout(TEX.get(Tex.CASING_DARK)));float spin=on?time*18:0;
@@ -182,7 +187,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         box(pose,core,-0.58F,-0.715F,0.42F,0.58F,-0.71F,1.58F,light,blue);
         // status strip: green running, red overheated, dim when idle
         int strip=p.overheated?(((int)(time/6))%2==0?0xFFFF3020:0x40FF3020):on?0xFF40FF60:0x30406040;
-        box(pose,core,-1.08F,1.44F,-0.525F,1.08F,1.5F,-0.52F,light,strip);
+        box(pose,core,-1.08F,1.44F,-0.535F,1.08F,1.5F,-0.53F,light,strip);
         // control rods: drawn out while the reactor runs, dropped in when it stops
         float target=on?1.05F:-0.55F;float[] r=rods.computeIfAbsent(p,k->new float[]{target});r[0]+=(target-r[0])*0.02F;
         var dark=buffers.getBuffer(RenderType.entityCutout(TEX.get(Tex.CASING_DARK)));

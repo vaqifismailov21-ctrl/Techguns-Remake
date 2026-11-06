@@ -141,7 +141,6 @@ public final class PlantModel {
         b.d(Tex.HAZARD,-1.5,0.08,-0.51,1.5,0.14,-0.5);
         b.s(Tex.CASING_LIGHT,-1.42,0.14,-0.18,1.42,1.2,2.42);
         for(double x:new double[]{-1.42,-0.47,0.47,1.36}){b.d(Tex.CASING,x,0.14,-0.22,x+0.06,1.2,-0.18);b.d(Tex.CASING,x,0.14,2.42,x+0.06,1.2,2.46);}
-        for(double z:new double[]{0.6,1.4})for(int sx=-1;sx<=1;sx+=2)b.d(Tex.CASING,sx*1.42,0.14,z,sx*1.46,1.2,z+0.06);
         b.d(Tex.CASING,-1.46,1.2,-0.22,1.46,1.28,2.46);
         // front: controller panel, door, glowing intakes (glow drawn behind the grilles), warning lamps
         b.d(Tex.FRONT,-0.3,0.24,-0.2,0.3,0.84,-0.18);
