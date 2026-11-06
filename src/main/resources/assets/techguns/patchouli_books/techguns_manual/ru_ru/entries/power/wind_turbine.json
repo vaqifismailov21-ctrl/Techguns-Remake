@@ -1,26 +1,73 @@
 {
-  "name": "Ветрогенератор",
-  "icon": "techguns:wind_turbine",
+  "name": "Ветроэлектростанция",
+  "icon": "techguns:wind_plant",
   "category": "techguns:power",
   "sortnum": 5,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "techguns:wind_turbine",
-      "text": "Ставится столбом из одинаковых блоков: нижний становится основанием, средние мачтами, верхний гондолой с ротором. Нужно от 1 до 6 мачт."
+      "type": "patchouli:text",
+      "text": "Контроллер ставится на землю. На него — от 8 до 24 $(item)секций башни$(), на верх башни — $(item)корпус электростанции$() (гондола). Нажми $(thing)ПКМ по контроллеру$(), чтобы собрать: недостающие блоки подсветятся."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Ветроэлектростанция",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:wind_plant[facing=north]",
+          "C": "techguns:plant_casing",
+          "T": "techguns:turbine_tower"
+        },
+        "pattern": [
+          [
+            "C"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "0"
+          ]
+        ]
+      },
+      "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "Ниже Y 64 ветра нет. Выше выработка растёт и на Y 128 доходит до $(b)100 FE/т$(). Каждый блок в пространстве 5×5×3 вокруг гондолы отнимает десятую часть, поэтому ставьте его на открытом месте. Дождь добавляет пятую часть, гроза половину.",
-      "title": "Выработка"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Энергию отдаёт только основание, кабель подключается к нему. ПКМ по любой части показывает выработку и что мешает."
+      "text": "Перед гондолой должен быть свободный круг радиусом 4 блока — там крутятся лопасти. Каждый блок в круге отнимает 5%.$(br2)Выработка до $(thing)1000 FE/т$() и растёт с высотой гондолы: полная на Y 150 и выше, ниже Y 105 ветер слабый. Дождь даёт +25%, гроза +50%.",
+      "title": "Работа"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "techguns:wind_turbine"
+      "recipe": "techguns:wind_plant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:turbine_tower"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
     }
   ]
 }

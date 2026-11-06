@@ -1,27 +1,58 @@
 {
-  "name": "Nuclear Generator",
-  "icon": "techguns:nuclear_generator",
+  "name": "Fission Reactor",
+  "icon": "techguns:fission_reactor",
   "category": "techguns:power",
   "sortnum": 4,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "techguns:nuclear_generator",
-      "text": "Burns Techguns nuclear micro reactors. $(b)400 FE/t$(); one micro reactor gives 4,800,000 FE (10 minutes). The depleted reactor goes to the second slot."
+      "type": "patchouli:text",
+      "text": "A 3x3x3 cube of $(item)casings$(), $(item)reactor glass$() allowed in the middle of each side, the centre empty. The controller in the middle of the front. $(thing)Right-click the controller$() to assemble, then to open it."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Fission Reactor",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:fission_reactor[facing=north]",
+          "C": "techguns:plant_casing",
+          "G": "techguns:plant_glass"
+        },
+        "pattern": [
+          [
+            "CCC",
+            "CGC",
+            "CCC"
+          ],
+          [
+            "C0C",
+            "G_G",
+            "CGC"
+          ],
+          [
+            "CCC",
+            "CGC",
+            "CCC"
+          ]
+        ]
+      },
+      "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "It heats up while running. Water on any side cools it faster than it heats. Without water it overheats in about a minute and stops until it has cooled to half. The heat bar is in its window.",
-      "title": "Cooling"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Exploding on overheating is off by default; nuclearGeneratorExplodes in techguns-common.toml turns it on. With the radiation system enabled, a running generator irradiates everyone within 4 blocks.",
-      "title": "Danger"
+      "text": "Burns $(item)nuclear micro reactors$(): $(thing)3000 FE/t$(), each gives three times the energy it gives in the small generator. It heats up and needs $(thing)water$() (10 mB/t, bucket or pipe). At 1000 heat it shuts down until cooled to half. Radiation around it while running.",
+      "title": "Operation"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "techguns:nuclear_generator"
+      "recipe": "techguns:fission_reactor"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_glass"
     }
   ]
 }

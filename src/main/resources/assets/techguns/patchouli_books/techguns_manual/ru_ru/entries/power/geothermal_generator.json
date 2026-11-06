@@ -1,22 +1,48 @@
 {
-  "name": "Геотермальный генератор",
-  "icon": "techguns:geothermal_generator",
+  "name": "Геотермальная электростанция",
+  "icon": "techguns:geothermal_plant",
   "category": "techguns:power",
   "sortnum": 3,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "techguns:geothermal_generator",
-      "text": "Работает от лавы и не тратит её. $(b)15 FE/т$() за каждый источник лавы снизу или с четырёх сторон, до 75 FE/т. В Незере в полтора раза больше."
+      "type": "patchouli:text",
+      "text": "Два слоя $(item)корпусов$() 3x3, контроллер — внизу посередине передней стороны. Нажми $(thing)ПКМ по контроллеру$(), чтобы собрать."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Геотермальная электростанция",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:geothermal_plant[facing=north]",
+          "C": "techguns:plant_casing"
+        },
+        "pattern": [
+          [
+            "CCC",
+            "CCC",
+            "CCC"
+          ],
+          [
+            "C0C",
+            "CCC",
+            "CCC"
+          ]
+        ]
+      },
+      "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "Считаются только источники, текущая лава не подходит. Сверху крутится вентилятор, окно спереди светится, пока он работает. Запас 50 000 FE.",
+      "text": "Станция берёт тепло лавы под собой: каждый $(thing)источник лавы$() в объёме 5x5x3 сразу под ней даёт $(thing)15 FE/т$(), до ~1100 FE/т. Лава не тратится. Строй прямо над лавовым озером.",
       "title": "Работа"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "techguns:geothermal_generator"
+      "recipe": "techguns:geothermal_plant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
     }
   ]
 }

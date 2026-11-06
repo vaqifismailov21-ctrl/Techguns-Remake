@@ -1,26 +1,73 @@
 {
-  "name": "Wind Turbine",
-  "icon": "techguns:wind_turbine",
+  "name": "Wind Power Plant",
+  "icon": "techguns:wind_plant",
   "category": "techguns:power",
   "sortnum": 5,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "techguns:wind_turbine",
-      "text": "Built as a column of the same block: the bottom one becomes the base, the middle ones masts, the top one the head with the rotor. It needs 1 to 6 masts."
+      "type": "patchouli:text",
+      "text": "Place the controller on the ground, 8 to 24 $(item)tower sections$() on it and a $(item)power plant casing$() (the nacelle) on top. $(thing)Right-click the controller$() to assemble it; missing blocks are marked."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Wind Power Plant",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:wind_plant[facing=north]",
+          "C": "techguns:plant_casing",
+          "T": "techguns:turbine_tower"
+        },
+        "pattern": [
+          [
+            "C"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "T"
+          ],
+          [
+            "0"
+          ]
+        ]
+      },
+      "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "There is no wind below Y 64. Above, the output grows up to $(b)100 FE/t$() at Y 128. Every block in the 5x5x3 space around the head takes a tenth off, so build it in the open. Rain adds a fifth, thunder a half.",
-      "title": "Output"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Only the base gives energy; connect the cable to it. Right clicking any part shows the output and what is in the way."
+      "text": "The rotor needs a free disc of radius 4 in front of the nacelle; every block in it takes 5% off.$(br2)Up to $(thing)1000 FE/t$(), growing with the height of the nacelle: full at Y 150 and above, weak below Y 105. Rain adds 25%, thunder 50%.",
+      "title": "Operation"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "techguns:wind_turbine"
+      "recipe": "techguns:wind_plant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:turbine_tower"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
     }
   ]
 }

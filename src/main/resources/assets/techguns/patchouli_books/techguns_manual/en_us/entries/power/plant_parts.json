@@ -1,0 +1,28 @@
+{
+  "name": "Power Plant Blocks",
+  "icon": "techguns:plant_casing",
+  "category": "techguns:power",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The multiblock power plants are built from these. Cables connect to any face of an assembled plant, water goes into any of its blocks. Breaking a block takes the plant apart. A blueprint can be shown in the world: press Visualize on the structure page and click a block or into the air."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_glass"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:turbine_tower"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fusion_coil"
+    }
+  ]
+}

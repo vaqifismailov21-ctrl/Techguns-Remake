@@ -1,22 +1,48 @@
 {
-  "name": "Geothermal Generator",
-  "icon": "techguns:geothermal_generator",
+  "name": "Geothermal Power Plant",
+  "icon": "techguns:geothermal_plant",
   "category": "techguns:power",
   "sortnum": 3,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "techguns:geothermal_generator",
-      "text": "Runs on lava without using it up. $(b)15 FE/t$() for every lava source below it or on its four sides, up to 75 FE/t. Half again more in the Nether."
+      "type": "patchouli:text",
+      "text": "Two layers of 3x3 $(item)casings$(), the controller in the middle of the front of the lower layer. $(thing)Right-click the controller$() to assemble it."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Geothermal Power Plant",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:geothermal_plant[facing=north]",
+          "C": "techguns:plant_casing"
+        },
+        "pattern": [
+          [
+            "CCC",
+            "CCC",
+            "CCC"
+          ],
+          [
+            "C0C",
+            "CCC",
+            "CCC"
+          ]
+        ]
+      },
+      "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "Only lava sources count, flowing lava does not. The fan on top turns and the front window glows while it works. Buffer 50,000 FE.",
-      "title": "Use"
+      "text": "It draws heat from the lava under it: every $(thing)lava source$() in the 5x5x3 space right below gives $(thing)15 FE/t$(), up to ~1100 FE/t. The lava is not used up. Build it right over a lava lake.",
+      "title": "Operation"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "techguns:geothermal_generator"
+      "recipe": "techguns:geothermal_plant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
     }
   ]
 }

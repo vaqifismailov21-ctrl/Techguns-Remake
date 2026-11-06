@@ -1,0 +1,64 @@
+{
+  "name": "Fusion Reactor",
+  "icon": "techguns:fusion_reactor",
+  "category": "techguns:power",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "5x5x3: bottom and top layers of $(item)casings$(), the middle layer a ring of $(item)magnet coils$() around an empty 3x3 chamber, the controller in the middle of the front of the ring. $(thing)Right-click the controller$() to assemble it."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Fusion Reactor",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:fusion_reactor[facing=north]",
+          "C": "techguns:plant_casing",
+          "K": "techguns:fusion_coil"
+        },
+        "pattern": [
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ],
+          [
+            "KK0KK",
+            "K___K",
+            "K___K",
+            "K___K",
+            "KKKKK"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ]
+        ]
+      },
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To start it, fill in $(thing)water$() and feed $(thing)2,000,000 FE$() by cable (ignition). Then the plasma burns on its own: $(thing)8000 FE/t$() for 20 mB of water per tick (deuterium). Without water the plasma goes out and needs a new ignition.",
+      "title": "Operation"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fusion_reactor"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fusion_coil"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
+    }
+  ]
+}

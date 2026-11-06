@@ -1,27 +1,58 @@
 {
-  "name": "Ядерный генератор",
-  "icon": "techguns:nuclear_generator",
+  "name": "Ядерный реактор",
+  "icon": "techguns:fission_reactor",
   "category": "techguns:power",
   "sortnum": 4,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "techguns:nuclear_generator",
-      "text": "Сжигает ядерные микрореакторы Techguns. $(b)400 FE/т$(), один микрореактор даёт 4 800 000 FE (10 минут). Истощённый микрореактор попадает во второй слот."
+      "type": "patchouli:text",
+      "text": "Куб 3x3x3 из $(item)корпусов$(), в серединах сторон можно $(item)реакторное стекло$(), центр пустой. Контроллер — посередине передней стороны. $(thing)ПКМ по контроллеру$() — собрать, потом ПКМ открывает окно."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Ядерный реактор",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:fission_reactor[facing=north]",
+          "C": "techguns:plant_casing",
+          "G": "techguns:plant_glass"
+        },
+        "pattern": [
+          [
+            "CCC",
+            "CGC",
+            "CCC"
+          ],
+          [
+            "C0C",
+            "G_G",
+            "CGC"
+          ],
+          [
+            "CCC",
+            "CGC",
+            "CCC"
+          ]
+        ]
+      },
+      "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "Во время работы генератор нагревается. Вода с любой стороны охлаждает его быстрее, чем он греется. Без воды примерно за минуту он перегревается и останавливается, пока не остынет наполовину. Шкала нагрева видна в окне.",
-      "title": "Охлаждение"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Взрыв при перегреве по умолчанию выключен. Его включает параметр nuclearGeneratorExplodes в techguns-common.toml. Если включена система радиации, работающий генератор облучает всех в радиусе 4 блоков.",
-      "title": "Опасность"
+      "text": "Сжигает $(item)ядерные микрореакторы$(): $(thing)3000 FE/т$(), каждый даёт в три раза больше энергии, чем в маленьком генераторе. При работе греется — нужна $(thing)вода$() (10 мВ/т, заливай ведром или трубой). На 1000 нагрева глохнет, пока не остынет до половины. Рядом фонит радиацией.",
+      "title": "Работа"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "techguns:nuclear_generator"
+      "recipe": "techguns:fission_reactor"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_glass"
     }
   ]
 }

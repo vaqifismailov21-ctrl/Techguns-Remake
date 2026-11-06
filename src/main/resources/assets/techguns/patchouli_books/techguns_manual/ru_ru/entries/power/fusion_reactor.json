@@ -1,0 +1,64 @@
+{
+  "name": "Термоядерный реактор",
+  "icon": "techguns:fusion_reactor",
+  "category": "techguns:power",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "5x5x3: нижний и верхний слои — $(item)корпуса$(), в среднем — кольцо $(item)магнитных катушек$() вокруг пустой камеры 3x3, контроллер — посередине передней стороны кольца. $(thing)ПКМ по контроллеру$() — собрать."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Термоядерный реактор",
+      "multiblock": {
+        "mapping": {
+          "0": "techguns:fusion_reactor[facing=north]",
+          "C": "techguns:plant_casing",
+          "K": "techguns:fusion_coil"
+        },
+        "pattern": [
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ],
+          [
+            "KK0KK",
+            "K___K",
+            "K___K",
+            "K___K",
+            "KKKKK"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ]
+        ]
+      },
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Для запуска залей $(thing)воду$() и подай $(thing)2 000 000 FE$() кабелем (зажигание). Дальше плазма горит сама и даёт $(thing)8000 FE/т$(), расходуя 20 мВ воды в тик (дейтерий). Кончится вода — плазма погаснет, понадобится новое зажигание.",
+      "title": "Работа"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fusion_reactor"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:fusion_coil"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:plant_casing"
+    }
+  ]
+}
