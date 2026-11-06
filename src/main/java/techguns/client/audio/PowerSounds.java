@@ -50,9 +50,7 @@ public final class PowerSounds {
         return lit(entity);
     }
     private static SoundEvent loopSound(BlockEntity entity){
-        if(entity instanceof SolarPanelEntity)return TGSounds.SOLAR_PANEL_RUN.get();
-        if(entity instanceof FuelGeneratorEntity)return TGSounds.FUEL_GENERATOR_RUN.get();
-        if(entity instanceof LiquidGeneratorEntity)return TGSounds.LIQUID_GENERATOR_RUN.get();
+        if(entity instanceof SolarPanelEntity||entity instanceof FuelGeneratorEntity||entity instanceof LiquidGeneratorEntity)return null;
         if(entity instanceof GeothermalGeneratorEntity)return TGSounds.GEOTHERMAL_GENERATOR_RUN.get();
         if(entity instanceof NuclearGeneratorEntity)return TGSounds.NUCLEAR_GENERATOR_RUN.get();
         if(entity instanceof WindTurbineEntity)return TGSounds.WIND_TURBINE_RUN.get();
@@ -73,11 +71,9 @@ public final class PowerSounds {
         if(entity instanceof WindTurbineEntity&&level.getGameTime()%10!=Math.floorMod(pos.asLong(),10L))return;
         var sound=loopSound(entity);if(sound==null)return;
         var loop=loops.get(pos);
-        // a field of solar panels hums as one: only one panel in a few blocks plays the sound
-        if(entity instanceof SolarPanelEntity&&(loop==null||loop.isStopped())&&(level.getGameTime()%20!=Math.floorMod(pos.asLong(),20L)||loops.entrySet().stream().anyMatch(e->e.getValue().entity instanceof SolarPanelEntity&&!e.getValue().isStopped()&&e.getKey().distSqr(pos)<36)))return;
         if(running(entity)&&(loop==null||loop.isStopped()||!Minecraft.getInstance().getSoundManager().isActive(loop))){
             if(loop!=null)Minecraft.getInstance().getSoundManager().stop(loop);
-            var next=new Loop(entity,sound,entity instanceof WindTurbineEntity?0.6F:entity instanceof SolarPanelEntity?0.22F:0.55F,0.95F+level.random.nextFloat()*0.1F);
+            var next=new Loop(entity,sound,entity instanceof WindTurbineEntity?0.6F:0.55F,0.95F+level.random.nextFloat()*0.1F);
             loops.put(pos,next);Minecraft.getInstance().getSoundManager().play(next);
         }
     }
@@ -93,6 +89,17 @@ public final class PowerSounds {
         if(!lit(entity))return;
         if(entity instanceof FuelGeneratorEntity||entity instanceof LiquidGeneratorEntity){
             boolean liquid=entity instanceof LiquidGeneratorEntity;var facing=state.getValue(GeneratorBlock.FACING);
+            // the coal generator sounds like its fire box, the liquid generator like the lava it burns
+            float x=pos.getX()+.5F,y=pos.getY()+.5F,z=pos.getZ()+.5F;
+            if(!liquid){
+                if(random.nextInt(12)==0)sound(level,x,y,z,net.minecraft.sounds.SoundEvents.FURNACE_FIRE_CRACKLE,0.7F,0.9F+random.nextFloat()*0.2F);
+                if(random.nextInt(30)==0)sound(level,x,y,z,net.minecraft.sounds.SoundEvents.BLASTFURNACE_FIRE_CRACKLE,0.5F,0.9F+random.nextFloat()*0.2F);
+                if(random.nextInt(60)==0)sound(level,x,y,z,net.minecraft.sounds.SoundEvents.FIRE_AMBIENT,0.9F,0.8F+random.nextFloat()*0.2F);
+            }else{
+                if(random.nextInt(10)==0)sound(level,x,y,z,net.minecraft.sounds.SoundEvents.LAVA_POP,0.5F,0.9F+random.nextFloat()*0.2F);
+                if(random.nextInt(50)==0)sound(level,x,y,z,net.minecraft.sounds.SoundEvents.LAVA_AMBIENT,0.6F,0.9F+random.nextFloat()*0.15F);
+                if(random.nextInt(200)==0)sound(level,x,y,z,net.minecraft.sounds.SoundEvents.FIRE_EXTINGUISH,0.12F,1.6F+random.nextFloat()*0.3F);
+            }
             var top=liquid?FacingMachineBlock.local(pos,facing,3.5,18.2,11.5):FacingMachineBlock.local(pos,facing,11.5,21.7,10.5);
             var smoke=net.minecraft.core.particles.ParticleTypes.SMOKE;
             // exhaust: a steady stream with a puff on every few strokes, a bigger cloud now and then
@@ -107,6 +114,7 @@ public final class PowerSounds {
             level.addParticle(net.minecraft.core.particles.ParticleTypes.CLOUD,pos.getX()+.5+(random.nextDouble()-.5)*.4,pos.getY()+1.0,pos.getZ()+.5+(random.nextDouble()-.5)*.4,0,0.02,0);
         }
     }
+    private static void sound(net.minecraft.world.level.Level level,float x,float y,float z,SoundEvent event,float volume,float pitch){level.playLocalSound(x,y,z,event,SoundSource.BLOCKS,volume,pitch,false);}
     /** Leaving a world drops the bookkeeping. */
     @net.minecraftforge.eventbus.api.SubscribeEvent public static void leave(net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut event){loops.clear();last.clear();}
     private PowerSounds(){}

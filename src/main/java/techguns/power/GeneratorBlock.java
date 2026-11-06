@@ -50,7 +50,7 @@ public final class GeneratorBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
     @Override public void animateTick(BlockState state,Level level,BlockPos pos,net.minecraft.util.RandomSource random){
-        if(state.getValue(LIT)&&!liquid&&random.nextInt(4)==0)level.playLocalSound(pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5,net.minecraft.sounds.SoundEvents.FURNACE_FIRE_CRACKLE,net.minecraft.sounds.SoundSource.BLOCKS,0.6F,1,false);
+        // fire and lava sounds are played by the block entity every few ticks (PowerSounds)
     }
     @Override public void onRemove(BlockState state,Level level,BlockPos pos,BlockState next,boolean moving){
         if(state.getBlock()!=next.getBlock()){var entity=level.getBlockEntity(pos);
