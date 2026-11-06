@@ -18,7 +18,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public final class PlantModel {
     private PlantModel(){}
-    public enum Tex{CASING,CASING_LIGHT,CASING_DARK,GLASS,TOWER,COIL,BLADE,FRONT,LADDER,PIPE,VENT,HAZARD,PANEL,NONE}
+    /** Own steel textures (wind turbine), and the Techguns machine textures the other plants are built from. */
+    public enum Tex{CASING,CASING_LIGHT,CASING_DARK,GLASS,TOWER,COIL,BLADE,FRONT,LADDER,PIPE,VENT,HAZARD,PANEL,
+        RC_HOUSING,RC_GLASS,FAB_HOUSING,FAB_GLASS,DRILL_ENGINE,DRILL_FRAME,STEELFRAME,CONCRETE,ROD,GEN_SIDE,NONE;
+        public boolean translucent(){return this==GLASS||this==RC_GLASS||this==FAB_GLASS;}}
     /** Axis aligned box; detail boxes sit on others and are drawn a hair larger so their faces never flicker against them; rotY turns it around the vertical line through (px,pz) (it then collides with its turned footprint's bounds). */
     public record Box(float x0,float y0,float z0,float x1,float y1,float z1,Tex tex,int argb,boolean solid,float rotY,float px,float pz,boolean detail){}
     private static final int W=0xFFFFFFFF,GREY=0xFFB4B4B4,DARK=0xFF8C8C8C;
@@ -67,7 +70,20 @@ public final class PlantModel {
             case FISSION->fission(b);
             case FUSION->fusion(b);
         }
-        return b.list;
+        // the big plants wear the textures of the Techguns multiblocks: ore drill, reaction chamber, fabricator
+        Map<Tex,Tex> skin=switch(kind){
+            case GEOTHERMAL->Map.of(Tex.CASING_LIGHT,Tex.DRILL_ENGINE,Tex.CASING,Tex.DRILL_FRAME,Tex.CASING_DARK,Tex.STEELFRAME,Tex.PIPE,Tex.ROD,Tex.PANEL,Tex.GEN_SIDE,Tex.GLASS,Tex.RC_GLASS);
+            case FISSION->Map.of(Tex.CASING_LIGHT,Tex.RC_HOUSING,Tex.CASING,Tex.STEELFRAME,Tex.CASING_DARK,Tex.STEELFRAME,Tex.PIPE,Tex.ROD,Tex.PANEL,Tex.GEN_SIDE,Tex.GLASS,Tex.RC_GLASS);
+            case FUSION->Map.of(Tex.CASING_LIGHT,Tex.FAB_HOUSING,Tex.CASING,Tex.FAB_HOUSING,Tex.CASING_DARK,Tex.STEELFRAME,Tex.PIPE,Tex.ROD,Tex.GLASS,Tex.FAB_GLASS);
+            default->Map.of();
+        };
+        if(skin.isEmpty())return b.list;
+        var out=new ArrayList<Box>(b.list.size());
+        for(var x:b.list){var t=skin.getOrDefault(x.tex(),x.tex());
+            // a grey tint on white Techguns panels looks dirty: keep tints only where they mean something (red wheels, yellow rails)
+            int c=t!=x.tex()&&(x.argb()==GREY||x.argb()==DARK)?W:x.argb();
+            out.add(new Box(x.x0(),x.y0(),x.z0(),x.x1(),x.y1(),x.z1(),t,c,x.solid(),x.rotY(),x.px(),x.pz(),x.detail()));}
+        return out;
     }
 
     private static void wind(B b,int n){
@@ -157,7 +173,7 @@ public final class PlantModel {
         b.d(Tex.PANEL,-0.27,1.28,0.1,-0.25,1.7,0.45);
         railX(b,-0.2,0.5,1.28,-0.16);
         // steam separator on the deck (front right) and its pipes into the turbine hall
-        tank(b,Tex.TOWER,0xFFF0F0F0,0.9,0.18,0.32,1.28,2.35);
+        tank(b,Tex.FAB_HOUSING,W,0.9,0.18,0.32,1.28,2.35);
         b.pipeX(2.2,0.18,0.07,0.2,0.9,true);b.pipeZ(0.2,2.2,0.07,0.18,0.62,true);b.pipeY(0.2,0.62,0.07,1.9,2.27,true);
         b.pipeX(1.62,0.18,0.06,0.15,0.58,true);valve(b,0.32,1.62,0.18);
         // lava pipes in front, a manifold and a valve
@@ -165,7 +181,7 @@ public final class PlantModel {
         b.pipeX(1.12,-0.36,0.07,-1.3,1.3,true);valve(b,-0.9,1.12,-0.36);valve(b,0.9,1.12,-0.36);
         // roof: cooling tower (stepped hyperboloid of concrete) and two fan housings (fans turn in the renderer)
         double cx=-0.55,cz=1.55;double[] r={0.82,0.72,0.64,0.58,0.55,0.56,0.6,0.66};
-        for(int k=0;k<r.length;k++){double y0=1.9+k*0.22;b.d(Tex.TOWER,CONCRETE,cx-r[k],y0,cz-r[k],cx+r[k],y0+0.22,cz+r[k]);}
+        for(int k=0;k<r.length;k++){double y0=1.9+k*0.22;b.d(Tex.CONCRETE,W,cx-r[k],y0,cz-r[k],cx+r[k],y0+0.22,cz+r[k]);}
         b.d(Tex.CASING,cx-0.7,1.9+r.length*0.22,cz-0.7,cx+0.7,1.95+r.length*0.22,cz+0.7);
         for(double fz:new double[]{0.95,1.95}){
             b.d(Tex.CASING,0.4,1.9,fz-0.42,0.45,2.14,fz+0.42);b.d(Tex.CASING,1.27,1.9,fz-0.42,1.32,2.14,fz+0.42);

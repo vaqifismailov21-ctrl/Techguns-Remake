@@ -23,12 +23,18 @@ import techguns.power.plant.PlantModel.Tex;
  * the glowing intakes of the geothermal plant, the fuel rods of the fission reactor and the plasma of the tokamak.
  */
 public final class PlantRenderer implements BlockEntityRenderer<PlantController> {
+    /** A texture of the Techguns blocks themselves (their multiblocks: ore drill, reaction chamber, fabricator). */
+    private static ResourceLocation tg(String id){return ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/"+id+".png");}
     private static ResourceLocation tex(String id){return ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/plant/"+id+".png");}
     private static final Map<Tex,ResourceLocation> TEX=new EnumMap<>(Tex.class),TOP=new EnumMap<>(Tex.class);
     static{
         TEX.put(Tex.CASING,tex("plant_casing"));TEX.put(Tex.CASING_LIGHT,tex("plant_casing_light"));TOP.put(Tex.CASING,tex("plant_casing_top"));TOP.put(Tex.CASING_LIGHT,tex("plant_casing_light_top"));TEX.put(Tex.CASING_DARK,tex("plant_casing_dark"));TEX.put(Tex.GLASS,tex("plant_glass"));
         TEX.put(Tex.TOWER,tex("turbine_tower"));TEX.put(Tex.COIL,tex("fusion_coil"));TEX.put(Tex.BLADE,tex("turbine_blade"));
         TEX.put(Tex.LADDER,ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/metal_ladder.png"));
+        TEX.put(Tex.RC_HOUSING,tg("reactionchamber_housing"));TEX.put(Tex.RC_GLASS,tg("reactionchamber_glass"));
+        TEX.put(Tex.FAB_HOUSING,tg("fabricator_housing"));TEX.put(Tex.FAB_GLASS,tg("fabricator_glass"));
+        TEX.put(Tex.DRILL_ENGINE,tg("drill_engine"));TEX.put(Tex.DRILL_FRAME,tg("drill_frame"));TEX.put(Tex.STEELFRAME,tg("steelframe_dark"));
+        TEX.put(Tex.CONCRETE,tg("concrete_grey"));TEX.put(Tex.ROD,tg("drill_rod"));TEX.put(Tex.GEN_SIDE,tg("generator_side"));
         TEX.put(Tex.PIPE,tex("plant_pipe"));TEX.put(Tex.VENT,tex("plant_vent"));TEX.put(Tex.HAZARD,tex("plant_hazard"));TEX.put(Tex.PANEL,tex("plant_panel"));
     }
     private static final ResourceLocation GLOW=tex("plant_glow");
@@ -40,6 +46,8 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
     /** Axis aligned box; fit stretches the whole texture over every face instead of repeating it per block. */
     static void box(PoseStack pose,VertexConsumer vc,float x0,float y0,float z0,float x1,float y1,float z1,int light,int argb,boolean fit){box(pose,vc,x0,y0,z0,x1,y1,z1,light,argb,fit,ALL);}
     static final int ALL=63,SIDES=15,TOPS=48;
+    /** Shift of the repeating textures so Techguns panels line up with the blocks of the plant (render thread only; the wind turbine keeps its look). */
+    private static float uvShift=0;
     /** faces: bit mask of the faces to draw, in the order -z, +z, -x, +x, +y, -y. */
     static void box(PoseStack pose,VertexConsumer vc,float x0,float y0,float z0,float x1,float y1,float z1,int light,int argb,boolean fit,int faces){
         var m=pose.last().pose();var n=pose.last().normal();int a=argb>>>24,r=argb>>16&255,g=argb>>8&255,b=argb&255;
@@ -54,7 +62,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
                 float px=f[i*3],py=f[i*3+1],pz=f[i*3+2];
                 float u=nx!=0?pz:px,v=ny!=0?pz:py;
                 if(fit){u=nx!=0?(pz-z0)/(z1-z0):(px-x0)/(x1-x0);v=ny!=0?(pz-z0)/(z1-z0):1-(py-y0)/(y1-y0);if(nx<0||nz>0)u=1-u;}
-                else{u=nx<0||nz>0?-u:u;v=-v;}
+                else{u=nx!=0?pz+uvShift:px+uvShift;v=ny!=0?pz+uvShift:py;u=nx<0||nz>0?-u:u;v=-v;}
                 vc.vertex(m,px,py,pz).color(r,g,b,a).uv(u,v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(n,nx,ny,nz).endVertex();
             }
         }
@@ -76,9 +84,9 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         float speed=plant instanceof WindPlant?plant.rate/(float)WindPlant.RATE*0.12F:0;
         a[0]=(a[0]+(time-a[1])*speed)%(float)(Math.PI*2);a[1]=time;
         pose.pushPose();pose.translate(0.5,0,0.5);pose.mulPose(Axis.YP.rotationDegrees(180-plant.facing().toYRot()));
-        var model=plant.model();
+        var model=plant.model();uvShift=plant.kind==PlantKind.WIND?0:0.5F;
         for(Tex t:Tex.values()){
-            if(t==Tex.NONE||t==Tex.GLASS)continue;
+            if(t==Tex.NONE||t.translucent())continue;
             // steel boxes: the riveted side texture on the sides, the plain top texture up and down (one pass each)
             boolean split=TOP.containsKey(t);
             for(int pass=0;pass<(split?2:1);pass++){
@@ -96,9 +104,11 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             case FISSION->fission((FissionReactor)plant,pose,buffers,light,time);
             case FUSION->fusion((FusionReactor)plant,pose,buffers,light,time);
         }
-        VertexConsumer glass=null;
-        for(int i=0;i<model.size();i++)if(model.get(i).tex()==Tex.GLASS){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(Tex.GLASS)));draw(plant,pose,glass,model.get(i),light,ALL,i);}
-        pose.popPose();
+        for(Tex t:Tex.values()){
+            if(!t.translucent())continue;VertexConsumer glass=null;
+            for(int i=0;i<model.size();i++)if(model.get(i).tex()==t){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(t)));draw(plant,pose,glass,model.get(i),light,ALL,i);}
+        }
+        pose.popPose();uvShift=0;
     }
     /**
      * Every box is drawn a tiny bit larger, by an amount that differs from box to box (and is larger for detail boxes),
