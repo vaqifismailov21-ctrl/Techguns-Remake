@@ -32,7 +32,7 @@ public final class PlantControllerBlock extends BaseEntityBlock {
     public static final BooleanProperty FORMED=PlantPartBlock.FORMED;
     public final PlantKind kind;
     public PlantControllerBlock(PlantKind kind){
-        super(Properties.of().strength(4,20).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().isViewBlocking((s,l,p)->false)
+        super(Properties.of().strength(4,20).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().dynamicShape().isViewBlocking((s,l,p)->false)
                 .lightLevel(s->s.getValue(LIT)?kind.light:0));
         this.kind=kind;registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH).setValue(LIT,false).setValue(FORMED,false));
     }
@@ -41,6 +41,9 @@ public final class PlantControllerBlock extends BaseEntityBlock {
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){return defaultBlockState().setValue(FACING,context.getHorizontalDirection().getOpposite());}
     @Override public BlockState rotate(BlockState state,Rotation rotation){return state.setValue(FACING,rotation.rotate(state.getValue(FACING)));}
     @Override public BlockState mirror(BlockState state,Mirror mirror){return state.rotate(mirror.getRotation(state.getValue(FACING)));}
+    @Override public net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,net.minecraft.world.phys.shapes.CollisionContext context){
+        return state.getValue(FORMED)?PlantController.formedShape(level,pos):net.minecraft.world.phys.shapes.Shapes.block();
+    }
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public float getShadeBrightness(BlockState state,BlockGetter level,BlockPos pos){return 1;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return kind.create(pos,state);}

@@ -1297,5 +1297,45 @@
         "stream": false
       }
     ]
+  },
+  "power.plant_wind": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.plant_wind",
+    "sounds": [
+      {
+        "name": "techguns:power/plant_wind",
+        "stream": false
+      }
+    ]
+  },
+  "power.plant_geothermal": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.plant_geothermal",
+    "sounds": [
+      {
+        "name": "techguns:power/plant_geothermal",
+        "stream": false
+      }
+    ]
+  },
+  "power.plant_fission": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.plant_fission",
+    "sounds": [
+      {
+        "name": "techguns:power/plant_fission",
+        "stream": false
+      }
+    ]
+  },
+  "power.plant_fusion": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.plant_fusion",
+    "sounds": [
+      {
+        "name": "techguns:power/plant_fusion",
+        "stream": false
+      }
+    ]
   }
 }

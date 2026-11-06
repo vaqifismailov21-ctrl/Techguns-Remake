@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "techguns:blocks/plant/plant_casing"
+    "side": "techguns:blocks/plant/plant_casing",
+    "top": "techguns:blocks/plant/plant_casing_top",
+    "bottom": "techguns:blocks/plant/plant_casing_top"
   }
 }

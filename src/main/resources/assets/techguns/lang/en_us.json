@@ -1563,5 +1563,9 @@
   "techguns.plant.rotor_hub.tip3": "then right-click the hub to start the plant.",
   "techguns.plant.rotor_hub.tip4": "Sneak + empty hand takes a blade off.",
   "techguns.plant.fill_not_formed": "Assemble the plant first, then pour the water into any of its blocks (or into the controller right away)",
-  "techguns.plant.fill_wrong": "This tank takes only water, or it is full"
+  "techguns.plant.fill_wrong": "This tank takes only water, or it is full",
+  "subtitles.techguns.power.plant_wind": "Wind turbine turns",
+  "subtitles.techguns.power.plant_geothermal": "Geothermal plant rumbles",
+  "subtitles.techguns.power.plant_fission": "Fission reactor hums",
+  "subtitles.techguns.power.plant_fusion": "Fusion reactor buzzes"
 }

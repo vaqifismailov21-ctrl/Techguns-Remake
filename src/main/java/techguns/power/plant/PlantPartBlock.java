@@ -23,11 +23,14 @@ public final class PlantPartBlock extends BaseEntityBlock {
     public static final BooleanProperty FORMED=BooleanProperty.create("formed");
     public final Type type;
     public PlantPartBlock(Type type){
-        super(Properties.of().strength(4,20).sound(type==Type.GLASS?SoundType.GLASS:SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()
+        super(Properties.of().strength(4,20).sound(type==Type.GLASS?SoundType.GLASS:SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().dynamicShape()
                 .isViewBlocking((s,l,p)->false).isSuffocating((s,l,p)->type!=Type.GLASS&&!s.getValue(FORMED)).isRedstoneConductor((s,l,p)->false));
         this.type=type;registerDefaultState(stateDefinition.any().setValue(FORMED,false));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FORMED);}
+    @Override public net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,net.minecraft.world.phys.shapes.CollisionContext context){
+        return state.getValue(FORMED)?PlantController.formedShape(level,pos):net.minecraft.world.phys.shapes.Shapes.block();
+    }
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new PlantPartEntity(pos,state);}
     @Override public boolean skipRendering(BlockState state,BlockState next,net.minecraft.core.Direction side){return type==Type.GLASS&&next.is(this)||super.skipRendering(state,next,side);}

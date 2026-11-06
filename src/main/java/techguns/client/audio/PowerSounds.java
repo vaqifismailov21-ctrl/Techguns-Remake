@@ -27,11 +27,17 @@ public final class PowerSounds {
         private Loop(BlockEntity entity,SoundEvent event,float volume,float pitch){
             super(event,SoundSource.BLOCKS,RandomSource.create());this.entity=entity;
             var pos=entity.getBlockPos();x=pos.getX()+.5;y=pos.getY()+.5;z=pos.getZ()+.5;
+            if(entity instanceof techguns.power.plant.PlantController plant&&plant.formed){
+                // from the middle of the plant; the wind turbine sounds from its rotor, high up the tower
+                float[] c=plant instanceof techguns.power.plant.WindPlant w?techguns.power.plant.PlantModel.rotorCentre(Math.max(1,w.towers)):switch(plant.kind){case FUSION->new float[]{0,0.5F,2};case WIND->new float[]{0,0.5F,0};default->new float[]{0,0.5F,1};};
+                var f=plant.facing();var r=f.getClockWise();var b=f.getOpposite();
+                x=pos.getX()+.5+r.getStepX()*c[0]+b.getStepX()*c[2];y=pos.getY()+c[1];z=pos.getZ()+.5+r.getStepZ()*c[0]+b.getStepZ()*c[2];
+            }
             looping=true;delay=0;this.volume=volume;this.pitch=pitch;attenuation=SoundInstance.Attenuation.LINEAR;
         }
         @Override public void tick(){
             if(entity.isRemoved()||!running(entity)){stop();loops.remove(entity.getBlockPos(),this);return;}
-            if(entity instanceof techguns.power.plant.WindPlant wind){volume=0.45F+0.6F*wind.rate/techguns.power.plant.WindPlant.RATE;pitch=0.7F+0.4F*wind.rate/techguns.power.plant.WindPlant.RATE;}
+            if(entity instanceof techguns.power.plant.WindPlant wind){float k=wind.rate/(float)techguns.power.plant.WindPlant.RATE;volume=1.4F+1.2F*k;pitch=0.75F+0.35F*k;}
             if(entity instanceof WindTurbineEntity){int rate=windRate(entity);volume=0.35F+0.5F*rate/PowerBlocks.WIND_RATE;pitch=0.8F+0.4F*rate/PowerBlocks.WIND_RATE;}
         }
     }
@@ -48,7 +54,7 @@ public final class PowerSounds {
         if(entity instanceof GeothermalGeneratorEntity)return TGSounds.GEOTHERMAL_GENERATOR_RUN.get();
         if(entity instanceof NuclearGeneratorEntity)return TGSounds.NUCLEAR_GENERATOR_RUN.get();
         if(entity instanceof WindTurbineEntity)return TGSounds.WIND_TURBINE_RUN.get();
-        if(entity instanceof techguns.power.plant.PlantController plant)return switch(plant.kind){case WIND->TGSounds.WIND_TURBINE_RUN.get();case GEOTHERMAL->TGSounds.GEOTHERMAL_GENERATOR_RUN.get();default->TGSounds.NUCLEAR_GENERATOR_RUN.get();};
+        if(entity instanceof techguns.power.plant.PlantController plant)return switch(plant.kind){case WIND->TGSounds.PLANT_WIND_RUN.get();case GEOTHERMAL->TGSounds.PLANT_GEOTHERMAL_RUN.get();case FISSION->TGSounds.PLANT_FISSION_RUN.get();case FUSION->TGSounds.PLANT_FUSION_RUN.get();};
         return null;
     }
     private static void once(BlockEntity entity,SoundEvent event,float volume){var pos=entity.getBlockPos();Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(event,SoundSource.BLOCKS,volume,1,RandomSource.create(),pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5));}

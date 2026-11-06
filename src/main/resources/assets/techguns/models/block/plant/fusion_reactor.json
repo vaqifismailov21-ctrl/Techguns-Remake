@@ -3,6 +3,6 @@
   "textures": {
     "front": "techguns:blocks/plant/fusion_reactor_front",
     "side": "techguns:blocks/plant/plant_casing",
-    "top": "techguns:blocks/plant/plant_casing"
+    "top": "techguns:blocks/plant/plant_casing_top"
   }
 }

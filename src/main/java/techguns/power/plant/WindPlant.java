@@ -26,6 +26,7 @@ public final class WindPlant extends PlantController {
         map.put(at(0,n+1,-1),new Need(s->s.is(PlantBlocks.HUB.get())&&s.getValue(RotorHubBlock.BLADES)==RotorHubBlock.MAX_BLADES&&s.getValue(RotorHubBlock.FACING)==facing,PlantBlocks.HUB.get()));
         return map;
     }
+    @Override protected int modelKey(){return super.modelKey()+8*towers;}
     @Override protected void onFormed(){towers=countTowers();survey();}
     private void survey(){
         if(level==null)return;

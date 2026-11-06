@@ -15,6 +15,7 @@ public class PlantPartEntity extends BlockEntity {
     public PlantPartEntity(BlockPos pos,BlockState state){this(PlantBlocks.PART_ENTITY.get(),pos,state);}
     protected PlantPartEntity(net.minecraft.world.level.block.entity.BlockEntityType<?> type,BlockPos pos,BlockState state){super(type,pos,state);}
     public void setMaster(BlockPos pos){master=pos==null?null:pos.immutable();setChanged();}
+    public BlockPos masterPos(){return master;}
     public PlantController master(){
         if(master==null||level==null||!getBlockState().getValue(PlantPartBlock.FORMED))return null;
         return level.getBlockEntity(master) instanceof PlantController c&&c.formed?c:null;

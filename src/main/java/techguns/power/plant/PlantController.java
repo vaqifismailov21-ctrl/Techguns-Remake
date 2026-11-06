@@ -36,6 +36,30 @@ public abstract class PlantController extends EnergySource {
     private final int output;
     protected PlantController(BlockEntityType<?> type,PlantKind kind,BlockPos pos,BlockState state,int capacity,int output){super(type,pos,state,capacity,output);this.kind=kind;this.output=output;}
 
+    private java.util.List<PlantModel.Box> model;private int modelKey=Integer.MIN_VALUE;private volatile Map<BlockPos,net.minecraft.world.phys.shapes.VoxelShape> shapes;
+    /** Changes whenever the static model of the plant would change. */
+    protected int modelKey(){return getBlockState().hasProperty(PlantControllerBlock.FACING)?facing().ordinal():0;}
+    /** Static geometry of the formed plant (see PlantModel), rebuilt when it changes. */
+    public java.util.List<PlantModel.Box> model(){
+        int key=modelKey();
+        if(model==null||key!=modelKey){model=PlantModel.build(this);modelKey=key;shapes=null;}
+        return model;
+    }
+    /** Collision and outline of a block of the formed plant: the solid boxes of the model inside it, or a full block. */
+    public net.minecraft.world.phys.shapes.VoxelShape shapeAt(BlockPos pos){
+        if(!formed)return net.minecraft.world.phys.shapes.Shapes.block();
+        var list=model();var map=shapes;
+        if(map==null){map=PlantModel.shapes(worldPosition,facing(),list);shapes=map;}
+        var shape=map.get(pos);return shape==null?net.minecraft.world.phys.shapes.Shapes.block():shape;
+    }
+    /** Shape of a block that belongs to a formed plant (controller or part); full block when the plant is not known here. */
+    public static net.minecraft.world.phys.shapes.VoxelShape formedShape(net.minecraft.world.level.BlockGetter level,BlockPos pos){
+        var be=level.getBlockEntity(pos);PlantController plant=null;
+        if(be instanceof PlantController c)plant=c;
+        else if(be instanceof PlantPartEntity part&&part.masterPos()!=null&&level.getBlockEntity(part.masterPos()) instanceof PlantController c)plant=c;
+        return plant!=null&&plant.formed?plant.shapeAt(pos):net.minecraft.world.phys.shapes.Shapes.block();
+    }
+
     public Direction facing(){return getBlockState().getValue(PlantControllerBlock.FACING);}
     /** World position: r blocks to the right, y up and b back from the controller. */
     public BlockPos at(int r,int y,int b){var f=facing();var right=f.getClockWise();var back=f.getOpposite();

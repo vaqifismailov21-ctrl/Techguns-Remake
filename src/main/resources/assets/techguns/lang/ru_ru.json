@@ -1560,5 +1560,9 @@
   "techguns.plant.rotor_hub.tip3": "потом ПКМ по узлу — запустить станцию.",
   "techguns.plant.rotor_hub.tip4": "Shift + пустая рука — снять лопасть.",
   "techguns.plant.fill_not_formed": "Сначала собери станцию, потом заливай воду в любой её блок (в контроллер можно и сразу)",
-  "techguns.plant.fill_wrong": "Сюда заливается только вода, или бак уже полон"
+  "techguns.plant.fill_wrong": "Сюда заливается только вода, или бак уже полон",
+  "subtitles.techguns.power.plant_wind": "Вращается ветряк",
+  "subtitles.techguns.power.plant_geothermal": "Гудит геотермальная станция",
+  "subtitles.techguns.power.plant_fission": "Гудит ядерный реактор",
+  "subtitles.techguns.power.plant_fusion": "Трещит термоядерный реактор"
 }

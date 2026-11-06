@@ -3,6 +3,6 @@
   "textures": {
     "front": "techguns:blocks/plant/wind_plant_front",
     "side": "techguns:blocks/plant/turbine_tower",
-    "top": "techguns:blocks/plant/plant_casing"
+    "top": "techguns:blocks/plant/plant_casing_top"
   }
 }

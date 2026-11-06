@@ -36,10 +36,10 @@ public final class RotorHubBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty BLADES=IntegerProperty.create("blades",0,MAX_BLADES);
     private static final Map<Direction,VoxelShape> SHAPES=Map.of(
-            Direction.NORTH,Block.box(4,3,6,12,11,16),Direction.SOUTH,Block.box(4,3,0,12,11,10),
-            Direction.WEST,Block.box(6,3,4,16,11,12),Direction.EAST,Block.box(0,3,4,10,11,12));
+            Direction.NORTH,Block.box(3,2,4,13,12,16),Direction.SOUTH,Block.box(3,2,0,13,12,12),
+            Direction.WEST,Block.box(4,2,3,16,12,13),Direction.EAST,Block.box(0,2,3,12,12,13));
     public RotorHubBlock(){
-        super(Properties.of().strength(4,20).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion());
+        super(Properties.of().strength(4,20).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().dynamicShape());
         registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH).setValue(BLADES,0).setValue(PlantPartBlock.FORMED,false));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FACING,BLADES,PlantPartBlock.FORMED);}
@@ -49,7 +49,7 @@ public final class RotorHubBlock extends BaseEntityBlock {
         return defaultBlockState().setValue(FACING,face.getAxis().isHorizontal()?face:context.getHorizontalDirection().getOpposite());
     }
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
-    @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return SHAPES.get(state.getValue(FACING));}
+    @Override public VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){return state.getValue(PlantPartBlock.FORMED)?PlantController.formedShape(level,pos):SHAPES.get(state.getValue(FACING));}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new RotorHubEntity(pos,state);}
     @Override public float getShadeBrightness(BlockState state,BlockGetter level,BlockPos pos){return 1;}
     @Override public boolean propagatesSkylightDown(BlockState state,BlockGetter level,BlockPos pos){return true;}
