@@ -15,23 +15,17 @@ public class RocketProjectile extends GenericProjectile {
     }
     public RocketProjectile(EntityType<? extends RocketProjectile> type,Level level) {super(type,level);}
     public RocketProjectile(Level level,LivingEntity owner,float damage,float speed,int ttl,float spread,float inner,float outer,float minimum,float penetration,boolean blocks,EnumBulletFirePos side,String variant) {
-        this(variant.equals("thermonuke")?TGEntities.ROCKET_THERMONUKE.get():variant.equals("nuke")?TGEntities.ROCKET_NUKE.get():variant.equals("high_velocity")?TGEntities.ROCKET_HV.get():TGEntities.ROCKET.get(),level);
+        this(variant.equals("nuke")?TGEntities.ROCKET_NUKE.get():variant.equals("high_velocity")?TGEntities.ROCKET_HV.get():TGEntities.ROCKET.get(),level);
         float factor=isNuclear()?5:isHighVelocity()?0.75F:1;
-        if(isThermonuclear()){init(owner,damage*5_000_000F,speed*3,ttl*3,spread,inner*5,outer*5,minimum*5_000_000F,penetration,blocks,side);return;}
         init(owner,damage*(isNuclear()?5:1),speed*(isHighVelocity()?2:1),isHighVelocity()?Math.round(ttl*0.75F):ttl,spread,inner*factor,outer*factor,minimum*(isNuclear()?5:1),penetration,blocks,side);
     }
     public boolean isNuclear() {return getType()==TGEntities.ROCKET_NUKE.get();}
-    public boolean isThermonuclear() {return getType()==TGEntities.ROCKET_THERMONUKE.get();}
     public boolean isHighVelocity() {return getType()==TGEntities.ROCKET_HV.get();}
     protected double blockFactor() {return 0.5;}
-    /** The thermonuclear rocket keeps its speed in air so it can be fired from outside its own blast. */
-    @Override protected float inWaterUpdateBehaviour(float drag) {float d=super.inWaterUpdateBehaviour(drag);return isThermonuclear()&&!isInWater()?1.0F:d;}
     protected String explosionEffect() {return isNuclear()?"NukeExplosion":"RocketExplosion";}
     @Override protected void onStoppedInWater() { explodeRocket(); }
     protected void explodeRocket() {
-        if(!level().isClientSide&&isThermonuclear()) {
-            techguns.damagesystem.ThermonuclearBlast.detonate(level(),getShooter(),this,getProjectileDamageSource(),position(),damage,blockdamage);
-        } else if(!level().isClientSide) {
+        if(!level().isClientSide) {
             var explosion=new TGExplosion(level(),getShooter(),this,getX(),getY(),getZ(),damage,damageMin,damageDropStart,damageDropEnd,blockdamage?blockFactor():0);
             if(isNuclear()) {explosion.blockDropChance=0.05F;explosion.setDmgSrc(getProjectileDamageSource());}
             explosion.doExplosion(!isNuclear());
@@ -46,7 +40,7 @@ public class RocketProjectile extends GenericProjectile {
     @Override protected void onHitEffect(LivingEntity target,HitResult hit) {explodeRocket();}
     @Override protected void hitBlock(BlockHitResult hit) {setPos(hit.getLocation());explodeRocket();}
     @Override protected TGDamageSource getProjectileDamageSource() {
-        var source=TGDamageSource.causeExplosionDamage(this,shooter,isNuclear()||isThermonuclear()?DeathType.LASER:DeathType.GORE);
+        var source=TGDamageSource.causeExplosionDamage(this,shooter,isNuclear()?DeathType.LASER:DeathType.GORE);
         source.goreChance=1;source.knockbackMultiplier=3;return source;
     }
 }

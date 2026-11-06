@@ -1871,10 +1871,6 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:blocks/glass_ctm/reactionchamber_glass_15"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "techguns:guns/rocket_thermonuke"
     }
   ]
 }

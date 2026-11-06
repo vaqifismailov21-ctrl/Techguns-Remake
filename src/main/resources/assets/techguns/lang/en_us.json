@@ -1508,10 +1508,5 @@
   "item.techguns.bandages": "Bandages",
   "item.techguns.medkit": "Medkit",
   "techguns.tooltip.medkit.heal": "Heals %s hearts",
-  "techguns.radiationResistance": "RAD Resistance",
-  "item.techguns.rocket_thermonuke": "Rocket (Thermonuclear)",
-  "item.techguns.rocket_thermonuke.name": "Rocket (Thermonuclear)",
-  "techguns.tooltip.rocket_thermonuke": "Hits for 10,000 times the old thermonuclear warhead: kills everything within 150 blocks, blast reaches 300, crater about 96 blocks deep. Fire it from more than 300 blocks away; the rocket flies fast and does not slow down.",
-  "techguns.command.tgnuke.done": "Thermonuclear blast: crater %s, everything dies within %s, blast reaches %s blocks. Large craters are dug over a while; /tgnuke stop ends it.",
-  "techguns.command.tgnuke.stopped": "Stopped %s crater(s)."
+  "techguns.radiationResistance": "RAD Resistance"
 }

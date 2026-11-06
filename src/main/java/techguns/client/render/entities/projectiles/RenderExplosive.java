@@ -17,7 +17,7 @@ public final class RenderExplosive<T extends GenericProjectile> extends EntityRe
     private final ModelMultipart rocket=new ModelRocket(),stick=new ModelStielgranate(),frag=new ModelFragGrenade(false),shell=new LegacyObjModel(false,false,"grenade40mm");
     public RenderExplosive(EntityRendererProvider.Context context) {super(context);}
     @Override public ResourceLocation getTextureLocation(T entity) {
-        String texture=entity instanceof RocketProjectile r?r.isThermonuclear()?"guns/rocket_thermonuke":r.isNuclear()?"guns/rocket_nuke":r.isHighVelocity()?"guns/rocket_hv":"guns/rocket":entity.getType()==TGEntities.GRENADE_40MM.get()?"entity/launchergrenade":entity.getType()==TGEntities.FRAG_GRENADE.get()?"guns/frag_grenade_texture":"guns/stielgranate";
+        String texture=entity instanceof RocketProjectile r?r.isNuclear()?"guns/rocket_nuke":r.isHighVelocity()?"guns/rocket_hv":"guns/rocket":entity.getType()==TGEntities.GRENADE_40MM.get()?"entity/launchergrenade":entity.getType()==TGEntities.FRAG_GRENADE.get()?"guns/frag_grenade_texture":"guns/stielgranate";
         return ResourceLocation.fromNamespaceAndPath("techguns","textures/"+texture+".png");
     }
     @Override public void render(T entity,float yaw,float partial,PoseStack pose,MultiBufferSource buffers,int light) {

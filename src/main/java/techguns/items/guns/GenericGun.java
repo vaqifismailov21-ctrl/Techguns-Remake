@@ -325,7 +325,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
     @Override public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flags) {
         int variant = getCurrentAmmoVariant(stack);
         boolean incendiary = getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_INCENDIARY);
-        float modifier = incendiary ? 1.1F : getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_EXPLOSIVE)?1.15F:projectileKind==ProjectileKind.ROCKET&&getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_NUKE)?5:projectileKind==ProjectileKind.ROCKET&&getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_THERMONUKE)?5_000_000F:1;
+        float modifier = incendiary ? 1.1F : getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_EXPLOSIVE)?1.15F:projectileKind==ProjectileKind.ROCKET&&getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_NUKE)?5:1;
         for (var ammo : getAmmoType().getAmmo(variant)) tooltip.add(Component.translatable("techguns.gun.tooltip.ammo").append(": "+(ammoPerReload>1?ammoPerReload+"x ":"")).append(ammo.getHoverName()));
         tooltip.add(Component.translatable("techguns.gun.tooltip.damage").append((isShotgun()?"(x"+getPelletCount()+")":"")+": " + damage * modifier));
         if(getAmmoType().hasMultipleVariants()) tooltip.add(Component.translatable("techguns.gun.tooltip.ammoswitch").withStyle(net.minecraft.ChatFormatting.GRAY));

@@ -60,7 +60,6 @@ public final class TGRadiationSystem {
             ItemRadiationRegistry.addRadiationData(TGItems.PLASMA_GENERATOR.get().getDefaultInstance(), 4, 100);
             ItemRadiationRegistry.addRadiationData(TGItems.TACTICAL_NUKE_WARHEAD.get().getDefaultInstance(), 1, 100);
             ItemRadiationRegistry.addRadiationData(TGItems.ROCKET_NUKE.get().getDefaultInstance(), 1, 100);
-            ItemRadiationRegistry.addRadiationData(TGItems.ROCKET_THERMONUKE.get().getDefaultInstance(), 2, 200);
         }
         BrewingRecipeRegistry.addRecipe(new RadiationBrewing(Potions.AWKWARD, tag("dusts/uranium"), RAD_POTION.get()));
         BrewingRecipeRegistry.addRecipe(new RadiationBrewing(Potions.AWKWARD, stack -> stack.is(TGItems.ENRICHED_URANIUM.get()), RAD_POTION_SEVERE.get()));

@@ -39,11 +39,6 @@ public final class TGProjectilePackets {
         if(source.level().isClientSide)return;
         TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(position.x,position.y,position.z,160,source.level().dimension())),new Effect(name,position,0,0,scale));
     }
-    /** A scaled effect seen from far away (the thermonuclear blast). */
-    public static void farEffect(net.minecraft.world.level.Level level,String name,Vec3 position,float scale,double range){
-        if(level.isClientSide)return;
-        TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(position.x,position.y,position.z,range,level.dimension())),new Effect(name,position,0,0,scale));
-    }
     public static void effect(net.minecraft.world.level.Level level,String name,Vec3 position,float pitch,float yaw) {
         if(level.isClientSide)return;
         TGPackets.NETWORK.send(PacketDistributor.NEAR.with(()->new PacketDistributor.TargetPoint(position.x,position.y,position.z,160,level.dimension())),new Effect(name,position,pitch,yaw));

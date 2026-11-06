@@ -139,8 +139,6 @@ public final class TGItems {
     public static final RegistryObject<SharedMaterialItem> ASSAULTRIFLE_MAGAZINE_INCENDIARY = shared("assaultriflemagazine_incendiary", 115, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> LMG_MAGAZINE_INCENDIARY = shared("lmgmagazine_incendiary", 116, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> ROCKET_NUKE = shared("rocket_nuke", 117, TGSlotType.AMMOSLOT, 64, () -> true);
-    /** New: thermonuclear rocket, a hundred times the tactical nuke. */
-    public static final RegistryObject<SharedMaterialItem> ROCKET_THERMONUKE = shared("rocket_thermonuke", 900, TGSlotType.AMMOSLOT, 16, () -> true);
     public static final RegistryObject<SharedMaterialItem> TACTICAL_NUKE_WARHEAD = shared("tacticalnukewarhead", 118, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> MININGDRILLHEAD_OBSIDIAN = shared("miningdrillhead_obsidian", 119, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> MININGDRILLHEAD_CARBON = shared("miningdrillhead_carbon", 120, TGSlotType.NORMAL, 64, () -> true);
