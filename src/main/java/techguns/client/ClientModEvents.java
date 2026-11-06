@@ -59,6 +59,7 @@ public final class ClientModEvents {
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.ENERGY_CELL_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.WIND_TURBINE_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.WIND_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.HUB_ENTITY.get(),techguns.client.render.tileentities.RotorHubRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.GEOTHERMAL_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.FISSION_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.FUSION_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);

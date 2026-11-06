@@ -22,6 +22,14 @@
     },
     {
       "type": "patchouli:crafting",
+      "recipe": "techguns:rotor_hub"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:turbine_blade"
+    },
+    {
+      "type": "patchouli:crafting",
       "recipe": "techguns:fusion_coil"
     }
   ]

@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "facing=north,formed=false": {
+      "model": "techguns:block/plant/rotor_hub",
+      "y": 0
+    },
+    "facing=north,formed=true": {
+      "model": "techguns:block/plant/rotor_hub_formed"
+    },
+    "facing=east,formed=false": {
+      "model": "techguns:block/plant/rotor_hub",
+      "y": 90
+    },
+    "facing=east,formed=true": {
+      "model": "techguns:block/plant/rotor_hub_formed"
+    },
+    "facing=south,formed=false": {
+      "model": "techguns:block/plant/rotor_hub",
+      "y": 180
+    },
+    "facing=south,formed=true": {
+      "model": "techguns:block/plant/rotor_hub_formed"
+    },
+    "facing=west,formed=false": {
+      "model": "techguns:block/plant/rotor_hub",
+      "y": 270
+    },
+    "facing=west,formed=true": {
+      "model": "techguns:block/plant/rotor_hub_formed"
+    }
+  }
+}

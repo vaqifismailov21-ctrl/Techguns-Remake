@@ -59,7 +59,7 @@ public abstract class PlantController extends EnergySource {
         for(var e:structure().entrySet()){if(!level.isLoaded(e.getKey())){bad.add(e.getKey());continue;}
             var state=level.getBlockState(e.getKey());
             if(!e.getValue().test().test(state))bad.add(e.getKey());
-            else if(e.getValue().shown()!=null&&state.getValue(PlantPartBlock.FORMED)&&level.getBlockEntity(e.getKey()) instanceof PlantPartEntity p&&p.master()!=null&&p.master()!=this)bad.add(e.getKey());}
+            else if(e.getValue().shown()!=null&&state.hasProperty(PlantPartBlock.FORMED)&&state.getValue(PlantPartBlock.FORMED)&&level.getBlockEntity(e.getKey()) instanceof PlantPartEntity p&&p.master()!=null&&p.master()!=this)bad.add(e.getKey());}
         return bad;
     }
     public boolean form(){
@@ -72,7 +72,7 @@ public abstract class PlantController extends EnergySource {
     public void unform(){
         if(!formed||level==null)return;formed=false;rate=0;
         for(var e:structure().entrySet()){if(e.getValue().shown()==null)continue;var pos=e.getKey();var state=level.getBlockState(pos);
-            if(state.getBlock() instanceof PlantPartBlock&&state.getValue(PlantPartBlock.FORMED)){level.setBlock(pos,state.setValue(PlantPartBlock.FORMED,false),3);if(level.getBlockEntity(pos) instanceof PlantPartEntity p)p.setMaster(null);}}
+            if(state.hasProperty(PlantPartBlock.FORMED)&&state.getValue(PlantPartBlock.FORMED)){level.setBlock(pos,state.setValue(PlantPartBlock.FORMED,false),3);if(level.getBlockEntity(pos) instanceof PlantPartEntity p)p.setMaster(null);}}
         if(level.getBlockState(worldPosition).getBlock() instanceof PlantControllerBlock)level.setBlock(worldPosition,getBlockState().setValue(PlantControllerBlock.FORMED,false).setValue(PlantControllerBlock.LIT,false),3);
         outletPos.clear();outletSide.clear();onUnformed();sync();setChanged();
     }

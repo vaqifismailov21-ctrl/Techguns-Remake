@@ -1529,7 +1529,7 @@
   "techguns.plant.wind_plant.towers": "Tower sections: %s",
   "techguns.plant.wind_plant.obstacles": "Blocks in the rotor: %s",
   "techguns.plant.wind_plant.problem1": "Too low: the wind is weak below Y 105",
-  "techguns.plant.wind_plant.problem2": "The rotor is blocked",
+  "techguns.plant.wind_plant.problem2": "The rotor is blocked: keep a radius of 4 around the hub free",
   "techguns.plant.wind_plant.problem3": "Blocks in the rotor slow it",
   "techguns.plant.geothermal_plant.lava": "Lava sources below: %s",
   "techguns.plant.geothermal_plant.problem1": "No lava sources below",
@@ -1543,7 +1543,7 @@
   "techguns.plant.fusion_reactor.problem2": "Needs water (deuterium)",
   "techguns.plant.fusion_reactor.problem3": "Energy buffer full",
   "techguns.plant.wind_plant.tip1": "Place on the ground, 8-24 tower sections on top,",
-  "techguns.plant.wind_plant.tip2": "a casing on the tower; keep 4 blocks free in front of it.",
+  "techguns.plant.wind_plant.tip2": "a casing on the tower, a rotor hub with 3 blades in front of it.",
   "techguns.plant.wind_plant.tip3": "Up to 1000 FE/t, more the higher (full at Y 150).",
   "techguns.plant.geothermal_plant.tip1": "3x3x2 of casing, this in the front middle at the bottom.",
   "techguns.plant.geothermal_plant.tip2": "15 FE/t per lava source in the 5x5x3 space below.",
@@ -1552,5 +1552,14 @@
   "techguns.plant.fission_reactor.tip3": "needs cooling water (10 mB/t).",
   "techguns.plant.fusion_reactor.tip1": "5x5x3: casing top and bottom, a ring of magnet coils",
   "techguns.plant.fusion_reactor.tip2": "in the middle around an empty 3x3, this in the front of the ring.",
-  "techguns.plant.fusion_reactor.tip3": "Ignition 2M FE, then 8000 FE/t from water (20 mB/t)."
+  "techguns.plant.fusion_reactor.tip3": "Ignition 2M FE, then 8000 FE/t from water (20 mB/t).",
+  "block.techguns.rotor_hub": "Wind Turbine Rotor Hub",
+  "item.techguns.turbine_blade": "Wind Turbine Blade",
+  "techguns.plant.rotor_hub.blades": "Blades on the hub: %s/%s",
+  "techguns.plant.rotor_hub.need": "Hang %s more blades on the hub",
+  "techguns.plant.rotor_hub.no_tower": "The hub must sit on the front of the nacelle of a wind plant",
+  "techguns.plant.rotor_hub.tip1": "Goes on the front of the wind plant nacelle.",
+  "techguns.plant.rotor_hub.tip2": "Right-click with 3 blades to hang them,",
+  "techguns.plant.rotor_hub.tip3": "then right-click the hub to start the plant.",
+  "techguns.plant.rotor_hub.tip4": "Sneak + empty hand takes a blade off."
 }

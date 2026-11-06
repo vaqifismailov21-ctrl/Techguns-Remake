@@ -61,7 +61,11 @@ public final class PlantGameTests {
         for(int y=2;y<2+WindPlant.MIN_TOWER-1;y++)h.setBlock(2,y,2,PlantBlocks.TOWER.get());
         h.assertTrue(!plant.form(),"A tower that is too short does not form");
         h.setBlock(2,1+WindPlant.MIN_TOWER,2,PlantBlocks.TOWER.get());h.setBlock(2,2+WindPlant.MIN_TOWER,2,PlantBlocks.CASING.get());
-        h.assertTrue(plant.form()&&plant.towers==WindPlant.MIN_TOWER,"Eight sections and a nacelle form: "+plant.invalid());
+        var hub=PlantBlocks.HUB.get().defaultBlockState().setValue(RotorHubBlock.FACING,Direction.NORTH);
+        h.setBlock(2,2+WindPlant.MIN_TOWER,1,hub.setValue(RotorHubBlock.BLADES,2));
+        h.assertTrue(!plant.form(),"A hub with two blades does not form");
+        h.setBlock(2,2+WindPlant.MIN_TOWER,1,hub.setValue(RotorHubBlock.BLADES,RotorHubBlock.MAX_BLADES));
+        h.assertTrue(plant.form()&&plant.towers==WindPlant.MIN_TOWER,"Eight sections, a nacelle and a full hub form: "+plant.invalid());
         h.runAfterDelay(45,()->{h.assertTrue(plant.rate>0,"It makes energy: "+plant.rate);h.succeed();});
     }
 }

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Place the controller on the ground, 8 to 24 $(item)tower sections$() on it and a $(item)power plant casing$() (the nacelle) on top. $(thing)Right-click the controller$() to assemble it; missing blocks are marked."
+      "text": "Place the controller on the ground, 8 to 24 $(item)tower sections$() on it a $(item)power plant casing$() (the nacelle) on top and a $(item)rotor hub$() on the front of the nacelle. Hang 3 $(item)blades$() on the hub (right-click with a blade; sneak with an empty hand takes one off), then $(thing)right-click the hub$() or the controller to assemble the plant; missing blocks are marked."
     },
     {
       "type": "patchouli:multiblock",
@@ -15,38 +15,39 @@
         "mapping": {
           "0": "techguns:wind_plant[facing=north]",
           "C": "techguns:plant_casing",
-          "T": "techguns:turbine_tower"
+          "T": "techguns:turbine_tower",
+          "H": "techguns:rotor_hub[facing=north,blades=3]"
         },
         "pattern": [
           [
-            "C"
+            "HC"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "T"
+            "_T"
           ],
           [
-            "0"
+            "_0"
           ]
         ]
       },
@@ -54,12 +55,20 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The rotor needs a free disc of radius 4 in front of the nacelle; every block in it takes 5% off.$(br2)Up to $(thing)1000 FE/t$(), growing with the height of the nacelle: full at Y 150 and above, weak below Y 105. Rain adds 25%, thunder 50%.",
+      "text": "The blades need a free disc of radius 4 around the hub; every block in it takes 5% off.$(br2)Up to $(thing)1000 FE/t$(), growing with the height of the nacelle: full at Y 150 and above, weak below Y 105. Rain adds 25%, thunder 50%.",
       "title": "Operation"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "techguns:wind_plant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:rotor_hub"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:turbine_blade"
     },
     {
       "type": "patchouli:crafting",

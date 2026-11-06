@@ -1526,7 +1526,7 @@
   "techguns.plant.wind_plant.towers": "Секций башни: %s",
   "techguns.plant.wind_plant.obstacles": "Блоков в роторе: %s",
   "techguns.plant.wind_plant.problem1": "Слишком низко: ниже Y 105 ветер слабый",
-  "techguns.plant.wind_plant.problem2": "Ротор заблокирован",
+  "techguns.plant.wind_plant.problem2": "Ротор заблокирован: вокруг узла нужен свободный радиус 4",
   "techguns.plant.wind_plant.problem3": "Блоки в роторе тормозят его",
   "techguns.plant.geothermal_plant.lava": "Источников лавы снизу: %s",
   "techguns.plant.geothermal_plant.problem1": "Под станцией нет источников лавы",
@@ -1540,7 +1540,7 @@
   "techguns.plant.fusion_reactor.problem2": "Нужна вода (дейтерий)",
   "techguns.plant.fusion_reactor.problem3": "Буфер энергии полон",
   "techguns.plant.wind_plant.tip1": "Ставится на землю, сверху 8-24 секции башни,",
-  "techguns.plant.wind_plant.tip2": "на башне корпус; перед ним 4 блока свободно.",
+  "techguns.plant.wind_plant.tip2": "на башне корпус, перед ним узел ротора с 3 лопастями.",
   "techguns.plant.wind_plant.tip3": "До 1000 FE/т, чем выше, тем больше (максимум на Y 150).",
   "techguns.plant.geothermal_plant.tip1": "3x3x2 из корпусов, контроллер внизу посередине спереди.",
   "techguns.plant.geothermal_plant.tip2": "15 FE/т за каждый источник лавы в объёме 5x5x3 под ней.",
@@ -1549,5 +1549,14 @@
   "techguns.plant.fission_reactor.tip3": "нужна охлаждающая вода (10 мВ/т).",
   "techguns.plant.fusion_reactor.tip1": "5x5x3: снизу и сверху корпуса, посередине кольцо",
   "techguns.plant.fusion_reactor.tip2": "магнитных катушек вокруг пустых 3x3, контроллер спереди в кольце.",
-  "techguns.plant.fusion_reactor.tip3": "Зажигание 2M FE, потом 8000 FE/т из воды (20 мВ/т)."
+  "techguns.plant.fusion_reactor.tip3": "Зажигание 2M FE, потом 8000 FE/т из воды (20 мВ/т).",
+  "block.techguns.rotor_hub": "Узел ротора ветряка",
+  "item.techguns.turbine_blade": "Лопасть ветряка",
+  "techguns.plant.rotor_hub.blades": "Лопастей на узле: %s/%s",
+  "techguns.plant.rotor_hub.need": "Повесь на узел ещё лопастей: %s",
+  "techguns.plant.rotor_hub.no_tower": "Узел должен стоять на передней стороне гондолы ветряка",
+  "techguns.plant.rotor_hub.tip1": "Ставится на переднюю сторону гондолы ветряка.",
+  "techguns.plant.rotor_hub.tip2": "ПКМ лопастью — повесить лопасть (нужно 3),",
+  "techguns.plant.rotor_hub.tip3": "потом ПКМ по узлу — запустить станцию.",
+  "techguns.plant.rotor_hub.tip4": "Shift + пустая рука — снять лопасть."
 }

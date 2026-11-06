@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " PP",
+    "PSP",
+    "SP "
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:sheets/plastic"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "result": {
+    "item": "techguns:turbine_blade",
+    "count": 1
+  }
+}

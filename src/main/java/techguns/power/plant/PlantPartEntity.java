@@ -10,9 +10,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 /** Remembers the controller of its plant and hands every capability on to it while the plant is formed. */
-public final class PlantPartEntity extends BlockEntity {
+public class PlantPartEntity extends BlockEntity {
     private BlockPos master;
-    public PlantPartEntity(BlockPos pos,BlockState state){super(PlantBlocks.PART_ENTITY.get(),pos,state);}
+    public PlantPartEntity(BlockPos pos,BlockState state){this(PlantBlocks.PART_ENTITY.get(),pos,state);}
+    protected PlantPartEntity(net.minecraft.world.level.block.entity.BlockEntityType<?> type,BlockPos pos,BlockState state){super(type,pos,state);}
     public void setMaster(BlockPos pos){master=pos==null?null:pos.immutable();setChanged();}
     public PlantController master(){
         if(master==null||level==null||!getBlockState().getValue(PlantPartBlock.FORMED))return null;

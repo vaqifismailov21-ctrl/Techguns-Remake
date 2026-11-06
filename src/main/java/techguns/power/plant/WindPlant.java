@@ -5,8 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Wind power plant: controller on the ground, a tower of MIN_TOWER..MAX_TOWER sections on top of it and a casing
- * (the nacelle) on the tower. The rotor in front of the nacelle needs a free disc of radius ROTOR; output grows with
+ * Wind power plant: controller on the ground, a tower of MIN_TOWER..MAX_TOWER sections on top of it, a casing
+ * (the nacelle) on the tower and a rotor hub with all its blades in front of the nacelle. The rotor in front of the nacelle needs a free disc of radius ROTOR; output grows with
  * the height of the nacelle (full at Y 150), every block in the rotor disc takes 5 % off, rain and thunder add wind.
  */
 public final class WindPlant extends PlantController {
@@ -22,6 +22,8 @@ public final class WindPlant extends PlantController {
         var map=map();int count=countTowers();int n=Math.min(Math.max(count,MIN_TOWER),MAX_TOWER);
         for(int i=1;i<=n;i++)map.put(at(0,i,0),part(PlantBlocks.TOWER.get()));
         map.put(at(0,n+1,0),part(PlantBlocks.CASING.get()));
+        var facing=facing();
+        map.put(at(0,n+1,-1),new Need(s->s.is(PlantBlocks.HUB.get())&&s.getValue(RotorHubBlock.BLADES)==RotorHubBlock.MAX_BLADES&&s.getValue(RotorHubBlock.FACING)==facing,PlantBlocks.HUB.get()));
         return map;
     }
     @Override protected void onFormed(){towers=countTowers();survey();}
@@ -29,7 +31,7 @@ public final class WindPlant extends PlantController {
         if(level==null)return;
         var hub=at(0,towers+1,-1);var right=facing().getClockWise();obstacles=0;
         for(int dx=-ROTOR;dx<=ROTOR;dx++)for(int dy=-ROTOR;dy<=ROTOR;dy++){
-            if(dx*dx+dy*dy>ROTOR*ROTOR)continue;var p=hub.offset(right.getStepX()*dx,dy,right.getStepZ()*dx);
+            if(dx*dx+dy*dy>ROTOR*ROTOR||dx==0&&dy==0)continue;var p=hub.offset(right.getStepX()*dx,dy,right.getStepZ()*dx);
             if(!level.getBlockState(p).isAir())obstacles++;
         }
         double height=Math.max(0.15,Math.min(1,(hub.getY()-60)/90.0));
