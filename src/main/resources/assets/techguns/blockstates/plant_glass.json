@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "techguns:block/plant/plant_glass"
+    },
+    "formed=true": {
+      "model": "techguns:block/plant/plant_glass_formed"
+    }
+  }
+}

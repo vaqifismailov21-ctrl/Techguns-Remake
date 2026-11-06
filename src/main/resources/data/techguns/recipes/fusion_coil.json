@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "CEC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "techguns:coil"
+    },
+    "E": {
+      "tag": "forge:circuits/elite"
+    }
+  },
+  "result": {
+    "item": "techguns:fusion_coil",
+    "count": 2
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "variants": {
+    "facing=north,formed=false,lit=false": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 0
+    },
+    "facing=north,formed=true,lit=false": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=north,formed=false,lit=true": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 0
+    },
+    "facing=north,formed=true,lit=true": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=east,formed=false,lit=false": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 90
+    },
+    "facing=east,formed=true,lit=false": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=east,formed=false,lit=true": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 90
+    },
+    "facing=east,formed=true,lit=true": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=south,formed=false,lit=false": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 180
+    },
+    "facing=south,formed=true,lit=false": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=south,formed=false,lit=true": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 180
+    },
+    "facing=south,formed=true,lit=true": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=west,formed=false,lit=false": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 270
+    },
+    "facing=west,formed=true,lit=false": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    },
+    "facing=west,formed=false,lit=true": {
+      "model": "techguns:block/plant/wind_plant",
+      "y": 270
+    },
+    "facing=west,formed=true,lit=true": {
+      "model": "techguns:block/plant/wind_plant_formed"
+    }
+  }
+}

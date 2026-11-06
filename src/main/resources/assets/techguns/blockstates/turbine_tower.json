@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "techguns:block/plant/turbine_tower"
+    },
+    "formed=true": {
+      "model": "techguns:block/plant/turbine_tower_formed"
+    }
+  }
+}

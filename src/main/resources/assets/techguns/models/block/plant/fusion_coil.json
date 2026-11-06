@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "techguns:blocks/plant/plant_casing",
+    "side": "techguns:blocks/plant/fusion_coil"
+  }
+}

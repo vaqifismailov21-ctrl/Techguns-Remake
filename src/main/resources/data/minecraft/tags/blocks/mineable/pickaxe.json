@@ -85,6 +85,14 @@
     "techguns:solar_panel_advanced",
     "techguns:solar_panel_industrial",
     "techguns:energy_bank",
-    "techguns:energy_cable"
+    "techguns:energy_cable",
+    "techguns:plant_casing",
+    "techguns:plant_glass",
+    "techguns:turbine_tower",
+    "techguns:fusion_coil",
+    "techguns:wind_plant",
+    "techguns:geothermal_plant",
+    "techguns:fission_reactor",
+    "techguns:fusion_reactor"
   ]
 }

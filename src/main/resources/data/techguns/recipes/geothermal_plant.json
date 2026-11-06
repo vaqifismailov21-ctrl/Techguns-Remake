@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PUP",
+    "CEC",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "U": {
+      "item": "techguns:pumpmechanism"
+    },
+    "C": {
+      "item": "techguns:plant_casing"
+    },
+    "E": {
+      "item": "techguns:electricengine"
+    }
+  },
+  "result": {
+    "item": "techguns:geothermal_plant",
+    "count": 1
+  }
+}

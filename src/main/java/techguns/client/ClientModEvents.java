@@ -32,6 +32,7 @@ public final class ClientModEvents {
         MenuScreens.register(TGMenuTypes.PLAYER_INVENTORY.get(), TGPlayerInventoryScreen::new);
         MenuScreens.register(TGMenuTypes.MACHINE.get(),techguns.client.gui.MachineScreen::new);
         MenuScreens.register(techguns.power.PowerBlocks.GENERATOR_MENU.get(),techguns.client.gui.GeneratorScreen::new);
+        MenuScreens.register(techguns.power.plant.PlantBlocks.MENU.get(),techguns.client.gui.PlantScreen::new);
         techguns.power.PowerBlocks.clientTick=techguns.client.audio.PowerSounds::tick;
         MenuScreens.register(TGMenuTypes.TURRET.get(),techguns.client.gui.TurretScreen::new);
         MenuScreens.register(TGMenuTypes.ORE_DRILL.get(),techguns.client.gui.OreDrillScreen::new);
@@ -57,6 +58,10 @@ public final class ClientModEvents {
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.SOLAR_PANEL_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.ENERGY_CELL_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.WIND_TURBINE_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.WIND_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.GEOTHERMAL_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.FISSION_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.FUSION_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.FLOODLIGHT_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.TGTurrets.ENTITY.get(),techguns.client.render.tileentities.TurretBaseRenderer::new);
         event.registerEntityRenderer(techguns.TGTurrets.TURRET.get(),techguns.client.render.entities.npcs.NPCTurretRenderer::new);

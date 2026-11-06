@@ -1871,6 +1871,11 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:blocks/glass_ctm/reactionchamber_glass_15"
+    },
+    {
+      "type": "minecraft:directory",
+      "source": "blocks/plant",
+      "prefix": "blocks/plant/"
     }
   ]
 }

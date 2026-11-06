@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "OEO",
+    "RNR",
+    "OEO"
+  ],
+  "key": {
+    "O": {
+      "tag": "forge:plates/obsidian_steel"
+    },
+    "E": {
+      "tag": "forge:circuits/elite"
+    },
+    "R": {
+      "item": "techguns:fusion_coil"
+    },
+    "N": {
+      "item": "techguns:nuclearpowercell"
+    }
+  },
+  "result": {
+    "item": "techguns:fusion_reactor",
+    "count": 1
+  }
+}

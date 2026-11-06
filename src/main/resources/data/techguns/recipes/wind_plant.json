@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SES",
+    "CMC",
+    "SPS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "E": {
+      "item": "techguns:electricengine"
+    },
+    "C": {
+      "item": "techguns:plant_casing"
+    },
+    "M": {
+      "tag": "forge:circuits/basic"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:wind_plant",
+    "count": 1
+  }
+}

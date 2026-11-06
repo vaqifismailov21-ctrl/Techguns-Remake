@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "techguns:blocks/plant/geothermal_plant_front",
+    "side": "techguns:blocks/plant/plant_casing",
+    "top": "techguns:blocks/plant/plant_casing"
+  }
+}

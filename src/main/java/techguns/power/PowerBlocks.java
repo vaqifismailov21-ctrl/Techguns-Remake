@@ -79,8 +79,10 @@ public final class PowerBlocks {
 
     /** Items in the creative tab, in this order. */
     public static java.util.List<RegistryObject<Item>> tabItems(){
-        return java.util.List.of(FUEL_GENERATOR_ITEM,LIQUID_GENERATOR_ITEM,GEOTHERMAL_GENERATOR_ITEM,NUCLEAR_GENERATOR_ITEM,WIND_TURBINE_ITEM,SOLAR_PANEL_ITEM,
-                SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,FLOODLIGHT_ITEM);
+        // the single wind turbine, geothermal and nuclear generators are replaced by the multiblock plants; the old blocks stay for existing worlds
+        var list=new java.util.ArrayList<RegistryObject<Item>>(java.util.List.of(FUEL_GENERATOR_ITEM,LIQUID_GENERATOR_ITEM,SOLAR_PANEL_ITEM,
+                SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,FLOODLIGHT_ITEM));
+        list.addAll(2,techguns.power.plant.PlantBlocks.tabItems());return list;
     }
 
     /** Client tick of the power block entities (sounds); set by the client setup, does nothing on a server. */
@@ -94,6 +96,6 @@ public final class PowerBlocks {
     }
 
     /** Class loading registers the entries above. */
-    public static void init(){}
+    public static void init(){techguns.power.plant.PlantBlocks.init();}
     private PowerBlocks(){}
 }

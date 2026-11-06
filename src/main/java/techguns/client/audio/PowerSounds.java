@@ -31,6 +31,7 @@ public final class PowerSounds {
         }
         @Override public void tick(){
             if(entity.isRemoved()||!running(entity)){stop();loops.remove(entity.getBlockPos(),this);return;}
+            if(entity instanceof techguns.power.plant.WindPlant wind){volume=0.45F+0.6F*wind.rate/techguns.power.plant.WindPlant.RATE;pitch=0.7F+0.4F*wind.rate/techguns.power.plant.WindPlant.RATE;}
             if(entity instanceof WindTurbineEntity){int rate=windRate(entity);volume=0.35F+0.5F*rate/PowerBlocks.WIND_RATE;pitch=0.8F+0.4F*rate/PowerBlocks.WIND_RATE;}
         }
     }
@@ -47,6 +48,7 @@ public final class PowerSounds {
         if(entity instanceof GeothermalGeneratorEntity)return TGSounds.GEOTHERMAL_GENERATOR_RUN.get();
         if(entity instanceof NuclearGeneratorEntity)return TGSounds.NUCLEAR_GENERATOR_RUN.get();
         if(entity instanceof WindTurbineEntity)return TGSounds.WIND_TURBINE_RUN.get();
+        if(entity instanceof techguns.power.plant.PlantController plant)return switch(plant.kind){case WIND->TGSounds.WIND_TURBINE_RUN.get();case GEOTHERMAL->TGSounds.GEOTHERMAL_GENERATOR_RUN.get();default->TGSounds.NUCLEAR_GENERATOR_RUN.get();};
         return null;
     }
     private static void once(BlockEntity entity,SoundEvent event,float volume){var pos=entity.getBlockPos();Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(event,SoundSource.BLOCKS,volume,1,RandomSource.create(),pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5));}
@@ -58,6 +60,7 @@ public final class PowerSounds {
         if(entity instanceof FloodlightEntity){int now=lit(entity)?1:0;Integer was=last.put(pos,now);if(was!=null&&was==0&&now==1)once(entity,TGSounds.FLOODLIGHT_ON.get(),0.6F);return;}
         if(entity instanceof EnergyCellEntity){int now=state.getValue(EnergyCellBlock.CHARGE);Integer was=last.put(pos,now);if(was!=null&&was<4&&now==4)once(entity,TGSounds.ENERGY_CELL_FULL.get(),0.5F);return;}
         effects(entity,state,level.getGameTime());
+        if(entity instanceof techguns.power.plant.FissionReactor reactor&&reactor.overheated&&level.getGameTime()%40==0)once(entity,TGSounds.REACTION_CHAMBER_WARNING.get(),1F);
         if(entity instanceof NuclearGeneratorEntity reactor&&reactor.overheated&&level.getGameTime()%40==0)once(entity,TGSounds.REACTION_CHAMBER_WARNING.get(),0.8F);
         if(entity instanceof WindTurbineEntity&&level.getGameTime()%10!=Math.floorMod(pos.asLong(),10L))return;
         var sound=loopSound(entity);if(sound==null)return;

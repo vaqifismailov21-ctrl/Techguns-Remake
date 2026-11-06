@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SIS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "I": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "result": {
+    "item": "techguns:plant_casing",
+    "count": 8
+  }
+}
