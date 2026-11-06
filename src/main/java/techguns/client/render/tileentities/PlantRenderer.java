@@ -34,7 +34,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         TEX.put(Tex.RC_HOUSING,tg("reactionchamber_housing"));TEX.put(Tex.RC_GLASS,tg("reactionchamber_glass"));
         TEX.put(Tex.FAB_HOUSING,tg("fabricator_housing"));TEX.put(Tex.FAB_GLASS,tg("fabricator_glass"));
         TEX.put(Tex.DRILL_ENGINE,tg("drill_engine"));TEX.put(Tex.DRILL_FRAME,tg("drill_frame"));TEX.put(Tex.STEELFRAME,tg("steelframe_dark"));
-        TEX.put(Tex.CONCRETE,tg("concrete_grey"));TEX.put(Tex.ROD,tg("drill_rod"));TEX.put(Tex.GEN_SIDE,tg("generator_side"));
+        TEX.put(Tex.CONCRETE,tg("concrete_grey"));TEX.put(Tex.ROD,tg("drill_rod"));TEX.put(Tex.GEN_SIDE,tg("generator_side"));TEX.put(Tex.TECHDOOR,tg("techdoor3x3"));
         TEX.put(Tex.PIPE,tex("plant_pipe"));TEX.put(Tex.VENT,tex("plant_vent"));TEX.put(Tex.HAZARD,tex("plant_hazard"));TEX.put(Tex.PANEL,tex("plant_panel"));
     }
     private static final ResourceLocation GLOW=tex("plant_glow");
@@ -68,7 +68,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         }
     }
     private static ResourceLocation front(PlantKind kind){return tex(kind.id()+"_front");}
-    private static boolean fit(Tex t){return t==Tex.FRONT||t==Tex.PANEL||t==Tex.VENT||t==Tex.LADDER;}
+    private static boolean fit(Tex t){return t==Tex.FRONT||t==Tex.PANEL||t==Tex.VENT||t==Tex.LADDER||t==Tex.TECHDOOR;}
     /** Packed light at a point of the controller frame, so a tall tower is not lit like its foot. */
     private static int lightAt(PlantController p,float x,float y,float z,int fallback){
         var f=p.facing();var r=f.getClockWise();var b=f.getOpposite();var o=p.getBlockPos();
