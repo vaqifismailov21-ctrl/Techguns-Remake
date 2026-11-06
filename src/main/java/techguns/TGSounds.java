@@ -125,6 +125,7 @@ public final class TGSounds {
     public static final RegistryObject<SoundEvent> GEOTHERMAL_GENERATOR_RUN = register("power.geothermal_generator");
     public static final RegistryObject<SoundEvent> NUCLEAR_GENERATOR_RUN = register("power.nuclear_generator");
     public static final RegistryObject<SoundEvent> WIND_TURBINE_RUN = register("power.wind_turbine");
+    public static final RegistryObject<SoundEvent> SOLAR_PANEL_RUN = register("power.solar_panel");
     public static final RegistryObject<SoundEvent> PLANT_WIND_RUN = register("power.plant_wind");
     public static final RegistryObject<SoundEvent> PLANT_GEOTHERMAL_RUN = register("power.plant_geothermal");
     public static final RegistryObject<SoundEvent> PLANT_FISSION_RUN = register("power.plant_fission");

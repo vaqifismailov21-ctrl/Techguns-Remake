@@ -67,6 +67,9 @@ public abstract class PlantController extends EnergySource {
     public BlockPos at(int r,int y,int b){var f=facing();var right=f.getClockWise();var back=f.getOpposite();
         return worldPosition.offset(right.getStepX()*r+back.getStepX()*b,y,right.getStepZ()*r+back.getStepZ()*b);}
 
+    /** World point of a point of the controller frame (x right, y up, z back, from the middle of the controller's bottom). */
+    public net.minecraft.world.phys.Vec3 point(double x,double y,double z){var f=facing();var r=f.getClockWise();var b=f.getOpposite();
+        return new net.minecraft.world.phys.Vec3(worldPosition.getX()+0.5+r.getStepX()*x+b.getStepX()*z,worldPosition.getY()+y,worldPosition.getZ()+0.5+r.getStepZ()*x+b.getStepZ()*z);}
     /** Block expected at a position: a block, or null for air. */
     public record Need(Predicate<BlockState> test,Block shown){}
     protected static Need part(Block block){return new Need(s->s.is(block),block);}

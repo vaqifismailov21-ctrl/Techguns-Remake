@@ -1565,5 +1565,6 @@
   "subtitles.techguns.power.plant_geothermal": "Гудит геотермальная станция",
   "subtitles.techguns.power.plant_fission": "Гудит ядерный реактор",
   "subtitles.techguns.power.plant_fusion": "Трещит термоядерный реактор",
-  "block.techguns.plant_shell": "Оболочка электростанции"
+  "block.techguns.plant_shell": "Оболочка электростанции",
+  "subtitles.techguns.power.solar_panel": "Гудит солнечная панель"
 }

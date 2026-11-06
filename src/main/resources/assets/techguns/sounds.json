@@ -1337,5 +1337,15 @@
         "stream": false
       }
     ]
+  },
+  "power.solar_panel": {
+    "category": "block",
+    "subtitle": "subtitles.techguns.power.solar_panel",
+    "sounds": [
+      {
+        "name": "techguns:power/solar_panel",
+        "stream": false
+      }
+    ]
   }
 }

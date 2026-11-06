@@ -31,8 +31,12 @@ public final class GeothermalPlant extends PlantController {
         if(energy.getEnergyStored()<energy.getMaxEnergyStored())produce(rate);
     }
     @Override public void effects(RandomSource random){
-        if(level==null||random.nextInt(3)!=0)return;var top=at(0,2,1);
-        level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,top.getX()+0.5+random.nextGaussian()*0.2,top.getY()+1.8,top.getZ()+0.5+random.nextGaussian()*0.2,0,0.07,0);
+        if(level==null)return;
+        // steam out of the cooling tower, puffs from the separator valve, heat over the intakes
+        if(random.nextInt(2)==0){var top=point(-0.55+random.nextGaussian()*0.18,3.72,1.55+random.nextGaussian()*0.18);
+            level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,top.x,top.y,top.z,random.nextGaussian()*0.004,0.06+random.nextDouble()*0.03,random.nextGaussian()*0.004);}
+        if(random.nextInt(12)==0){var v=point(0.32,1.82,0.18);for(int i=0;i<4;i++)level.addParticle(ParticleTypes.CLOUD,v.x,v.y,v.z,random.nextGaussian()*0.02,0.05,random.nextGaussian()*0.02);}
+        if(random.nextInt(6)==0){var v=point((random.nextBoolean()?1:-1)*(0.6+random.nextDouble()*0.65),0.5+random.nextDouble()*0.3,-0.25);level.addParticle(ParticleTypes.SMALL_FLAME,v.x,v.y,v.z,0,0.01,0);}
     }
     @Override public int value(int i){return i==3?lava:0;}
     @Override protected void saveAdditional(net.minecraft.nbt.CompoundTag tag){super.saveAdditional(tag);tag.putInt("Lava",lava);}

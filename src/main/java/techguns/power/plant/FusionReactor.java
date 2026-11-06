@@ -1,5 +1,8 @@
 package techguns.power.plant;
 
+import net.minecraft.util.RandomSource;
+import net.minecraft.core.particles.ParticleTypes;
+
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,6 +53,13 @@ public final class FusionReactor extends PlantController {
         setChanged();
     }
     @Override protected void onUnformed(){ignited=false;}
+    @Override public void effects(RandomSource random){
+        if(level==null||!ignited)return;
+        // discharges on the magnet coils and a faint glow over the dome
+        if(random.nextInt(3)==0){double a=random.nextInt(12)*Math.PI/6;var v=point(Math.sin(a)*1.9,-0.4+random.nextDouble()*1.8,2+Math.cos(a)*1.9);
+            level.addParticle(ParticleTypes.ELECTRIC_SPARK,v.x,v.y,v.z,random.nextGaussian()*0.05,random.nextGaussian()*0.05,random.nextGaussian()*0.05);}
+        if(random.nextInt(8)==0){var v=point(random.nextGaussian()*0.6,2.02,2+random.nextGaussian()*0.6);level.addParticle(ParticleTypes.END_ROD,v.x,v.y,v.z,0,0.02,0);}
+    }
     @Override public int value(int i){return switch(i){case 0->water.getFluidAmount();case 1->TANK;case 3->ignited?1000:(int)Math.min(999,(long)energy.getEnergyStored()*1000/IGNITION);default->0;};}
     @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){
         if(capability==ForgeCapabilities.FLUID_HANDLER)return fluids.cast();

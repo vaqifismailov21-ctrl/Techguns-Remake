@@ -46,9 +46,11 @@ public final class PowerSounds {
     private static boolean running(BlockEntity entity){
         if(entity instanceof WindTurbineEntity)return entity.getBlockState().getValue(WindTurbineBlock.PART)==WindTurbineBlock.Part.HEAD&&windRate(entity)>0;
         if(entity instanceof FloodlightEntity)return false;
+        if(entity instanceof SolarPanelEntity panel)return panel.currentRate()>0;
         return lit(entity);
     }
     private static SoundEvent loopSound(BlockEntity entity){
+        if(entity instanceof SolarPanelEntity)return TGSounds.SOLAR_PANEL_RUN.get();
         if(entity instanceof FuelGeneratorEntity)return TGSounds.FUEL_GENERATOR_RUN.get();
         if(entity instanceof LiquidGeneratorEntity)return TGSounds.LIQUID_GENERATOR_RUN.get();
         if(entity instanceof GeothermalGeneratorEntity)return TGSounds.GEOTHERMAL_GENERATOR_RUN.get();
@@ -71,20 +73,35 @@ public final class PowerSounds {
         if(entity instanceof WindTurbineEntity&&level.getGameTime()%10!=Math.floorMod(pos.asLong(),10L))return;
         var sound=loopSound(entity);if(sound==null)return;
         var loop=loops.get(pos);
+        // a field of solar panels hums as one: only one panel in a few blocks plays the sound
+        if(entity instanceof SolarPanelEntity&&(loop==null||loop.isStopped())&&(level.getGameTime()%20!=Math.floorMod(pos.asLong(),20L)||loops.entrySet().stream().anyMatch(e->e.getValue().entity instanceof SolarPanelEntity&&!e.getValue().isStopped()&&e.getKey().distSqr(pos)<36)))return;
         if(running(entity)&&(loop==null||loop.isStopped()||!Minecraft.getInstance().getSoundManager().isActive(loop))){
             if(loop!=null)Minecraft.getInstance().getSoundManager().stop(loop);
-            var next=new Loop(entity,sound,entity instanceof WindTurbineEntity?0.6F:0.55F,0.95F+level.random.nextFloat()*0.1F);
+            var next=new Loop(entity,sound,entity instanceof WindTurbineEntity?0.6F:entity instanceof SolarPanelEntity?0.22F:0.55F,0.95F+level.random.nextFloat()*0.1F);
             loops.put(pos,next);Minecraft.getInstance().getSoundManager().play(next);
         }
     }
     /** Exhaust smoke of the burning generators and steam over the geothermal generator. */
     private static void effects(BlockEntity entity,net.minecraft.world.level.block.state.BlockState state,long time){
-        if(!lit(entity))return;var level=entity.getLevel();var pos=entity.getBlockPos();var random=level.random;
+        var level=entity.getLevel();var pos=entity.getBlockPos();var random=level.random;
+        if(entity instanceof SolarPanelEntity panel){
+            // sun glints on the cells and a rare spark at the junction box while it makes power
+            if(panel.currentRate()>0&&random.nextInt(160)==0)level.addParticle(net.minecraft.core.particles.ParticleTypes.WAX_OFF,pos.getX()+random.nextDouble(),pos.getY()+0.45,pos.getZ()+random.nextDouble(),0,0.01,0);
+            if(panel.currentRate()>0&&random.nextInt(900)==0)level.addParticle(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,pos.getX()+0.5,pos.getY()+0.3,pos.getZ()+0.5,random.nextGaussian()*0.05,0.05,random.nextGaussian()*0.05);
+            return;
+        }
+        if(!lit(entity))return;
         if(entity instanceof FuelGeneratorEntity||entity instanceof LiquidGeneratorEntity){
-            if(time%3!=0)return;boolean liquid=entity instanceof LiquidGeneratorEntity;var facing=state.getValue(GeneratorBlock.FACING);
+            boolean liquid=entity instanceof LiquidGeneratorEntity;var facing=state.getValue(GeneratorBlock.FACING);
             var top=liquid?FacingMachineBlock.local(pos,facing,3.5,18.2,11.5):FacingMachineBlock.local(pos,facing,11.5,21.7,10.5);
-            level.addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE,top.x+(random.nextDouble()-.5)*.08,top.y,top.z+(random.nextDouble()-.5)*.08,0,0.05,0);
-            if(!liquid&&time%15==0){var fire=FacingMachineBlock.local(pos,facing,8,5.5,0.6);level.addParticle(net.minecraft.core.particles.ParticleTypes.SMALL_FLAME,fire.x+(random.nextDouble()-.5)*.25,fire.y,fire.z,0,0.005,0);}
+            var smoke=net.minecraft.core.particles.ParticleTypes.SMOKE;
+            // exhaust: a steady stream with a puff on every few strokes, a bigger cloud now and then
+            if(time%2==0)level.addParticle(smoke,top.x+(random.nextDouble()-.5)*.08,top.y,top.z+(random.nextDouble()-.5)*.08,(random.nextDouble()-.5)*.01,0.06+random.nextDouble()*0.03,(random.nextDouble()-.5)*.01);
+            if(time%(liquid?9:6)==0)for(int i=0;i<2;i++)level.addParticle(smoke,top.x,top.y+0.02,top.z,(random.nextDouble()-.5)*.03,0.1,(random.nextDouble()-.5)*.03);
+            if(random.nextInt(liquid?40:25)==0)level.addParticle(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE,top.x,top.y+0.05,top.z,0,0.06,0);
+            if(liquid&&random.nextInt(120)==0)level.addParticle(net.minecraft.core.particles.ParticleTypes.SMALL_FLAME,top.x,top.y+0.02,top.z,0,0.04,0);
+            if(!liquid&&time%5==0){var fire=FacingMachineBlock.local(pos,facing,8,5.5,0.6);level.addParticle(net.minecraft.core.particles.ParticleTypes.SMALL_FLAME,fire.x+(random.nextDouble()-.5)*.3,fire.y+(random.nextDouble()-.5)*.1,fire.z,0,0.006,0);}
+            if(!liquid&&random.nextInt(60)==0){var fire=FacingMachineBlock.local(pos,facing,8,5.5,0.6);level.addParticle(net.minecraft.core.particles.ParticleTypes.LAVA,fire.x,fire.y,fire.z,0,0,0);}
         }else if(entity instanceof GeothermalGeneratorEntity&&time%12==0){
             level.addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH,pos.getX()+.5+(random.nextDouble()-.5)*.6,pos.getY()+1.05,pos.getZ()+.5+(random.nextDouble()-.5)*.6,0,0.02,0);
             level.addParticle(net.minecraft.core.particles.ParticleTypes.CLOUD,pos.getX()+.5+(random.nextDouble()-.5)*.4,pos.getY()+1.0,pos.getZ()+.5+(random.nextDouble()-.5)*.4,0,0.02,0);

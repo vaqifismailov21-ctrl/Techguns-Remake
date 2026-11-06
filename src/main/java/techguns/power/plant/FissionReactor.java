@@ -80,8 +80,12 @@ public final class FissionReactor extends PlantController {
         setChanged();
     }
     @Override public void effects(RandomSource random){
-        if(level==null||random.nextInt(4)!=0)return;var top=at(random.nextInt(3)-1,2,random.nextInt(3));
-        level.addParticle(ParticleTypes.CLOUD,top.getX()+random.nextDouble(),top.getY()+0.1,top.getZ()+random.nextDouble(),0,0.05,0);
+        if(level==null)return;
+        // steam out of the two stacks, now and then a hiss from the back valve
+        for(double[] c:new double[][]{{-1.15,0.15},{1.15,1.85}})if(random.nextInt(2)==0){var v=point(c[0]+random.nextGaussian()*0.06,2.88,c[1]+random.nextGaussian()*0.06);
+            level.addParticle(ParticleTypes.CLOUD,v.x,v.y,v.z,random.nextGaussian()*0.005,0.08+random.nextDouble()*0.04,random.nextGaussian()*0.005);}
+        if(random.nextInt(20)==0){var v=point(0,2.26,2.58);for(int i=0;i<5;i++)level.addParticle(ParticleTypes.CLOUD,v.x,v.y,v.z,random.nextGaussian()*0.03,0.03,0.04+random.nextDouble()*0.03);}
+        if(overheated&&random.nextInt(2)==0){var v=point(random.nextGaussian()*0.8,2.4,1+random.nextGaussian()*0.8);level.addParticle(ParticleTypes.LARGE_SMOKE,v.x,v.y,v.z,0,0.05,0);}
     }
     @Override public int value(int i){return switch(i){case 0->water.getFluidAmount();case 1->TANK;case 2->heat;case 3->(int)((long)fuel*1000/CELL_ENERGY);default->0;};}
     @Override public ItemStackHandler slots(){return slots;}
