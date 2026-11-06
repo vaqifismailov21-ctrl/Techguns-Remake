@@ -2,13 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PCP",
-    "ERE",
-    "PUP"
+    "LUL",
+    "CEC",
+    "LRL"
   ],
   "key": {
-    "P": {
-      "tag": "forge:plates/obsidian_steel"
+    "L": {
+      "tag": "forge:plates/lead"
+    },
+    "U": {
+      "item": "techguns:pumpmechanism"
     },
     "C": {
       "item": "techguns:plant_casing"
@@ -18,9 +21,6 @@
     },
     "R": {
       "tag": "forge:ingots/uranium_enriched"
-    },
-    "U": {
-      "item": "techguns:pumpmechanism"
     }
   },
   "result": {

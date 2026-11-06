@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "SGS",
+    "PGP",
     "G G",
-    "SGS"
+    "PGP"
   ],
   "key": {
-    "S": {
+    "P": {
       "tag": "forge:plates/steel"
     },
     "G": {

@@ -2,25 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "SES",
-    "CMC",
-    "SPS"
+    "SCS",
+    "WEW",
+    "SBS"
   ],
   "key": {
     "S": {
       "tag": "forge:plates/steel"
     },
-    "E": {
-      "item": "techguns:electricengine"
-    },
     "C": {
       "item": "techguns:plant_casing"
     },
-    "M": {
-      "tag": "forge:circuits/basic"
+    "W": {
+      "tag": "forge:wires/copper"
     },
-    "P": {
-      "tag": "forge:plates/iron"
+    "E": {
+      "item": "techguns:electricengine"
+    },
+    "B": {
+      "tag": "forge:circuits/basic"
     }
   },
   "result": {

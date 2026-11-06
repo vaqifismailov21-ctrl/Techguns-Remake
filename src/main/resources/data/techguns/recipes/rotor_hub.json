@@ -2,16 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PMP",
-    "MIM",
-    "PMP"
+    "SMS",
+    "PIP",
+    "SMS"
   ],
   "key": {
-    "P": {
+    "S": {
       "tag": "forge:plates/steel"
     },
     "M": {
       "item": "techguns:mechanicalpartsiron"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
     },
     "I": {
       "tag": "forge:ingots/steel"

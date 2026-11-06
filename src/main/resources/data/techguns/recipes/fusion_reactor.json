@@ -2,22 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "OEO",
-    "RNR",
-    "OEO"
+    "CEC",
+    "KNK",
+    "CAC"
   ],
   "key": {
-    "O": {
-      "tag": "forge:plates/obsidian_steel"
+    "C": {
+      "tag": "forge:plates/carbon"
     },
     "E": {
       "tag": "forge:circuits/elite"
     },
-    "R": {
+    "K": {
       "item": "techguns:fusion_coil"
     },
     "N": {
       "item": "techguns:nuclearpowercell"
+    },
+    "A": {
+      "item": "techguns:antigravcore"
     }
   },
   "result": {

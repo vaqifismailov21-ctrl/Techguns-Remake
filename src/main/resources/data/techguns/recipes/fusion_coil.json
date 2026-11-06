@@ -2,13 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "CCC",
-    "CEC",
-    "CCC"
+    "CTC",
+    "TET",
+    "CTC"
   ],
   "key": {
     "C": {
       "item": "techguns:coil"
+    },
+    "T": {
+      "tag": "forge:plates/titanium"
     },
     "E": {
       "tag": "forge:circuits/elite"

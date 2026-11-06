@@ -4,7 +4,7 @@
   "pattern": [
     "PUP",
     "CEC",
-    "PCP"
+    "PBP"
   ],
   "key": {
     "P": {
@@ -18,6 +18,9 @@
     },
     "E": {
       "item": "techguns:electricengine"
+    },
+    "B": {
+      "tag": "forge:circuits/basic"
     }
   },
   "result": {
