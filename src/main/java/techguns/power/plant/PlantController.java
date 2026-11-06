@@ -81,6 +81,12 @@ public abstract class PlantController extends EnergySource {
 
     public InteractionResult interact(Player player,InteractionHand hand,BlockPos clicked,Direction side){
         if(level==null)return InteractionResult.PASS;
+        // buckets and tanks pour into (or take from) the plant's tank, assembled or not when clicking the controller
+        if(net.minecraftforge.fluids.FluidUtil.getFluidHandler(player.getItemInHand(hand)).isPresent()&&getCapability(ForgeCapabilities.FLUID_HANDLER,side).isPresent()){
+            if(net.minecraftforge.fluids.FluidUtil.interactWithFluidHandler(player,hand,level,worldPosition,side))return InteractionResult.sidedSuccess(level.isClientSide);
+            if(!level.isClientSide)player.displayClientMessage(Component.translatable("techguns.plant.fill_wrong"),true);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         if(!formed){
             if(level.isClientSide)return InteractionResult.SUCCESS;
             if(!form()){var bad=invalid();for(int i=0;i<Math.min(bad.size(),40);i++)techguns.oredrill.OreDrillDefinition.sendErrorPing(player,bad.get(i));
@@ -89,8 +95,6 @@ public abstract class PlantController extends EnergySource {
             else player.displayClientMessage(Component.translatable("techguns.plant.formed",getBlockState().getBlock().getName()),true);
             return InteractionResult.CONSUME;
         }
-        if(net.minecraftforge.fluids.FluidUtil.getFluidHandler(player.getItemInHand(hand)).isPresent()&&getCapability(ForgeCapabilities.FLUID_HANDLER,side).isPresent()
-                &&net.minecraftforge.fluids.FluidUtil.interactWithFluidHandler(player,hand,level,worldPosition,side))return InteractionResult.sidedSuccess(level.isClientSide);
         if(!level.isClientSide&&player instanceof ServerPlayer server)NetworkHooks.openScreen(server,new PlantMenu.Provider(this),buf->buf.writeBlockPos(worldPosition));
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

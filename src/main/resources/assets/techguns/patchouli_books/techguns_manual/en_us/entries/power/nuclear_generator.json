@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Burns $(item)nuclear micro reactors$(): $(thing)3000 FE/t$(), each gives three times the energy it gives in the small generator. It heats up and needs $(thing)water$() (10 mB/t, bucket or pipe). At 1000 heat it shuts down until cooled to half. Radiation around it while running.",
+      "text": "Burns $(item)nuclear micro reactors$(): $(thing)3000 FE/t$(), each gives three times the energy it gives in the small generator. It does not run without $(thing)water$(): cooling takes 10 mB/t. Pour it with a bucket into any block of the assembled reactor (into the controller even before assembly) or connect a pipe. Out of water, the reactor stops. Radiation around it while running.",
       "title": "Operation"
     },
     {

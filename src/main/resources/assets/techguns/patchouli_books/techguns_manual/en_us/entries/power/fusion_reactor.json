@@ -45,7 +45,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To start it, fill in $(thing)water$() and feed $(thing)2,000,000 FE$() by cable (ignition). Then the plasma burns on its own: $(thing)8000 FE/t$() for 20 mB of water per tick (deuterium). Without water the plasma goes out and needs a new ignition.",
+      "text": "To start it, pour in $(thing)water$() (a bucket into any block of the reactor, or a pipe) and feed $(thing)2,000,000 FE$() by cable (ignition). Then the plasma burns on its own: $(thing)8000 FE/t$() for 20 mB of water per tick (deuterium). Without water the plasma goes out and needs a new ignition.",
       "title": "Operation"
     },
     {

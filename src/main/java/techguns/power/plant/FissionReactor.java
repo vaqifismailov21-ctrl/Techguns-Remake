@@ -24,7 +24,7 @@ import techguns.TGRadiationSystem;
 /**
  * Fission reactor: 3x3x3 of casing (reactor glass allowed in the middle of each side) with an empty core, the
  * controller in the middle of the front. Burns nuclear micro reactors (three times their energy compared with the
- * small generator) at RATE FE per tick. Running heats it; water from the tank (WATER_USE mB per tick) cools it.
+ * small generator) at RATE FE per tick. It only runs with water in the tank (WATER_USE mB per tick cools it).
  * At HEAT_MAX it shuts down until it has cooled to half, or explodes when nuclearGeneratorExplodes is set.
  */
 public final class FissionReactor extends PlantController {
@@ -57,14 +57,14 @@ public final class FissionReactor extends PlantController {
     }
     public boolean running(){return fuel>0&&!overheated;}
     @Override protected void work(){
-        if(!overheated&&fuel<=0&&energy.getEnergyStored()+RATE<=energy.getMaxEnergyStored()){
+        if(!overheated&&fuel<=0&&water.getFluidAmount()>=WATER_USE&&energy.getEnergyStored()+RATE<=energy.getMaxEnergyStored()){
             var input=slots.getStackInSlot(0);var output=slots.getStackInSlot(1);var spent=new ItemStack(TGItems.NUCLEAR_POWERCELL_EMPTY.get());
             if(!input.isEmpty()&&(output.isEmpty()||ItemStack.isSameItemSameTags(output,spent)&&output.getCount()<output.getMaxStackSize())){
                 input.shrink(1);slots.setStackInSlot(0,input);fuel=CELL_ENERGY;
                 if(output.isEmpty())slots.setStackInSlot(1,spent);else{output.grow(1);slots.setStackInSlot(1,output);}
             }
         }
-        boolean working=running()&&energy.getEnergyStored()+RATE<=energy.getMaxEnergyStored();
+        boolean working=running()&&water.getFluidAmount()>=WATER_USE&&energy.getEnergyStored()+RATE<=energy.getMaxEnergyStored();
         rate=0;
         if(working){int made=Math.min(RATE,fuel);fuel-=made;produce(made);rate=made;heat+=2;}
         boolean cooled=water.getFluidAmount()>=WATER_USE&&(working||heat>0);
@@ -75,7 +75,7 @@ public final class FissionReactor extends PlantController {
             overheated=true;
         }
         if(overheated&&heat<=HEAT_MAX/2)overheated=false;
-        problem=overheated?3:fuel<=0&&slots.getStackInSlot(0).isEmpty()?1:water.getFluidAmount()<WATER_USE&&working?2:0;
+        problem=overheated?3:fuel<=0&&slots.getStackInSlot(0).isEmpty()?1:water.getFluidAmount()<WATER_USE?2:0;
         if(working&&level.getGameTime()%20==0&&TGRadiationSystem.isEnabled())TGRadiationSystem.applyRadToEntities(this,6,200,3,2,1);
         setChanged();
     }

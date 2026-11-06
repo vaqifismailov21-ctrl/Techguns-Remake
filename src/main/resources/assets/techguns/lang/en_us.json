@@ -1535,7 +1535,7 @@
   "techguns.plant.geothermal_plant.problem1": "No lava sources below",
   "techguns.plant.fission_reactor.fuel": "Fuel cell: %s%%",
   "techguns.plant.fission_reactor.problem1": "No fuel: nuclear micro reactors",
-  "techguns.plant.fission_reactor.problem2": "No cooling water",
+  "techguns.plant.fission_reactor.problem2": "No water: the reactor does not run without cooling",
   "techguns.plant.fission_reactor.problem3": "Overheated: cooling down",
   "techguns.plant.fusion_reactor.ignition": "Ignition: %s%%",
   "techguns.plant.fusion_reactor.burning": "Plasma burning",
@@ -1561,5 +1561,7 @@
   "techguns.plant.rotor_hub.tip1": "Goes on the front of the wind plant nacelle.",
   "techguns.plant.rotor_hub.tip2": "Right-click with 3 blades to hang them,",
   "techguns.plant.rotor_hub.tip3": "then right-click the hub to start the plant.",
-  "techguns.plant.rotor_hub.tip4": "Sneak + empty hand takes a blade off."
+  "techguns.plant.rotor_hub.tip4": "Sneak + empty hand takes a blade off.",
+  "techguns.plant.fill_not_formed": "Assemble the plant first, then pour the water into any of its blocks (or into the controller right away)",
+  "techguns.plant.fill_wrong": "This tank takes only water, or it is full"
 }

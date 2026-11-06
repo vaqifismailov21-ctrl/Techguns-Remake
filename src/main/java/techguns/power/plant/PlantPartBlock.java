@@ -34,8 +34,16 @@ public final class PlantPartBlock extends BaseEntityBlock {
     @Override public float getShadeBrightness(BlockState state,BlockGetter level,BlockPos pos){return type==Type.GLASS||state.getValue(FORMED)?1:0.2F;}
     @Override public boolean propagatesSkylightDown(BlockState state,BlockGetter level,BlockPos pos){return type==Type.GLASS||state.getValue(FORMED);}
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit){
-        if(!state.getValue(FORMED)||!(level.getBlockEntity(pos) instanceof PlantPartEntity part))return InteractionResult.PASS;
-        var master=part.master();if(master==null)return InteractionResult.PASS;
+        if(!state.getValue(FORMED)){
+            // a full bucket on a plant that is not assembled yet would just pour the water out next to it
+            if(net.minecraftforge.fluids.FluidUtil.getFluidContained(player.getItemInHand(hand)).isPresent()){
+                if(!level.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.translatable("techguns.plant.fill_not_formed"),true);
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+            return InteractionResult.PASS;
+        }
+        var master=level.getBlockEntity(pos) instanceof PlantPartEntity part?part.master():null;
+        if(master==null)return level.isClientSide?InteractionResult.SUCCESS:InteractionResult.PASS;
         return master.interact(player,hand,pos,hit.getDirection());
     }
     @Override public void onRemove(BlockState state,Level level,BlockPos pos,BlockState next,boolean moving){
