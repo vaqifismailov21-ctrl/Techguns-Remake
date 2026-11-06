@@ -1567,5 +1567,6 @@
   "subtitles.techguns.power.plant_wind": "Wind turbine turns",
   "subtitles.techguns.power.plant_geothermal": "Geothermal plant rumbles",
   "subtitles.techguns.power.plant_fission": "Fission reactor hums",
-  "subtitles.techguns.power.plant_fusion": "Fusion reactor buzzes"
+  "subtitles.techguns.power.plant_fusion": "Fusion reactor buzzes",
+  "block.techguns.plant_shell": "Power Plant Shell"
 }

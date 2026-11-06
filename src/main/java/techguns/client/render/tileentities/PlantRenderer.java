@@ -26,7 +26,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
     private static ResourceLocation tex(String id){return ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/plant/"+id+".png");}
     private static final Map<Tex,ResourceLocation> TEX=new EnumMap<>(Tex.class);
     static{
-        TEX.put(Tex.CASING,tex("plant_casing"));TEX.put(Tex.CASING_DARK,tex("plant_casing_dark"));TEX.put(Tex.GLASS,tex("plant_glass"));
+        TEX.put(Tex.CASING,tex("plant_casing"));TEX.put(Tex.CASING_LIGHT,tex("plant_casing_light"));TEX.put(Tex.CASING_DARK,tex("plant_casing_dark"));TEX.put(Tex.GLASS,tex("plant_glass"));
         TEX.put(Tex.TOWER,tex("turbine_tower"));TEX.put(Tex.COIL,tex("fusion_coil"));TEX.put(Tex.BLADE,tex("turbine_blade"));
         TEX.put(Tex.LADDER,ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/metal_ladder.png"));
         TEX.put(Tex.PIPE,tex("plant_pipe"));TEX.put(Tex.VENT,tex("plant_vent"));TEX.put(Tex.HAZARD,tex("plant_hazard"));TEX.put(Tex.PANEL,tex("plant_panel"));
@@ -145,18 +145,40 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         pose.popPose();
     }
     private void geothermal(PlantController p,PoseStack pose,MultiBufferSource buffers,int light,float time){
-        int glow=p.rate>0?(int)(200+40*Math.sin(time*0.15))<<24|0xFF7A20:0xFF301008;
-        var vents=p.rate>0?buffers.getBuffer(RenderType.eyes(GLOW)):buffers.getBuffer(RenderType.entityCutout(GLOW));
-        for(int sx=-1;sx<=1;sx+=2)box(pose,vents,Math.min(sx*0.5F,sx*1.25F),0.28F,-0.2005F,Math.max(sx*0.5F,sx*1.25F),0.82F,-0.2F,light,glow);
-        for(int k=-1;k<=1;k++)box(pose,vents,k*0.85F-0.35F,1.02F,-0.2005F,k*0.85F+0.35F,1.42F,-0.2F,light,glow);
+        boolean on=p.rate>0;
+        int glow=on?(int)(200+40*Math.sin(time*0.15))<<24|0xFF7A20:0xFF301008;
+        var vents=on?buffers.getBuffer(RenderType.eyes(GLOW)):buffers.getBuffer(RenderType.entityCutout(GLOW));
+        for(int sx=-1;sx<=1;sx+=2)box(pose,vents,Math.min(sx*0.56F,sx*1.3F),0.3F,-0.2005F,Math.max(sx*0.56F,sx*1.3F),0.86F,-0.2F,light,glow);
+        // warning lamps over the door and the beacon on the separator
+        if(on){var lamp=buffers.getBuffer(RenderType.eyes(GLOW));int amber=((int)(time/10))%2==0?0xFFFFA020:0x60FF8010;
+            for(int sx=-1;sx<=1;sx+=2)box(pose,lamp,sx*0.4F-0.025F,0.905F,-0.245F,sx*0.4F+0.025F,0.955F,-0.24F,light,amber);
+            box(pose,lamp,0.86F,2.49F,0.14F,0.94F,2.55F,0.22F,lightAt(p,0.9F,2.5F,0.18F,light),amber);}
+        // roof fans
+        var dark=buffers.getBuffer(RenderType.entityCutout(TEX.get(Tex.CASING_DARK)));float spin=on?time*18:0;
+        for(float fz:new float[]{0.95F,1.95F}){
+            int l=lightAt(p,0.86F,2.2F,fz,light);
+            pose.pushPose();pose.translate(0.86F,2.145F,fz);pose.mulPose(Axis.YP.rotationDegrees(spin+fz*40));
+            for(int k=0;k<4;k++){pose.mulPose(Axis.YP.rotationDegrees(90));box(pose,dark,-0.05F,0,0.02F,0.05F,0.015F,0.36F,l,WHITE);}
+            box(pose,dark,-0.06F,0,-0.06F,0.06F,0.03F,0.06F,l,WHITE);
+            pose.popPose();
+        }
     }
     private void fission(FissionReactor p,PoseStack pose,MultiBufferSource buffers,int light,float time){
-        float pulse=p.rate>0?0.75F+0.25F*(float)Math.sin(time*0.2):0.12F;
+        boolean on=p.rate>0;
+        float pulse=on?0.75F+0.25F*(float)Math.sin(time*0.2):0.12F;
         var core=buffers.getBuffer(RenderType.eyes(GLOW));
         int green=(int)(pulse*255)<<24|0x40FF60,blue=(int)(pulse*200)<<24|0x3080FF;
-        for(float rx:new float[]{-0.3F,0.3F})for(float rz:new float[]{0.7F,1.3F})box(pose,core,rx-0.07F,-0.68F,rz-0.07F,rx+0.07F,1.5F,rz+0.07F,light,green);
-        box(pose,core,-0.58F,-0.695F,0.42F,0.58F,-0.69F,1.58F,light,blue);
+        for(float rx:new float[]{-0.36F,0,0.36F})for(float rz:new float[]{0.64F,1.0F,1.36F})box(pose,core,rx-0.06F,-0.7F,rz-0.06F,rx+0.06F,1.5F,rz+0.06F,light,green);
+        box(pose,core,-0.58F,-0.715F,0.42F,0.58F,-0.71F,1.58F,light,blue);
+        // status strip: green running, red overheated, dim when idle
+        int strip=p.overheated?(((int)(time/6))%2==0?0xFFFF3020:0x40FF3020):on?0xFF40FF60:0x30406040;
+        box(pose,core,-1.08F,1.44F,-0.525F,1.08F,1.5F,-0.52F,light,strip);
+        // control rods: drawn out while the reactor runs, dropped in when it stops
+        float target=on?1.05F:-0.55F;float[] r=rods.computeIfAbsent(p,k->new float[]{target});r[0]+=(target-r[0])*0.02F;
+        var dark=buffers.getBuffer(RenderType.entityCutout(TEX.get(Tex.CASING_DARK)));
+        for(float rx:new float[]{-0.18F,0.18F})for(float rz:new float[]{0.82F,1.18F})box(pose,dark,rx-0.04F,r[0],rz-0.04F,rx+0.04F,r[0]+1.1F,rz+0.04F,light,WHITE);
     }
+    private static final Map<PlantController,float[]> rods=new WeakHashMap<>();
     private void fusion(FusionReactor p,PoseStack pose,MultiBufferSource buffers,int light,float time){
         if(!p.ignited)return;
         var plasma=buffers.getBuffer(RenderType.eyes(GLOW));float radius=1.45F;

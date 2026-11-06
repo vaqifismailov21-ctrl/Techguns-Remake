@@ -19,19 +19,24 @@ import net.minecraft.world.phys.BlockHitResult;
 
 /** Building block of the power plants. Once the plant is formed it hides (the controller draws the whole plant) and forwards clicks, energy, fluids and items to it. */
 public final class PlantPartBlock extends BaseEntityBlock {
-    public enum Type{CASING,GLASS,TOWER,COIL}
+    /** SHELL: invisible block a formed plant puts where its model reaches out of its own blocks, so that part collides too. */
+    public enum Type{CASING,GLASS,TOWER,COIL,SHELL}
     public static final BooleanProperty FORMED=BooleanProperty.create("formed");
     public final Type type;
     public PlantPartBlock(Type type){
-        super(Properties.of().strength(4,20).sound(type==Type.GLASS?SoundType.GLASS:SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().dynamicShape()
-                .isViewBlocking((s,l,p)->false).isSuffocating((s,l,p)->type!=Type.GLASS&&!s.getValue(FORMED)).isRedstoneConductor((s,l,p)->false));
+        super(properties(type));
         this.type=type;registerDefaultState(stateDefinition.any().setValue(FORMED,false));
+    }
+    private static Properties properties(Type type){
+        var p=Properties.of().strength(4,20).sound(type==Type.GLASS?SoundType.GLASS:SoundType.METAL).noOcclusion().dynamicShape()
+                .isViewBlocking((s,l,pos)->false).isSuffocating((s,l,pos)->type!=Type.GLASS&&type!=Type.SHELL&&!s.getValue(FORMED)).isRedstoneConductor((s,l,pos)->false);
+        return type==Type.SHELL?p.noLootTable().pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK):p.requiresCorrectToolForDrops();
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FORMED);}
     @Override public net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,net.minecraft.world.phys.shapes.CollisionContext context){
         return state.getValue(FORMED)?PlantController.formedShape(level,pos):net.minecraft.world.phys.shapes.Shapes.block();
     }
-    @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
+    @Override public RenderShape getRenderShape(BlockState state){return type==Type.SHELL?RenderShape.INVISIBLE:RenderShape.MODEL;}
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new PlantPartEntity(pos,state);}
     @Override public boolean skipRendering(BlockState state,BlockState next,net.minecraft.core.Direction side){return type==Type.GLASS&&next.is(this)||super.skipRendering(state,next,side);}
     @Override public float getShadeBrightness(BlockState state,BlockGetter level,BlockPos pos){return type==Type.GLASS||state.getValue(FORMED)?1:0.2F;}

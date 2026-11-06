@@ -94,6 +94,7 @@
     "techguns:geothermal_plant",
     "techguns:fission_reactor",
     "techguns:fusion_reactor",
-    "techguns:rotor_hub"
+    "techguns:rotor_hub",
+    "techguns:plant_shell"
   ]
 }

@@ -28,6 +28,7 @@ public final class PlantBlocks {
     public static final RegistryObject<Block> GLASS=block("plant_glass",()->new PlantPartBlock(PlantPartBlock.Type.GLASS));
     public static final RegistryObject<Block> TOWER=block("turbine_tower",()->new PlantPartBlock(PlantPartBlock.Type.TOWER));
     public static final RegistryObject<Block> COIL=block("fusion_coil",()->new PlantPartBlock(PlantPartBlock.Type.COIL));
+    public static final RegistryObject<Block> SHELL=block("plant_shell",()->new PlantPartBlock(PlantPartBlock.Type.SHELL));
     public static final RegistryObject<Block> HUB=block("rotor_hub",RotorHubBlock::new);
     public static final RegistryObject<Block> WIND=block("wind_plant",()->new PlantControllerBlock(PlantKind.WIND));
     public static final RegistryObject<Block> GEOTHERMAL=block("geothermal_plant",()->new PlantControllerBlock(PlantKind.GEOTHERMAL));
@@ -39,7 +40,7 @@ public final class PlantBlocks {
 
     public static final RegistryObject<Item> BLADE_ITEM=TGItems.ITEMS.register("turbine_blade",()->new Item(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BlockEntityType<RotorHubEntity>> HUB_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("rotor_hub",()->BlockEntityType.Builder.of(RotorHubEntity::new,HUB.get()).build(null));
-    public static final RegistryObject<BlockEntityType<PlantPartEntity>> PART_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("plant_part",()->BlockEntityType.Builder.of(PlantPartEntity::new,CASING.get(),GLASS.get(),TOWER.get(),COIL.get()).build(null));
+    public static final RegistryObject<BlockEntityType<PlantPartEntity>> PART_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("plant_part",()->BlockEntityType.Builder.of(PlantPartEntity::new,CASING.get(),GLASS.get(),TOWER.get(),COIL.get(),SHELL.get()).build(null));
     public static final RegistryObject<BlockEntityType<WindPlant>> WIND_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("wind_plant",()->BlockEntityType.Builder.of(WindPlant::new,WIND.get()).build(null));
     public static final RegistryObject<BlockEntityType<GeothermalPlant>> GEOTHERMAL_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("geothermal_plant",()->BlockEntityType.Builder.of(GeothermalPlant::new,GEOTHERMAL.get()).build(null));
     public static final RegistryObject<BlockEntityType<FissionReactor>> FISSION_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("fission_reactor",()->BlockEntityType.Builder.of(FissionReactor::new,FISSION.get()).build(null));

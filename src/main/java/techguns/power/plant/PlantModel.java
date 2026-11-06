@@ -18,8 +18,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public final class PlantModel {
     private PlantModel(){}
-    public enum Tex{CASING,CASING_DARK,GLASS,TOWER,COIL,BLADE,FRONT,LADDER,PIPE,VENT,HAZARD,PANEL,NONE}
-    /** Axis aligned box; rotY turns it around the vertical line through (px,pz), such boxes are never solid. */
+    public enum Tex{CASING,CASING_LIGHT,CASING_DARK,GLASS,TOWER,COIL,BLADE,FRONT,LADDER,PIPE,VENT,HAZARD,PANEL,NONE}
+    /** Axis aligned box; rotY turns it around the vertical line through (px,pz) (it then collides with its turned footprint's bounds). */
     public record Box(float x0,float y0,float z0,float x1,float y1,float z1,Tex tex,int argb,boolean solid,float rotY,float px,float pz){}
     private static final int W=0xFFFFFFFF,GREY=0xFFB4B4B4,DARK=0xFF8C8C8C;
 
@@ -27,12 +27,12 @@ public final class PlantModel {
         final List<Box> list=new ArrayList<>();
         void s(Tex t,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,W,true);}
         void s(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,c,true);}
-        void d(Tex t,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,W,false);}
-        void d(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,c,false);}
+        void d(Tex t,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,W,true);}
+        void d(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1){add(t,x0,y0,z0,x1,y1,z1,c,true);}
         /** Collision only, not drawn. */
         void hit(double x0,double y0,double z0,double x1,double y1,double z1){add(Tex.NONE,x0,y0,z0,x1,y1,z1,0,true);}
         void rot(Tex t,int c,double x0,double y0,double z0,double x1,double y1,double z1,double deg,double px,double pz){
-            list.add(new Box((float)x0,(float)y0,(float)z0,(float)x1,(float)y1,(float)z1,t,c,false,(float)deg,(float)px,(float)pz));}
+            list.add(new Box((float)x0,(float)y0,(float)z0,(float)x1,(float)y1,(float)z1,t,c,true,(float)deg,(float)px,(float)pz));}
         private void add(Tex t,double x0,double y0,double z0,double x1,double y1,double z1,int c,boolean solid){
             list.add(new Box((float)Math.min(x0,x1),(float)Math.min(y0,y1),(float)Math.min(z0,z1),(float)Math.max(x0,x1),(float)Math.max(y0,y1),(float)Math.max(z0,z1),t,c,solid,0,0,0));}
         /** Vertical pipe with flanges. */
@@ -72,9 +72,9 @@ public final class PlantModel {
 
     private static void wind(B b,int n){
         // foundation with the control panel
-        b.s(Tex.CASING_DARK,-0.5,0,-0.5,0.5,0.16,0.5);
+        b.s(Tex.CASING,-0.5,0,-0.5,0.5,0.16,0.5);
         b.d(Tex.HAZARD,-0.5,0.1,-0.52,0.5,0.16,-0.5);
-        b.s(Tex.CASING,-0.43,0.16,-0.43,0.43,0.9,0.43);
+        b.s(Tex.CASING_LIGHT,-0.43,0.16,-0.43,0.43,0.9,0.43);
         for(int sx=-1;sx<=1;sx+=2)for(int sz=-1;sz<=1;sz+=2)b.d(Tex.CASING_DARK,sx*0.5,0.16,sz*0.5,sx*0.41,0.9,sz*0.41);
         b.d(Tex.FRONT,-0.3,0.24,-0.45,0.3,0.84,-0.43);
         b.d(Tex.PANEL,0.43,0.16,-0.18,0.45,0.78,0.18);
@@ -97,10 +97,10 @@ public final class PlantModel {
         double y=n+1;
         // nacelle: yaw bearing, housing with roof, hatches, vents, radiator, anemometer and vane
         b.s(Tex.CASING_DARK,-0.27,y,-0.27,0.27,y+0.08,0.27);
-        b.s(Tex.CASING,-0.36,y+0.08,-0.5,0.36,y+0.72,0.5);
-        b.d(Tex.CASING,-0.31,y+0.12,0.5,0.31,y+0.67,0.9);
+        b.s(Tex.CASING_LIGHT,-0.36,y+0.08,-0.5,0.36,y+0.72,0.5);
+        b.d(Tex.CASING_LIGHT,-0.31,y+0.12,0.5,0.31,y+0.67,0.9);
         b.d(Tex.CASING,GREY,-0.22,y+0.2,0.9,0.22,y+0.58,1.0);
-        b.d(Tex.CASING,0xFFDADADA,-0.33,y+0.72,-0.46,0.33,y+0.78,0.86);
+        b.d(Tex.CASING_LIGHT,-0.33,y+0.72,-0.46,0.33,y+0.78,0.86);
         b.d(Tex.HAZARD,-0.365,y+0.08,-0.505,0.365,y+0.13,-0.495);
         for(int k=0;k<5;k++)b.d(Tex.VENT,-0.24,y+0.78,0.34+k*0.1,0.24,y+0.92,0.38+k*0.1);
         for(int sx=-1;sx<=1;sx+=2){
@@ -117,70 +117,112 @@ public final class PlantModel {
         b.hit(-0.32,y+0.1,-1.2,0.32,y+0.74,-0.64);
     }
 
+    private static final int CONCRETE=0xFFE6E2D6,RED=0xFFC8382A;
+    /** Upright tank: two crossed boxes give it a rounded look, with steel bands and a stepped dome. */
+    private static void tank(B b,Tex t,int c,double cx,double cz,double r,double y0,double y1){
+        b.d(t,c,cx-r,y0,cz-r*0.72,cx+r,y1,cz+r*0.72);b.d(t,c,cx-r*0.72,y0,cz-r,cx+r*0.72,y1,cz+r);
+        for(double y=y0+0.2;y<y1-0.1;y+=0.4)b.d(Tex.CASING,cx-r-0.02,y,cz-r*0.72-0.02,cx+r+0.02,y+0.05,cz+r*0.72+0.02);
+        b.d(t,c,cx-r*0.75,y1,cz-r*0.55,cx+r*0.75,y1+0.08,cz+r*0.55);b.d(t,c,cx-r*0.45,y1+0.08,cz-r*0.35,cx+r*0.45,y1+0.14,cz+r*0.35);
+    }
+    /** Valve with a red hand wheel on a horizontal pipe. */
+    private static void valve(B b,double x,double y,double z){
+        b.d(Tex.CASING_DARK,x-0.07,y-0.07,z-0.07,x+0.07,y+0.07,z+0.07);b.d(Tex.CASING_DARK,x-0.015,y+0.07,z-0.015,x+0.015,y+0.16,z+0.015);
+        b.d(Tex.CASING,RED,x-0.1,y+0.16,z-0.1,x+0.1,y+0.18,z+0.1);
+    }
+    /** Railing along x at height y on the edge z. */
+    private static void railX(B b,double x0,double x1,double y,double z){
+        for(double x=x0;x<=x1+1e-6;x+=Math.max(0.2,(x1-x0)/Math.max(1,Math.round((x1-x0)/0.4))))b.d(Tex.CASING_DARK,x-0.015,y,z-0.015,x+0.015,y+0.28,z+0.015);
+        b.d(Tex.CASING,0xFFE0B020,x0-0.015,y+0.26,z-0.02,x1+0.015,y+0.29,z+0.02);b.d(Tex.CASING_DARK,x0,y+0.13,z-0.012,x1,y+0.15,z+0.012);
+    }
+
     private static void geothermal(B b){
-        b.s(Tex.CASING_DARK,-1.5,0,-0.5,1.5,0.15,2.5);
-        b.s(Tex.CASING,-1.4,0.15,-0.2,1.4,1.55,2.4);
-        b.s(Tex.CASING,0xFFD0D0D0,-1.46,1.55,-0.26,1.46,1.7,2.46);
-        b.d(Tex.CASING_DARK,-1.46,1.7,-0.26,1.46,1.78,-0.18);b.d(Tex.CASING_DARK,-1.46,1.7,2.38,1.46,1.78,2.46);
-        // front: control panel, glowing intakes (glow drawn behind the grilles by the renderer), hazard band
-        b.d(Tex.FRONT,-0.3,0.25,-0.22,0.3,0.85,-0.2);
-        for(int sx=-1;sx<=1;sx+=2){b.d(Tex.VENT,sx*0.5,0.28,-0.215,sx*1.25,0.82,-0.205);}
-        for(int k=-1;k<=1;k++)b.d(Tex.VENT,k*0.85-0.35,1.02,-0.215,k*0.85+0.35,1.42,-0.205);
-        b.d(Tex.HAZARD,-1.4,0.88,-0.215,1.4,0.96,-0.2);
-        // walkway and the pipes down into the lava
-        b.s(Tex.CASING_DARK,-1.5,0.15,-0.5,1.5,0.2,-0.2);
-        b.pipeY(-1.28,-0.36,0.1,0,1.62,true);b.pipeY(1.28,-0.36,0.1,0,1.62,true);
-        b.pipeX(1.5,-0.36,0.08,-1.28,1.28,false);
-        b.d(Tex.CASING_DARK,-0.08,0.2,-0.44,0.08,1.42,-0.28);
-        // left: heat exchanger panels, right: radiator fins and a ladder to the roof
-        for(int k=0;k<3;k++)b.d(Tex.PANEL,-1.48,0.3,0.15+k*0.75,-1.4,1.35,0.8+k*0.75);
-        b.pipeZ(-1.46,1.42,0.05,-0.2,2.4,false);
-        for(int k=0;k<9;k++)b.d(Tex.VENT,1.4,0.35,0.1+k*0.2,1.5,1.3,0.16+k*0.2);
-        b.d(Tex.LADDER,-0.2,0.15,2.4,0.2,1.7,2.43);
-        // roof: pump house, cooling tower (stepped hyperboloid), pipe between them
-        b.d(Tex.CASING,-1.25,1.7,0.15,-0.45,2.05,1.0);
-        b.d(Tex.VENT,-1.25,1.78,-0.0,-0.45,1.98,0.15);
-        b.d(Tex.CASING_DARK,-1.28,2.05,0.12,-0.42,2.1,1.03);
-        double cx=0.45,cz=1.3;
-        double[] r={0.85,0.74,0.65,0.59,0.56,0.57,0.61,0.66};
-        for(int k=0;k<r.length;k++){double y0=1.7+k*0.2;b.d(Tex.TOWER,0xFFDCD8CC,cx-r[k],y0,cz-r[k],cx+r[k],y0+0.2,cz+r[k]);}
-        b.d(Tex.CASING_DARK,cx-0.62,3.3,cz-0.62,cx+0.62,3.34,cz+0.62);
-        b.pipeX(1.9,0.6,0.06,-0.45,cx-0.6,false);
-        b.hit(-1.5,1.7,-0.5,1.5,2.0,2.5);
+        // plinth and lower hall of light steel with posts and a belt course
+        b.s(Tex.CASING,-1.5,0,-0.5,1.5,0.14,2.5);
+        b.d(Tex.HAZARD,-1.5,0.08,-0.51,1.5,0.14,-0.5);
+        b.s(Tex.CASING_LIGHT,-1.42,0.14,-0.18,1.42,1.2,2.42);
+        for(double x:new double[]{-1.42,-0.47,0.47,1.36}){b.d(Tex.CASING,x,0.14,-0.22,x+0.06,1.2,-0.18);b.d(Tex.CASING,x,0.14,2.42,x+0.06,1.2,2.46);}
+        for(double z:new double[]{0.6,1.4})for(int sx=-1;sx<=1;sx+=2)b.d(Tex.CASING,sx*1.42,0.14,z,sx*1.46,1.2,z+0.06);
+        b.d(Tex.CASING,-1.46,1.2,-0.22,1.46,1.28,2.46);
+        // front: controller panel, door, glowing intakes (glow drawn behind the grilles), warning lamps
+        b.d(Tex.FRONT,-0.3,0.24,-0.2,0.3,0.84,-0.18);
+        for(int sx=-1;sx<=1;sx+=2){b.d(Tex.VENT,Math.min(sx*0.56,sx*1.3),0.3,-0.215,Math.max(sx*0.56,sx*1.3),0.86,-0.205);
+            b.d(Tex.CASING_DARK,sx*0.4-0.03,0.9,-0.24,sx*0.4+0.03,0.96,-0.2);}
+        b.d(Tex.HAZARD,-1.42,0.98,-0.215,1.42,1.05,-0.2);
+        // upper level: turbine hall at the back, control room with windows front left, open deck with a railing
+        b.s(Tex.CASING_LIGHT,-1.42,1.28,0.55,1.42,1.82,2.42);
+        b.s(Tex.CASING,-1.46,1.82,0.51,1.46,1.9,2.46);
+        for(int k=0;k<4;k++)b.s(Tex.GLASS,0xC8FFFFFF,-1.2+k*0.7,1.4,0.53,-0.8+k*0.7,1.7,0.55);
+        b.s(Tex.CASING_LIGHT,-1.42,1.28,-0.15,-0.25,1.78,0.55);
+        b.s(Tex.GLASS,0xC8FFFFFF,-1.36,1.4,-0.17,-0.31,1.68,-0.15);b.s(Tex.GLASS,0xC8FFFFFF,-1.44,1.4,-0.08,-1.42,1.68,0.48);
+        b.d(Tex.CASING,-1.46,1.78,-0.19,-0.21,1.86,0.55);
+        b.d(Tex.PANEL,-0.27,1.28,0.1,-0.25,1.7,0.45);
+        railX(b,-0.2,0.5,1.28,-0.16);
+        // steam separator on the deck (front right) and its pipes into the turbine hall
+        tank(b,Tex.TOWER,0xFFF0F0F0,0.9,0.18,0.32,1.28,2.35);
+        b.pipeZ(0.9,2.1,0.07,0.5,1.05,true);b.pipeY(0.9,1.05,0.07,1.9,2.1,true);
+        b.pipeX(1.62,0.18,0.06,0.15,0.58,true);valve(b,0.32,1.62,0.18);
+        // lava pipes in front, a manifold and a valve
+        b.pipeY(-1.3,-0.36,0.1,0,1.25,true);b.pipeY(1.3,-0.36,0.1,0,1.25,true);
+        b.pipeX(1.12,-0.36,0.07,-1.3,1.3,true);valve(b,-0.9,1.12,-0.36);valve(b,0.9,1.12,-0.36);
+        // roof: cooling tower (stepped hyperboloid of concrete) and two fan housings (fans turn in the renderer)
+        double cx=-0.55,cz=1.55;double[] r={0.82,0.72,0.64,0.58,0.55,0.56,0.6,0.66};
+        for(int k=0;k<r.length;k++){double y0=1.9+k*0.22;b.d(Tex.TOWER,CONCRETE,cx-r[k],y0,cz-r[k],cx+r[k],y0+0.22,cz+r[k]);}
+        b.d(Tex.CASING,cx-0.7,1.9+r.length*0.22,cz-0.7,cx+0.7,1.95+r.length*0.22,cz+0.7);
+        for(double fz:new double[]{0.95,1.95}){b.d(Tex.CASING,0.4,1.9,fz-0.42,1.32,2.12,fz+0.42);b.d(Tex.VENT,0.44,2.12,fz-0.38,1.28,2.14,fz+0.38);}
+        // left: heat exchangers with headers, right: radiator fins; ladder at the back up to the roof
+        for(int k=0;k<3;k++)b.d(Tex.PANEL,-1.5,0.3,0.15+k*0.75,-1.42,1.12,0.8+k*0.75);
+        b.pipeZ(-1.48,1.16,0.045,-0.15,2.4,true);b.pipeZ(-1.48,0.22,0.045,-0.15,2.4,true);
+        for(int k=0;k<9;k++)b.d(Tex.VENT,1.42,0.3,0.1+k*0.25,1.52,1.12,0.16+k*0.25);
+        b.d(Tex.LADDER,-0.2,0.14,2.46,0.2,1.9,2.49);
     }
 
     private static void fission(B b){
-        double x0=-1.5,x1=1.5,z0=-0.5,z1=2.5,y0=-1,y1=2;
-        b.s(Tex.CASING_DARK,x0,y0,z0,x1,y0+0.22,z1);
-        // corner columns and the walls between them, with a window in the middle of the sides and the back
-        for(double sx:new double[]{x0,x1-0.36})for(double sz:new double[]{z0,z1-0.36})b.s(Tex.CASING,GREY,sx,y0+0.22,sz,sx+0.36,y1-0.25,sz+0.36);
-        double w0=-0.15,w1=1.15,wa=-0.8,wb=0.8,t=0.16;
-        b.s(Tex.CASING,x0+0.36,y0+0.22,z0+0.02,x1-0.36,y1-0.25,z0+t);
-        b.d(Tex.FRONT,-0.34,0.12,z0,0.34,0.86,z0+0.02);
-        b.d(Tex.HAZARD,x0+0.36,y0+0.22,z0,x1-0.36,y0+0.36,z0+0.02);
-        b.d(Tex.PANEL,-1.05,0.0,z0,-0.5,1.0,z0+0.02);b.d(Tex.PANEL,0.5,0.0,z0,1.05,1.0,z0+0.02);
-        // side walls (x) and back wall (z) with windows
+        double x0=-1.5,x1=1.5,z0=-0.5,z1=2.5,y0=-1,y1=2,t=0.14;
+        b.s(Tex.CASING,x0,y0,z0,x1,y0+0.2,z1);
+        b.d(Tex.HAZARD,x0,y0+0.14,z0-0.01,x1,y0+0.2,z0);
+        // corner columns with caps, light walls with large framed windows (sides and back)
+        for(double sx:new double[]{x0,x1-0.34})for(double sz:new double[]{z0,z1-0.34}){b.s(Tex.CASING,sx,y0+0.2,sz,sx+0.34,y1-0.25,sz+0.34);b.d(Tex.CASING_DARK,sx-0.02,y1-0.32,sz-0.02,sx+0.36,y1-0.25,sz+0.36);}
+        double wy0=-0.35,wy1=1.3,wa=-0.9,wb=0.9,mid=1.0;
+        b.s(Tex.CASING_LIGHT,x0+0.34,y0+0.2,z0+0.02,x1-0.34,y1-0.25,z0+t);
         for(int side=-1;side<=1;side+=2){
-            double xa=side<0?x0+0.02:x1-t,xb=side<0?x0+t:x1-0.02,mid=1.0;
-            b.s(Tex.CASING,xa,y0+0.22,z0+0.36,xb,w0,z1-0.36);b.s(Tex.CASING,xa,w1,z0+0.36,xb,y1-0.25,z1-0.36);
-            b.s(Tex.CASING,xa,w0,z0+0.36,xb,w1,mid+wa);b.s(Tex.CASING,xa,w0,mid+wb,xb,w1,z1-0.36);
-            b.s(Tex.GLASS,0xC0FFFFFF,xa+0.04,w0,mid+wa,xb-0.04,w1,mid+wb);
-            b.pipeZ(side*1.53,1.5,0.06,z0+0.36,z1-0.36,false);
+            double xa=side<0?x0+0.02:x1-t,xb=side<0?x0+t:x1-0.02,xo=side<0?x0:x1-0.02,xi=side<0?x0+0.02:x1;
+            b.s(Tex.CASING_LIGHT,xa,y0+0.2,z0+0.34,xb,wy0,z1-0.34);b.s(Tex.CASING_LIGHT,xa,wy1,z0+0.34,xb,y1-0.25,z1-0.34);
+            b.s(Tex.CASING_LIGHT,xa,wy0,z0+0.34,xb,wy1,mid+wa);b.s(Tex.CASING_LIGHT,xa,wy0,mid+wb,xb,wy1,z1-0.34);
+            b.s(Tex.GLASS,0xC0FFFFFF,xa+0.04,wy0,mid+wa,xb-0.04,wy1,mid+wb);
+            b.d(Tex.CASING,Math.min(xo,xi)-0.01,wy0,mid-0.03,Math.max(xo,xi)+0.01,wy1,mid+0.03);b.d(Tex.CASING,Math.min(xo,xi)-0.01,(wy0+wy1)/2-0.03,mid+wa,Math.max(xo,xi)+0.01,(wy0+wy1)/2+0.03,mid+wb);
+            // coolant pump on the side with its pipe up into the wall
+            double px=side<0?x0-0.24:x1+0.02;
+            b.d(Tex.CASING,px,y0+0.2,0.35,px+0.22,y0+0.78,1.65);b.d(Tex.VENT,side<0?px-0.005:px+0.22,y0+0.3,0.45,side<0?px:px+0.225,y0+0.7,1.55);
+            b.pipeY(side*1.62,1.0,0.07,y0+0.78,1.55,true);b.pipeX(1.55,1.0,0.07,Math.min(side*1.62,side*1.5),Math.max(side*1.62,side*1.5),true);
+            valve(b,side*1.62,0.2,1.0);
         }
-        b.s(Tex.CASING,x0+0.36,y0+0.22,z1-t,x1-0.36,w0,z1-0.02);b.s(Tex.CASING,x0+0.36,w1,z1-t,x1-0.36,y1-0.25,z1-0.02);
-        b.s(Tex.CASING,x0+0.36,w0,z1-t,wa,w1,z1-0.02);b.s(Tex.CASING,wb,w0,z1-t,x1-0.36,w1,z1-0.02);
-        b.s(Tex.GLASS,0xC0FFFFFF,wa,w0,z1-t+0.04,wb,w1,z1-0.06);
-        // inside: fuel rod cage over the coolant pool (the glow of the rods is drawn by the renderer)
-        b.d(Tex.CASING_DARK,-0.62,-0.78,0.38,0.62,-0.7,1.62);
-        for(double sx:new double[]{-0.6,0.54})for(double sz:new double[]{0.4,1.54})b.d(Tex.CASING_DARK,sx,-0.7,sz,sx+0.06,1.6,sz+0.06);
+        b.s(Tex.CASING_LIGHT,x0+0.34,y0+0.2,z1-t,x1-0.34,wy0,z1-0.02);b.s(Tex.CASING_LIGHT,x0+0.34,wy1,z1-t,x1-0.34,y1-0.25,z1-0.02);
+        b.s(Tex.CASING_LIGHT,x0+0.34,wy0,z1-t,wa,wy1,z1-0.02);b.s(Tex.CASING_LIGHT,wb,wy0,z1-t,x1-0.34,wy1,z1-0.02);
+        b.s(Tex.GLASS,0xC0FFFFFF,wa,wy0,z1-t+0.04,wb,wy1,z1-0.06);
+        b.d(Tex.CASING,-0.03,wy0,z1-0.02,0.03,wy1,z1+0.01);b.d(Tex.CASING,wa,(wy0+wy1)/2-0.03,z1-0.02,wb,(wy0+wy1)/2+0.03,z1+0.01);
+        // front: controller panel between two hatches, radiation warning, status strip (lit by the renderer)
+        b.d(Tex.FRONT,-0.34,0.12,z0,0.34,0.86,z0+0.02);
+        b.d(Tex.PANEL,-1.08,-0.3,z0,-0.5,0.95,z0+0.02);b.d(Tex.PANEL,0.5,-0.3,z0,1.08,0.95,z0+0.02);
+        b.d(Tex.HAZARD,-0.3,1.0,z0-0.005,0.3,1.3,z0+0.02);
+        b.d(Tex.CASING_DARK,-1.1,1.42,z0-0.02,1.1,1.52,z0+0.02);
+        // inside: coolant pool and the rod grid frame (rods glow, control rods move in the renderer)
+        b.d(Tex.CASING_DARK,-0.62,-0.8,0.38,0.62,-0.72,1.62);
+        for(double sx:new double[]{-0.6,0.54})for(double sz:new double[]{0.4,1.54})b.d(Tex.CASING_DARK,sx,-0.72,sz,sx+0.06,1.6,sz+0.06);
         b.d(Tex.CASING_DARK,-0.62,1.55,0.38,0.62,1.62,1.62);
-        // roof: slab, stepped dome, steam stacks and the coolant pipes down the back
-        b.s(Tex.CASING,0xFFD8D8D8,x0,y1-0.25,z0,x1,y1,z1);
-        b.d(Tex.CASING,-0.95,y1,0.05,0.95,y1+0.14,1.95);b.d(Tex.CASING,GREY,-0.72,y1+0.14,0.28,0.72,y1+0.28,1.72);b.d(Tex.CASING_DARK,-0.42,y1+0.28,0.58,0.42,y1+0.38,1.42);
-        b.d(Tex.HAZARD,-0.955,y1+0.02,0.045,0.955,y1+0.08,1.955);
-        b.pipeY(-1.15,0.15,0.16,y1,y1+0.75,false);b.d(Tex.CASING_DARK,-1.35,y1+0.75,-0.05,-0.95,y1+0.82,0.35);
-        b.pipeY(1.15,1.85,0.16,y1,y1+0.75,false);b.d(Tex.CASING_DARK,0.95,y1+0.75,1.65,1.35,y1+0.82,2.05);
-        b.pipeY(-0.7,z1+0.06,0.06,y0+0.22,y1,false);b.pipeY(0.7,z1+0.06,0.06,y0+0.22,y1,false);
+        // roof: slab, containment dome (stepped octagon), steam lines with valves down the back
+        b.s(Tex.CASING_LIGHT,x0,y1-0.25,z0,x1,y1,z1);
+        b.d(Tex.CASING,x0-0.02,y1-0.05,z0-0.02,x1+0.02,y1,z1+0.02);
+        double[] dr={1.15,1.02,0.86,0.66,0.42};
+        for(int k=0;k<dr.length;k++){double y=y1+k*0.13,r=dr[k];b.d(Tex.CASING_LIGHT,-r,y,mid-r*0.7,r,y+0.13,mid+r*0.7);b.d(Tex.CASING_LIGHT,-r*0.7,y,mid-r,r*0.7,y+0.13,mid+r);}
+        b.d(Tex.CASING,-0.12,y1+0.65,mid-0.12,0.12,y1+0.75,mid+0.12);
+        for(int side=-1;side<=1;side+=2){
+            b.pipeX(y1+0.18,mid,0.08,Math.min(side*1.1,side*1.62),Math.max(side*1.1,side*1.62),true);
+            b.pipeY(side*1.62,mid,0.08,y1-0.6,y1+0.26,true);
+        }
+        b.pipeY(-0.7,z1+0.08,0.08,y0+0.2,y1,true);b.pipeY(0.7,z1+0.08,0.08,y0+0.2,y1,true);
+        b.pipeX(y1+0.08,z1+0.08,0.08,-0.7,0.7,true);valve(b,0,y1+0.08,z1+0.08);
+        b.pipeY(-1.15,0.15,0.15,y1,y1+0.8,true);b.d(Tex.CASING,-1.33,y1+0.8,-0.03,-0.97,y1+0.86,0.33);
+        b.pipeY(1.15,1.85,0.15,y1,y1+0.8,true);b.d(Tex.CASING,0.97,y1+0.8,1.67,1.33,y1+0.86,2.03);
     }
 
     private static void fusion(B b){
@@ -224,9 +266,17 @@ public final class PlantModel {
         Map<BlockPos,VoxelShape> map=new HashMap<>();
         for(var box:boxes){
             if(!box.solid())continue;
+            double fx0=box.x0(),fz0=box.z0(),fx1=box.x1(),fz1=box.z1();
+            if(box.rotY()!=0){
+                // bounds of the turned footprint (same turn as the renderer: around +Y through (px,pz))
+                double a=Math.toRadians(box.rotY()),c=Math.cos(a),sn=Math.sin(a);fx0=fz0=Double.MAX_VALUE;fx1=fz1=-Double.MAX_VALUE;
+                for(double cx:new double[]{box.x0(),box.x1()})for(double cz:new double[]{box.z0(),box.z1()}){
+                    double dx=cx-box.px(),dz=cz-box.pz(),rx=box.px()+dx*c+dz*sn,rz=box.pz()-dx*sn+dz*c;
+                    fx0=Math.min(fx0,rx);fx1=Math.max(fx1,rx);fz0=Math.min(fz0,rz);fz1=Math.max(fz1,rz);}
+            }
             // two corners in world space (exact: the frame axes are world axes)
-            double ax=origin.getX()+0.5+right.getStepX()*box.x0()+back.getStepX()*box.z0(),az=origin.getZ()+0.5+right.getStepZ()*box.x0()+back.getStepZ()*box.z0();
-            double bx=origin.getX()+0.5+right.getStepX()*box.x1()+back.getStepX()*box.z1(),bz=origin.getZ()+0.5+right.getStepZ()*box.x1()+back.getStepZ()*box.z1();
+            double ax=origin.getX()+0.5+right.getStepX()*fx0+back.getStepX()*fz0,az=origin.getZ()+0.5+right.getStepZ()*fx0+back.getStepZ()*fz0;
+            double bx=origin.getX()+0.5+right.getStepX()*fx1+back.getStepX()*fz1,bz=origin.getZ()+0.5+right.getStepZ()*fx1+back.getStepZ()*fz1;
             double minX=Math.min(ax,bx),maxX=Math.max(ax,bx),minZ=Math.min(az,bz),maxZ=Math.max(az,bz),minY=origin.getY()+box.y0(),maxY=origin.getY()+box.y1();
             for(int x=(int)Math.floor(minX);x<Math.ceil(maxX);x++)for(int y=(int)Math.floor(minY);y<Math.ceil(maxY);y++)for(int z=(int)Math.floor(minZ);z<Math.ceil(maxZ);z++){
                 double x0=Math.max(0,minX-x),x1=Math.min(1,maxX-x),y0=Math.max(0,minY-y),y1=Math.min(1,maxY-y),z0=Math.max(0,minZ-z),z1=Math.min(1,maxZ-z);

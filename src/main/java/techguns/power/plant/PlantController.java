@@ -34,6 +34,8 @@ public abstract class PlantController extends EnergySource {
     public int rate,problem;
     private final List<BlockPos> outletPos=new ArrayList<>();private final List<Direction> outletSide=new ArrayList<>();
     private final int output;
+    /** Invisible collision blocks this plant put into the air around (and inside) it, see placeShells. */
+    private final List<BlockPos> shells=new ArrayList<>();
     protected PlantController(BlockEntityType<?> type,PlantKind kind,BlockPos pos,BlockState state,int capacity,int output){super(type,pos,state,capacity,output);this.kind=kind;this.output=output;}
 
     private java.util.List<PlantModel.Box> model;private int modelKey=Integer.MIN_VALUE;private volatile Map<BlockPos,net.minecraft.world.phys.shapes.VoxelShape> shapes;
@@ -69,7 +71,7 @@ public abstract class PlantController extends EnergySource {
     public record Need(Predicate<BlockState> test,Block shown){}
     protected static Need part(Block block){return new Need(s->s.is(block),block);}
     protected static Need either(Block a,Block b){return new Need(s->s.is(a)||s.is(b),a);}
-    protected static final Need AIR=new Need(BlockState::isAir,null);
+    protected static final Need AIR=new Need(s->s.isAir()||s.is(PlantBlocks.SHELL.get()),null);
     /** Every position of the plant except the controller itself. */
     protected abstract Map<BlockPos,Need> structure();
     /** Kind specific work every tick while formed. */
@@ -90,11 +92,29 @@ public abstract class PlantController extends EnergySource {
         if(formed||level==null||!invalid().isEmpty())return false;
         for(var e:structure().entrySet()){if(e.getValue().shown()==null)continue;var pos=e.getKey();var state=level.getBlockState(pos);
             level.setBlock(pos,state.setValue(PlantPartBlock.FORMED,true),3);if(level.getBlockEntity(pos) instanceof PlantPartEntity p)p.setMaster(worldPosition);}
-        formed=true;level.setBlock(worldPosition,getBlockState().setValue(PlantControllerBlock.FORMED,true),3);onFormed();findOutlets();sync();setChanged();return true;
+        formed=true;level.setBlock(worldPosition,getBlockState().setValue(PlantControllerBlock.FORMED,true),3);onFormed();placeShells();findOutlets();sync();setChanged();return true;
     }
     protected void onFormed(){}
+    /** Fills the air cells the model reaches into with invisible shell blocks, so every part of the model collides. */
+    private void placeShells(){
+        shells.clear();
+        var parts=new java.util.HashSet<BlockPos>();for(var e:structure().entrySet())if(e.getValue().shown()!=null)parts.add(e.getKey());
+        var cells=PlantModel.shapes(worldPosition,facing(),model());
+        for(var pos:cells.keySet()){
+            if(pos.equals(worldPosition)||parts.contains(pos)||!level.isLoaded(pos)||!level.getBlockState(pos).isAir())continue;
+            level.setBlock(pos,PlantBlocks.SHELL.get().defaultBlockState().setValue(PlantPartBlock.FORMED,true),3);
+            if(level.getBlockEntity(pos) instanceof PlantPartEntity part)part.setMaster(worldPosition);
+            shells.add(pos.immutable());
+        }
+    }
+    private void removeShells(){
+        if(level==null||level.isClientSide)return;
+        var list=new ArrayList<>(shells);shells.clear();
+        for(var pos:list)if(level.getBlockState(pos).is(PlantBlocks.SHELL.get()))level.setBlock(pos,net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),3);
+    }
     public void unform(){
         if(!formed||level==null)return;formed=false;rate=0;
+        removeShells();
         for(var e:structure().entrySet()){if(e.getValue().shown()==null)continue;var pos=e.getKey();var state=level.getBlockState(pos);
             if(state.hasProperty(PlantPartBlock.FORMED)&&state.getValue(PlantPartBlock.FORMED)){level.setBlock(pos,state.setValue(PlantPartBlock.FORMED,false),3);if(level.getBlockEntity(pos) instanceof PlantPartEntity p)p.setMaster(null);}}
         if(level.getBlockState(worldPosition).getBlock() instanceof PlantControllerBlock)level.setBlock(worldPosition,getBlockState().setValue(PlantControllerBlock.FORMED,false).setValue(PlantControllerBlock.LIT,false),3);
@@ -137,7 +157,7 @@ public abstract class PlantController extends EnergySource {
     /** Neighbours outside the plant that take energy. */
     private void findOutlets(){
         outletPos.clear();outletSide.clear();if(level==null)return;
-        var inside=new java.util.HashSet<BlockPos>(structure().keySet());inside.add(worldPosition);
+        var inside=new java.util.HashSet<BlockPos>(structure().keySet());inside.add(worldPosition);inside.addAll(shells);
         for(var pos:inside)for(var side:Direction.values()){
             var n=pos.relative(side);if(inside.contains(n))continue;var be=level.getBlockEntity(n);if(be==null||be instanceof PlantPartEntity)continue;
             if(be instanceof EnergySource s&&!(s instanceof techguns.power.EnergyCableEntity)&&!(s instanceof techguns.power.EnergyCellEntity))continue;
@@ -159,6 +179,6 @@ public abstract class PlantController extends EnergySource {
     public net.minecraftforge.items.ItemStackHandler slots(){return null;}
 
     @Override public AABB getRenderBoundingBox(){return new AABB(worldPosition).inflate(8,12,8);}
-    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.putBoolean("Formed",formed);tag.putInt("Rate",rate);tag.putInt("Problem",problem);}
-    @Override public void load(CompoundTag tag){super.load(tag);formed=tag.getBoolean("Formed");rate=tag.getInt("Rate");problem=tag.getInt("Problem");}
+    @Override protected void saveAdditional(CompoundTag tag){super.saveAdditional(tag);tag.putLongArray("Shells",shells.stream().mapToLong(BlockPos::asLong).toArray());tag.putBoolean("Formed",formed);tag.putInt("Rate",rate);tag.putInt("Problem",problem);}
+    @Override public void load(CompoundTag tag){super.load(tag);shells.clear();for(long l:tag.getLongArray("Shells"))shells.add(BlockPos.of(l));formed=tag.getBoolean("Formed");rate=tag.getInt("Rate");problem=tag.getInt("Problem");}
 }
