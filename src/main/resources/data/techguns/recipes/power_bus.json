@@ -2,19 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PIP",
-    "HHH",
+    "PSP",
+    "WWW",
     "PIP"
   ],
   "key": {
     "P": {
       "tag": "forge:plates/steel"
     },
+    "S": {
+      "tag": "forge:sheets/plastic"
+    },
     "I": {
       "tag": "forge:ingots/copper"
     },
-    "H": {
-      "item": "techguns:heavy_cable"
+    "W": {
+      "item": "techguns:wire_coil_high_voltage"
     }
   },
   "result": {

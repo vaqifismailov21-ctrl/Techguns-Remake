@@ -13,7 +13,10 @@ public class EnergyCableEntity extends EnergySource {
     private final int transfer;
     public EnergyCableEntity(BlockPos pos,BlockState state){this(PowerBlocks.ENERGY_CABLE_ENTITY.get(),pos,state,state.getBlock() instanceof EnergyCableBlock b?b.transfer:PowerBlocks.CABLE_TRANSFER);}
     public EnergyCableEntity(net.minecraft.world.level.block.entity.BlockEntityType<?> type,BlockPos pos,BlockState state,int transfer){super(type,pos,state,transfer,transfer);this.transfer=transfer;}
-    @Override protected boolean takes(Direction side){return true;}
+    /** Energy goes in and out only on sides the cable is joined on. */
+    private boolean joined(Direction side){var state=getBlockState();return side==null||!state.hasProperty(EnergyCableBlock.SIDES.get(side))||state.getValue(EnergyCableBlock.SIDES.get(side));}
+    @Override protected boolean takes(Direction side){return joined(side);}
+    @Override protected boolean gives(Direction side){return joined(side);}
     public int transfer(){return transfer;}
     private int inflow,inflowNow;
     @Override protected void received(int amount){inflowNow+=amount;}
@@ -40,6 +43,7 @@ public class EnergyCableEntity extends EnergySource {
         if(level==null||energy.getEnergyStored()<=0)return;
         for(var side:Direction.values()){
             int stored=energy.getEnergyStored();if(stored<=0)break;
+            if(!joined(side))continue;
             var other=level.getBlockEntity(worldPosition.relative(side));if(other==null)continue;
             if(other instanceof EnergyCableEntity cable){
                 if(cable.transfer<transfer&&overloads(cable,inflow))continue;

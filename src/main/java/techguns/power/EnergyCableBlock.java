@@ -29,11 +29,13 @@ public final class EnergyCableBlock extends BaseEntityBlock {
     private final Map<BlockState,VoxelShape> shapes=new java.util.concurrent.ConcurrentHashMap<>();
     /** FE per tick one piece passes on, and the entity type of its block entity. */
     public final int transfer;
-    public EnergyCableBlock(){this(PowerBlocks.CABLE_TRANSFER,3,2,0.8f);}
+    /** High-voltage duct: joins only other ducts and high-voltage equipment (transformers, power plants, energy cells, high-voltage insulators). */
+    public final boolean highVoltage;
+    public EnergyCableBlock(){this(PowerBlocks.CABLE_TRANSFER,3,2,0.8f,false);}
     /** core and arm are half-widths in pixels. */
-    public EnergyCableBlock(int transfer,double core,double arm,float strength){
+    public EnergyCableBlock(int transfer,double core,double arm,float strength,boolean highVoltage){
         super(Properties.of().strength(strength,strength*4).sound(SoundType.METAL).noOcclusion());
-        this.transfer=transfer;
+        this.transfer=transfer;this.highVoltage=highVoltage;
         double c0=8-core,c1=8+core,a0=8-arm,a1=8+arm;
         CORE=Block.box(c0,c0,c0,c1,c1,c1);
         ARMS=Map.of(Direction.NORTH,Block.box(a0,a0,0,a1,a1,c0),Direction.SOUTH,Block.box(a0,a0,c1,a1,a1,16),Direction.WEST,Block.box(0,a0,a0,c0,a1,a1),
@@ -42,8 +44,12 @@ public final class EnergyCableBlock extends BaseEntityBlock {
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){SIDES.values().forEach(builder::add);}
     public boolean connects(BlockGetter level,BlockPos pos,Direction side){
-        var other=pos.relative(side);if(level.getBlockState(other).is(this))return true;
+        var other=pos.relative(side);var otherState=level.getBlockState(other);
+        if(otherState.getBlock() instanceof EnergyCableBlock cable)return cable.highVoltage==highVoltage;
         var entity=level.getBlockEntity(other);
+        if(highVoltage&&!(entity instanceof techguns.power.wire.TransformerEntity||entity instanceof techguns.power.plant.PlantController
+                ||entity instanceof techguns.power.plant.PlantPartEntity||entity instanceof EnergyCellEntity
+                ||entity instanceof techguns.power.wire.ConnectorEntity&&otherState.is(techguns.power.wire.WireBlocks.CONNECTOR_HV.get())))return false;
         return entity!=null&&entity.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).map(h->h.canExtract()||h.canReceive()).orElse(false);
     }
     private BlockState connected(BlockState state,BlockGetter level,BlockPos pos){for(var e:SIDES.entrySet())state=state.setValue(e.getValue(),connects(level,pos,e.getKey()));return state;}

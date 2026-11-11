@@ -38,7 +38,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The $(item)transformer$() stores 20,000,000 FE. The front bushing takes copper and steel wire (up to 16,384 FE/t), the top one high-voltage wire (up to 131,072 FE/t). At the front it gives up to 524,288 FE/t: an energy or heavy cable there burns out, use a $(item)power bus duct$() and takes it on the other sides except the top. Power only flows to emptier stores."
+      "text": "The $(item)transformer$() stores 20,000,000 FE. The front bushing takes copper and steel wire (up to 16,384 FE/t), the top one high-voltage wire (up to 131,072 FE/t). At the front it steps power down: a $(item)bus duct$() gets up to 524,288 FE/t, cables and machines what they carry and takes it on the other sides except the top. Power only flows to emptier stores."
     },
     {
       "type": "patchouli:crafting",

@@ -26,6 +26,8 @@ public abstract class EnergySource extends BlockEntity {
     /** Side that takes energy from outside. */
     protected boolean takes(Direction side){return false;}
     protected int inputLimit(){return 0;}
+    /** False for blocks that step energy down (transformers): they give each cable no more than it carries. */
+    protected boolean overloadsCables(){return true;}
     /** Called with the energy taken in through a side. */
     protected void received(int amount){}
     public int energyStored(){return energy.getEnergyStored();}
@@ -38,6 +40,7 @@ public abstract class EnergySource extends BlockEntity {
             if(budget<=0)break;if(!gives(side))continue;var neighbour=level.getBlockEntity(worldPosition.relative(side));if(neighbour==null)continue;
             if(neighbour instanceof EnergySource source&&!source.takes(side.getOpposite()))continue;
             var target=neighbour.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).resolve();if(target.isEmpty()||!target.get().canReceive())continue;
+            if(neighbour instanceof EnergyCableEntity cable&&!overloadsCables()){int given=target.get().receiveEnergy(Math.min(budget,cable.transfer()),false);if(given>0){energy.extractEnergy(given,false);budget-=given;setChanged();}continue;}
             if(EnergyCableEntity.overloads(neighbour,budget))continue;
             int given=target.get().receiveEnergy(budget,false);if(given>0){energy.extractEnergy(given,false);budget-=given;setChanged();}
         }

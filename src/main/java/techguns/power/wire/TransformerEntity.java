@@ -13,6 +13,7 @@ public final class TransformerEntity extends EnergySource {
     private Direction front(){return getBlockState().getValue(TransformerBlock.FACING);}
     @Override protected boolean gives(Direction side){return side==null||side==front();}
     @Override protected boolean takes(Direction side){return side==null||side!=front()&&side!=Direction.UP;}
+    @Override protected boolean overloadsCables(){return false;}
     @Override protected int inputLimit(){return TransformerBlock.RATE;}
     public float fill(){return energy.getEnergyStored()/(float)energy.getMaxEnergyStored();}
     private final IEnergyStorage wireIn=new IEnergyStorage(){
