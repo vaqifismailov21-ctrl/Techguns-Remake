@@ -50,6 +50,10 @@ public final class PowerBlocks {
     public static final RegistryObject<Block> NUCLEAR_GENERATOR=block("nuclear_generator",NuclearGeneratorBlock::new);
     public static final RegistryObject<Block> WIND_TURBINE=block("wind_turbine",WindTurbineBlock::new);
     public static final RegistryObject<Block> ENERGY_CABLE=block("energy_cable",EnergyCableBlock::new);
+    /** Thick armoured cable and the bus duct: the same cable logic, for the big flows out of transformers and power plants. */
+    public static final int HEAVY_CABLE_TRANSFER=65_536,POWER_BUS_TRANSFER=524_288;
+    public static final RegistryObject<Block> HEAVY_CABLE=block("heavy_cable",()->new EnergyCableBlock(HEAVY_CABLE_TRANSFER,4,3,2f));
+    public static final RegistryObject<Block> POWER_BUS=block("power_bus",()->new EnergyCableBlock(POWER_BUS_TRANSFER,6,5,4f));
     public static final RegistryObject<Block> FLOODLIGHT=block("floodlight",FloodlightBlock::new);
     public static final RegistryObject<Block> FLOODLIGHT_LIGHT=block("floodlight_light",FloodlightLightBlock::new);
 
@@ -64,6 +68,8 @@ public final class PowerBlocks {
     public static final RegistryObject<Item> ENERGY_CELL_ITEM=TGItems.ITEMS.register("energy_cell",()->new EnergyCellItem(ENERGY_CELL.get(),CELL_CAPACITY));
     public static final RegistryObject<Item> ENERGY_BANK_ITEM=TGItems.ITEMS.register("energy_bank",()->new EnergyCellItem(ENERGY_BANK.get(),BANK_CAPACITY));
     public static final RegistryObject<Item> ENERGY_CABLE_ITEM=TGItems.ITEMS.register("energy_cable",()->new PowerBlockItem(ENERGY_CABLE.get(),new Item.Properties(),false));
+    public static final RegistryObject<Item> HEAVY_CABLE_ITEM=TGItems.ITEMS.register("heavy_cable",()->new PowerBlockItem(HEAVY_CABLE.get(),new Item.Properties(),false));
+    public static final RegistryObject<Item> POWER_BUS_ITEM=TGItems.ITEMS.register("power_bus",()->new PowerBlockItem(POWER_BUS.get(),new Item.Properties(),false));
     public static final RegistryObject<Item> FLOODLIGHT_ITEM=item("floodlight",FLOODLIGHT);
 
     public static final RegistryObject<BlockEntityType<FuelGeneratorEntity>> FUEL_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("fuel_generator",()->BlockEntityType.Builder.of(FuelGeneratorEntity::new,FUEL_GENERATOR.get()).build(null));
@@ -73,7 +79,7 @@ public final class PowerBlocks {
     public static final RegistryObject<BlockEntityType<GeothermalGeneratorEntity>> GEOTHERMAL_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("geothermal_generator",()->BlockEntityType.Builder.of(GeothermalGeneratorEntity::new,GEOTHERMAL_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NuclearGeneratorEntity>> NUCLEAR_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("nuclear_generator",()->BlockEntityType.Builder.of(NuclearGeneratorEntity::new,NUCLEAR_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<WindTurbineEntity>> WIND_TURBINE_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("wind_turbine",()->BlockEntityType.Builder.of(WindTurbineEntity::new,WIND_TURBINE.get()).build(null));
-    public static final RegistryObject<BlockEntityType<EnergyCableEntity>> ENERGY_CABLE_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("energy_cable",()->BlockEntityType.Builder.of(EnergyCableEntity::new,ENERGY_CABLE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<EnergyCableEntity>> ENERGY_CABLE_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("energy_cable",()->BlockEntityType.Builder.of(EnergyCableEntity::new,ENERGY_CABLE.get(),HEAVY_CABLE.get(),POWER_BUS.get()).build(null));
     public static final RegistryObject<BlockEntityType<FloodlightEntity>> FLOODLIGHT_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("floodlight",()->BlockEntityType.Builder.of(FloodlightEntity::new,FLOODLIGHT.get()).build(null));
     public static final RegistryObject<net.minecraft.world.inventory.MenuType<GeneratorMenu>> GENERATOR_MENU=TGMenuTypes.MENUS.register("generator",()->IForgeMenuType.create(GeneratorMenu::new));
 
@@ -81,7 +87,7 @@ public final class PowerBlocks {
     public static java.util.List<RegistryObject<Item>> tabItems(){
         // the single wind turbine, geothermal and nuclear generators are replaced by the multiblock plants; the old blocks stay for existing worlds
         var list=new java.util.ArrayList<RegistryObject<Item>>(java.util.List.of(FUEL_GENERATOR_ITEM,LIQUID_GENERATOR_ITEM,SOLAR_PANEL_ITEM,
-                SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,FLOODLIGHT_ITEM));
+                SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,HEAVY_CABLE_ITEM,POWER_BUS_ITEM,FLOODLIGHT_ITEM));
         list.addAll(2,techguns.power.plant.PlantBlocks.tabItems());list.addAll(list.indexOf(ENERGY_CABLE_ITEM)+1,techguns.power.wire.WireBlocks.tabItems());return list;
     }
 

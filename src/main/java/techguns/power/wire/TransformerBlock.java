@@ -41,7 +41,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 public final class TransformerBlock extends BaseEntityBlock implements WireHost {
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<DoubleBlockHalf> HALF=BlockStateProperties.DOUBLE_BLOCK_HALF;
-    public static final int CAPACITY=20_000_000,RATE=WireTier.HIGH_VOLTAGE.rate;
+    public static final int CAPACITY=20_000_000,RATE=524_288;
     private static final VoxelShape LOWER=Block.box(1,0,1,15,16,15),UPPER=Block.box(2,0,2,14,12,14);
     public TransformerBlock(){
         super(Properties.of().strength(5,20).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().pushReaction(PushReaction.BLOCK));

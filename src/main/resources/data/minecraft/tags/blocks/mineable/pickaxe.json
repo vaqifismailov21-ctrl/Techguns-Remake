@@ -100,6 +100,8 @@
     "techguns:wire_connector_steel",
     "techguns:wire_connector_high_voltage",
     "techguns:transformer",
-    "techguns:pylon"
+    "techguns:pylon",
+    "techguns:heavy_cable",
+    "techguns:power_bus"
   ]
 }

@@ -1,0 +1,139 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "core": "techguns:blocks/power_bus_core",
+    "arm": "techguns:blocks/power_bus_arm",
+    "particle": "techguns:blocks/power_bus_core"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        3,
+        0
+      ],
+      "to": [
+        13,
+        13,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            10,
+            10
+          ],
+          "texture": "#core"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            2,
+            13
+          ],
+          "texture": "#arm"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            2,
+            13
+          ],
+          "texture": "#arm"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            2,
+            13
+          ],
+          "texture": "#arm",
+          "rotation": 90
+        },
+        "down": {
+          "uv": [
+            0,
+            3,
+            2,
+            13
+          ],
+          "texture": "#arm",
+          "rotation": 90
+        }
+      }
+    },
+    {
+      "from": [
+        2.5,
+        2.5,
+        0
+      ],
+      "to": [
+        13.5,
+        13.5,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            11.0
+          ],
+          "texture": "#core"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            11.0
+          ],
+          "texture": "#core"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            11.0
+          ],
+          "texture": "#core"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            11.0
+          ],
+          "texture": "#core"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            1
+          ],
+          "texture": "#core"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            1
+          ],
+          "texture": "#core"
+        }
+      }
+    }
+  ]
+}

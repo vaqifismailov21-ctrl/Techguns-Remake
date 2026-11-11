@@ -1,0 +1,25 @@
+{
+  "name": "Heavy Cables",
+  "icon": "techguns:power_bus",
+  "category": "techguns:power",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "techguns:heavy_cable,techguns:power_bus",
+      "text": "The $(item)heavy power cable$() carries 65,536 FE/t, the $(item)power bus duct$() 524,288 FE/t, both lossless. They work like the energy cable: they join cables, machines and cells by themselves. Different cables join too, but the flow is limited by the thinnest piece."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Run a bus duct from the front of a $(item)transformer$() or from a power plant to big consumers and energy banks."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:heavy_cable"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:power_bus"
+    }
+  ]
+}

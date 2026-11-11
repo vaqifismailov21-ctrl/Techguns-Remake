@@ -24,13 +24,20 @@ public final class EnergyCableBlock extends BaseEntityBlock {
     /** Menus open from use() with the block position; the vanilla spectator path opened them without it and the client crashed. */
     @Override public net.minecraft.world.MenuProvider getMenuProvider(net.minecraft.world.level.block.state.BlockState state,net.minecraft.world.level.Level level,net.minecraft.core.BlockPos pos){return null;}
     public static final Map<Direction,BooleanProperty> SIDES=PipeBlock.PROPERTY_BY_DIRECTION;
-    private static final VoxelShape CORE=Block.box(5,5,5,11,11,11);
-    private static final Map<Direction,VoxelShape> ARMS=Map.of(
-            Direction.NORTH,Block.box(6,6,0,10,10,5),Direction.SOUTH,Block.box(6,6,11,10,10,16),Direction.WEST,Block.box(0,6,6,5,10,10),
-            Direction.EAST,Block.box(11,6,6,16,10,10),Direction.DOWN,Block.box(6,0,6,10,5,10),Direction.UP,Block.box(6,11,6,10,16,10));
+    private final VoxelShape CORE;
+    private final Map<Direction,VoxelShape> ARMS;
     private final Map<BlockState,VoxelShape> shapes=new java.util.concurrent.ConcurrentHashMap<>();
-    public EnergyCableBlock(){
-        super(Properties.of().strength(0.8f,3).sound(SoundType.METAL).noOcclusion());
+    /** FE per tick one piece passes on, and the entity type of its block entity. */
+    public final int transfer;
+    public EnergyCableBlock(){this(PowerBlocks.CABLE_TRANSFER,3,2,0.8f);}
+    /** core and arm are half-widths in pixels. */
+    public EnergyCableBlock(int transfer,double core,double arm,float strength){
+        super(Properties.of().strength(strength,strength*4).sound(SoundType.METAL).noOcclusion());
+        this.transfer=transfer;
+        double c0=8-core,c1=8+core,a0=8-arm,a1=8+arm;
+        CORE=Block.box(c0,c0,c0,c1,c1,c1);
+        ARMS=Map.of(Direction.NORTH,Block.box(a0,a0,0,a1,a1,c0),Direction.SOUTH,Block.box(a0,a0,c1,a1,a1,16),Direction.WEST,Block.box(0,a0,a0,c0,a1,a1),
+            Direction.EAST,Block.box(c1,a0,a0,16,a1,a1),Direction.DOWN,Block.box(a0,0,a0,a1,c0,a1),Direction.UP,Block.box(a0,c1,a0,a1,16,a1));
         var state=stateDefinition.any();for(var p:SIDES.values())state=state.setValue(p,false);registerDefaultState(state);
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){SIDES.values().forEach(builder::add);}
@@ -49,6 +56,6 @@ public final class EnergyCableBlock extends BaseEntityBlock {
         return shapes.computeIfAbsent(state,s->{var shape=CORE;for(var e:SIDES.entrySet())if(s.getValue(e.getValue()))shape=Shapes.or(shape,ARMS.get(e.getKey()));return shape;});
     }
     @Override public RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
-    @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new EnergyCableEntity(pos,state);}
+    @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new EnergyCableEntity(PowerBlocks.ENERGY_CABLE_ENTITY.get(),pos,state,transfer);}
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:PowerBlocks.ticker(level,type,PowerBlocks.ENERGY_CABLE_ENTITY.get(),EnergyCableEntity::tick);}
 }

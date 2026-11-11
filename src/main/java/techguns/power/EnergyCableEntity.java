@@ -9,10 +9,12 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
  * One piece of cable holds up to CABLE_TRANSFER FE. Every tick it evens out its charge with neighbouring cables and
  * gives the rest to the blocks around it that take energy. No losses.
  */
-public final class EnergyCableEntity extends EnergySource {
-    public EnergyCableEntity(BlockPos pos,BlockState state){super(PowerBlocks.ENERGY_CABLE_ENTITY.get(),pos,state,PowerBlocks.CABLE_TRANSFER,PowerBlocks.CABLE_TRANSFER);}
+public class EnergyCableEntity extends EnergySource {
+    private final int transfer;
+    public EnergyCableEntity(BlockPos pos,BlockState state){this(PowerBlocks.ENERGY_CABLE_ENTITY.get(),pos,state,state.getBlock() instanceof EnergyCableBlock b?b.transfer:PowerBlocks.CABLE_TRANSFER);}
+    public EnergyCableEntity(net.minecraft.world.level.block.entity.BlockEntityType<?> type,BlockPos pos,BlockState state,int transfer){super(type,pos,state,transfer,transfer);this.transfer=transfer;}
     @Override protected boolean takes(Direction side){return true;}
-    @Override protected int inputLimit(){return PowerBlocks.CABLE_TRANSFER;}
+    @Override protected int inputLimit(){return transfer;}
     public void tick(){
         if(level==null||energy.getEnergyStored()<=0)return;
         for(var side:Direction.values()){

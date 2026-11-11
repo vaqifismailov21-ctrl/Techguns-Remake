@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PIP",
+    "HHH",
+    "PIP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    },
+    "H": {
+      "item": "techguns:heavy_cable"
+    }
+  },
+  "result": {
+    "item": "techguns:power_bus",
+    "count": 3
+  }
+}
