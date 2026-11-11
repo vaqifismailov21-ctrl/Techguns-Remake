@@ -64,6 +64,11 @@ public final class PlantModel {
             ringZ(x,y,r,z0,z0+0.05);ringZ(x,y,r,z1-0.05,z1);
             for(double z=z0+0.3;z<z1-0.1;z+=0.75)d(Tex.CASING_DARK,x-r-0.025,y-r-0.025,z,x+r+0.025,y+r+0.025,z+0.06);
         }
+        /** Square ring of four walls (half size h, wall t) from y0 to y1: an open shaft. */
+        void hollow(Tex t,double x,double z,double h,double w,double y0,double y1){
+            d(t,x-h,y0,z-h,x+h,y1,z-h+w);d(t,x-h,y0,z+h-w,x+h,y1,z+h);
+            d(t,x-h,y0,z-h+w,x-h+w,y1,z+h-w);d(t,x+h-w,y0,z-h+w,x+h,y1,z+h-w);
+        }
         /** Flange ring around an open pipe end. */
         void ringY(double x,double z,double r,double y0,double y1){double o=r+0.03,i=r-0.004;
             d(Tex.CASING_DARK,x-o,y0,z-o,x+o,y1,z-i);d(Tex.CASING_DARK,x-o,y0,z+i,x+o,y1,z+o);
@@ -204,8 +209,10 @@ public final class PlantModel {
         b.pipeX(1.12,-0.36,0.07,-1.3,1.3,true);valve(b,-0.9,1.12,-0.36);valve(b,0.9,1.12,-0.36);
         // roof: cooling tower (stepped hyperboloid of concrete) and two fan housings (fans turn in the renderer)
         double cx=-0.55,cz=1.55;double[] r={0.82,0.72,0.64,0.58,0.55,0.56,0.6,0.66};
-        for(int k=0;k<r.length;k++){double y0=1.9+k*0.22;b.d(Tex.CONCRETE,W,cx-r[k],y0,cz-r[k],cx+r[k],y0+0.22,cz+r[k]);}
-        b.d(Tex.CASING,cx-0.7,1.9+r.length*0.22,cz-0.7,cx+0.7,1.95+r.length*0.22,cz+0.7);
+        // open at the top (steam comes out of it): every ring is four walls round a hollow core with a dark floor
+        for(int k=0;k<r.length;k++){double y0=1.9+k*0.22;b.hollow(Tex.CONCRETE,cx,cz,r[k],0.09,y0,y0+0.22);}
+        b.d(Tex.CASING_DARK,cx-0.72,1.92,cz-0.72,cx+0.72,1.94,cz+0.72);
+        double top=1.9+r.length*0.22;b.hollow(Tex.CASING,cx,cz,0.7,0.06,top,top+0.05);
         for(double fz:new double[]{0.95,1.95}){
             b.d(Tex.CASING,0.4,1.9,fz-0.42,0.45,2.14,fz+0.42);b.d(Tex.CASING,1.27,1.9,fz-0.42,1.32,2.14,fz+0.42);
             b.d(Tex.CASING,0.45,1.9,fz-0.42,1.27,2.14,fz-0.37);b.d(Tex.CASING,0.45,1.9,fz+0.37,1.27,2.14,fz+0.42);
