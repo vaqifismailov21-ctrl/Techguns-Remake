@@ -76,6 +76,8 @@ public final class ConnectorBlock extends BaseEntityBlock implements WireHost {
         if(!player.getItemInHand(hand).isEmpty())return InteractionResult.PASS;
         if(!level.isClientSide){
             int n=WireNetwork.get((ServerLevel)level).at(pos).size();
+            var behind=level.getBlockEntity(pos.relative(state.getValue(FACING).getOpposite()));
+            if(tier==WireTier.HIGH_VOLTAGE&&(!techguns.power.HighVoltage.equipment(behind)||behind instanceof ConnectorEntity)){player.displayClientMessage(Component.translatable("techguns.wire.hv_only").withStyle(net.minecraft.ChatFormatting.RED),true);return InteractionResult.SUCCESS;}
             player.displayClientMessage(Component.translatable("techguns.wire.connector.info",Component.translatable("techguns.wire."+tier.id),n,tier.rate),true);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);

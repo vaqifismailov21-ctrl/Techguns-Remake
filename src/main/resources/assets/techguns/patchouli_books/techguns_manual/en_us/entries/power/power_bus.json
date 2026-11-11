@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "techguns:power_bus",
-      "text": "The $(item)high-voltage bus duct$() carries 524,288 FE/t with no loss. It is the only thick block cable and it is for high voltage only: it joins other ducts, $(item)transformers$(), power plants, energy cells and high-voltage insulators. Ordinary cables and machines do not attach to it."
+      "text": "The $(item)high-voltage bus duct$() carries 524,288 FE/t with no loss. It is the only thick block cable and it is for high voltage only: it joins generators, power plants, $(item)transformers$(), other ducts and high-voltage insulators. Ordinary cables, machines and cells do not attach: high voltage only runs from a generator to a transformer."
     },
     {
       "type": "patchouli:text",

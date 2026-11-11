@@ -1604,13 +1604,13 @@
   "techguns.wire.transformer.info": "Transformer: %s / %s FE",
   "block.techguns.power_bus": "High-Voltage Bus Duct",
   "techguns.power.tooltip.power_bus": "Carries up to 524,288 FE/t",
-  "techguns.power.jei.power_bus": "High-voltage duct of copper bus bars, up to 524,288 FE/t with no loss. Joins only high-voltage equipment: transformers, power plants, energy cells and high-voltage insulators. Feed machines through a transformer.",
+  "techguns.power.jei.power_bus": "High-voltage duct of copper bus bars, up to 524,288 FE/t with no loss. Joins only generators, power plants, transformers and high-voltage insulators. Feed machines through a transformer.",
   "techguns.power.jei.wire_coil_copper": "Copper wire: 2,048 FE/t, up to 16 blocks. Use it on one insulator, then on another.",
   "techguns.power.jei.wire_coil_steel": "Steel wire: 16,384 FE/t, up to 24 blocks. Also hangs on power pylons.",
   "techguns.power.jei.wire_coil_high_voltage": "High-voltage wire: 131,072 FE/t, up to 48 blocks, almost lossless. Only on high-voltage insulators, the transformer top and pylons.",
   "techguns.power.jei.wire_connector_copper": "Insulator for copper wire. Place it on a machine, cable or cell.",
   "techguns.power.jei.wire_connector_steel": "Insulator for copper and steel wire.",
-  "techguns.power.jei.wire_connector_high_voltage": "Insulator for high-voltage wire.",
+  "techguns.power.jei.wire_connector_high_voltage": "Insulator for high-voltage wire. Works only on a generator, power plant, transformer or bus duct; high voltage never goes to machines.",
   "techguns.power.jei.transformer": "Stores 20,000,000 FE and steps power down: at the front it gives a bus duct up to 524,288 FE/t, cables and machines what they carry, takes from the sides, back and bottom. Front bushing: copper and steel wire; top: high-voltage.",
   "techguns.power.jei.pylon": "An 8-block power pylon with four points for steel and high-voltage wire.",
   "techguns.power.jei.wind_plant": "Wind farm controller. Build the tower, hub and blades as shown in the book, then use the controller.",
@@ -1622,5 +1622,6 @@
   "techguns.power.jei.turbine_tower": "Wind turbine tower section.",
   "techguns.power.jei.rotor_hub": "Rotor hub: use a blade on it to fit the blade.",
   "techguns.power.jei.turbine_blade": "Wind turbine blade, fitted to the hub.",
-  "techguns.power.jei.fusion_coil": "Fusion reactor magnet coil."
+  "techguns.power.jei.fusion_coil": "Fusion reactor magnet coil.",
+  "techguns.wire.hv_only": "A high-voltage insulator only works on a generator, power plant, transformer or bus duct"
 }

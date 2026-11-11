@@ -22,11 +22,16 @@ public final class ConnectorEntity extends BlockEntity {
     public ConnectorEntity(BlockPos pos,BlockState state){super(WireBlocks.CONNECTOR_ENTITY.get(),pos,state);}
     private Direction back(){return getBlockState().getValue(ConnectorBlock.FACING).getOpposite();}
     private long now(){return level==null?0:level.getGameTime();}
+    /** A high-voltage insulator works only on generators, power plants, transformers and bus ducts, never on machines. */
+    private boolean allowed(BlockEntity behind){
+        return !(getBlockState().getBlock() instanceof ConnectorBlock c&&c.tier==WireTier.HIGH_VOLTAGE)||techguns.power.HighVoltage.equipment(behind)&&!(behind instanceof ConnectorEntity);
+    }
 
     /** What the block behind gives to the connector. */
     private final IEnergyStorage in=new IEnergyStorage(){
         @Override public int receiveEnergy(int max,boolean simulate){
             if(!(level instanceof ServerLevel server)||now()-lastOut<HOLD)return 0;
+            if(!allowed(level.getBlockEntity(worldPosition.relative(back()))))return 0;
             int sent=WireNetwork.get(server).route(server,new WireNode(worldPosition,0),max,simulate,-1);
             if(sent>0&&!simulate)lastIn=now();
             return sent;
@@ -41,7 +46,7 @@ public final class ConnectorEntity extends BlockEntity {
     private final IEnergyStorage out=new IEnergyStorage(){
         @Override public int receiveEnergy(int max,boolean simulate){
             if(level==null||now()-lastIn<HOLD)return 0;
-            var behind=level.getBlockEntity(worldPosition.relative(back()));if(behind==null)return 0;
+            var behind=level.getBlockEntity(worldPosition.relative(back()));if(behind==null||!allowed(behind))return 0;
             if(!simulate&&techguns.power.EnergyCableEntity.overloads(behind,max))return 0;
             var target=behind.getCapability(ForgeCapabilities.ENERGY,back().getOpposite()).resolve();
             if(target.isEmpty()||!target.get().canReceive())return 0;
@@ -51,7 +56,7 @@ public final class ConnectorEntity extends BlockEntity {
         @Override public int getEnergyStored(){return 0;}
         @Override public int getMaxEnergyStored(){return 0;}
         @Override public boolean canExtract(){return false;}
-        @Override public boolean canReceive(){return level!=null&&now()-lastIn>=HOLD;}
+        @Override public boolean canReceive(){return level!=null&&now()-lastIn>=HOLD&&allowed(level.getBlockEntity(worldPosition.relative(back())));}
     };
     IEnergyStorage output(){return out;}
     @Override public <T> LazyOptional<T> getCapability(Capability<T> cap,Direction side){

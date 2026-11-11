@@ -29,7 +29,7 @@ public final class EnergyCableBlock extends BaseEntityBlock {
     private final Map<BlockState,VoxelShape> shapes=new java.util.concurrent.ConcurrentHashMap<>();
     /** FE per tick one piece passes on, and the entity type of its block entity. */
     public final int transfer;
-    /** High-voltage duct: joins only other ducts and high-voltage equipment (transformers, power plants, energy cells, high-voltage insulators). */
+    /** High-voltage duct: joins only other ducts and high-voltage equipment (generators, power plants, transformers, high-voltage insulators). */
     public final boolean highVoltage;
     public EnergyCableBlock(){this(PowerBlocks.CABLE_TRANSFER,3,2,0.8f,false);}
     /** core and arm are half-widths in pixels. */
@@ -47,9 +47,7 @@ public final class EnergyCableBlock extends BaseEntityBlock {
         var other=pos.relative(side);var otherState=level.getBlockState(other);
         if(otherState.getBlock() instanceof EnergyCableBlock cable)return cable.highVoltage==highVoltage;
         var entity=level.getBlockEntity(other);
-        if(highVoltage&&!(entity instanceof techguns.power.wire.TransformerEntity||entity instanceof techguns.power.plant.PlantController
-                ||entity instanceof techguns.power.plant.PlantPartEntity||entity instanceof EnergyCellEntity
-                ||entity instanceof techguns.power.wire.ConnectorEntity&&otherState.is(techguns.power.wire.WireBlocks.CONNECTOR_HV.get())))return false;
+        if(highVoltage&&!HighVoltage.equipment(entity))return false;
         return entity!=null&&entity.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).map(h->h.canExtract()||h.canReceive()).orElse(false);
     }
     private BlockState connected(BlockState state,BlockGetter level,BlockPos pos){for(var e:SIDES.entrySet())state=state.setValue(e.getValue(),connects(level,pos,e.getKey()));return state;}
