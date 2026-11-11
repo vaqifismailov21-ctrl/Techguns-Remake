@@ -62,7 +62,8 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             for(int i=0;i<4;i++){
                 float px=f[i*3],py=f[i*3+1],pz=f[i*3+2];
                 float u=nx!=0?pz:px,v=ny!=0?pz:py;
-                if(fit){u=nx!=0?(pz-z0)/(z1-z0):(px-x0)/(x1-x0);v=ny!=0?(pz-z0)/(z1-z0):1-(py-y0)/(y1-y0);if(nx<0||nz>0)u=1-u;}
+                if(fit||faceRects!=null){u=nx!=0?(pz-z0)/(z1-z0):(px-x0)/(x1-x0);v=ny!=0?(pz-z0)/(z1-z0):1-(py-y0)/(y1-y0);if(nx<0||nz>0)u=1-u;
+                    if(faceRects!=null){var fr=faceRects[fi];u=fr[0]+u*(fr[2]-fr[0]);v=fr[1]+v*(fr[3]-fr[1]);}}
                 else{u=nx!=0?pz+uvShift:px+uvShift;v=ny!=0?pz+uvShift:py;u=nx<0||nz>0?-u:u;v=-v;}
                 vc.vertex(m,px,py,pz).color(r,g,b,a).uv(u,v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(n,nx,ny,nz).endVertex();
             }
@@ -94,6 +95,18 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             pose.popPose();pose.popPose();return;
         }
         var model=plant.model();uvShift=plant.kind==PlantKind.WIND?0:0.5F;
+        var atlas=PlantAtlas.get(plant.kind);
+        if(atlas!=null&&atlas.count()==model.size()){
+            // the painted atlas: one texture, every face its own place in it
+            var vc=buffers.getBuffer(RenderType.entityCutout(atlas.texture()));
+            for(int i=0;i<model.size();i++){var b=model.get(i);if(b.tex()==Tex.NONE||b.tex().translucent()||atlas.rects()[i]==null)continue;faceRects=atlas.rects()[i];draw(plant,pose,vc,b,light,ALL,i);}
+            faceRects=null;
+            parts(plant,pose,buffers,light,a[0],time);
+            VertexConsumer glass=null;
+            for(int i=0;i<model.size();i++){var b=model.get(i);if(!b.tex().translucent()||atlas.rects()[i]==null)continue;
+                if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(atlas.texture()));faceRects=atlas.rects()[i];draw(plant,pose,glass,b,light,ALL,i);}
+            faceRects=null;pose.popPose();uvShift=0;return;
+        }
         for(Tex t:Tex.values()){
             if(t==Tex.NONE||t.translucent())continue;
             // steel boxes: the riveted side texture on the sides, the plain top texture up and down (one pass each)
@@ -107,18 +120,24 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
                 }
             }
         }
-        switch(plant.kind){
-            case WIND->wind((WindPlant)plant,pose,buffers,light,a[0],time);
-            case GEOTHERMAL->geothermal(plant,pose,buffers,light,time);
-            case FISSION->fission((FissionReactor)plant,pose,buffers,light,time);
-            case FUSION->fusion((FusionReactor)plant,pose,buffers,light,time);
-        }
+        parts(plant,pose,buffers,light,a[0],time);
         for(Tex t:Tex.values()){
             if(!t.translucent())continue;VertexConsumer glass=null;
             for(int i=0;i<model.size();i++)if(model.get(i).tex()==t){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(t)));draw(plant,pose,glass,model.get(i),light,ALL,i);}
         }
         pose.popPose();uvShift=0;
     }
+    /** The moving and glowing parts drawn on top of the static model. */
+    private void parts(PlantController plant,PoseStack pose,MultiBufferSource buffers,int light,float angle,float time){
+        switch(plant.kind){
+            case WIND->wind((WindPlant)plant,pose,buffers,light,angle,time);
+            case GEOTHERMAL->geothermal(plant,pose,buffers,light,time);
+            case FISSION->fission((FissionReactor)plant,pose,buffers,light,time);
+            case FUSION->fusion((FusionReactor)plant,pose,buffers,light,time);
+        }
+    }
+    /** Atlas places of the faces of the box being drawn (render thread only); null for the repeating textures. */
+    private static float[][] faceRects;
     /**
      * Every box is drawn a tiny bit larger, by an amount that differs from box to box (and is larger for detail boxes),
      * so two faces never lie in the same plane and nothing flickers where boxes touch or overlap.

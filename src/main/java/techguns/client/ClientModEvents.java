@@ -96,6 +96,7 @@ public final class ClientModEvents {
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> techguns.client.particle.BulletImpactEffects.reload());
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> techguns.client.particle.WeaponEffects.reload());
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) techguns.client.render.bbmodel.PlantCustomModels::reload);
+        event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) techguns.client.render.tileentities.PlantAtlas::reload);
     }
     private ClientModEvents() {}
 }
