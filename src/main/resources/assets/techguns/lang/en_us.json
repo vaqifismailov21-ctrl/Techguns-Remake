@@ -1623,5 +1623,7 @@
   "techguns.power.jei.rotor_hub": "Rotor hub: use a blade on it to fit the blade.",
   "techguns.power.jei.turbine_blade": "Wind turbine blade, fitted to the hub.",
   "techguns.power.jei.fusion_coil": "Fusion reactor magnet coil.",
-  "techguns.wire.hv_only": "A high-voltage insulator only works on a generator, power plant, transformer or bus duct"
+  "techguns.wire.hv_only": "A high-voltage insulator only works on a generator, power plant, transformer or bus duct",
+  "death.attack.wire_shock": "%s grabbed a live wire",
+  "death.attack.wire_shock.player": "%s grabbed a live wire whilst fighting %s"
 }

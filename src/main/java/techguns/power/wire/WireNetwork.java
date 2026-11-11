@@ -26,6 +26,8 @@ public final class WireNetwork extends SavedData {
     private final Map<WireNode,List<WireConnection>> byNode=new HashMap<>();
     private final Map<WireConnection,Integer> used=new IdentityHashMap<>();
     private long usedTick=-1;
+    /** Game time each wire last carried energy (not saved). */
+    private final Map<WireConnection,Long> live=new IdentityHashMap<>();
 
     public static WireNetwork get(ServerLevel level){return level.getDataStorage().computeIfAbsent(WireNetwork::load,WireNetwork::new,NAME);}
     public List<WireConnection> all(){return wires;}
@@ -43,7 +45,9 @@ public final class WireNetwork extends SavedData {
         return gone;
     }
     private void index(WireConnection c){byNode.computeIfAbsent(c.a(),k->new ArrayList<>()).add(c);byNode.computeIfAbsent(c.b(),k->new ArrayList<>()).add(c);}
-    private void rebuild(){byNode.clear();used.clear();for(var w:wires)index(w);}
+    private void rebuild(){byNode.clear();used.clear();live.keySet().retainAll(new java.util.HashSet<>(wires));for(var w:wires)index(w);}
+    /** Wires that carried energy during the last second. */
+    public List<WireConnection> live(long now){var list=new ArrayList<WireConnection>();for(var e:live.entrySet())if(now-e.getValue()<=20)list.add(e.getKey());return list;}
 
     private void resetUsage(long tick){if(tick!=usedTick){used.clear();usedTick=tick;}}
 
@@ -96,7 +100,7 @@ public final class WireNetwork extends SavedData {
             int arrives=(int)(room*t.efficiency());if(arrives<=0)continue;
             int taken=sink.receiveEnergy(arrives,simulate);if(taken<=0)continue;
             int spent=Math.min(room,(int)Math.ceil(taken/t.efficiency()));
-            if(!simulate)for(var c:t.path())if(used.merge(c,spent,Integer::sum)>c.tier().rate&&!burnt.contains(c))burnt.add(c);
+            if(!simulate)for(var c:t.path()){live.put(c,tick);if(used.merge(c,spent,Integer::sum)>c.tier().rate&&!burnt.contains(c))burnt.add(c);}
             left-=spent;
         }
         if(!burnt.isEmpty()&&level instanceof ServerLevel server)for(var c:burnt)burn(server,c);
@@ -116,7 +120,7 @@ public final class WireNetwork extends SavedData {
         level.playSound(null,pos,net.minecraft.sounds.SoundEvents.GENERIC_EXTINGUISH_FIRE,net.minecraft.sounds.SoundSource.BLOCKS,1.2F,0.6F);
         level.playSound(null,pos,net.minecraft.sounds.SoundEvents.LIGHTNING_BOLT_IMPACT,net.minecraft.sounds.SoundSource.BLOCKS,0.5F,1.8F);
     }
-    private static net.minecraft.world.phys.Vec3 point(Level level,WireNode node){
+    static net.minecraft.world.phys.Vec3 point(Level level,WireNode node){
         var state=level.getBlockState(node.pos());
         return state.getBlock() instanceof WireHost host&&node.point()<host.points(state)?host.point(state,node.pos(),node.point()):null;
     }
