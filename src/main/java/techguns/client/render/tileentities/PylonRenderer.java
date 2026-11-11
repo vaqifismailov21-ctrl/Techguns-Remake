@@ -16,7 +16,7 @@ import techguns.power.wire.PylonEntity;
 
 /** Lattice steel tower with two cross-arms and hanging insulator strings, drawn from beams. */
 public class PylonRenderer implements BlockEntityRenderer<PylonEntity> {
-    private static final ResourceLocation STEEL=ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/wire/pylon_steel.png");
+    private static final ResourceLocation STEEL=ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/wire/pylon_steel_worn.png");
     private static final ResourceLocation INSULATOR=ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/wire/insulator.png");
     public PylonRenderer(BlockEntityRendererProvider.Context ctx){}
     @Override public boolean shouldRenderOffScreen(PylonEntity be){return true;}
@@ -26,7 +26,7 @@ public class PylonRenderer implements BlockEntityRenderer<PylonEntity> {
         var state=be.getBlockState();if(!state.hasProperty(PylonBlock.FACING))return;
         var f=state.getValue(PylonBlock.FACING);var a=f.getClockWise();
         Vec3 across=new Vec3(a.getStepX(),0,a.getStepZ()),along=new Vec3(f.getStepX(),0,f.getStepZ());
-        var c=new Vec3(0.5,0,0.5);
+        var c=new Vec3(0.5,0,0.5);beamIndex=0;
         var steel=buffers.getBuffer(RenderType.entityCutoutNoCull(STEEL));
         var m=pose.last().pose();var n=pose.last().normal();
         int H=PylonBlock.HEIGHT;double top=H-0.05;
@@ -81,17 +81,19 @@ public class PylonRenderer implements BlockEntityRenderer<PylonEntity> {
             beam(vc,m,n,c.add(across.scale(h*s)).add(along.scale(-h)).add(0,y,0),c.add(across.scale(h*s)).add(along.scale(h)).add(0,y,0),0.025,light);
         }
     }
+    private static int beamIndex;
     /** Square beam from p to q with half-width w, with end caps. */
     public static void beam(VertexConsumer vc,Matrix4f m,Matrix3f n,Vec3 p,Vec3 q,double w,int light){
         var d=q.subtract(p);double len=d.length();if(len<1e-4)return;d=d.scale(1/len);
         var side=d.cross(new Vec3(0,1,0));if(side.lengthSqr()<1e-6)side=new Vec3(1,0,0);side=side.normalize();
         var up=side.cross(d).normalize();
         Vec3[] o={side.scale(w).add(up.scale(w)),side.scale(-w).add(up.scale(w)),side.scale(-w).add(up.scale(-w)),side.scale(w).add(up.scale(-w))};
-        float v1=(float)(len*2);
-        for(int k=0;k<4;k++){var o1=o[k];var o2=o[(k+1)%4];var nr=o1.add(o2).normalize();
-            quad(vc,m,n,p.add(o1),q.add(o1),q.add(o2),p.add(o2),0,0,0.25F,v1,nr,light);}
-        quad(vc,m,n,p.add(o[3]),p.add(o[2]),p.add(o[1]),p.add(o[0]),0,0,0.25F,0.25F,d.scale(-1),light);
-        quad(vc,m,n,q.add(o[0]),q.add(o[1]),q.add(o[2]),q.add(o[3]),0,0,0.25F,0.25F,d,light);
+        // every beam takes its own strip of the worn steel texture, so no two look alike
+        int bi=beamIndex++;float u0=(bi%4)*0.25F,vo=(bi*0.37F)%1F,v1=vo+(float)(len*0.25);float uw=(float)Math.max(0.03,Math.min(0.25,w*4));
+        for(int k=0;k<4;k++){var o1=o[k];var o2=o[(k+1)%4];var nr=o1.add(o2).normalize();float uk=u0+(k%2)*(0.25F-uw);
+            quad(vc,m,n,p.add(o1),q.add(o1),q.add(o2),p.add(o2),uk,vo,uk+uw,v1,nr,light);}
+        quad(vc,m,n,p.add(o[3]),p.add(o[2]),p.add(o[1]),p.add(o[0]),u0,vo,u0+uw,vo+uw,d.scale(-1),light);
+        quad(vc,m,n,q.add(o[0]),q.add(o[1]),q.add(o[2]),q.add(o[3]),u0,vo,u0+uw,vo+uw,d,light);
     }
     /** Axis-aligned box from a to b. */
     public static void box(VertexConsumer vc,Matrix4f m,Matrix3f n,Vec3 a,Vec3 b,int light){

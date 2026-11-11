@@ -1976,6 +1976,30 @@
     {
       "type": "minecraft:single",
       "resource": "techguns:items/wire_coil_steel_insulated"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/painted/power_bus"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/painted/power_bus_item"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/painted/transformer"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/painted/wire_connector_copper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/painted/wire_connector_high_voltage"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/painted/wire_connector_steel"
     }
   ]
 }
