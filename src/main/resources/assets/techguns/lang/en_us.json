@@ -1631,5 +1631,6 @@
   "techguns.wire.tip.insulated": "Insulated: never shocks",
   "techguns.wire.tip.bare": "Bare: shocks under load, armour does not help",
   "techguns.power.jei.wire_coil_copper_insulated": "Copper wire in rubber insulation: 2,048 FE/t, up to 16 blocks, never shocks.",
-  "techguns.power.jei.wire_coil_steel_insulated": "Insulated steel wire: 16,384 FE/t, up to 24 blocks, never shocks."
+  "techguns.power.jei.wire_coil_steel_insulated": "Insulated steel wire: 16,384 FE/t, up to 24 blocks, never shocks.",
+  "itemGroup.techguns_multiblocks": "Techguns: Multiblocks"
 }

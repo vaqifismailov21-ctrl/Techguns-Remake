@@ -41,19 +41,32 @@ public final class Techguns {
                         output.accept(TGSteelTools.COMBAT_KNIFE.get());output.accept(TGSteelTools.CROWBAR.get());
                         TGEquipment.ARMOR.values().forEach(item->output.accept(item.get()));
                         TGAccessories.ITEMS.values().forEach(item->output.accept(item.get()));
-                        TGMachines.ITEMS.values().forEach(item->output.accept(item.get()));
+                        TGMachines.ITEMS.forEach((kind,item)->{if(kind!=techguns.machines.MachineKind.FABRICATOR&&kind!=techguns.machines.MachineKind.REACTION)output.accept(item.get());});
                         output.accept(TGTurrets.ITEM.get());
-                        TGOreDrill.ITEMS.values().forEach(item->output.accept(item.get()));
                         TGBenches.ITEMS.values().forEach(item->output.accept(item.get()));
-                        output.accept(TGFabricator.HOUSING_ITEM.get());output.accept(TGFabricator.GLASS_ITEM.get());
-                        output.accept(TGFabricator.REACTION_HOUSING_ITEM.get());output.accept(TGFabricator.REACTION_GLASS_ITEM.get());
-                        output.accept(TGFluids.ACID_BUCKET.get());output.accept(TGFluids.OIL_BUCKET.get());techguns.power.PowerBlocks.tabItems().forEach(item->output.accept(item.get()));
+                        output.accept(TGFluids.ACID_BUCKET.get());output.accept(TGFluids.OIL_BUCKET.get());techguns.power.PowerBlocks.singleBlockTabItems().forEach(item->output.accept(item.get()));
                         output.accept(TGDoors.BUNKER_ITEM.get());TGDoors.ITEMS.forEach(item->output.accept(item.get()));
                         TGDecorations.ITEMS.values().forEach(item->output.accept(item.get()));
                         output.accept(TGCharges.TNT_ITEM.get());output.accept(TGCharges.ADVANCED_ITEM.get());
                         TGWorld.ITEMS.values().forEach(item->output.accept(item.get()));
                         TGNpcs.EGGS.values().forEach(item->output.accept(item.get()));
                         TGSpecialNpcs.EGGS.values().forEach(item->output.accept(item.get()));
+                    })
+                    .build());
+    /** Second tab: every block of the multiblock machines and power plants, so they are easy to find. */
+    public static final RegistryObject<CreativeModeTab> MULTIBLOCK_TAB = TABS.register("techguns_multiblocks", () ->
+            CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.techguns_multiblocks"))
+                    .withTabsBefore(TAB.getId())
+                    .icon(() -> techguns.power.plant.PlantBlocks.FUSION_ITEM.get().getDefaultInstance())
+                    .displayItems((parameters, output) -> {
+                        output.accept(TGMachines.ITEMS.get(techguns.machines.MachineKind.FABRICATOR).get());
+                        output.accept(TGFabricator.HOUSING_ITEM.get());output.accept(TGFabricator.GLASS_ITEM.get());
+                        output.accept(TGMachines.ITEMS.get(techguns.machines.MachineKind.REACTION).get());
+                        output.accept(TGFabricator.REACTION_HOUSING_ITEM.get());output.accept(TGFabricator.REACTION_GLASS_ITEM.get());
+                        TGOreDrill.ITEMS.values().forEach(item->output.accept(item.get()));
+                        techguns.power.plant.PlantBlocks.tabItems().forEach(item->output.accept(item.get()));
+                        output.accept(techguns.power.wire.WireBlocks.TRANSFORMER_ITEM.get());output.accept(techguns.power.wire.WireBlocks.PYLON_ITEM.get());
                     })
                     .build());
 

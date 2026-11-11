@@ -82,6 +82,11 @@ public final class PowerBlocks {
     public static final RegistryObject<net.minecraft.world.inventory.MenuType<GeneratorMenu>> GENERATOR_MENU=TGMenuTypes.MENUS.register("generator",()->IForgeMenuType.create(GeneratorMenu::new));
 
     /** Items in the creative tab, in this order. */
+    /** Main-tab items: everything but the multiblock parts (power plants, transformer, pylon), which have their own tab. */
+    public static java.util.List<RegistryObject<Item>> singleBlockTabItems(){
+        var list=new java.util.ArrayList<>(tabItems());list.removeAll(techguns.power.plant.PlantBlocks.tabItems());
+        list.remove(techguns.power.wire.WireBlocks.TRANSFORMER_ITEM);list.remove(techguns.power.wire.WireBlocks.PYLON_ITEM);return list;
+    }
     public static java.util.List<RegistryObject<Item>> tabItems(){
         // the single wind turbine, geothermal and nuclear generators are replaced by the multiblock plants; the old blocks stay for existing worlds
         var list=new java.util.ArrayList<RegistryObject<Item>>(java.util.List.of(FUEL_GENERATOR_ITEM,LIQUID_GENERATOR_ITEM,SOLAR_PANEL_ITEM,
