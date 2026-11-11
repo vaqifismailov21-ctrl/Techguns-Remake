@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "bgd",
+    "brs",
+    "bem"
+  ],
+  "key": {
+    "b": {
+      "item": "techguns:laserbarrel"
+    },
+    "g": {
+      "tag": "forge:glass_panes"
+    },
+    "d": {
+      "tag": "forge:dusts/redstone"
+    },
+    "r": {
+      "item": "techguns:obsidiansteelreceiver"
+    },
+    "s": {
+      "item": "techguns:plasticstock"
+    },
+    "e": {
+      "item": "techguns:energycell"
+    },
+    "m": {
+      "item": "techguns:mechanicalpartscarbon"
+    }
+  },
+  "result": {
+    "item": "techguns:scatterbeamrifle",
+    "count": 1
+  }
+}

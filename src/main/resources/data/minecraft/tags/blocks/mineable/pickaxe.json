@@ -95,6 +95,11 @@
     "techguns:fission_reactor",
     "techguns:fusion_reactor",
     "techguns:rotor_hub",
-    "techguns:plant_shell"
+    "techguns:plant_shell",
+    "techguns:wire_connector_copper",
+    "techguns:wire_connector_steel",
+    "techguns:wire_connector_high_voltage",
+    "techguns:transformer",
+    "techguns:pylon"
   ]
 }

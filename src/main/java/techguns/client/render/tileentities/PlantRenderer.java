@@ -84,6 +84,14 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         float speed=plant instanceof WindPlant?plant.rate/(float)WindPlant.RATE*0.12F:0;
         a[0]=(a[0]+(time-a[1])*speed)%(float)(Math.PI*2);a[1]=time;
         pose.pushPose();pose.translate(0.5,0,0.5);pose.mulPose(Axis.YP.rotationDegrees(180-plant.facing().toYRot()));
+        // an own model made in Blockbench replaces the built-in one (see PlantCustomModels)
+        var custom=techguns.client.render.bbmodel.PlantCustomModels.get(plant.kind);
+        if(custom!=null){
+            boolean running=plant instanceof FusionReactor f?f.ignited:plant.rate>0;
+            pose.pushPose();pose.translate(-0.5F,0,-0.5F);
+            custom.render(pose,buffers,running,time/20F,(x,y,z)->lightAt(plant,x-0.5F,y,z-0.5F,light));
+            pose.popPose();pose.popPose();return;
+        }
         var model=plant.model();uvShift=plant.kind==PlantKind.WIND?0:0.5F;
         for(Tex t:Tex.values()){
             if(t==Tex.NONE||t.translucent())continue;

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "isi",
+    "sfs"
+  ],
+  "key": {
+    "i": {
+      "item": "techguns:reinforced_electric_engine"
+    },
+    "s": {
+      "item": "techguns:platepowerdoom"
+    },
+    "f": {
+      "item": "techguns:t3_miner_helmet"
+    }
+  },
+  "result": {
+    "item": "techguns:t4_praetor_helmet",
+    "count": 1
+  }
+}

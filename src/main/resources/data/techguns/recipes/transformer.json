@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "HPH",
+    "CEC",
+    "PIP"
+  ],
+  "key": {
+    "H": {
+      "item": "techguns:wire_connector_high_voltage"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "item": "techguns:coil"
+    },
+    "E": {
+      "tag": "forge:circuits/elite"
+    },
+    "I": {
+      "item": "techguns:wire_connector_steel"
+    }
+  },
+  "result": {
+    "item": "techguns:transformer",
+    "count": 1
+  }
+}

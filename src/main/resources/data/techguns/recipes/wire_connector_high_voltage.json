@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "GWG",
+    "PGP"
+  ],
+  "key": {
+    "N": {
+      "tag": "forge:nuggets/steel"
+    },
+    "G": {
+      "tag": "forge:glass_panes"
+    },
+    "W": {
+      "tag": "forge:wires/gold"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "result": {
+    "item": "techguns:wire_connector_high_voltage",
+    "count": 2
+  }
+}

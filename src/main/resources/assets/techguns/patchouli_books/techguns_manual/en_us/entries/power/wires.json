@@ -1,0 +1,56 @@
+{
+  "name": "Wires and Pylons",
+  "icon": "techguns:wire_coil_high_voltage",
+  "category": "techguns:power",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wires are strung between $(item)insulators$(), $(item)transformers$() and $(item)power pylons$(). Put an insulator on a machine or cable, take a $(item)wire coil$(), $(thing)use$() it on the first insulator and then on the second. The wire sags and must not pass through blocks. Each connection uses one coil."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Copper$(): 2,048 FE/t, up to 16 blocks. $(l)Steel$(): 16,384 FE/t, up to 24 blocks, lower loss. $(l)High-voltage$(): 131,072 FE/t, up to 48 blocks, almost lossless; only on high-voltage insulators, the transformer top and pylons. Loss grows with length."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_copper"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_steel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_high_voltage"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_connector_copper"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_connector_steel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_connector_high_voltage"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The $(item)transformer$() stores 20,000,000 FE. The front bushing takes copper and steel wire, the top one high-voltage wire. It gives power to cables and machines at the front and takes it on the other sides except the top. Power only flows to emptier stores."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:transformer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The $(item)power pylon$() is an 8-block tower with two cross-arms and four insulator strings. It takes steel and high-voltage wire; the wires run along the direction you faced when placing it."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:pylon"
+    }
+  ]
+}

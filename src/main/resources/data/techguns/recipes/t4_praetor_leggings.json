@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "sss",
+    "ifi",
+    "s s"
+  ],
+  "key": {
+    "i": {
+      "item": "techguns:reinforced_electric_engine"
+    },
+    "s": {
+      "item": "techguns:platepowerdoom"
+    },
+    "f": {
+      "item": "techguns:t3_miner_leggings"
+    }
+  },
+  "result": {
+    "item": "techguns:t4_praetor_leggings",
+    "count": 1
+  }
+}

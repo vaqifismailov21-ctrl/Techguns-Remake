@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "HSH",
+    " S ",
+    "S S"
+  ],
+  "key": {
+    "H": {
+      "item": "techguns:wire_connector_high_voltage"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "result": {
+    "item": "techguns:pylon",
+    "count": 1
+  }
+}

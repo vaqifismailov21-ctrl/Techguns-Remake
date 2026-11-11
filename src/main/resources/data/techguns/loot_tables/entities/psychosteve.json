@@ -9,16 +9,6 @@
           "type": "minecraft:item",
           "weight": 1,
           "name": "techguns:chainsaw",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
           "conditions": [
             {
               "condition": "minecraft:random_chance_with_looting",

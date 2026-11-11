@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "isi",
+    "sfs"
+  ],
+  "key": {
+    "i": {
+      "item": "techguns:reinforced_electric_engine"
+    },
+    "s": {
+      "item": "techguns:platepowermk2"
+    },
+    "f": {
+      "item": "techguns:t3_power_helmet"
+    }
+  },
+  "result": {
+    "item": "techguns:t4_power_helmet",
+    "count": 1
+  }
+}

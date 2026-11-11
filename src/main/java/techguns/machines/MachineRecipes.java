@@ -12,7 +12,7 @@ public final class MachineRecipes {
     public static Ingredient tag(String path){return Ingredient.of(TagKey.create(Registries.ITEM,ResourceLocation.parse(path)));}
     public static Ingredient items(Item... items){return Ingredient.of(items);}
     private static Ingredient alternatives(String... tags){return Ingredient.fromValues(Arrays.stream(tags).map(t->new Ingredient.TagValue(TagKey.create(Registries.ITEM,ResourceLocation.parse(t)))));}
-    public static List<ProcessingRecipe> all(){if(recipes==null){recipes=new ArrayList<>();GeneratedMachineRecipes.add(recipes);GeneratedFabricatorRecipes.add(recipes);}return Collections.unmodifiableList(recipes);}
+    public static List<ProcessingRecipe> all(){if(recipes==null){recipes=new ArrayList<>();GeneratedMachineRecipes.add(recipes);GeneratedFabricatorRecipes.add(recipes);CommunityRecipes.fabricator(recipes);}return Collections.unmodifiableList(recipes);}
     public static ProcessingRecipe ammo(int plan){
         Item[] outputs={TGItems.PISTOL_ROUNDS.get(),TGItems.SHOTGUN_ROUNDS.get(),TGItems.RIFLE_ROUNDS.get(),TGItems.SNIPER_ROUNDS.get()};int[] counts={12,16,8,4};
         return new ProcessingRecipe(MachineKind.AMMO_PRESS,new Ingredient[]{alternatives("forge:ingots/steel","forge:ingots/lead"),alternatives("forge:ingots/copper","forge:ingots/tin","forge:ingots/iron","forge:ingots/bronze"),items(Items.GUNPOWDER)},new int[]{1,2,1},new ItemStack(outputs[Math.floorMod(plan,4)],counts[Math.floorMod(plan,4)]),100,5,false);

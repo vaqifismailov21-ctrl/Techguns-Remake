@@ -1,0 +1,56 @@
+{
+  "name": "Провода и ЛЭП",
+  "icon": "techguns:wire_coil_high_voltage",
+  "category": "techguns:power",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Провода натягиваются между $(item)изоляторами$(), $(item)трансформаторами$() и $(item)опорами ЛЭП$(). Поставь изолятор на машину или кабель, возьми $(item)моток провода$(), $(thing)ПКМ$() по первому изолятору и по второму. Провод висит дугой и не должен проходить сквозь блоки. Каждое соединение тратит один моток."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Медный$() — 2 048 FE/т, до 16 блоков. $(l)Стальной$() — 16 384 FE/т, до 24 блоков, меньше потерь. $(l)Высоковольтный$() — 131 072 FE/т, до 48 блоков, почти без потерь, вешается только на высоковольтные изоляторы, верх трансформатора и опоры. Потери растут с длиной."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_copper"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_steel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_high_voltage"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_connector_copper"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_connector_steel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_connector_high_voltage"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(item)Трансформатор$() хранит 20 000 000 FE. Передняя втулка — для медного и стального провода, верхняя — для высоковольтного. Спереди он отдаёт энергию кабелям и машинам, остальными сторонами (кроме верха) принимает. Энергия идёт только туда, где хранилище заполнено меньше."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:transformer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(item)Опора ЛЭП$() — башня в 8 блоков с двумя траверсами и четырьмя гирляндами изоляторов. Принимает стальной и высоковольтный провод, провода идут вдоль направления, в котором ты смотрел при установке."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:pylon"
+    }
+  ]
+}

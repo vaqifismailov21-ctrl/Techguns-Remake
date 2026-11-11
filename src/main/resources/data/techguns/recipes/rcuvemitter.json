@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "sss",
+    "fif",
+    "ttt"
+  ],
+  "key": {
+    "s": {
+      "tag": "forge:plates/steel"
+    },
+    "f": {
+      "tag": "forge:circuits/elite"
+    },
+    "i": {
+      "item": "techguns:uvelement"
+    },
+    "t": {
+      "tag": "forge:glass"
+    }
+  },
+  "result": {
+    "item": "techguns:rcuvemitter",
+    "count": 1
+  }
+}

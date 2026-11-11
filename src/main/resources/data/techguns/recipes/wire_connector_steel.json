@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "TWT",
+    "PTP"
+  ],
+  "key": {
+    "N": {
+      "tag": "forge:nuggets/steel"
+    },
+    "T": {
+      "item": "minecraft:terracotta"
+    },
+    "W": {
+      "tag": "forge:wires/copper"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "result": {
+    "item": "techguns:wire_connector_steel",
+    "count": 4
+  }
+}

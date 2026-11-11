@@ -29,6 +29,7 @@ protected void addRandomArmor(int difficulty) {
 					TGEquipment.ARMOR.get("t1_miner_boots").get(),camo));
 			
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TGuns.chainsaw.get()));
+			this.setDropChance(EquipmentSlot.MAINHAND, 0F); // the chainsaw drops from the loot table only, never twice
 
 	}
 public SoundEvent getAmbientSound() {

@@ -24,7 +24,7 @@ import techguns.keybind.TGKeybindsID;
 
 /** Direction-restricted packets; inventory contents are only sent by the server. */
 public final class TGPackets {
-    private static final String PROTOCOL = "8";
+    private static final String PROTOCOL = "9";
     public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
             ResourceLocation.fromNamespaceAndPath(Techguns.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
 
@@ -47,6 +47,7 @@ public final class TGPackets {
         techguns.deatheffects.DeathEffectEvents.register();
         TGProjectilePackets.register();
         TGWeaponPackets.register();
+        techguns.power.wire.WirePackets.register();
         NETWORK.messageBuilder(OpenInventory.class, 0, NetworkDirection.PLAY_TO_SERVER)
                 .encoder((message, buffer) -> {}).decoder(buffer -> new OpenInventory())
                 .consumerMainThread((message, context) -> {

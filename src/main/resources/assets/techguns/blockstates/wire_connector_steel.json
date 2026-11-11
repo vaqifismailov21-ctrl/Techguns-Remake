@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "techguns:block/wire_connector_steel"
+    },
+    "facing=down": {
+      "model": "techguns:block/wire_connector_steel",
+      "x": 180
+    },
+    "facing=north": {
+      "model": "techguns:block/wire_connector_steel",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "techguns:block/wire_connector_steel",
+      "x": 90,
+      "y": 180
+    },
+    "facing=east": {
+      "model": "techguns:block/wire_connector_steel",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "techguns:block/wire_connector_steel",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

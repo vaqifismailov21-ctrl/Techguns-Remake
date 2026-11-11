@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,half=lower": {
+      "model": "techguns:block/transformer_lower"
+    },
+    "facing=north,half=upper": {
+      "model": "techguns:block/transformer_upper"
+    },
+    "facing=east,half=lower": {
+      "model": "techguns:block/transformer_lower",
+      "y": 90
+    },
+    "facing=east,half=upper": {
+      "model": "techguns:block/transformer_upper",
+      "y": 90
+    },
+    "facing=south,half=lower": {
+      "model": "techguns:block/transformer_lower",
+      "y": 180
+    },
+    "facing=south,half=upper": {
+      "model": "techguns:block/transformer_upper",
+      "y": 180
+    },
+    "facing=west,half=lower": {
+      "model": "techguns:block/transformer_lower",
+      "y": 270
+    },
+    "facing=west,half=upper": {
+      "model": "techguns:block/transformer_upper",
+      "y": 270
+    }
+  }
+}

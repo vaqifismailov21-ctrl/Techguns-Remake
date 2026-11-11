@@ -127,6 +127,12 @@ public final class TGItems {
     public static final RegistryObject<SharedMaterialItem> QUARTZ_ROD = shared("quartzrod", 103, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> RC_HEAT_RAY = shared("rcheatray", 104, TGSlotType.REACTION_CHAMBER_FOCUS, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> RC_UV_EMITTER = shared("rcuvemitter", 105, TGSlotType.REACTION_CHAMBER_FOCUS, 64, () -> true);
+    // parts of the late armours and the UV emitter (as in the Techguns community edition)
+    public static final RegistryObject<SharedMaterialItem> MK2_POWER_PLATE = shared("platepowermk2", 156, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> DOOM_PLATE = shared("platepowerdoom", 157, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> REINFORCED_ELECTRIC_ENGINE = shared("reinforced_electric_engine", 158, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> INGOT_HELLISH = shared("ingothellish", 159, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> UV_ELEMENT = shared("uvelement", 160, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SHOTGUN_ROUNDS_INCENDIARY = shared("shotgunrounds_incendiary", 106, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> AS50_MAGAZINE_INCENDIARY = shared("as50magazine_incendiary", 107, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SNIPER_ROUNDS_INCENDIARY = shared("sniperrounds_incendiary", 108, TGSlotType.AMMOSLOT, 64, () -> true);

@@ -59,6 +59,7 @@ public final class ClientModEvents {
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.ENERGY_CELL_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.WIND_TURBINE_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.WIND_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
+        event.registerBlockEntityRenderer(techguns.power.wire.WireBlocks.PYLON_ENTITY.get(),techguns.client.render.tileentities.PylonRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.HUB_ENTITY.get(),techguns.client.render.tileentities.RotorHubRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.GEOTHERMAL_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.plant.PlantBlocks.FISSION_ENTITY.get(),techguns.client.render.tileentities.PlantRenderer::new);
@@ -94,6 +95,7 @@ public final class ClientModEvents {
     @SubscribeEvent public static void reload(net.minecraftforge.client.event.RegisterClientReloadListenersEvent event) {
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> techguns.client.particle.BulletImpactEffects.reload());
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> techguns.client.particle.WeaponEffects.reload());
+        event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) techguns.client.render.bbmodel.PlantCustomModels::reload);
     }
     private ClientModEvents() {}
 }
