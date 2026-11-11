@@ -38,19 +38,42 @@ public final class PlantModel {
             list.add(new Box((float)x0,(float)y0,(float)z0,(float)x1,(float)y1,(float)z1,t,c,true,(float)deg,(float)px,(float)pz,true));}
         private void add(Tex t,double x0,double y0,double z0,double x1,double y1,double z1,int c,boolean detail){
             list.add(new Box((float)Math.min(x0,x1),(float)Math.min(y0,y1),(float)Math.min(z0,z1),(float)Math.max(x0,x1),(float)Math.max(y0,y1),(float)Math.max(z0,z1),t,c,true,0,0,0,detail));}
+        /** Pipes are open tubes (Techguns style): four walls, a dark bore you can look into, flanged rims at both ends. */
+        private static final int BORE=0xFF3A3A3A;
+        private static double wall(double r){return Math.max(0.014,r*0.26);}
         /** Vertical pipe with flanges. */
         void pipeY(double x,double z,double r,double y0,double y1,boolean solid){
-            add(Tex.PIPE,x-r,y0,z-r,x+r,y1,z+r,W,false);
+            double w=wall(r);
+            add(Tex.PIPE,x-r,y0,z-r,x+r,y1,z-r+w,W,false);add(Tex.PIPE,x-r,y0,z+r-w,x+r,y1,z+r,W,false);
+            add(Tex.PIPE,x-r,y0,z-r+w,x-r+w,y1,z+r-w,W,false);add(Tex.PIPE,x+r-w,y0,z-r+w,x+r,y1,z+r-w,W,false);
+            d(Tex.PIPE,BORE,x-r+w,y0+0.02,z-r+w,x+r-w,y0+0.04,z+r-w);
+            ringY(x,z,r,y1-0.05,y1);ringY(x,z,r,y0,y0+0.05);
             for(double y=y0+0.25;y<y1-0.1;y+=0.75)d(Tex.CASING_DARK,x-r-0.025,y,z-r-0.025,x+r+0.025,y+0.06,z+r+0.025);
         }
         void pipeX(double y,double z,double r,double x0,double x1,boolean solid){
-            add(Tex.PIPE,x0,y-r,z-r,x1,y+r,z+r,W,false);
+            double w=wall(r);
+            add(Tex.PIPE,x0,y-r,z-r,x1,y-r+w,z+r,W,false);add(Tex.PIPE,x0,y+r-w,z-r,x1,y+r,z+r,W,false);
+            add(Tex.PIPE,x0,y-r+w,z-r,x1,y+r-w,z-r+w,W,false);add(Tex.PIPE,x0,y-r+w,z+r-w,x1,y+r-w,z+r,W,false);
+            ringX(y,z,r,x0,x0+0.05);ringX(y,z,r,x1-0.05,x1);
             for(double x=x0+0.3;x<x1-0.1;x+=0.75)d(Tex.CASING_DARK,x,y-r-0.025,z-r-0.025,x+0.06,y+r+0.025,z+r+0.025);
         }
         void pipeZ(double x,double y,double r,double z0,double z1,boolean solid){
-            add(Tex.PIPE,x-r,y-r,z0,x+r,y+r,z1,W,false);
+            double w=wall(r);
+            add(Tex.PIPE,x-r,y-r,z0,x+r,y-r+w,z1,W,false);add(Tex.PIPE,x-r,y+r-w,z0,x+r,y+r,z1,W,false);
+            add(Tex.PIPE,x-r,y-r+w,z0,x-r+w,y+r-w,z1,W,false);add(Tex.PIPE,x+r-w,y-r+w,z0,x+r,y+r-w,z1,W,false);
+            ringZ(x,y,r,z0,z0+0.05);ringZ(x,y,r,z1-0.05,z1);
             for(double z=z0+0.3;z<z1-0.1;z+=0.75)d(Tex.CASING_DARK,x-r-0.025,y-r-0.025,z,x+r+0.025,y+r+0.025,z+0.06);
         }
+        /** Flange ring around an open pipe end. */
+        void ringY(double x,double z,double r,double y0,double y1){double o=r+0.03,i=r-0.004;
+            d(Tex.CASING_DARK,x-o,y0,z-o,x+o,y1,z-i);d(Tex.CASING_DARK,x-o,y0,z+i,x+o,y1,z+o);
+            d(Tex.CASING_DARK,x-o,y0,z-i,x-i,y1,z+i);d(Tex.CASING_DARK,x+i,y0,z-i,x+o,y1,z+i);}
+        void ringX(double y,double z,double r,double x0,double x1){double o=r+0.03,i=r-0.004;
+            d(Tex.CASING_DARK,x0,y-o,z-o,x1,y-i,z+o);d(Tex.CASING_DARK,x0,y+i,z-o,x1,y+o,z+o);
+            d(Tex.CASING_DARK,x0,y-i,z-o,x1,y+i,z-i);d(Tex.CASING_DARK,x0,y-i,z+i,x1,y+i,z+o);}
+        void ringZ(double x,double y,double r,double z0,double z1){double o=r+0.03,i=r-0.004;
+            d(Tex.CASING_DARK,x-o,y-o,z0,x+o,y-i,z1);d(Tex.CASING_DARK,x-o,y+i,z0,x+o,y+o,z1);
+            d(Tex.CASING_DARK,x-o,y-i,z0,x-i,y+i,z1);d(Tex.CASING_DARK,x+i,y-i,z0,x+o,y+i,z1);}
     }
 
     /** Wind tower half width of section i (1..n): tapers from the foundation to the nacelle. */
@@ -257,8 +280,8 @@ public final class PlantModel {
         }
         b.pipeY(-0.7,z1+0.08,0.08,y0+0.2,y1,true);b.pipeY(0.7,z1+0.08,0.08,y0+0.2,y1,true);
         b.pipeX(y1+0.08,z1+0.08,0.08,-0.7,0.7,true);valve(b,0,y1+0.08,z1+0.08);
-        b.pipeY(-1.15,0.15,0.15,y1,y1+0.8,true);b.d(Tex.CASING,-1.33,y1+0.8,-0.03,-0.97,y1+0.86,0.33);
-        b.pipeY(1.15,1.85,0.15,y1,y1+0.8,true);b.d(Tex.CASING,0.97,y1+0.8,1.67,1.33,y1+0.86,2.03);
+        b.pipeY(-1.15,0.15,0.15,y1,y1+0.8,true);b.ringY(-1.15,0.15,0.18,y1+0.8,y1+0.86);
+        b.pipeY(1.15,1.85,0.15,y1,y1+0.8,true);b.ringY(1.15,1.85,0.18,y1+0.8,y1+0.86);
     }
 
     private static void fusion(B b){
