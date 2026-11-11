@@ -1625,5 +1625,11 @@
   "techguns.power.jei.fusion_coil": "Fusion reactor magnet coil.",
   "techguns.wire.hv_only": "A high-voltage insulator only works on a generator, power plant, transformer or bus duct",
   "death.attack.wire_shock": "%s grabbed a live wire",
-  "death.attack.wire_shock.player": "%s grabbed a live wire whilst fighting %s"
+  "death.attack.wire_shock.player": "%s grabbed a live wire whilst fighting %s",
+  "item.techguns.wire_coil_copper_insulated": "Insulated Copper Wire Coil",
+  "item.techguns.wire_coil_steel_insulated": "Insulated Steel Wire Coil",
+  "techguns.wire.tip.insulated": "Insulated: never shocks",
+  "techguns.wire.tip.bare": "Bare: shocks under load, armour does not help",
+  "techguns.power.jei.wire_coil_copper_insulated": "Copper wire in rubber insulation: 2,048 FE/t, up to 16 blocks, never shocks.",
+  "techguns.power.jei.wire_coil_steel_insulated": "Insulated steel wire: 16,384 FE/t, up to 24 blocks, never shocks."
 }

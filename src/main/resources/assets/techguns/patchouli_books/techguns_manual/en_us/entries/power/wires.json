@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l)Copper$(): 2,048 FE/t, up to 16 blocks. $(l)Steel$(): 16,384 FE/t, up to 24 blocks, lower loss. $(l)High-voltage$(): 131,072 FE/t, up to 48 blocks, almost lossless; only on high-voltage insulators, the transformer top and pylons. High voltage only runs from generators to transformers: a high-voltage insulator works only on a generator, power plant, transformer or bus duct, never on a machine. Loss grows with length.$(br2)$(4)Overload:$() if more energy goes through a wire in one tick than it can carry, it $(l)burns out$() with sparks and smoke and is gone, e.g. copper wire between two steel insulators on a strong line.$(br2)$(4)Shock:$() wires are bare. Touching a wire that carries power hurts: copper 1 heart, steel 2.5, high voltage 6 hearts, sets on fire and throws back. Dead wires are safe."
+      "text": "$(l)Copper$(): 2,048 FE/t, up to 16 blocks. $(l)Steel$(): 16,384 FE/t, up to 24 blocks, lower loss. $(l)High-voltage$(): 131,072 FE/t, up to 48 blocks, almost lossless; only on high-voltage insulators, the transformer top and pylons. High voltage only runs from generators to transformers: a high-voltage insulator works only on a generator, power plant, transformer or bus duct, never on a machine. Loss grows with length.$(br2)$(4)Overload:$() if more energy goes through a wire in one tick than it can carry, it $(l)burns out$() with sparks and smoke and is gone, e.g. copper wire between two steel insulators on a strong line.$(br2)$(4)Shock:$() a bare wire under load hurts anything touching it, $(l)through any armour$(): copper 1 heart, steel 2.5, high voltage 6 hearts, fire and knockback. Only a $(item)full hazmat suit$() (rubber) is safe. Copper and steel wire can be $(item)insulated$() with rubber and then never shocks. High-voltage wire cannot: hang it high on $(item)power pylons$()."
     },
     {
       "type": "patchouli:crafting",
@@ -18,7 +18,15 @@
     },
     {
       "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_copper_insulated"
+    },
+    {
+      "type": "patchouli:crafting",
       "recipe": "techguns:wire_coil_steel"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:wire_coil_steel_insulated"
     },
     {
       "type": "patchouli:crafting",

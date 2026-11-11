@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "techguns:wire_coil_copper"
+    },
+    {
+      "item": "techguns:wire_coil_copper"
+    },
+    {
+      "item": "techguns:wire_coil_copper"
+    },
+    {
+      "item": "techguns:wire_coil_copper"
+    },
+    {
+      "tag": "forge:item_rubber"
+    }
+  ],
+  "result": {
+    "item": "techguns:wire_coil_copper_insulated",
+    "count": 4
+  }
+}

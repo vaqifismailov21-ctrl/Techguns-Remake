@@ -49,7 +49,7 @@ public final class WireClient {
             Vec3 a=point(level,w.a().pos(),w.a().point()),b=point(level,w.b().pos(),w.b().point());
             if(a==null||b==null)continue;
             var mid=a.add(b).scale(0.5);if(mid.distanceToSqr(cam)>200*200)continue;
-            cable(pose,vc,level,a,b,w.tier());
+            cable(pose,vc,level,a,b,w.tier(),w.insulated());
         }
         pose.popPose();
         buffers.endBatch(type);
@@ -63,10 +63,11 @@ public final class WireClient {
     /** Sag of the middle of a wire: thin wires hang more, a little more the longer they are. */
     public static double sag(WireTier tier,double length){return WireTier.sag(tier,length);}
 
-    private static void cable(PoseStack pose,VertexConsumer vc,Level level,Vec3 a,Vec3 b,WireTier tier){
+    private static void cable(PoseStack pose,VertexConsumer vc,Level level,Vec3 a,Vec3 b,WireTier tier,boolean insulated){
         double length=a.distanceTo(b),sag=sag(tier,length);
         int n=Math.max(6,Math.min(48,(int)(length*2.5)));
-        int r=tier.colour>>16&255,g=tier.colour>>8&255,bl=tier.colour&255;float w=tier.thickness;
+        int col=insulated?(tier==WireTier.COPPER?0xFF3B2E26:0xFF2C3034):tier.colour;
+        int r=col>>16&255,g=col>>8&255,bl=col&255;float w=tier.thickness+(insulated?0.008F:0);
         Vec3 prev=a;double v0=0;
         for(int i=1;i<=n;i++){
             double t=i/(double)n;

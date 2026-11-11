@@ -26,12 +26,16 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class WireCoilItem extends Item {
     public final WireTier tier;
-    public WireCoilItem(WireTier tier){super(new Properties().stacksTo(64));this.tier=tier;}
+    /** Insulated wire (copper and steel only) never shocks. */
+    public final boolean insulated;
+    public WireCoilItem(WireTier tier){this(tier,false);}
+    public WireCoilItem(WireTier tier,boolean insulated){super(new Properties().stacksTo(64));this.tier=tier;this.insulated=insulated;}
 
     @Override public void appendHoverText(ItemStack stack,Level level,List<Component> lines,TooltipFlag flag){
         lines.add(Component.translatable("techguns.wire.tip.rate",tier.rate).withStyle(ChatFormatting.GRAY));
         lines.add(Component.translatable("techguns.wire.tip.length",tier.maxLength).withStyle(ChatFormatting.GRAY));
         lines.add(Component.translatable("techguns.wire.tip.loss",String.format("%.2f",tier.lossPerBlock*100*16)).withStyle(ChatFormatting.GRAY));
+        lines.add(Component.translatable(insulated?"techguns.wire.tip.insulated":"techguns.wire.tip.bare").withStyle(insulated?ChatFormatting.GREEN:ChatFormatting.RED));
         var link=stack.getTag()==null?null:stack.getTag().getCompound("Link");
         if(link!=null&&link.contains("Pos")){var p=BlockPos.of(link.getLong("Pos"));lines.add(Component.translatable("techguns.wire.tip.linked",p.getX(),p.getY(),p.getZ()).withStyle(ChatFormatting.AQUA));}
     }
@@ -74,7 +78,7 @@ public final class WireCoilItem extends Item {
         Vec3 a=firstHost.point(firstState,first.pos(),first.point()),b=block.point(state,main,best);
         double length=a.distanceTo(b);
         if(length>tier.maxLength){message(player,"techguns.wire.too_long",tier.maxLength);return InteractionResult.FAIL;}
-        var net=WireNetwork.get(server);var wire=new WireConnection(first,node,tier,(float)length);
+        var net=WireNetwork.get(server);var wire=new WireConnection(first,node,tier,(float)length,insulated);
         if(net.exists(wire)){message(player,"techguns.wire.exists");return InteractionResult.FAIL;}
         var blocked=blocked(level,a,b,first.pos(),main);
         if(blocked!=null){message(player,"techguns.wire.blocked",blocked.getX(),blocked.getY(),blocked.getZ());return InteractionResult.FAIL;}
@@ -102,6 +106,6 @@ public final class WireCoilItem extends Item {
 
     /** Drops one coil of each removed wire at the block it was taken off. */
     public static void dropWires(ServerLevel level,BlockPos pos,List<WireConnection> wires){
-        for(var w:wires)Block.popResource(level,pos,new ItemStack(WireBlocks.coil(w.tier())));
+        for(var w:wires)Block.popResource(level,pos,new ItemStack(WireBlocks.coil(w.tier(),w.insulated())));
     }
 }

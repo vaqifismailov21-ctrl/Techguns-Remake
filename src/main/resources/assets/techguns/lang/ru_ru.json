@@ -1622,5 +1622,11 @@
   "techguns.power.jei.fusion_coil": "Магнитная катушка термоядерного реактора.",
   "techguns.wire.hv_only": "Высоковольтный изолятор работает только на генераторе, электростанции, трансформаторе или шинопроводе",
   "death.attack.wire_shock": "%s схватился за провод под током",
-  "death.attack.wire_shock.player": "%s схватился за провод под током, убегая от %s"
+  "death.attack.wire_shock.player": "%s схватился за провод под током, убегая от %s",
+  "item.techguns.wire_coil_copper_insulated": "Моток изолированного медного провода",
+  "item.techguns.wire_coil_steel_insulated": "Моток изолированного стального провода",
+  "techguns.wire.tip.insulated": "Изолирован: не бьёт током",
+  "techguns.wire.tip.bare": "Голый: под нагрузкой бьёт током, броня не спасает",
+  "techguns.power.jei.wire_coil_copper_insulated": "Медный провод в резиновой изоляции: 2 048 FE/т, до 16 блоков, током не бьёт.",
+  "techguns.power.jei.wire_coil_steel_insulated": "Стальной провод в изоляции: 16 384 FE/т, до 24 блоков, током не бьёт."
 }

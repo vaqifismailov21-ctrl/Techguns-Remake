@@ -24,6 +24,8 @@ public final class WireBlocks {
 
     public static final RegistryObject<Item> COIL_COPPER=TGItems.ITEMS.register("wire_coil_copper",()->new WireCoilItem(WireTier.COPPER));
     public static final RegistryObject<Item> COIL_STEEL=TGItems.ITEMS.register("wire_coil_steel",()->new WireCoilItem(WireTier.STEEL));
+    public static final RegistryObject<Item> COIL_COPPER_INSULATED=TGItems.ITEMS.register("wire_coil_copper_insulated",()->new WireCoilItem(WireTier.COPPER,true));
+    public static final RegistryObject<Item> COIL_STEEL_INSULATED=TGItems.ITEMS.register("wire_coil_steel_insulated",()->new WireCoilItem(WireTier.STEEL,true));
     public static final RegistryObject<Item> COIL_HV=TGItems.ITEMS.register("wire_coil_high_voltage",()->new WireCoilItem(WireTier.HIGH_VOLTAGE));
     public static final RegistryObject<Item> CONNECTOR_COPPER_ITEM=item(CONNECTOR_COPPER),CONNECTOR_STEEL_ITEM=item(CONNECTOR_STEEL),CONNECTOR_HV_ITEM=item(CONNECTOR_HV),
         TRANSFORMER_ITEM=item(TRANSFORMER),PYLON_ITEM=item(PYLON);
@@ -36,6 +38,11 @@ public final class WireBlocks {
     public static final RegistryObject<BlockEntityType<PylonEntity>> PYLON_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("pylon",
         ()->BlockEntityType.Builder.of(PylonEntity::new,PYLON.get()).build(null));
 
+    public static Item coil(WireTier tier,boolean insulated){
+        if(insulated&&tier==WireTier.COPPER)return COIL_COPPER_INSULATED.get();
+        if(insulated&&tier==WireTier.STEEL)return COIL_STEEL_INSULATED.get();
+        return coil(tier);
+    }
     public static Item coil(WireTier tier){return switch(tier){case COPPER->COIL_COPPER.get();case STEEL->COIL_STEEL.get();case HIGH_VOLTAGE->COIL_HV.get();};}
     /** Main block (the one wires are stored on) of a wire host block at pos, or null. */
     public static BlockPos hostAt(Level level,BlockPos pos){
@@ -45,6 +52,6 @@ public final class WireBlocks {
         return state.getBlock() instanceof WireHost?pos:null;
     }
     public static boolean isWireBlock(BlockState state){return state.getBlock() instanceof WireHost;}
-    public static List<RegistryObject<Item>> tabItems(){return List.of(COIL_COPPER,COIL_STEEL,COIL_HV,CONNECTOR_COPPER_ITEM,CONNECTOR_STEEL_ITEM,CONNECTOR_HV_ITEM,TRANSFORMER_ITEM,PYLON_ITEM);}
+    public static List<RegistryObject<Item>> tabItems(){return List.of(COIL_COPPER,COIL_COPPER_INSULATED,COIL_STEEL,COIL_STEEL_INSULATED,COIL_HV,CONNECTOR_COPPER_ITEM,CONNECTOR_STEEL_ITEM,CONNECTOR_HV_ITEM,TRANSFORMER_ITEM,PYLON_ITEM);}
     public static void init(){}
 }

@@ -32,6 +32,7 @@ public final class WireShock {
         if(event.phase!=TickEvent.Phase.END||!(event.level instanceof ServerLevel level)||level.getGameTime()%5!=0)return;
         var net=WireNetwork.get(level);
         for(var w:net.live(level.getGameTime())){
+            if(w.insulated())continue;
             var a=WireNetwork.point(level,w.a());var b=WireNetwork.point(level,w.b());if(a==null||b==null)continue;
             double length=a.distanceTo(b),sag=WireTier.sag(w.tier(),length);
             int n=Math.max(2,(int)(length*3));
@@ -45,7 +46,16 @@ public final class WireShock {
             }
         }
     }
+    /** A full hazmat suit (rubber) keeps the wearer safe. */
+    public static boolean protectedSuit(LivingEntity e){
+        for(var slot:new net.minecraft.world.entity.EquipmentSlot[]{net.minecraft.world.entity.EquipmentSlot.HEAD,net.minecraft.world.entity.EquipmentSlot.CHEST,net.minecraft.world.entity.EquipmentSlot.LEGS,net.minecraft.world.entity.EquipmentSlot.FEET}){
+            var id=net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(e.getItemBySlot(slot).getItem());
+            if(id==null||!id.getNamespace().equals(Techguns.MODID)||!id.getPath().startsWith("hazmat_"))return false;
+        }
+        return true;
+    }
     private static void shock(ServerLevel level,LivingEntity e,WireTier tier,Vec3 at){
+        if(protectedSuit(e)){if(level.getGameTime()%20==0)level.sendParticles(ParticleTypes.ELECTRIC_SPARK,at.x,at.y,at.z,3,0.1,0.1,0.1,0.2);return;}
         var type=level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(SHOCK);
         if(!e.hurt(new DamageSource(type),damage(tier)))return;
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK,at.x,at.y,at.z,tier==WireTier.HIGH_VOLTAGE?30:12,0.2,0.2,0.2,0.5);
