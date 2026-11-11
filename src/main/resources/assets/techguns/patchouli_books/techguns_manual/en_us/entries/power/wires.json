@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l)Copper$(): 2,048 FE/t, up to 16 blocks. $(l)Steel$(): 16,384 FE/t, up to 24 blocks, lower loss. $(l)High-voltage$(): 131,072 FE/t, up to 48 blocks, almost lossless; only on high-voltage insulators, the transformer top and pylons. Loss grows with length."
+      "text": "$(l)Copper$(): 2,048 FE/t, up to 16 blocks. $(l)Steel$(): 16,384 FE/t, up to 24 blocks, lower loss. $(l)High-voltage$(): 131,072 FE/t, up to 48 blocks, almost lossless; only on high-voltage insulators, the transformer top and pylons. Loss grows with length.$(br2)$(4)Overload:$() if more energy goes through a wire in one tick than it can carry, it $(l)burns out$() with sparks and smoke and is gone, e.g. copper wire between two steel insulators on a strong line."
     },
     {
       "type": "patchouli:crafting",
@@ -38,7 +38,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The $(item)transformer$() stores 20,000,000 FE. The front bushing takes copper and steel wire, the top one high-voltage wire. It gives power to cables and machines at the front and takes it on the other sides except the top. Power only flows to emptier stores."
+      "text": "The $(item)transformer$() stores 20,000,000 FE. The front bushing takes copper and steel wire (up to 16,384 FE/t), the top one high-voltage wire (up to 131,072 FE/t). At the front it gives up to 524,288 FE/t: an energy or heavy cable there burns out, use a $(item)power bus duct$() and takes it on the other sides except the top. Power only flows to emptier stores."
     },
     {
       "type": "patchouli:crafting",

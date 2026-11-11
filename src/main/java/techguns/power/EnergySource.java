@@ -26,6 +26,8 @@ public abstract class EnergySource extends BlockEntity {
     /** Side that takes energy from outside. */
     protected boolean takes(Direction side){return false;}
     protected int inputLimit(){return 0;}
+    /** Called with the energy taken in through a side. */
+    protected void received(int amount){}
     public int energyStored(){return energy.getEnergyStored();}
     public int energyCapacity(){return energy.getMaxEnergyStored();}
     protected void produce(int amount){if(amount>0&&energy.receiveEnergy(amount,false)>0)setChanged();}
@@ -36,13 +38,14 @@ public abstract class EnergySource extends BlockEntity {
             if(budget<=0)break;if(!gives(side))continue;var neighbour=level.getBlockEntity(worldPosition.relative(side));if(neighbour==null)continue;
             if(neighbour instanceof EnergySource source&&!source.takes(side.getOpposite()))continue;
             var target=neighbour.getCapability(ForgeCapabilities.ENERGY,side.getOpposite()).resolve();if(target.isEmpty()||!target.get().canReceive())continue;
+            if(EnergyCableEntity.overloads(neighbour,budget))continue;
             int given=target.get().receiveEnergy(budget,false);if(given>0){energy.extractEnergy(given,false);budget-=given;setChanged();}
         }
     }
     private IEnergyStorage handle(Direction side){
         boolean gives=gives(side),takes=takes(side);
         return new IEnergyStorage(){
-            @Override public int receiveEnergy(int max,boolean simulate){if(!takes)return 0;int got=energy.receiveEnergy(Math.min(max,inputLimit()),simulate);if(got>0&&!simulate)setChanged();return got;}
+            @Override public int receiveEnergy(int max,boolean simulate){if(!takes)return 0;int got=energy.receiveEnergy(Math.min(max,inputLimit()),simulate);if(got>0&&!simulate){setChanged();received(got);}return got;}
             @Override public int extractEnergy(int max,boolean simulate){if(!gives)return 0;int taken=energy.extractEnergy(Math.min(max,output),simulate);if(taken>0&&!simulate)setChanged();return taken;}
             @Override public int getEnergyStored(){return energy.getEnergyStored();}
             @Override public int getMaxEnergyStored(){return energy.getMaxEnergyStored();}

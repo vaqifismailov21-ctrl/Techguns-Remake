@@ -13,4 +13,6 @@ public enum WireTier {
     /** Share of the energy that arrives at the other end of a wire of this length. */
     public float efficiency(double length){return (float)Math.max(0.5,1-lossPerBlock*length);}
     public static WireTier of(int ordinal){return values()[Math.max(0,Math.min(values().length-1,ordinal))];}
+    /** Sag of the middle of a wire: thin wires hang more, a little more the longer they are. */
+    public static double sag(WireTier tier,double length){return 0.08+length*(tier==HIGH_VOLTAGE?0.03:tier==STEEL?0.04:0.05);}
 }

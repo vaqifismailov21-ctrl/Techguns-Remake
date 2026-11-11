@@ -42,6 +42,7 @@ public final class ConnectorEntity extends BlockEntity {
         @Override public int receiveEnergy(int max,boolean simulate){
             if(level==null||now()-lastIn<HOLD)return 0;
             var behind=level.getBlockEntity(worldPosition.relative(back()));if(behind==null)return 0;
+            if(!simulate&&techguns.power.EnergyCableEntity.overloads(behind,max))return 0;
             var target=behind.getCapability(ForgeCapabilities.ENERGY,back().getOpposite()).resolve();
             if(target.isEmpty()||!target.get().canReceive())return 0;
             int got=target.get().receiveEnergy(max,simulate);if(got>0&&!simulate)lastOut=now();return got;

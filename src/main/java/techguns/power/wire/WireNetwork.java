@@ -45,7 +45,7 @@ public final class WireNetwork extends SavedData {
     private void index(WireConnection c){byNode.computeIfAbsent(c.a(),k->new ArrayList<>()).add(c);byNode.computeIfAbsent(c.b(),k->new ArrayList<>()).add(c);}
     private void rebuild(){byNode.clear();used.clear();for(var w:wires)index(w);}
 
-    private int free(WireConnection c,long tick){if(tick!=usedTick){used.clear();usedTick=tick;}return c.tier().rate-used.getOrDefault(c,0);}
+    private void resetUsage(long tick){if(tick!=usedTick){used.clear();usedTick=tick;}}
 
     private record Target(WireNode node,List<WireConnection> path,float efficiency,int depth,float fill){}
 
@@ -85,19 +85,40 @@ public final class WireNetwork extends SavedData {
             if(fx>=0)return Float.compare(fx,fy);
             return Integer.compare(((Target)x[0]).depth(),((Target)y[0]).depth());
         });
-        int left=amount;
+        resetUsage(tick);
+        int left=amount;var burnt=new ArrayList<WireConnection>();
         for(var o:takers){
             if(left<=0)break;
             var t=(Target)o[0];var sink=(IEnergyStorage)o[1];
-            int room=left;for(var c:t.path())room=Math.min(room,free(c,tick));
-            if(room<=0)continue;
+            boolean broken=false;for(var c:t.path())if(burnt.contains(c)){broken=true;break;}
+            if(broken)continue;
+            int room=left;
             int arrives=(int)(room*t.efficiency());if(arrives<=0)continue;
             int taken=sink.receiveEnergy(arrives,simulate);if(taken<=0)continue;
             int spent=Math.min(room,(int)Math.ceil(taken/t.efficiency()));
-            if(!simulate)for(var c:t.path())used.merge(c,spent,Integer::sum);
+            if(!simulate)for(var c:t.path())if(used.merge(c,spent,Integer::sum)>c.tier().rate&&!burnt.contains(c))burnt.add(c);
             left-=spent;
         }
+        if(!burnt.isEmpty()&&level instanceof ServerLevel server)for(var c:burnt)burn(server,c);
         return amount-left;
+    }
+
+    /** Too much energy through a wire in one tick: it melts with sparks and smoke along its length, and is gone. */
+    public void burn(ServerLevel level,WireConnection c){
+        if(!wires.remove(c))return;rebuild();setDirty();WirePackets.removed(level,c);
+        var a=point(level,c.a());var b=point(level,c.b());if(a==null||b==null)return;
+        double length=a.distanceTo(b),sag=WireTier.sag(c.tier(),length);int n=Math.max(4,(int)(length*1.5));
+        for(int i=0;i<=n;i++){double t=i/(double)n;var p=a.lerp(b,t).add(0,-sag*4*t*(1-t),0);
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,p.x,p.y,p.z,4,0.08,0.08,0.08,0.3);
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.SMOKE,p.x,p.y,p.z,2,0.05,0.05,0.05,0.01);
+            if(i%3==0)level.sendParticles(net.minecraft.core.particles.ParticleTypes.LAVA,p.x,p.y,p.z,1,0,0,0,0);}
+        var mid=a.lerp(b,0.5);var pos=net.minecraft.core.BlockPos.containing(mid);
+        level.playSound(null,pos,net.minecraft.sounds.SoundEvents.GENERIC_EXTINGUISH_FIRE,net.minecraft.sounds.SoundSource.BLOCKS,1.2F,0.6F);
+        level.playSound(null,pos,net.minecraft.sounds.SoundEvents.LIGHTNING_BOLT_IMPACT,net.minecraft.sounds.SoundSource.BLOCKS,0.5F,1.8F);
+    }
+    private static net.minecraft.world.phys.Vec3 point(Level level,WireNode node){
+        var state=level.getBlockState(node.pos());
+        return state.getBlock() instanceof WireHost host&&node.point()<host.points(state)?host.point(state,node.pos(),node.point()):null;
     }
 
     private static WireNetwork load(CompoundTag tag){

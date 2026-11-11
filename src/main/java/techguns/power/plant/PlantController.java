@@ -172,6 +172,7 @@ public abstract class PlantController extends EnergySource {
         if(level==null||!pushes()||energy.getEnergyStored()<=0)return;int budget=Math.min(output,energy.getEnergyStored());
         for(int i=0;i<outletPos.size()&&budget>0;i++){var be=level.getBlockEntity(outletPos.get(i));if(be==null)continue;
             var target=be.getCapability(ForgeCapabilities.ENERGY,outletSide.get(i)).resolve();if(target.isEmpty()||!target.get().canReceive())continue;
+            if(techguns.power.EnergyCableEntity.overloads(be,budget))continue;
             int given=target.get().receiveEnergy(budget,false);if(given>0){energy.extractEnergy(given,false);budget-=given;setChanged();}}
     }
     @Override protected boolean gives(Direction side){return formed&&pushes();}

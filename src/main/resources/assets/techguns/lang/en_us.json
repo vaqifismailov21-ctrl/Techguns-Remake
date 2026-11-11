@@ -1614,7 +1614,7 @@
   "techguns.power.jei.wire_connector_copper": "Insulator for copper wire. Place it on a machine, cable or cell.",
   "techguns.power.jei.wire_connector_steel": "Insulator for copper and steel wire.",
   "techguns.power.jei.wire_connector_high_voltage": "Insulator for high-voltage wire.",
-  "techguns.power.jei.transformer": "Stores 20,000,000 FE. Gives up to 524,288 FE/t to cables and machines at the front, takes from the sides, back and bottom. Front bushing: copper and steel wire; top: high-voltage.",
+  "techguns.power.jei.transformer": "Stores 20,000,000 FE. Gives up to 524,288 FE/t at the front (only a power bus duct survives that), takes from the sides, back and bottom. Front bushing: copper and steel wire; top: high-voltage.",
   "techguns.power.jei.pylon": "An 8-block power pylon with four points for steel and high-voltage wire.",
   "techguns.power.jei.wind_plant": "Wind farm controller. Build the tower, hub and blades as shown in the book, then use the controller.",
   "techguns.power.jei.geothermal_plant": "Geothermal plant controller. Goes above lava; the layout is in the book.",

@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "techguns:heavy_cable,techguns:power_bus",
-      "text": "The $(item)heavy power cable$() carries 65,536 FE/t, the $(item)power bus duct$() 524,288 FE/t, both lossless. They work like the energy cable: they join cables, machines and cells by themselves. Different cables join too, but the flow is limited by the thinnest piece."
+      "text": "The $(item)heavy power cable$() carries 65,536 FE/t, the $(item)power bus duct$() 524,288 FE/t, both lossless. They work like the energy cable: they join cables, machines and cells by themselves. Different cables join too, but the flow is limited by the thinnest piece.$(br2)$(4)Overload:$() a cable offered more than twice its rate in one tick (a transformer, the flow out of a thicker cable) $(l)burns out$()."
     },
     {
       "type": "patchouli:text",

@@ -61,7 +61,7 @@ public final class WireClient {
         return host.point(state,pos,index);
     }
     /** Sag of the middle of a wire: thin wires hang more, a little more the longer they are. */
-    public static double sag(WireTier tier,double length){return 0.08+length*(tier==WireTier.HIGH_VOLTAGE?0.03:tier==WireTier.STEEL?0.04:0.05);}
+    public static double sag(WireTier tier,double length){return WireTier.sag(tier,length);}
 
     private static void cable(PoseStack pose,VertexConsumer vc,Level level,Vec3 a,Vec3 b,WireTier tier){
         double length=a.distanceTo(b),sag=sag(tier,length);

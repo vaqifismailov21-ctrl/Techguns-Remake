@@ -30,7 +30,7 @@ public final class TransformerEntity extends EnergySource {
         var net=WireNetwork.get(server);
         for(int point=0;point<2;point++){
             int stored=energy.getEnergyStored();if(stored<=0)break;
-            int sent=net.route(server,new WireNode(worldPosition,point),Math.min(stored,TransformerBlock.RATE),false,fill());
+            int sent=net.route(server,new WireNode(worldPosition,point),Math.min(stored,point==0?WireTier.STEEL.rate:WireTier.HIGH_VOLTAGE.rate),false,fill());
             if(sent>0){energy.extractEnergy(sent,false);setChanged();}
         }
     }
