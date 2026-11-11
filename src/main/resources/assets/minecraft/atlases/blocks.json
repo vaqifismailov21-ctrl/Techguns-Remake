@@ -1876,6 +1876,106 @@
       "type": "minecraft:directory",
       "source": "blocks/plant",
       "prefix": "blocks/plant/"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/power_bus_arm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/power_bus_core"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/connector_base"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/connector_cap_copper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/insulator_copper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/insulator_hv"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/insulator_steel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/pylon_steel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/transformer_front"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/transformer_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/transformer_skid"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/transformer_tank"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:blocks/wire/transformer_top"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/ingothellish"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platepowerdoom"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/platepowermk2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/pylon"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/reinforced_electric_engine"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/turbine_blade"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/uvelement"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/wire_coil_copper"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/wire_coil_copper_insulated"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/wire_coil_high_voltage"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/wire_coil_steel"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "techguns:items/wire_coil_steel_insulated"
     }
   ]
 }
