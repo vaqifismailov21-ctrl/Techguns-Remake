@@ -31,10 +31,11 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         TEX.put(Tex.CASING,tex("plant_casing"));TEX.put(Tex.CASING_LIGHT,tex("plant_casing_light"));TOP.put(Tex.CASING,tex("plant_casing_top"));TOP.put(Tex.CASING_LIGHT,tex("plant_casing_light_top"));TEX.put(Tex.CASING_DARK,tex("plant_casing_dark"));TEX.put(Tex.GLASS,tex("plant_glass"));
         TEX.put(Tex.TOWER,tex("turbine_tower"));TEX.put(Tex.COIL,tex("fusion_coil"));TEX.put(Tex.BLADE,tex("turbine_blade"));
         TEX.put(Tex.LADDER,ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/metal_ladder.png"));
-        TEX.put(Tex.RC_HOUSING,tg("reactionchamber_housing"));TEX.put(Tex.RC_GLASS,tg("reactionchamber_glass"));
-        TEX.put(Tex.FAB_HOUSING,tg("fabricator_housing"));TEX.put(Tex.FAB_GLASS,tg("fabricator_glass"));
-        TEX.put(Tex.DRILL_ENGINE,tg("drill_engine"));TEX.put(Tex.DRILL_FRAME,tg("drill_frame"));TEX.put(Tex.STEELFRAME,tg("steelframe_dark"));
-        TEX.put(Tex.CONCRETE,tg("concrete_grey"));TEX.put(Tex.ROD,tg("drill_rod"));TEX.put(Tex.GEN_SIDE,tg("generator_side"));TEX.put(Tex.TECHDOOR,tg("techdoor3x3"));
+        // the plants' own textures, painted in the Techguns manner (tools/plant_style.py)
+        TEX.put(Tex.RC_HOUSING,tex("hall_white"));TEX.put(Tex.RC_GLASS,tex("hall_glass"));
+        TEX.put(Tex.FAB_HOUSING,tex("hall_light"));TEX.put(Tex.FAB_GLASS,tex("hall_glass_dark"));
+        TEX.put(Tex.DRILL_ENGINE,tex("machine"));TEX.put(Tex.DRILL_FRAME,tex("frame_rust"));TEX.put(Tex.STEELFRAME,tex("frame_dark"));
+        TEX.put(Tex.CONCRETE,tex("concrete"));TEX.put(Tex.ROD,tex("rod"));TEX.put(Tex.GEN_SIDE,tex("gen_side"));TEX.put(Tex.TECHDOOR,tex("door"));
         TEX.put(Tex.PIPE,tex("plant_pipe"));TEX.put(Tex.VENT,tex("plant_vent"));TEX.put(Tex.HAZARD,tex("plant_hazard"));TEX.put(Tex.PANEL,tex("plant_panel"));
     }
     private static final ResourceLocation GLOW=tex("plant_glow");
