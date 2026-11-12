@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "techguns:stairs_container_red",
+    "techguns:stairs_container_green",
+    "techguns:stairs_container_blue",
+    "techguns:stairs_container_orange",
+    "techguns:stairs_steelframe_blue",
+    "techguns:stairs_steelframe_scaffold",
+    "techguns:stairs_container_scifi",
+    "techguns:stairs_container_scifi_rusty",
+    "techguns:stairs_concrete_brown",
+    "techguns:stairs_concrete_grey",
+    "techguns:stairs_concrete_brown_light_scaff",
+    "techguns:stairs_nethermetal_panel",
+    "techguns:stairs_nethermetal_grate1",
+    "techguns:stairs_nethermetal_grate2",
+    "techguns:stairs_nethermetal_grey_dark",
+    "techguns:stairs_nethermetal_grey",
+    "techguns:stairs_nethermetal_grey_tiles",
+    "techguns:stairs_nethermetal_plate_black",
+    "techguns:stairs_nethermetal_plate_red"
+  ]
+}

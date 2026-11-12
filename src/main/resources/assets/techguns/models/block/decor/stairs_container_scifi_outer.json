@@ -1,0 +1,10 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "techguns:blocks/container_scifi",
+    "top": "techguns:blocks/container_scifi",
+    "side": "techguns:blocks/container_scifi",
+    "particle": "techguns:blocks/container_scifi"
+  },
+  "render_type": "minecraft:cutout"
+}

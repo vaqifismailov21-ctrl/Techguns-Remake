@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_panel_large_border"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_panel_large_border_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/panel_large_border"
+    }
+  }
+}

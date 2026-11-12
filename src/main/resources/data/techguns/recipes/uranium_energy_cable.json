@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "ppp",
+    "pep",
+    "ppp"
+  ],
+  "key": {
+    "p": {
+      "item": "techguns:energy_cable"
+    },
+    "e": {
+      "item": "techguns:enricheduranium"
+    }
+  },
+  "result": {
+    "item": "techguns:uranium_energy_cable",
+    "count": 8
+  }
+}

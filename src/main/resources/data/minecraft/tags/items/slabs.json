@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "techguns:slab_container_red",
+    "techguns:slab_container_green",
+    "techguns:slab_container_blue",
+    "techguns:slab_container_orange",
+    "techguns:slab_panel_large_border",
+    "techguns:slab_steelframe_blue",
+    "techguns:slab_steelframe_dark",
+    "techguns:slab_steelframe_scaffold",
+    "techguns:slab_container_scifi",
+    "techguns:slab_container_scifi_rusty",
+    "techguns:slab_concrete_brown",
+    "techguns:slab_concrete_brown_light",
+    "techguns:slab_concrete_grey",
+    "techguns:slab_concrete_grey_dark",
+    "techguns:slab_concrete_brown_pipes",
+    "techguns:slab_concrete_brown_light_scaff",
+    "techguns:slab_concrete_brown_light_pipes",
+    "techguns:slab_concrete_grey_pipes",
+    "techguns:slab_concrete_grey_dark_pipes",
+    "techguns:slab_nethermetal_panel",
+    "techguns:slab_nethermetal_grate1",
+    "techguns:slab_nethermetal_grate2",
+    "techguns:slab_nethermetal_grey_dark",
+    "techguns:slab_nethermetal_grey",
+    "techguns:slab_nethermetal_grey_tiles",
+    "techguns:slab_nethermetal_border_red",
+    "techguns:slab_nethermetal_plate_black",
+    "techguns:slab_nethermetal_plate_red"
+  ]
+}

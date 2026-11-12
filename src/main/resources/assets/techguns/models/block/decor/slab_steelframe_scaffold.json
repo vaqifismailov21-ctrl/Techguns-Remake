@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "techguns:blocks/steelframe_scaffold",
+    "top": "techguns:blocks/steelframe_scaffold",
+    "side": "techguns:blocks/steelframe_scaffold",
+    "particle": "techguns:blocks/steelframe_scaffold"
+  },
+  "render_type": "minecraft:cutout"
+}

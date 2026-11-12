@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_nethermetal_grey_tiles"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_nethermetal_grey_tiles_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/nethermetal_grey_tiles"
+    }
+  }
+}

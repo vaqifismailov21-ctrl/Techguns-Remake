@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "techguns:blocks/container_scifi_rusty",
+    "top": "techguns:blocks/container_scifi_rusty",
+    "side": "techguns:blocks/container_scifi_rusty",
+    "particle": "techguns:blocks/container_scifi_rusty"
+  },
+  "render_type": "minecraft:cutout"
+}

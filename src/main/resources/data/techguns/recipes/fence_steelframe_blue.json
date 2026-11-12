@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:steelframe_blue"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_steelframe_blue",
+    "count": 6
+  }
+}

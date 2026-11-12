@@ -207,7 +207,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     }
     @Override public CompoundTag getUpdateTag(){return saveWithoutMetadata();}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
-    @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){if(capability==ForgeCapabilities.ITEM_HANDLER)return automation.cast();if(capability==ForgeCapabilities.ENERGY)return energyHandle.cast();if(capability==ForgeCapabilities.FLUID_HANDLER&&(kind==MachineKind.CHEM_LAB||kind==MachineKind.REACTION))return fluidHandle.cast();return super.getCapability(capability,side);}
+    @Override public <T> LazyOptional<T> getCapability(Capability<T> capability,Direction side){if(capability==ForgeCapabilities.ITEM_HANDLER)return automation.cast();if(capability==ForgeCapabilities.ENERGY)return energyHandle.cast();if(capability==ForgeCapabilities.FLUID_HANDLER&&(kind==MachineKind.CHEM_LAB||kind==MachineKind.REACTION||kind==MachineKind.METAL_PRESS))return fluidHandle.cast();return super.getCapability(capability,side);}
     @Override public void invalidateCaps(){super.invalidateCaps();automation.invalidate();energyHandle.invalidate();fluidHandle.invalidate();}@Override public void reviveCaps(){super.reviveCaps();createHandles();}
     @Override public Component getDisplayName(){return Component.translatable(kind.titleKey());}
     @Override public AbstractContainerMenu createMenu(int id,Inventory playerInventory,Player player){return new MachineMenu(id,playerInventory,this);}

@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/windowframe_base",
+  "textures": {
+    "frame": "techguns:blocks/metal_ladder"
+  },
+  "render_type": "minecraft:cutout"
+}

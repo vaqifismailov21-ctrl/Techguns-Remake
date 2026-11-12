@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "techguns:blocks/container_red",
+    "top": "techguns:blocks/container_red",
+    "side": "techguns:blocks/container_red",
+    "particle": "techguns:blocks/container_red"
+  },
+  "render_type": "minecraft:cutout"
+}

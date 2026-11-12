@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:nethermetal_grey_tiles"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_nethermetal_grey_tiles",
+    "count": 6
+  }
+}

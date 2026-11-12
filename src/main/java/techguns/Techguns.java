@@ -90,6 +90,7 @@ public final class Techguns {
         TGTurrets.init(bus);
         TGOreDrill.init();
         techguns.power.PowerBlocks.init();
+        techguns.fluids.FluidPipes.init();
         bus.addListener(TGNpcs::attributes);
         TGItems.ITEMS.register(bus);
         TGSounds.SOUNDS.register(bus);

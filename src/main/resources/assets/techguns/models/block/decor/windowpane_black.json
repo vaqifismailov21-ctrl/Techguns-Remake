@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/windowframe_pane",
+  "textures": {
+    "pane": "minecraft:block/black_stained_glass"
+  },
+  "render_type": "minecraft:translucent"
+}

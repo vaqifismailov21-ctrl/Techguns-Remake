@@ -1,0 +1,10 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "techguns:blocks/nethermetal_grey",
+    "top": "techguns:blocks/nethermetal_grey",
+    "side": "techguns:blocks/nethermetal_grey",
+    "particle": "techguns:blocks/nethermetal_grey"
+  },
+  "render_type": "minecraft:cutout"
+}

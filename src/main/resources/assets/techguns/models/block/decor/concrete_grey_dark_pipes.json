@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "techguns:blocks/concrete_grey_dark_pipes",
+    "particle": "techguns:blocks/concrete_grey_dark_pipes"
+  },
+  "render_type": "minecraft:cutout"
+}

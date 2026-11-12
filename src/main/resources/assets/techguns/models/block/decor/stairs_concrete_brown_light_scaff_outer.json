@@ -1,0 +1,10 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "techguns:blocks/concrete_brown_light_scaff",
+    "top": "techguns:blocks/concrete_brown_light_scaff",
+    "side": "techguns:blocks/concrete_brown_light_scaff",
+    "particle": "techguns:blocks/concrete_brown_light_scaff"
+  },
+  "render_type": "minecraft:cutout"
+}

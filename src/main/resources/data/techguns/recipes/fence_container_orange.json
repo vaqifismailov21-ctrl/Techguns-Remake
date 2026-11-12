@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:container_orange"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_container_orange",
+    "count": 6
+  }
+}

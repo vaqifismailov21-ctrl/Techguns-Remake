@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "techguns:blocks/concrete_brown_pipes",
+    "top": "techguns:blocks/concrete_brown_pipes",
+    "side": "techguns:blocks/concrete_brown",
+    "particle": "techguns:blocks/concrete_brown_pipes"
+  },
+  "render_type": "minecraft:cutout"
+}

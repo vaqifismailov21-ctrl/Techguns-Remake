@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:container_red"
+    }
+  },
+  "result": {
+    "item": "techguns:slab_container_red",
+    "count": 6
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_nethermetal_border_red"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_nethermetal_border_red_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/nethermetal_border_red"
+    }
+  }
+}

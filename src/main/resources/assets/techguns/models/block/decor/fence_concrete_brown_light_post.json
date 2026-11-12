@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/fence_post",
+  "textures": {
+    "texture": "techguns:blocks/concrete_brown_light"
+  },
+  "render_type": "minecraft:cutout"
+}

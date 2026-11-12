@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:concrete_brown_light_scaff"
+    }
+  },
+  "result": {
+    "item": "techguns:stairs_concrete_brown_light_scaff",
+    "count": 4
+  }
+}

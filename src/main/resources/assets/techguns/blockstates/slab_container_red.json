@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_container_red"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_container_red_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/container_red"
+    }
+  }
+}

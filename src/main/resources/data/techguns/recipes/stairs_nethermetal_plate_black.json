@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:nethermetal_plate_black"
+    }
+  },
+  "result": {
+    "item": "techguns:stairs_nethermetal_plate_black",
+    "count": 4
+  }
+}

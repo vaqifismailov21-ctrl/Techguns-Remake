@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "techguns:blocks/nethermetal_grate2",
+    "top": "techguns:blocks/nethermetal_grate2",
+    "side": "techguns:blocks/nethermetal_grate2",
+    "particle": "techguns:blocks/nethermetal_grate2"
+  },
+  "render_type": "minecraft:cutout"
+}

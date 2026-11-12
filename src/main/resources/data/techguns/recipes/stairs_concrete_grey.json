@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:concrete_grey"
+    }
+  },
+  "result": {
+    "item": "techguns:stairs_concrete_grey",
+    "count": 4
+  }
+}

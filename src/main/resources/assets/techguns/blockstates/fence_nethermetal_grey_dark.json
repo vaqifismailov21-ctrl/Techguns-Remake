@@ -1,0 +1,81 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_post"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_side",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "corner_ne": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_corner",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "corner_es": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_corner",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "corner_sw": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_corner",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "corner_wn": "true"
+      },
+      "apply": {
+        "model": "techguns:block/decor/fence_nethermetal_grey_dark_corner",
+        "y": 270
+      }
+    }
+  ]
+}

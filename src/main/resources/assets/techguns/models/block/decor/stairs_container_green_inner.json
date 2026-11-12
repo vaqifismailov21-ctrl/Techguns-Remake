@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "techguns:blocks/container_green",
+    "top": "techguns:blocks/container_green",
+    "side": "techguns:blocks/container_green",
+    "particle": "techguns:blocks/container_green"
+  },
+  "render_type": "minecraft:cutout"
+}

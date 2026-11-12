@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "techguns:blocks/nethermetal_panel",
+    "top": "techguns:blocks/nethermetal_panel",
+    "side": "techguns:blocks/nethermetal_panel",
+    "particle": "techguns:blocks/nethermetal_panel"
+  },
+  "render_type": "minecraft:cutout"
+}

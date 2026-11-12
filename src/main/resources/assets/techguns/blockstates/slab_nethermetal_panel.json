@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_nethermetal_panel"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_nethermetal_panel_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/nethermetal_panel"
+    }
+  }
+}

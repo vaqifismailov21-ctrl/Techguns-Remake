@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:nethermetal_plate_black"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_nethermetal_plate_black",
+    "count": 6
+  }
+}

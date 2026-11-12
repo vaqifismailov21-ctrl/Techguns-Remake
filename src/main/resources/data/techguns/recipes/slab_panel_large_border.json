@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:panel_large_border"
+    }
+  },
+  "result": {
+    "item": "techguns:slab_panel_large_border",
+    "count": 6
+  }
+}

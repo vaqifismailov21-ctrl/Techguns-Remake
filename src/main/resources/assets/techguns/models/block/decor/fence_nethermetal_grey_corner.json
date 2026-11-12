@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/fence_corner",
+  "textures": {
+    "texture": "techguns:blocks/nethermetal_grey"
+  },
+  "render_type": "minecraft:cutout"
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "techguns:blocks/steelframe_blue",
+    "top": "techguns:blocks/steelframe_blue",
+    "side": "techguns:blocks/steelframe_blue",
+    "particle": "techguns:blocks/steelframe_blue"
+  },
+  "render_type": "minecraft:cutout"
+}

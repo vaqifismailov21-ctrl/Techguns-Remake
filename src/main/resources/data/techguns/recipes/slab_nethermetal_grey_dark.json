@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:nethermetal_grey_dark"
+    }
+  },
+  "result": {
+    "item": "techguns:slab_nethermetal_grey_dark",
+    "count": 6
+  }
+}

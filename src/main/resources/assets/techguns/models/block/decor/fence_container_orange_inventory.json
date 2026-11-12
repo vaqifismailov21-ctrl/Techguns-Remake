@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/fence_inventory",
+  "textures": {
+    "texture": "techguns:blocks/container_orange"
+  },
+  "render_type": "minecraft:cutout"
+}

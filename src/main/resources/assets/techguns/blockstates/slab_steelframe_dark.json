@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_steelframe_dark"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_steelframe_dark_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/steelframe_dark"
+    }
+  }
+}

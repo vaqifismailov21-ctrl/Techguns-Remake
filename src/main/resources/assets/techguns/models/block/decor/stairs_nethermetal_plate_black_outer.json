@@ -1,0 +1,10 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "techguns:blocks/nethermetal_plate_black",
+    "top": "techguns:blocks/nethermetal_plate_black",
+    "side": "techguns:blocks/nethermetal_plate_black",
+    "particle": "techguns:blocks/nethermetal_plate_black"
+  },
+  "render_type": "minecraft:cutout"
+}

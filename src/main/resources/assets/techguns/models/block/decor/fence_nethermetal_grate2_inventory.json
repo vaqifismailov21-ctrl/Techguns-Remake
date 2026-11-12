@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/fence_inventory",
+  "textures": {
+    "texture": "techguns:blocks/nethermetal_grate2"
+  },
+  "render_type": "minecraft:cutout"
+}

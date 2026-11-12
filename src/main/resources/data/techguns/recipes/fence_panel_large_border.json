@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:panel_large_border"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_panel_large_border",
+    "count": 6
+  }
+}

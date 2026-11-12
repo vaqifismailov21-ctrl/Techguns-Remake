@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:nethermetal_grate2"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_nethermetal_grate2",
+    "count": 6
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowframe_carbon",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowframe_carbon",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowframe_carbon",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowframe_carbon",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "glass"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_glass"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "glass"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_glass",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "white"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_white"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "white"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_white",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "orange"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_orange"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "orange"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_orange",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "magenta"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_magenta"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "magenta"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_magenta",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "light_blue"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_light_blue"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "light_blue"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_light_blue",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "yellow"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_yellow"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "yellow"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_yellow",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "lime"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_lime"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "lime"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_lime",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "pink"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_pink"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "pink"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_pink",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "gray"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_gray"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "gray"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_gray",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "light_gray"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_light_gray"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "light_gray"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_light_gray",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "cyan"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_cyan"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "cyan"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_cyan",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "purple"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_purple"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "purple"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_purple",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "blue"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_blue"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "blue"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_blue",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "brown"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_brown"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "brown"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_brown",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "green"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_green"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "green"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_green",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "red"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_red"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "red"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_red",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north|south",
+        "pane": "black"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_black"
+      }
+    },
+    {
+      "when": {
+        "facing": "east|west",
+        "pane": "black"
+      },
+      "apply": {
+        "model": "techguns:block/decor/windowpane_black",
+        "y": 90
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_concrete_grey_dark_pipes"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_concrete_grey_dark_pipes_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/concrete_grey_dark_pipes"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "techguns:block/decor/fence_side",
+  "textures": {
+    "texture": "techguns:blocks/nethermetal_plate_red"
+  },
+  "render_type": "minecraft:cutout"
+}

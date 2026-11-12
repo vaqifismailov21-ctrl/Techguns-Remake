@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "techguns:block/decor/slab_container_scifi_rusty"
+    },
+    "type=top": {
+      "model": "techguns:block/decor/slab_container_scifi_rusty_top"
+    },
+    "type=double": {
+      "model": "techguns:block/decor/container_scifi_rusty"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "techguns:concrete_grey_dark"
+    }
+  },
+  "result": {
+    "item": "techguns:fence_concrete_grey_dark",
+    "count": 6
+  }
+}
