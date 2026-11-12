@@ -11,9 +11,9 @@ import techguns.TGConfig;
 public final class NetherStructuresFeature extends Feature<NoneFeatureConfiguration> {
     private record Spawn(String id,int weight,boolean cluster){}
     private static final List<Spawn> SMALL=List.of(new Spawn("nether_altar_small",10,false),new Spawn("nether_soul_platform",10,false),new Spawn("nether_loot_01",10,false),new Spawn("nether_acid_hole",10,false),new Spawn("nether_orecluster_small",10,true));
-    private static final List<Spawn> MEDIUM=List.of(new Spawn("nether_altar_medium",10,false),new Spawn("nether_ghast_spawner",10,false),new Spawn("nether_orecluster_castle",1000,true));
+    private static final List<Spawn> MEDIUM=List.of(new Spawn("nether_altar_medium",10,false),new Spawn("nether_ghast_spawner",10,false),new Spawn("nether_building",10,false),new Spawn("nether_submarine",10,false),new Spawn("nether_orecluster_medium",10,true),new Spawn("nether_orecluster_castle",10,true));
     /** Every original Nether structure id of the grid tables. */
-    public static final Set<String> IDS=Set.of("nether_altar_small","nether_soul_platform","nether_loot_01","nether_acid_hole","nether_orecluster_small","nether_altar_medium","nether_ghast_spawner","nether_orecluster_castle");
+    public static final Set<String> IDS=Set.of("nether_altar_small","nether_soul_platform","nether_loot_01","nether_acid_hole","nether_orecluster_small","nether_altar_medium","nether_ghast_spawner","nether_orecluster_castle","nether_building","nether_submarine","nether_orecluster_medium");
     public NetherStructuresFeature(){super(NoneFeatureConfiguration.CODEC);}
     public static String choose(int cx,int cz,RandomSource random){
         if(!TGConfig.doWorldspawn)return null;
@@ -22,6 +22,13 @@ public final class NetherStructuresFeature extends Feature<NoneFeatureConfigurat
         var candidates=cx%TGConfig.spawnWeightTGStructureMedium==0&&cz%TGConfig.spawnWeightTGStructureMedium==0?MEDIUM:cx%TGConfig.spawnWeightTGStructureSmall==0&&cz%TGConfig.spawnWeightTGStructureSmall==0?SMALL:List.<Spawn>of();
         int total=candidates.stream().filter(s->!s.cluster||TGConfig.spawnOreClusterStructures).mapToInt(Spawn::weight).sum();if(total==0)return null;
         int roll=random.nextInt(total)+1,sum=0;for(var spawn:candidates)if(!spawn.cluster||TGConfig.spawnOreClusterStructures){sum+=spawn.weight;if(roll<=sum)return spawn.id;}return null;
+    }
+    /** Lava ocean surface for the submarine: lava at y 30 and open air above it at all four corners of the chunk, or -1. */
+    public static int lavaSurface(java.util.function.Function<BlockPos,net.minecraft.world.level.block.state.BlockState> world,int cx,int cz){
+        for(int dx:new int[]{0,15})for(int dz:new int[]{0,15}){int x=cx*16+dx,z=cz*16+dz;
+            if(!world.apply(new BlockPos(x,30,z)).getFluidState().is(net.minecraft.tags.FluidTags.LAVA))return -1;
+            for(int y=31;y<40;y++)if(!world.apply(new BlockPos(x,y,z)).isAir())return -1;}
+        return 31;
     }
     public static int airHeight(LevelAccessor world,int x,int z){return airHeight(world::getBlockState,x,z);}
     public static int airHeight(java.util.function.Function<BlockPos,net.minecraft.world.level.block.state.BlockState> world,int x,int z){int air=0;for(int y=100;y>20;y--){if(world.apply(new BlockPos(x,y,z)).isAir())++air;else{if(air>=10)return y;air=0;}}return -1;}

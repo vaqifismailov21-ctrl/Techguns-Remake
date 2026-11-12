@@ -1,0 +1,13 @@
+{
+  "type": "techguns:legacy_surface",
+  "kind": "end_cluster",
+  "biomes": [
+    "minecraft:end_highlands",
+    "minecraft:end_midlands",
+    "minecraft:small_end_islands",
+    "minecraft:end_barrens"
+  ],
+  "spawn_overrides": {},
+  "step": "top_layer_modification",
+  "terrain_adaptation": "none"
+}

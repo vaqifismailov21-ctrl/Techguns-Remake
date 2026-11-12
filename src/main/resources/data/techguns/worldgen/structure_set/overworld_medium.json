@@ -23,6 +23,10 @@
     {
       "structure": "techguns:desert_oil_cluster",
       "weight": 1
+    },
+    {
+      "structure": "techguns:factory_big",
+      "weight": 1
     }
   ],
   "placement": {

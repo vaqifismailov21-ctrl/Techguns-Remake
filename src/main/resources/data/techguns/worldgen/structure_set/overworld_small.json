@@ -15,6 +15,10 @@
     {
       "structure": "techguns:gasstation",
       "weight": 1
+    },
+    {
+      "structure": "techguns:factory_building_big",
+      "weight": 1
     }
   ],
   "placement": {

@@ -20,6 +20,15 @@
     "techguns:nether_soul_platform",
     "techguns:nether_loot_01",
     "techguns:nether_acid_hole",
-    "techguns:nether_orecluster_small"
+    "techguns:nether_orecluster_small",
+    "techguns:factory_building_big",
+    "techguns:factory_big",
+    "techguns:train",
+    "techguns:nether_building",
+    "techguns:nether_submarine",
+    "techguns:nether_orecluster_medium",
+    "techguns:end_floating_ship",
+    "techguns:end_building",
+    "techguns:end_cluster"
   ]
 }

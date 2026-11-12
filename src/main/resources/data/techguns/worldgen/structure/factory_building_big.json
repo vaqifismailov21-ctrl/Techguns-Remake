@@ -1,0 +1,8 @@
+{
+  "type": "techguns:legacy_surface",
+  "kind": "factory_building_big",
+  "biomes": "#minecraft:is_overworld",
+  "spawn_overrides": {},
+  "step": "top_layer_modification",
+  "terrain_adaptation": "none"
+}

@@ -19,6 +19,18 @@ public final class CommunityBlocksGameTests {
         lab.outputTank.fill(new FluidStack(TGFluids.STEAM.get(),1000),net.minecraftforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
         h.succeedWhen(()->{h.assertTrue(press.inputTank.getFluidAmount()==1000&&lab.outputTank.isEmpty(),"all steam reached the press");});
     }
+    /** Every community edition structure loads and plans in all four rotations without an unknown block or property. */
+    @GameTest(template="empty") public static void communityStructuresPlanInEveryRotation(GameTestHelper h){
+        for(var id:java.util.List.of("factory_building_big","factory_big","train","nether_building","nether_submarine","nether_orecluster_medium","end_building","end_floating_ship","end_cluster")){
+            var scan=techguns.world.ScannedStructure.load(id);
+            for(int turns=0;turns<4;turns++){
+                var plan=new techguns.world.structures.LegacyStructurePlan(net.minecraft.util.RandomSource.create(turns),pos->net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+                scan.place(plan,h.getLevel(),new BlockPos(0,120,0),turns,plan.random,net.minecraft.util.RandomSource.create(7),0);
+                h.assertTrue(plan.blocks().size()>=scan.blockCount()/2,id+" planned "+plan.blocks().size()+" of "+scan.blockCount());
+            }
+        }
+        h.succeed();
+    }
     /** A pane goes into a frame and comes out again; the frame keeps its facing. */
     @GameTest(template="empty") public static void windowFrameTakesAndReturnsPane(GameTestHelper h){
         var frame=TGDecorations.BLOCKS.get("windowframe_metal").get();h.setBlock(2,1,2,frame);var pos=new BlockPos(2,1,2);

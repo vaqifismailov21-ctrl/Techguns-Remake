@@ -1,0 +1,8 @@
+{
+  "type": "techguns:legacy_surface",
+  "kind": "nether_building",
+  "biomes": "#minecraft:is_nether",
+  "spawn_overrides": {},
+  "step": "top_layer_modification",
+  "terrain_adaptation": "none"
+}

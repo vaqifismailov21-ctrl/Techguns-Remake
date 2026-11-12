@@ -35,25 +35,25 @@ public final class StructureLocateGameTests {
         h.assertTrue(value instanceof LegacySurfaceStructure s&&s.kind.equals(id),"Missing native structure techguns:"+id);return value;
     }
     private static int gridOf(String id){
-        if(Set.of("military_base","castle","aircraftcarrier").contains(id))return TGConfig.spawnWeightTGStructureBig;
-        if(Set.of("alien_bug_nest","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster","nether_altar_medium","nether_ghast_spawner","nether_orecluster_castle").contains(id))return TGConfig.spawnWeightTGStructureMedium;
+        if(Set.of("military_base","castle","aircraftcarrier","train","end_floating_ship","end_building","end_cluster").contains(id))return TGConfig.spawnWeightTGStructureBig;
+        if(Set.of("alien_bug_nest","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster","nether_altar_medium","nether_ghast_spawner","nether_orecluster_castle","factory_big","nether_building","nether_submarine","nether_orecluster_medium").contains(id))return TGConfig.spawnWeightTGStructureMedium;
         return TGConfig.spawnWeightTGStructureSmall;
     }
 
     @GameTest(template="empty",batch="structure-locate",timeoutTicks=200) public static void everyOriginalStructureIsANativeStructureOnItsOriginalGrid(GameTestHelper h){
-        var server=h.getLevel().getServer();var registry=h.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE);var all=new TreeSet<String>();all.addAll(SurfaceStructuresFeature.IDS);all.addAll(NetherStructuresFeature.IDS);
-        h.assertTrue(all.size()==21,"Original TGStructureSpawnRegister has 13 Overworld and 8 Nether entries");
+        var server=h.getLevel().getServer();var registry=h.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE);var all=new TreeSet<String>();all.addAll(SurfaceStructuresFeature.IDS);all.addAll(NetherStructuresFeature.IDS);all.addAll(techguns.world.EndStructures.IDS);
+        h.assertTrue(all.size()==30,"13 Overworld and 8 Nether entries of the original, 3 + 3 + 3 of the community edition");
         for(var id:all){
             var holder=registry.getHolderOrThrow(ResourceKey.create(Registries.STRUCTURE,ResourceLocation.fromNamespaceAndPath(Techguns.MODID,id)));structure(h,id);
-            var level=server.getLevel(NetherStructuresFeature.IDS.contains(id)?Level.NETHER:Level.OVERWORLD);var placements=level.getChunkSource().getGeneratorState().getPlacementsForStructure(holder);
+            var level=server.getLevel(NetherStructuresFeature.IDS.contains(id)?Level.NETHER:techguns.world.EndStructures.IDS.contains(id)?Level.END:Level.OVERWORLD);var placements=level.getChunkSource().getGeneratorState().getPlacementsForStructure(holder);
             if(!((LegacySurfaceStructure)holder.value()).canEverGenerate()){h.assertTrue(placements.isEmpty(),"techguns:"+id+" cannot generate under this config, so it is never planned and /locate answers at once");continue;}
             h.assertTrue(placements.size()==1&&placements.get(0) instanceof LegacyGridPlacement grid&&grid.spacing()==gridOf(id),"techguns:"+id+" must be placed by exactly one original grid ("+gridOf(id)+" chunks): "+placements);
-            var other=server.getLevel(NetherStructuresFeature.IDS.contains(id)?Level.OVERWORLD:Level.NETHER);h.assertTrue(other.getChunkSource().getGeneratorState().getPlacementsForStructure(holder).isEmpty(),"techguns:"+id+" must not be planned in the other dimension");
+            var other=server.getLevel(NetherStructuresFeature.IDS.contains(id)||techguns.world.EndStructures.IDS.contains(id)?Level.OVERWORLD:Level.NETHER);h.assertTrue(other.getChunkSource().getGeneratorState().getPlacementsForStructure(holder).isEmpty(),"techguns:"+id+" must not be planned in the other dimension");
         }
-        var tag=registry.getTag(net.minecraft.tags.TagKey.create(Registries.STRUCTURE,ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"all")));h.assertTrue(tag.isPresent()&&tag.get().size()==21,"Tag #techguns:all lists every original structure for /locate");
+        var tag=registry.getTag(net.minecraft.tags.TagKey.create(Registries.STRUCTURE,ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"all")));h.assertTrue(tag.isPresent()&&tag.get().size()==30,"Tag #techguns:all lists every original structure for /locate");
         var legacy=registry.getHolderOrThrow(ResourceKey.create(Registries.STRUCTURE,ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"legacy_surface")));
         h.assertTrue(server.overworld().getChunkSource().getGeneratorState().getPlacementsForStructure(legacy).isEmpty(),"The earlier combined entry only loads saved starts and never generates");
-        Techguns.LOGGER.info("TECHGUNS_STRUCTURE_REGISTRY_PASSED: 21 original structures registered once each, on their original grids and dimensions, tag #techguns:all");h.succeed();
+        Techguns.LOGGER.info("TECHGUNS_STRUCTURE_REGISTRY_PASSED: 30 structures registered once each, on their original grids and dimensions, tag #techguns:all");h.succeed();
     }
 
     @GameTest(template="empty",batch="structure-locate",timeoutTicks=4000) public static void scannedStructuresGenerateAsWholeSavedStartsOnNoiseTerrain(GameTestHelper h){
@@ -61,7 +61,8 @@ public final class StructureLocateGameTests {
         try{
             // Vanilla water stands in for an explicitly configured oil fluid, so the oil table entry is eligible.
             TGConfig.fluidListOilWorldspawn=new String[]{"water"};
-            var ids=new ArrayList<String>();for(var id:SurfaceStructuresFeature.IDS)if(!LegacySurfaceStructure.BIG.contains(id))ids.add(id);ids.addAll(NetherStructuresFeature.IDS);Collections.sort(ids);
+            var ids=new ArrayList<String>();// The train and the submarine need long flat ground and an open lava sea; they are left to the locate tests.
+            for(var id:SurfaceStructuresFeature.IDS)if(!LegacySurfaceStructure.BIG.contains(id)&&!id.equals("train"))ids.add(id);for(var id:NetherStructuresFeature.IDS)if(!id.equals("nether_submarine"))ids.add(id);Collections.sort(ids);
             for(var id:ids){
                 boolean nether=NetherStructuresFeature.IDS.contains(id),desert=id.equals("desert_oil_cluster");
                 var biome=access.registryOrThrow(Registries.BIOME).getHolderOrThrow(nether?Biomes.NETHER_WASTES:desert?Biomes.DESERT:Biomes.PLAINS);var source=new FixedBiomeSource(biome);

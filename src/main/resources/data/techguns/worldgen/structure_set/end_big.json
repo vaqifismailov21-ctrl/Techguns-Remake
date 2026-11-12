@@ -1,0 +1,21 @@
+{
+  "structures": [
+    {
+      "structure": "techguns:end_floating_ship",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:end_building",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:end_cluster",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "techguns:legacy_grid",
+    "grid": "big",
+    "salt": 1729341
+  }
+}

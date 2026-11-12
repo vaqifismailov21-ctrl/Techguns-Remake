@@ -17,17 +17,17 @@ import techguns.TGOreClusters;
 public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfiguration> {
     private record Spawn(String id,int weight,boolean cluster,boolean desert,boolean oil){}
     private static Spawn spawn(String id,int weight){return new Spawn(id,weight,false,false,false);}
-    private static final List<Spawn> SMALL=List.of(spawn("factory_building_small",10),spawn("small_trainstation",10),spawn("small_mine",10),spawn("gasstation",10));
-    private static final List<Spawn> MEDIUM=List.of(new Spawn("alien_bug_nest",20,false,true,false),spawn("policestation",10),spawn("survivor_hideout",10),new Spawn("orecluster_spike",10,true,false,false),new Spawn("orecluster_meteorbase",5,true,false,false),new Spawn("desert_oil_cluster",15,true,true,true));
-    private static final Set<String> IMPLEMENTED=Set.of("factory_building_small","small_trainstation","small_mine","gasstation","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster");
+    private static final List<Spawn> SMALL=List.of(spawn("factory_building_small",10),spawn("factory_building_big",10),spawn("small_trainstation",10),spawn("small_mine",10),spawn("gasstation",10));
+    private static final List<Spawn> MEDIUM=List.of(new Spawn("alien_bug_nest",20,false,true,false),spawn("policestation",10),spawn("factory_big",10),spawn("survivor_hideout",10),new Spawn("orecluster_spike",10,true,false,false),new Spawn("orecluster_meteorbase",5,true,false,false),new Spawn("desert_oil_cluster",15,true,true,true));
+    private static final Set<String> IMPLEMENTED=Set.of("factory_building_small","factory_building_big","factory_big","small_trainstation","small_mine","gasstation","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster");
     /** Every original Overworld structure id of the grid tables. */
-    public static final Set<String> IDS=Set.of("aircraftcarrier","military_base","castle","alien_bug_nest","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster","factory_building_small","small_trainstation","small_mine","gasstation");
+    public static final Set<String> IDS=Set.of("aircraftcarrier","military_base","castle","train","factory_building_big","factory_big","alien_bug_nest","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster","factory_building_small","small_trainstation","small_mine","gasstation");
     public SurfaceStructuresFeature(){super(NoneFeatureConfiguration.CODEC);}
     public static RandomSource selectionRandom(long seed,int cx,int cz){var random=new net.minecraft.world.level.levelgen.WorldgenRandom(new net.minecraft.world.level.levelgen.LegacyRandomSource(seed));random.setLargeFeatureSeed(seed,cx,cz);return random;}
     public static String choose(int cx,int cz,boolean ocean,boolean desert,boolean oil,RandomSource random){
         if(!TGConfig.doWorldspawn)return null;
         boolean big=cx%TGConfig.spawnWeightTGStructureBig==0&&cz%TGConfig.spawnWeightTGStructureBig==0;
-        var candidates=big?(ocean?List.of(spawn("aircraftcarrier",1)):List.of(spawn("military_base",1),spawn("castle",1))):ocean?List.<Spawn>of():cx%TGConfig.spawnWeightTGStructureMedium==0&&cz%TGConfig.spawnWeightTGStructureMedium==0?MEDIUM:cx%TGConfig.spawnWeightTGStructureSmall==0&&cz%TGConfig.spawnWeightTGStructureSmall==0?SMALL:List.<Spawn>of();
+        var candidates=big?(ocean?List.of(spawn("aircraftcarrier",1)):List.of(spawn("military_base",1),spawn("castle",1),spawn("train",1))):ocean?List.<Spawn>of():cx%TGConfig.spawnWeightTGStructureMedium==0&&cz%TGConfig.spawnWeightTGStructureMedium==0?MEDIUM:cx%TGConfig.spawnWeightTGStructureSmall==0&&cz%TGConfig.spawnWeightTGStructureSmall==0?SMALL:List.<Spawn>of();
         var eligible=candidates.stream().filter(s->(!s.cluster||TGConfig.spawnOreClusterStructures)&&(!s.desert||desert)&&(!s.oil||oil)).toList();int total=eligible.stream().mapToInt(Spawn::weight).sum();if(total==0)return null;
         int roll=random.nextInt(total)+1,sum=0;for(var spawn:eligible){sum+=spawn.weight;if(roll<=sum)return spawn.id;}return null;
     }
@@ -47,11 +47,14 @@ public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfigura
             @Override public boolean dry(int px,int py,int pz){return world.getFluidState(new BlockPos(px,py,pz)).isEmpty();}
         },x,z,sizeX,sizeZ);
     }
-    public static int surfaceHeight(HeightProbe probe,int x,int z,int sizeX,int sizeZ){
+    public static int surfaceHeight(HeightProbe probe,int x,int z,int sizeX,int sizeZ){return surfaceHeight(probe,x,z,sizeX,sizeZ,3);}
+    /** Long structures (the train) accept a little more slope; the gaps are filled by their foundation. */
+    public static int flatness(String id){return "train".equals(id)?6:3;}
+    public static int surfaceHeight(HeightProbe probe,int x,int z,int sizeX,int sizeZ,int tolerance){
         int min=Integer.MAX_VALUE,max=Integer.MIN_VALUE,sum=0,count=0;
         // Source samples by four; a non-multiple final edge is not sampled.
         for(int dx=0;dx<=sizeX;dx+=4)for(int dz=0;dz<=sizeZ;dz+=4){int y=probe.height(x+dx,z+dz);if(y<=0||!probe.dry(x+dx,y-1,z+dz))return -1;min=Math.min(min,y);max=Math.max(max,y);sum+=y;count++;}
-        return max-min<=3?sum/count:-1;
+        return max-min<=tolerance?sum/count:-1;
     }
     @Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context){
         var world=context.level();if(!world.getLevel().dimension().equals(Level.OVERWORLD))return false;int cx=context.origin().getX()>>4,cz=context.origin().getZ()>>4;var biome=world.getBiome(new BlockPos(cx*16,64,cz*16));

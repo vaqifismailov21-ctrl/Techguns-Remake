@@ -11,6 +11,10 @@
     {
       "structure": "techguns:aircraftcarrier",
       "weight": 1
+    },
+    {
+      "structure": "techguns:train",
+      "weight": 1
     }
   ],
   "placement": {

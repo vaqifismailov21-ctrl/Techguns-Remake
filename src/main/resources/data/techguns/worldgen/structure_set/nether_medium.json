@@ -11,6 +11,18 @@
     {
       "structure": "techguns:nether_orecluster_castle",
       "weight": 1
+    },
+    {
+      "structure": "techguns:nether_building",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:nether_submarine",
+      "weight": 1
+    },
+    {
+      "structure": "techguns:nether_orecluster_medium",
+      "weight": 1
     }
   ],
   "placement": {
