@@ -17,7 +17,12 @@ import techguns.power.*;
 
 @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid=techguns.Techguns.MODID,value=net.minecraftforge.api.distmarker.Dist.CLIENT)
 /** Client side: running loops of the generators and the wind turbine, the floodlight switch, the full cell beep and the reactor alarm. */
+@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid=techguns.Techguns.MODID,value=net.minecraftforge.api.distmarker.Dist.CLIENT)
 public final class PowerSounds {
+    /** Nothing of one world is kept for the next. */
+    @net.minecraftforge.eventbus.api.SubscribeEvent public static void leave(net.minecraftforge.event.level.LevelEvent.Unload event){
+        if(event.getLevel().isClientSide()){for(var loop:loops.values())Minecraft.getInstance().getSoundManager().stop(loop);loops.clear();last.clear();}
+    }
     private static final Map<BlockPos,Loop> loops=new HashMap<>();
     private static final Map<BlockPos,Integer> last=new HashMap<>();
 
@@ -82,8 +87,8 @@ public final class PowerSounds {
         var level=entity.getLevel();var pos=entity.getBlockPos();var random=level.random;
         if(entity instanceof SolarPanelEntity panel){
             // sun glints on the cells and a rare spark at the junction box while it makes power
-            if(panel.currentRate()>0&&random.nextInt(160)==0)level.addParticle(net.minecraft.core.particles.ParticleTypes.WAX_OFF,pos.getX()+random.nextDouble(),pos.getY()+0.45,pos.getZ()+random.nextDouble(),0,0.01,0);
-            if(panel.currentRate()>0&&random.nextInt(900)==0)level.addParticle(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,pos.getX()+0.5,pos.getY()+0.3,pos.getZ()+0.5,random.nextGaussian()*0.05,0.05,random.nextGaussian()*0.05);
+            if(random.nextInt(160)==0&&panel.currentRate()>0)level.addParticle(net.minecraft.core.particles.ParticleTypes.WAX_OFF,pos.getX()+random.nextDouble(),pos.getY()+0.45,pos.getZ()+random.nextDouble(),0,0.01,0);
+            if(random.nextInt(900)==0&&panel.currentRate()>0)level.addParticle(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,pos.getX()+0.5,pos.getY()+0.3,pos.getZ()+0.5,random.nextGaussian()*0.05,0.05,random.nextGaussian()*0.05);
             return;
         }
         if(!lit(entity))return;

@@ -30,22 +30,33 @@ public final class WireShock {
 
     @SubscribeEvent public static void tick(TickEvent.LevelTickEvent event){
         if(event.phase!=TickEvent.Phase.END||!(event.level instanceof ServerLevel level)||level.getGameTime()%5!=0)return;
-        var net=WireNetwork.get(level);
+        var net=WireNetwork.get(level);if(net.all().isEmpty())return;
         for(var w:net.live(level.getGameTime())){
             if(w.insulated())continue;
             var a=WireNetwork.point(level,w.a());var b=WireNetwork.point(level,w.b());if(a==null||b==null)continue;
-            double length=a.distanceTo(b),sag=WireTier.sag(w.tier(),length);
-            int n=Math.max(2,(int)(length*3));
-            var pts=new Vec3[n+1];AABB box=null;
-            for(int i=0;i<=n;i++){double t=i/(double)n;pts[i]=a.lerp(b,t).add(0,-sag*4*t*(1-t),0);var p=new AABB(pts[i],pts[i]);box=box==null?p:box.minmax(p);}
-            for(var e:level.getEntitiesOfClass(LivingEntity.class,box.inflate(0.4),LivingEntity::isAlive)){
+            var line=LINES.get(w);
+            if(line==null||!line.a.equals(a)||!line.b.equals(b)){line=new Line(a,b,w.tier());LINES.put(w,line);}
+            for(var e:level.getEntitiesOfClass(LivingEntity.class,line.box,LivingEntity::isAlive)){
                 var bb=e.getBoundingBox().inflate(0.12);Vec3 hit=null;
-                for(var p:pts)if(bb.contains(p)){hit=p;break;}
+                for(var p:line.pts)if(bb.contains(p)){hit=p;break;}
                 if(hit==null)continue;
                 shock(level,e,w.tier(),hit);
             }
         }
     }
+    /** Points along a hanging wire and the box around them, worked out once per wire. */
+    private static final class Line{
+        final Vec3 a,b;final Vec3[] pts;final AABB box;
+        Line(Vec3 a,Vec3 b,WireTier tier){
+            this.a=a;this.b=b;double length=a.distanceTo(b),sag=WireTier.sag(tier,length);int n=Math.max(2,(int)(length*3));
+            pts=new Vec3[n+1];double x0=a.x,y0=a.y,z0=a.z,x1=a.x,y1=a.y,z1=a.z;
+            for(int i=0;i<=n;i++){double t=i/(double)n;var p=pts[i]=a.lerp(b,t).add(0,-sag*4*t*(1-t),0);
+                x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);z0=Math.min(z0,p.z);x1=Math.max(x1,p.x);y1=Math.max(y1,p.y);z1=Math.max(z1,p.z);}
+            box=new AABB(x0,y0,z0,x1,y1,z1).inflate(0.4);
+        }
+    }
+    private static final java.util.Map<WireConnection,Line> LINES=new java.util.WeakHashMap<>();
+
     /** A full hazmat suit (rubber) keeps the wearer safe. */
     public static boolean protectedSuit(LivingEntity e){
         for(var slot:new net.minecraft.world.entity.EquipmentSlot[]{net.minecraft.world.entity.EquipmentSlot.HEAD,net.minecraft.world.entity.EquipmentSlot.CHEST,net.minecraft.world.entity.EquipmentSlot.LEGS,net.minecraft.world.entity.EquipmentSlot.FEET}){

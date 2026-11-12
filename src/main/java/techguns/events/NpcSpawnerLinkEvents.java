@@ -19,8 +19,20 @@ public final class NpcSpawnerLinkEvents {
         var pos=BlockPos.of(link.getLong("pos"));if(!world.hasChunkAt(pos))return null;
         return world.getBlockEntity(pos) instanceof NpcSpawnerEntity spawner?spawner:null;
     }
-    @SubscribeEvent public static void tick(LivingEvent.LivingTickEvent event){if(event.getEntity() instanceof Mob mob&&!mob.level().isClientSide&&!LINKED.contains(mob)){var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);LINKED.add(mob);}}}
-    @SubscribeEvent(priority=EventPriority.LOWEST) public static void death(LivingDeathEvent event){if(event.getEntity() instanceof Mob mob){var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);spawner.killed(mob);}LINKED.remove(mob);}}
+    /** Guards that carry a spawner link which is not resolved yet (the spawner's chunk may load after them). */
+    private static final Set<Mob> PENDING=Collections.newSetFromMap(new WeakHashMap<>());
+    @SubscribeEvent public static void join(net.minecraftforge.event.entity.EntityJoinLevelEvent event){
+        if(event.getEntity() instanceof Mob mob&&!event.getLevel().isClientSide()&&!LINKED.contains(mob)&&mob.getPersistentData().contains("TGSpawner"))PENDING.add(mob);
+    }
+    @SubscribeEvent public static void tick(net.minecraftforge.event.TickEvent.LevelTickEvent event){
+        if(event.phase!=net.minecraftforge.event.TickEvent.Phase.END||PENDING.isEmpty()||!(event.level instanceof ServerLevel world))return;
+        for(var mob:new ArrayList<>(PENDING)){
+            if(mob==null||mob.isRemoved()){PENDING.remove(mob);continue;}
+            if(mob.level()!=world)continue;
+            var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);LINKED.add(mob);PENDING.remove(mob);}
+        }
+    }
+    @SubscribeEvent(priority=EventPriority.LOWEST) public static void death(LivingDeathEvent event){if(event.getEntity() instanceof Mob mob){var spawner=spawner(mob);if(spawner!=null){spawner.relink(mob);spawner.killed(mob);}LINKED.remove(mob);PENDING.remove(mob);}}
     @SubscribeEvent public static void leave(EntityLeaveLevelEvent event){if(event.getEntity() instanceof Mob mob){
         // Chunk unloading retains the guard's persistent link; only actual removal frees its active slot.
         if(mob.getRemovalReason()!=null&&mob.getRemovalReason().shouldDestroy()){var spawner=spawner(mob);if(spawner!=null)spawner.despawned(mob);}LINKED.remove(mob);

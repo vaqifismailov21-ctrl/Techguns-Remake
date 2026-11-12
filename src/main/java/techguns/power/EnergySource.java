@@ -32,6 +32,11 @@ public abstract class EnergySource extends BlockEntity {
     protected void received(int amount){}
     public int energyStored(){return energy.getEnergyStored();}
     public int energyCapacity(){return energy.getMaxEnergyStored();}
+    /**
+     * Energy moves every tick, so this only marks the chunk for saving. The usual comparator update around the block
+     * is left out: the one power block with a comparator output (the energy cell) tells its neighbours itself.
+     */
+    @Override public void setChanged(){if(level!=null)level.blockEntityChanged(worldPosition);}
     protected void produce(int amount){if(amount>0&&energy.receiveEnergy(amount,false)>0)setChanged();}
     /** Gives stored energy to adjacent blocks that accept it on giving sides, at most {@code output} per tick in total. */
     protected void distribute(){

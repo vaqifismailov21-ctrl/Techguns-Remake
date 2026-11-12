@@ -29,8 +29,8 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     private LazyOptional<IFluidHandler> fluidHandle;
     public final ReactionControl reactor=new ReactionControl(this);
     long nextChargeSound;
-    public final FluidTank inputTank=new FluidTank(8000){@Override protected void onContentsChanged(){changed();}@Override public int fill(FluidStack resource,IFluidHandler.FluidAction action){if(kind==MachineKind.REACTION){int space=Math.max(0,reactor.liquidLevel*1000-getFluidAmount());if(space==0)return 0;resource=new FluidStack(resource,Math.min(resource.getAmount(),space));}return super.fill(resource,action);}};
-    public final FluidTank outputTank=new FluidTank(16000){@Override protected void onContentsChanged(){changed();}};
+    public final FluidTank inputTank=new FluidTank(8000){@Override protected void onContentsChanged(){inputsChanged=true;changed();}@Override public int fill(FluidStack resource,IFluidHandler.FluidAction action){if(kind==MachineKind.REACTION){int space=Math.max(0,reactor.liquidLevel*1000-getFluidAmount());if(space==0)return 0;resource=new FluidStack(resource,Math.min(resource.getAmount(),space));}return super.fill(resource,action);}};
+    public final FluidTank outputTank=new FluidTank(16000){@Override protected void onContentsChanged(){inputsChanged=true;changed();}};
     private FluidStack pendingFluid=FluidStack.EMPTY;
     public boolean drainInput;
     public boolean formed;
@@ -46,8 +46,8 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     public ProcessingMachine(BlockPos pos,BlockState state){
         super(TGMachines.ENTITY.get(),pos,state);kind=((MachineBlock)state.getBlock()).kind;
         if(kind==MachineKind.REACTION)inputTank.setCapacity(10000);
-        inventory=new ItemStackHandler(kind.slots.length){@Override protected void onContentsChanged(int slot){changed();}@Override public boolean isItemValid(int slot,ItemStack stack){return accepts(slot,stack);}};
-        energy=new EnergyStorage(kind.capacity,kind.capacity,kind.capacity){@Override public int receiveEnergy(int amount,boolean simulate){int n=super.receiveEnergy(amount,simulate);if(n>0&&!simulate)changed();return n;}@Override public int extractEnergy(int amount,boolean simulate){int n=super.extractEnergy(amount,simulate);if(n>0&&!simulate)setChanged();return n;}};
+        inventory=new ItemStackHandler(kind.slots.length){@Override protected void onContentsChanged(int slot){inputsChanged=true;changed();}@Override public boolean isItemValid(int slot,ItemStack stack){return accepts(slot,stack);}};
+        energy=new EnergyStorage(kind.capacity,kind.capacity,kind.capacity){@Override public int receiveEnergy(int amount,boolean simulate){int n=super.receiveEnergy(amount,simulate);if(n>0&&!simulate){setChanged();energyDirty=true;}return n;}@Override public int extractEnergy(int amount,boolean simulate){int n=super.extractEnergy(amount,simulate);if(n>0&&!simulate)setChanged();return n;}};
         createHandles();
     }
     private void createHandles(){
@@ -65,12 +65,41 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     }
     public boolean running(){return totalTime>0;}
     public boolean redstoneEnabled(){boolean signal=level!=null&&level.hasNeighborSignal(worldPosition);return redstoneMode==0||redstoneMode==1&&signal||redstoneMode==2&&!signal;}
+    /** Set when items or fluids changed, so an idle machine looks for a recipe again at once. */
+    private boolean inputsChanged=true;
+    private int idleTicks;
+    /** Energy taken in since the clients were last told. */
+    private boolean energyDirty;
+    /** A part of the multiblock was in an unloaded chunk at the last check. */
+    private boolean partsUnloaded;
+    private boolean inputsEmpty(){
+        for(int i=0;i<inventory.getSlots();i++)if(!kind.outputSlot(i)&&i!=kind.upgrade&&!inventory.getStackInSlot(i).isEmpty())return false;
+        return inputTank.isEmpty();
+    }
     public void tick(){
-        if(level==null||level.isClientSide||!redstoneEnabled())return;
-        if(kind.multiblock()){if(!formed)return;var parts=structureParts(getBlockState().getValue(MachineBlock.FACING));for(var pos:parts.keySet())if(!level.hasChunkAt(pos))return;if(!structureValid(parts,true)){unformStructure();return;}}
+        if(level==null||level.isClientSide)return;
+        // incoming energy is shown to the clients once a second, not with a full update every tick
+        if(energyDirty&&Math.floorMod(level.getGameTime()+worldPosition.asLong(),20L)==0){energyDirty=false;sync();}
+        if(!redstoneEnabled())return;
+        if(kind.multiblock()){
+            if(!formed)return;
+            // parts tell the controller when they are taken away; the whole structure is looked over once a second
+            if(Math.floorMod(level.getGameTime()+worldPosition.asLong(),20L)==0){
+                var parts=structureParts(getBlockState().getValue(MachineBlock.FACING));partsUnloaded=false;
+                for(var pos:parts.keySet())if(!level.hasChunkAt(pos)){partsUnloaded=true;break;}
+                if(!partsUnloaded&&!structureValid(parts,true)){unformStructure();return;}
+            }
+            if(partsUnloaded)return;
+        }
         if(kind==MachineKind.REACTION){reactor.tick();return;}
         if(kind==MachineKind.METAL_PRESS&&autoSplitMode>0&&!running())split();
-        if(!running()){if(chargeItem())return;start();return;}
+        if(!running()){
+            if(chargeItem())return;
+            // nothing to work on: no recipe search; a failed search is repeated when something changed, else twice a second
+            if(inputsEmpty())return;
+            if(!inputsChanged&&++idleTicks<10)return;
+            inputsChanged=false;idleTicks=0;start();return;
+        }
         if(progress>=totalTime){finish();return;}
         if(!TGConfig.machinesNeedNoPower&&energy.getEnergyStored()<powerPerTick)return;
         if(!TGConfig.machinesNeedNoPower)energy.extractEnergy(powerPerTick,false);progress++;MachineWorkEffects.work(this);setChanged();if(progress>=totalTime)finish();else if(progress%5==0)sync();
@@ -126,7 +155,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     public void unformStructure(){if(!formed||level==null)return;formed=false;for(var pos:structureParts(getBlockState().getValue(MachineBlock.FACING)).keySet())if(level.hasChunkAt(pos)&&level.getBlockEntity(pos) instanceof MachinePartEntity part&&part.linkedTo(worldPosition))part.link(null);if(level.getBlockState(worldPosition).getBlock() instanceof MachineBlock)level.setBlock(worldPosition,getBlockState().setValue(MachineBlock.FORMED,false),3);changed();}
     @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(){return kind.multiblock()&&formed?new net.minecraft.world.phys.AABB(worldPosition).inflate(4):super.getRenderBoundingBox();}
     public void deliverReactionOutputs(List<ItemStack> outputs){for(var output:outputs){int remaining=output.getCount();for(int i=2;i<inventory.getSlots()&&remaining>0;i++){var slot=inventory.getStackInSlot(i);if(slot.isEmpty()){int n=Math.min(remaining,output.getMaxStackSize());inventory.setStackInSlot(i,output.copyWithCount(n));remaining-=n;}else if(ItemStack.isSameItemSameTags(slot,output)){int n=Math.min(remaining,slot.getMaxStackSize()-slot.getCount());slot.grow(n);remaining-=n;}}if(remaining>0)Containers.dropItemStack(level,worldPosition.getX()+0.5,worldPosition.getY()+0.5,worldPosition.getZ()+0.5,output.copyWithCount(remaining));}changed();}
-    public void button(int id){if(id==2)redstoneMode=(redstoneMode+1)%3;else if(kind==MachineKind.REACTION){reactor.button(id);}else if(kind==MachineKind.CHEM_LAB){if(id==3)inputTank.setFluid(FluidStack.EMPTY);else if(id==4)outputTank.setFluid(FluidStack.EMPTY);else if(id==5)drainInput=!drainInput;}else if(id==3&&kind==MachineKind.AMMO_PRESS)plan=(plan+1)%4;else if(id==4&&kind==MachineKind.AMMO_PRESS)plan=(plan+3)%4;else if(id==3&&kind==MachineKind.METAL_PRESS)autoSplitMode=(autoSplitMode+1)%2;changed();}
+    public void button(int id){inputsChanged=true;if(id==2)redstoneMode=(redstoneMode+1)%3;else if(kind==MachineKind.REACTION){reactor.button(id);}else if(kind==MachineKind.CHEM_LAB){if(id==3)inputTank.setFluid(FluidStack.EMPTY);else if(id==4)outputTank.setFluid(FluidStack.EMPTY);else if(id==5)drainInput=!drainInput;}else if(id==3&&kind==MachineKind.AMMO_PRESS)plan=(plan+1)%4;else if(id==4&&kind==MachineKind.AMMO_PRESS)plan=(plan+3)%4;else if(id==3&&kind==MachineKind.METAL_PRESS)autoSplitMode=(autoSplitMode+1)%2;changed();}
     public void setEnergy(int value){int old=energy.getEnergyStored();if(value>old)energy.receiveEnergy(value-old,false);else energy.extractEnergy(old-value,false);}
     public void dropContents(){if(level==null||level.isClientSide)return;for(int i=0;i<inventory.getSlots();i++){Containers.dropItemStack(level,worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),inventory.getStackInSlot(i));inventory.setStackInSlot(i,ItemStack.EMPTY);}for(var stack:consumed)Containers.dropItemStack(level,worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),stack);consumed.clear();if(reactor.running())Containers.dropItemStack(level,worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),reactor.input);pending=ItemStack.EMPTY;}
     public void changed(){setChanged();sync();}private void sync(){if(level!=null&&!level.isClientSide)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);}

@@ -94,38 +94,77 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
             custom.render(pose,buffers,running,time/20F,(x,y,z)->lightAt(plant,x-0.5F,y,z-0.5F,light));
             pose.popPose();pose.popPose();return;
         }
-        var model=plant.model();uvShift=plant.kind==PlantKind.WIND?0:0.5F;
-        var atlas=PlantAtlas.get(plant.kind);
-        if(atlas!=null&&atlas.count()==model.size()){
-            // the painted atlas: one texture, every face its own place in it
-            var vc=buffers.getBuffer(RenderType.entityCutout(atlas.texture()));
-            for(int i=0;i<model.size();i++){var b=model.get(i);if(b.tex()==Tex.NONE||b.tex().translucent()||atlas.rects()[i]==null)continue;faceRects=atlas.rects()[i];draw(plant,pose,vc,b,light,ALL,i);}
-            faceRects=null;
-            parts(plant,pose,buffers,light,a[0],time);
-            VertexConsumer glass=null;
-            for(int i=0;i<model.size();i++){var b=model.get(i);if(!b.tex().translucent()||atlas.rects()[i]==null)continue;
-                if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(atlas.texture()));faceRects=atlas.rects()[i];draw(plant,pose,glass,b,light,ALL,i);}
-            faceRects=null;pose.popPose();uvShift=0;return;
+        // the static model never changes while the plant stands: its vertices are worked out once and only sent again
+        var model=plant.model();var atlas=PlantAtlas.get(plant.kind);
+        var baked=BAKED.get(plant);
+        if(baked==null||baked.model!=model||baked.atlas!=atlas){baked=bake(plant,model,atlas);BAKED.put(plant,baked);}
+        long now=plant.getLevel().getGameTime();
+        if(now-baked.lightTime>=10||now<baked.lightTime){
+            for(int i=0;i<model.size();i++){var b=model.get(i);baked.light[i]=lightAt(plant,(b.x0()+b.x1())/2,(b.y0()+b.y1())/2+0.01F,(b.z0()+b.z1())/2,light);}
+            baked.lightTime=now;
         }
-        for(Tex t:Tex.values()){
-            if(t==Tex.NONE||t.translucent())continue;
-            // steel boxes: the riveted side texture on the sides, the plain top texture up and down (one pass each)
-            boolean split=TOP.containsKey(t);
-            for(int pass=0;pass<(split?2:1);pass++){
-                VertexConsumer vc=null;int faces=split?(pass==0?SIDES:TOPS):ALL;
-                for(int i=0;i<model.size();i++){
-                    var box=model.get(i);if(box.tex()!=t)continue;
-                    if(vc==null)vc=buffers.getBuffer(RenderType.entityCutout(t==Tex.FRONT?front(plant.kind):pass==1?TOP.get(t):TEX.get(t)));
-                    draw(plant,pose,vc,box,light,faces,i);
+        var m=pose.last().pose();var n=pose.last().normal();
+        for(var batch:baked.batches)if(!batch.translucent)batch.emit(buffers.getBuffer(RenderType.entityCutout(batch.texture)),m,n,baked.light);
+        uvShift=plant.kind==PlantKind.WIND?0:0.5F;parts(plant,pose,buffers,light,a[0],time);uvShift=0;
+        for(var batch:baked.batches)if(batch.translucent)batch.emit(buffers.getBuffer(RenderType.entityTranslucent(batch.texture)),m,n,baked.light);
+        pose.popPose();
+    }
+    /** One texture's share of a plant's static model: x y z u v nx ny nz per vertex, its colour and the box it belongs to (for its light). */
+    private static final class Batch{
+        final ResourceLocation texture;final boolean translucent;final float[] d;final int[] colour,box;
+        Batch(ResourceLocation texture,boolean translucent,Recorder r){this.texture=texture;this.translucent=translucent;d=java.util.Arrays.copyOf(r.d,r.n*8);colour=java.util.Arrays.copyOf(r.colour,r.n);box=java.util.Arrays.copyOf(r.boxOf,r.n);}
+        void emit(VertexConsumer vc,org.joml.Matrix4f m,org.joml.Matrix3f n,int[] light){
+            for(int i=0,o=0;i<colour.length;i++,o+=8){int c=colour[i];
+                vc.vertex(m,d[o],d[o+1],d[o+2]).color(c>>16&255,c>>8&255,c&255,c>>>24).uv(d[o+3],d[o+4]).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light[box[i]]).normal(n,d[o+5],d[o+6],d[o+7]).endVertex();}
+        }
+    }
+    private static final class Baked{
+        final java.util.List<PlantModel.Box> model;final PlantAtlas.Atlas atlas;final java.util.List<Batch> batches=new java.util.ArrayList<>();final int[] light;long lightTime=Long.MIN_VALUE;
+        Baked(java.util.List<PlantModel.Box> model,PlantAtlas.Atlas atlas){this.model=model;this.atlas=atlas;light=new int[model.size()];}
+    }
+    private static final Map<PlantController,Baked> BAKED=new WeakHashMap<>();
+    /** Takes the vertices the box drawing code makes instead of sending them to the screen. */
+    private static final class Recorder implements VertexConsumer{
+        float[] d=new float[4096];int[] colour=new int[512],boxOf=new int[512];int n,box;
+        private float x,y,z,u,v,nx,ny,nz;private int c;
+        @Override public VertexConsumer vertex(double px,double py,double pz){x=(float)px;y=(float)py;z=(float)pz;return this;}
+        @Override public VertexConsumer color(int r,int g,int b,int a){c=a<<24|r<<16|g<<8|b;return this;}
+        @Override public VertexConsumer uv(float pu,float pv){u=pu;v=pv;return this;}
+        @Override public VertexConsumer overlayCoords(int pu,int pv){return this;}
+        @Override public VertexConsumer uv2(int pu,int pv){return this;}
+        @Override public VertexConsumer normal(float px,float py,float pz){nx=px;ny=py;nz=pz;return this;}
+        @Override public void endVertex(){
+            if(n==colour.length){d=java.util.Arrays.copyOf(d,d.length*2);colour=java.util.Arrays.copyOf(colour,n*2);boxOf=java.util.Arrays.copyOf(boxOf,n*2);}
+            int o=n*8;d[o]=x;d[o+1]=y;d[o+2]=z;d[o+3]=u;d[o+4]=v;d[o+5]=nx;d[o+6]=ny;d[o+7]=nz;colour[n]=c;boxOf[n]=box;n++;
+        }
+        @Override public void defaultColor(int r,int g,int b,int a){}
+        @Override public void unsetDefaultColor(){}
+    }
+    private static Baked bake(PlantController plant,java.util.List<PlantModel.Box> model,PlantAtlas.Atlas atlas){
+        var baked=new Baked(model,atlas);var pose=new PoseStack();
+        uvShift=plant.kind==PlantKind.WIND?0:0.5F;
+        try{
+            if(atlas!=null&&atlas.count()==model.size()){
+                // the painted atlas: one texture, every face its own place in it
+                for(int pass=0;pass<2;pass++){
+                    var r=new Recorder();
+                    for(int i=0;i<model.size();i++){var b=model.get(i);if(b.tex()==Tex.NONE||b.tex().translucent()!=(pass==1)||atlas.rects()[i]==null)continue;faceRects=atlas.rects()[i];draw(pose,r,b,ALL,i);}
+                    if(r.n>0)baked.batches.add(new Batch(atlas.texture(),pass==1,r));
+                }
+                return baked;
+            }
+            for(Tex t:Tex.values()){
+                if(t==Tex.NONE)continue;
+                // steel boxes: the riveted side texture on the sides, the plain top texture up and down (one pass each)
+                boolean split=!t.translucent()&&TOP.containsKey(t);
+                for(int pass=0;pass<(split?2:1);pass++){
+                    var r=new Recorder();int faces=split?(pass==0?SIDES:TOPS):ALL;
+                    for(int i=0;i<model.size();i++){var box=model.get(i);if(box.tex()==t)draw(pose,r,box,faces,i);}
+                    if(r.n>0)baked.batches.add(new Batch(t==Tex.FRONT?front(plant.kind):pass==1?TOP.get(t):TEX.get(t),t.translucent(),r));
                 }
             }
-        }
-        parts(plant,pose,buffers,light,a[0],time);
-        for(Tex t:Tex.values()){
-            if(!t.translucent())continue;VertexConsumer glass=null;
-            for(int i=0;i<model.size();i++)if(model.get(i).tex()==t){if(glass==null)glass=buffers.getBuffer(RenderType.entityTranslucent(TEX.get(t)));draw(plant,pose,glass,model.get(i),light,ALL,i);}
-        }
-        pose.popPose();uvShift=0;
+            return baked;
+        }finally{faceRects=null;uvShift=0;}
     }
     /** The moving and glowing parts drawn on top of the static model. */
     private void parts(PlantController plant,PoseStack pose,MultiBufferSource buffers,int light,float angle,float time){
@@ -143,8 +182,8 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
      * so two faces never lie in the same plane and nothing flickers where boxes touch or overlap.
      */
     private static float inflate(PlantModel.Box b,int index){return 0.0003F*((index*7)%23)+(b.detail()?0.002F:0);}
-    private static void draw(PlantController plant,PoseStack pose,VertexConsumer vc,PlantModel.Box b,int light,int faces,int index){
-        int l=lightAt(plant,(b.x0()+b.x1())/2,(b.y0()+b.y1())/2+0.01F,(b.z0()+b.z1())/2,light);
+    private static void draw(PoseStack pose,Recorder vc,PlantModel.Box b,int faces,int index){
+        int l=0;vc.box=index;
         if(b.rotY()!=0){pose.pushPose();pose.translate(b.px(),0,b.pz());pose.mulPose(Axis.YP.rotationDegrees(b.rotY()));pose.translate(-b.px(),0,-b.pz());}
         float e=inflate(b,index);
         box(pose,vc,b.x0()-e,b.y0()-e,b.z0()-e,b.x1()+e,b.y1()+e,b.z1()+e,l,b.argb(),fit(b.tex()),faces);

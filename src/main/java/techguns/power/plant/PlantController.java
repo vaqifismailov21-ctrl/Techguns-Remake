@@ -146,6 +146,7 @@ public abstract class PlantController extends EnergySource {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    private boolean syncDue;private long lastSync=-100;
     /** Server tick. */
     public void tick(){
         if(level==null)return;
@@ -153,7 +154,9 @@ public abstract class PlantController extends EnergySource {
         if(level.getGameTime()%40==Math.floorMod(worldPosition.asLong(),40L)){if(!invalid().isEmpty()){unform();return;}findOutlets();}
         int oldRate=rate,oldProblem=problem;
         work();
-        if(oldRate!=rate||oldProblem!=problem)sync();
+        // a full store can switch the plant on and off every tick: tell the clients twice a second at most
+        if(oldRate!=rate||oldProblem!=problem)syncDue=true;
+        if(syncDue&&level.getGameTime()-lastSync>=10){syncDue=false;lastSync=level.getGameTime();sync();}
         var state=getBlockState();boolean lit=rate>0;if(state.getValue(PlantControllerBlock.LIT)!=lit)level.setBlock(worldPosition,state.setValue(PlantControllerBlock.LIT,lit),3);
         push();
     }

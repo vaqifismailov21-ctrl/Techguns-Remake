@@ -26,6 +26,8 @@ public final class WireNetwork extends SavedData {
     private final Map<WireNode,List<WireConnection>> byNode=new HashMap<>();
     private final Map<WireConnection,Integer> used=new IdentityHashMap<>();
     private long usedTick=-1;
+    /** Every point reachable from an entry point with the wires leading there; emptied whenever a wire comes or goes. */
+    private final Map<WireNode,List<Target>> reach=new HashMap<>();
     /** Game time each wire last carried energy (not saved). */
     private final Map<WireConnection,Long> live=new IdentityHashMap<>();
 
@@ -36,7 +38,7 @@ public final class WireNetwork extends SavedData {
     public boolean exists(WireConnection c){for(var w:at(c.a()))if(w.sameEnds(c))return true;return false;}
 
     public void add(ServerLevel level,WireConnection c){
-        wires.add(c);index(c);setDirty();WirePackets.added(level,c);
+        wires.add(c);index(c);reach.clear();setDirty();WirePackets.added(level,c);
     }
     /** Removes every wire on the block; returns them (to drop their coils). */
     public List<WireConnection> removeAt(ServerLevel level,BlockPos pos){
@@ -45,7 +47,7 @@ public final class WireNetwork extends SavedData {
         return gone;
     }
     private void index(WireConnection c){byNode.computeIfAbsent(c.a(),k->new ArrayList<>()).add(c);byNode.computeIfAbsent(c.b(),k->new ArrayList<>()).add(c);}
-    private void rebuild(){byNode.clear();used.clear();live.keySet().retainAll(new java.util.HashSet<>(wires));for(var w:wires)index(w);}
+    private void rebuild(){byNode.clear();used.clear();reach.clear();live.keySet().retainAll(new java.util.HashSet<>(wires));for(var w:wires)index(w);}
     /** Wires that carried energy during the last second. */
     public List<WireConnection> live(long now){var list=new ArrayList<WireConnection>();for(var e:live.entrySet())if(now-e.getValue()<=20)list.add(e.getKey());return list;}
 
@@ -60,30 +62,20 @@ public final class WireNetwork extends SavedData {
     public int route(Level level,WireNode from,int amount,boolean simulate,float fromFill){
         if(amount<=0||!byNode.containsKey(from))return 0;
         long tick=level.getGameTime();
-        // breadth first over the wires: the path to every point, with the share of energy that survives it
-        var targets=new ArrayList<Target>();var seen=new HashMap<WireNode,Boolean>();seen.put(from,true);
-        var queue=new ArrayDeque<Target>();queue.add(new Target(from,List.of(),1,0,0));
-        while(!queue.isEmpty()){
-            var t=queue.poll();
-            for(var c:at(t.node())){
-                var next=c.other(t.node());if(seen.containsKey(next))continue;seen.put(next,true);
-                var path=new ArrayList<>(t.path());path.add(c);
-                var step=new Target(next,path,t.efficiency()*c.tier().efficiency(c.length()),t.depth()+1,0);
-                queue.add(step);targets.add(step);
-            }
-        }
+        var targets=reach(from);if(targets.isEmpty())return 0;
         // ordinary takers first (nearest first), then stores that are emptier than the source, emptiest first
         var takers=new ArrayList<Object[]>();
         for(var t:targets){
+            // never look into chunks that are not loaded: that would load them
+            if(t.node().pos().equals(from.pos())||!level.isLoaded(t.node().pos()))continue;
             var state=level.getBlockState(t.node().pos());if(!(state.getBlock() instanceof WireHost host))continue;
-            if(!level.isLoaded(t.node().pos()))continue;
             var sink=host.sink(level,t.node().pos(),state,t.node().point());if(sink==null||!sink.canReceive())continue;
             float fill=host.fill(level,t.node().pos());
             if(fill>=0&&fromFill>=0&&fill>=fromFill-0.001F)continue;
-            if(t.node().pos().equals(from.pos()))continue;
             takers.add(new Object[]{t,sink,fill});
         }
-        takers.sort((x,y)->{
+        if(takers.isEmpty())return 0;
+        if(takers.size()>1)takers.sort((x,y)->{
             float fx=(float)x[2],fy=(float)y[2];
             if((fx<0)!=(fy<0))return fx<0?-1:1;
             if(fx>=0)return Float.compare(fx,fy);
@@ -94,8 +86,8 @@ public final class WireNetwork extends SavedData {
         for(var o:takers){
             if(left<=0)break;
             var t=(Target)o[0];var sink=(IEnergyStorage)o[1];
-            boolean broken=false;for(var c:t.path())if(burnt.contains(c)){broken=true;break;}
-            if(broken)continue;
+            if(!burnt.isEmpty()){boolean broken=false;for(var c:t.path())if(burnt.contains(c)){broken=true;break;}
+                if(broken)continue;}
             int room=left;
             int arrives=(int)(room*t.efficiency());if(arrives<=0)continue;
             int taken=sink.receiveEnergy(arrives,simulate);if(taken<=0)continue;
@@ -105,6 +97,23 @@ public final class WireNetwork extends SavedData {
         }
         if(!burnt.isEmpty()&&level instanceof ServerLevel server)for(var c:burnt)burn(server,c);
         return amount-left;
+    }
+
+    /** Breadth first over the wires from a point: the path to every other point, with the share of energy that survives it. */
+    private List<Target> reach(WireNode from){
+        var cached=reach.get(from);if(cached!=null)return cached;
+        var targets=new ArrayList<Target>();var seen=new java.util.HashSet<WireNode>();seen.add(from);
+        var queue=new ArrayDeque<Target>();queue.add(new Target(from,List.of(),1,0,0));
+        while(!queue.isEmpty()){
+            var t=queue.poll();
+            for(var c:at(t.node())){
+                var next=c.other(t.node());if(!seen.add(next))continue;
+                var path=new ArrayList<WireConnection>(t.path().size()+1);path.addAll(t.path());path.add(c);
+                var step=new Target(next,path,t.efficiency()*c.tier().efficiency(c.length()),t.depth()+1,0);
+                queue.add(step);targets.add(step);
+            }
+        }
+        reach.put(from,targets);return targets;
     }
 
     /** Too much energy through a wire in one tick: it melts with sparks and smoke along its length, and is gone. */
@@ -121,6 +130,7 @@ public final class WireNetwork extends SavedData {
         level.playSound(null,pos,net.minecraft.sounds.SoundEvents.LIGHTNING_BOLT_IMPACT,net.minecraft.sounds.SoundSource.BLOCKS,0.5F,1.8F);
     }
     static net.minecraft.world.phys.Vec3 point(Level level,WireNode node){
+        if(!level.isLoaded(node.pos()))return null;
         var state=level.getBlockState(node.pos());
         return state.getBlock() instanceof WireHost host&&node.point()<host.points(state)?host.point(state,node.pos(),node.point()):null;
     }

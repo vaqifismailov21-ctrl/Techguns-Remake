@@ -27,5 +27,11 @@ public final class SolarPanelEntity extends EnergySource {
         if(level.isThundering()||level.isRaining())return Component.translatable("techguns.power.reason.rain");
         return Component.empty();
     }
-    public void tick(){produce(currentRate());distribute();}
+    private int rate;private long surveyed=Long.MIN_VALUE;
+    /** Sky and weather are looked at once a second, not every tick. */
+    public void tick(){
+        long now=level.getGameTime();
+        if(surveyed==Long.MIN_VALUE||now<surveyed||now-surveyed>=20){rate=currentRate();surveyed=now;}
+        produce(rate);distribute();
+    }
 }
