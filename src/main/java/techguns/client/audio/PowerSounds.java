@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import techguns.TGSounds;
 import techguns.power.*;
 
-@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid=techguns.Techguns.MODID,value=net.minecraftforge.api.distmarker.Dist.CLIENT)
 /** Client side: running loops of the generators and the wind turbine, the floodlight switch, the full cell beep and the reactor alarm. */
 @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid=techguns.Techguns.MODID,value=net.minecraftforge.api.distmarker.Dist.CLIENT)
 public final class PowerSounds {
