@@ -15,6 +15,11 @@ public final class AccessoryItem extends Item implements ITGSpecialSlot,ICamoCha
     public enum Kind {GAS_MASK,GLIDER,JUMPPACK,SCUBA,NIGHTVISION,JETPACK,TACTICAL_MASK,ANTIGRAV}
     public final Kind kind;public final int camos;
     public AccessoryItem(Kind kind,int camos,int durability){super(properties(durability));this.kind=kind;this.camos=camos;}
+    // The durability bar is fuel, air, filter or charge, refilled with the matching item: no enchanting (Mending, Unbreaking) and no anvil repair.
+    @Override public boolean isEnchantable(net.minecraft.world.item.ItemStack stack){return false;}
+    @Override public boolean isBookEnchantable(net.minecraft.world.item.ItemStack stack,net.minecraft.world.item.ItemStack book){return false;}
+    @Override public boolean canApplyAtEnchantingTable(net.minecraft.world.item.ItemStack stack,net.minecraft.world.item.enchantment.Enchantment enchantment){return false;}
+    @Override public boolean isRepairable(net.minecraft.world.item.ItemStack stack){return false;}
     private static Properties properties(int durability){var p=new Properties().stacksTo(1);if(durability>0)p.durability(durability);return p;}
     @Override public TGSlotType getSlot(ItemStack stack){return kind==Kind.GAS_MASK||kind==Kind.NIGHTVISION||kind==Kind.TACTICAL_MASK?TGSlotType.FACESLOT:TGSlotType.BACKSLOT;}
     @Override public int getCamoCount(){return camos;}
