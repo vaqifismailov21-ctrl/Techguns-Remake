@@ -27,6 +27,7 @@ public float getTotalArmorAgainstType(TGDamageSource dmgsrc) {
 		case ICE:
 			return 16.0f;
 		case PHYSICAL:
+			return 10.0f;
 		case PROJECTILE:
 			return 12.0f;
 		case POISON:
@@ -52,5 +53,5 @@ public float getModelScale() {
 protected float getMutantWidth() {
 		return 1.2f;
 	}
-public static AttributeSupplier.Builder attributes(){return SuperMutantBasic.attributes().add(Attributes.MOVEMENT_SPEED,0.25D).add(Attributes.MAX_HEALTH,45).add(Attributes.ATTACK_DAMAGE,9).add(Attributes.FOLLOW_RANGE,50.0D).add(Attributes.ARMOR_TOUGHNESS,2D);}
+public static AttributeSupplier.Builder attributes(){return SuperMutantBasic.attributes().add(Attributes.MOVEMENT_SPEED,0.25D).add(Attributes.MAX_HEALTH,45).add(Attributes.ATTACK_DAMAGE,9).add(Attributes.FOLLOW_RANGE,64.0D).add(Attributes.ARMOR_TOUGHNESS,2.5D);}
 }

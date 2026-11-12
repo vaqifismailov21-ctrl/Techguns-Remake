@@ -121,6 +121,7 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
         if (hit instanceof EntityHitResult entity && entity.getEntity() instanceof Player victim
                 && shooter instanceof Player attacker && !attacker.canHarmPlayer(victim)) hit = null;
         if (hit != null && hit.getType() != HitResult.Type.MISS) onHit(hit);
+        if (bounced) { bounced = false; motion = getDeltaMovement(); }
 
         Vec3 next = position().add(motion);
         float yaw = (float) (Mth.atan2(motion.x, motion.z) * 180 / Math.PI);
@@ -190,8 +191,32 @@ public class GenericProjectile extends Entity implements IEntityAdditionalSpawnD
             } else target.hurt(source, getDamage());
             discard();
         }
-        if (hit instanceof BlockHitResult blockHit) { hitBlock(blockHit); discard(); }
+        if (hit instanceof BlockHitResult blockHit) {
+            if (!level().isClientSide && ricochet(blockHit)) return;
+            hitBlock(blockHit); discard();
+        }
     }
+    /** Plain bullets (not rockets, grenades, beams or fire) can glance off a block they graze. */
+    protected boolean canRicochet() {
+        return getClass() == GenericProjectile.class || this instanceof GenericProjectileIncendiary || this instanceof StoneBulletProjectile;
+    }
+    /**
+     * One shot in five that hits a block at a shallow angle (under about ten degrees) bounces off it instead of
+     * stopping: the part of its motion into the block is turned around.
+     */
+    protected boolean ricochet(BlockHitResult hit) {
+        if (!canRicochet() || hit.getType() != HitResult.Type.BLOCK || random.nextFloat() >= 0.2F) return false;
+        Vec3 v = getDeltaMovement(); double speed = v.lengthSqr(); if (speed < 1.0E-4) return false;
+        var normal = hit.getDirection().getNormal(); double into = v.x * normal.getX() + v.y * normal.getY() + v.z * normal.getZ();
+        if (into * into / speed >= 0.03) return false;
+        setDeltaMovement(v.subtract(normal.getX() * 2 * into, normal.getY() * 2 * into, normal.getZ() * 2 * into));
+        Vec3 at = hit.getLocation(); setPos(at.x + normal.getX() * 0.02, at.y + normal.getY() * 0.02, at.z + normal.getZ() * 0.02);
+        SoundType sound = level().getBlockState(hit.getBlockPos()).getSoundType(level(), hit.getBlockPos(), this);
+        TGPackets.sendBulletImpact(this, hit, sound);
+        hasImpulse = true; bounced = true;
+        return true;
+    }
+    private boolean bounced;
     protected void onHitEffect(LivingEntity target, HitResult hit) {}
     protected void hitBlock(BlockHitResult hit) {
         if (!level().isClientSide) {

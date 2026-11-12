@@ -35,8 +35,8 @@ import techguns.radiation.*;
 
 @Mod.EventBusSubscriber(modid = Techguns.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TGRadiationSystem {
-    public static final int MINOR_POISONING = 500, SEVERE_POISONING = 750, LETHAL_POISONING = 1000;
-    public static final int RADLOST_ON_DEATH = 200, INVENTORY_RADIATION_INVERVALL = 60;
+    public static final int MINOR_POISONING = 100, SEVERE_POISONING = 500, LETHAL_POISONING = 1000;
+    public static final int RADLOST_ON_DEATH = 50, INVENTORY_RADIATION_INVERVALL = 30;
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Techguns.MODID);
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, Techguns.MODID);
     public static final RegistryObject<MobEffect> RADIATION = EFFECTS.register("radiation", RadiationPotion::new);

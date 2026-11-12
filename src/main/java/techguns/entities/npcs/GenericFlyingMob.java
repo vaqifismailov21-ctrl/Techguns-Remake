@@ -11,7 +11,8 @@ import net.minecraft.world.phys.Vec3;
 import techguns.api.npc.*;
 
 /** Original wandering flight and collision probe over the current FlyingMob travel implementation. */
-public abstract class GenericFlyingMob extends FlyingMob implements Enemy,INpcTGDamageSystem,INPCTechgunsShooter {
+public abstract class GenericFlyingMob extends FlyingMob implements Enemy,INpcTGDamageSystem,INPCTechgunsShooter,techguns.api.npc.factions.ITGNpcTeam {
+    @Override public techguns.api.npc.factions.TGNpcFaction getTGFaction(){return techguns.api.npc.factions.TGNpcFaction.HOSTILE;}
     protected GenericFlyingMob(EntityType<? extends GenericFlyingMob> type,Level level){super(type,level);moveControl=new FlightControl(this);}
     protected abstract int getTargetFlyHeight();
     @Override public void tick(){super.tick();if(!level().isClientSide&&level().getDifficulty()==net.minecraft.world.Difficulty.PEACEFUL)discard();}

@@ -10,7 +10,7 @@ public final class TGEquipment {
     public static final TGArmorMaterial T1_COMBAT=new TGArmorMaterial("T1_COMBAT",60,0,15.0f,SoundEvents.ARMOR_EQUIP_LEATHER,0.5f);
     public static final TGArmorMaterial T1_SCOUT=new TGArmorMaterial("T1_SCOUT",60,0,13.0f,SoundEvents.ARMOR_EQUIP_LEATHER,0f);
     public static final TGArmorMaterial T1_MINER=new TGArmorMaterial("T1_MINER",60,0,13.0f,SoundEvents.ARMOR_EQUIP_LEATHER,0f);
-    public static final TGArmorMaterial T1_STEAM=new TGArmorMaterial("T1_STEAM",200,0,19.0f,SoundEvents.ARMOR_EQUIP_IRON,1f).setArmorElemental(17.0f).setArmorExplosion(18.0f).setArmorPoison(10.0f).setArmorRadiation(6.0f).setPenetrationResistance(0.1f);
+    public static final TGArmorMaterial T1_STEAM=new TGArmorMaterial("T1_STEAM",200,0,19.0f,SoundEvents.ARMOR_EQUIP_IRON,1f).setArmorElemental(17.0f).setArmorExplosion(18.0f).setArmorPoison(10.0f).setArmorRadiation(6.0f);
     public static final TGArmorMaterial T2_HAZMAT=new TGArmorMaterial("T2_HAZMAT",80,0,10.0f,SoundEvents.ARMOR_EQUIP_LEATHER,0f).setArmorElemental(16.0f).setArmorExplosion(10.0f).setArmorPoison(20.0f).setArmorRadiation(20.0f);
     public static final TGArmorMaterial T2_COMBAT=new TGArmorMaterial("T2_COMBAT",72,0,18.0f,SoundEvents.ARMOR_EQUIP_LEATHER,1f);
     public static final TGArmorMaterial T2_COMMANDO=new TGArmorMaterial("T2_COMMANDO",72,0,18.0f,SoundEvents.ARMOR_EQUIP_LEATHER,1f).setArmorElemental(16.0f).setArmorExplosion(16.0f).setArmorPoison(10.0f).setArmorRadiation(5.0f);

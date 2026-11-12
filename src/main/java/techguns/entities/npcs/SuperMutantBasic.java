@@ -23,10 +23,10 @@ protected void addRandomArmor(int difficulty) {
 				weapon = TGuns.rocketlauncher.get();
 				break;
 			case 1:
-				weapon = TGuns.ak47.get();
+				weapon = TGuns.pulserifle.get();
 				break;
 			case 2:
-				weapon = TGuns.combatshotgun.get();
+				weapon = TGuns.blasterrifle.get();
 				break;
 			default:
 				weapon = TGuns.lasergun.get();
@@ -68,6 +68,7 @@ public float getTotalArmorAgainstType(TGDamageSource dmgsrc) {
 			case ICE:
 				return 10.0f;
 			case PHYSICAL:
+				return 8.0f;
 			case PROJECTILE:
 				return 7.0f;
 			case POISON:
@@ -93,6 +94,6 @@ public float getModelScale() {
 protected float getMutantWidth() {
 		return 1.0f;
 	}
-public static AttributeSupplier.Builder attributes(){return GenericNPC.attributes().add(Attributes.MOVEMENT_SPEED,0.30D).add(Attributes.MAX_HEALTH,35).add(Attributes.ATTACK_DAMAGE,7).add(Attributes.FOLLOW_RANGE,50.0D).add(Attributes.ARMOR_TOUGHNESS,1D);}
+public static AttributeSupplier.Builder attributes(){return GenericNPC.attributes().add(Attributes.MOVEMENT_SPEED,0.30D).add(Attributes.MAX_HEALTH,35).add(Attributes.ATTACK_DAMAGE,7).add(Attributes.FOLLOW_RANGE,64.0D).add(Attributes.ARMOR_TOUGHNESS,1.5D);}
 @Override protected void playStepSound(net.minecraft.core.BlockPos pos,net.minecraft.world.level.block.state.BlockState state){playSound(getStepSound(),.15f,1);}
 }

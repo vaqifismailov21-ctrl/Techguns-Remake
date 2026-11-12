@@ -43,7 +43,7 @@ public final class NpcSpawnerGameTests {
         h.assertTrue(TGSpawnManager.distanceDanger(499,false)==0&&TGSpawnManager.distanceDanger(500,false)==1&&TGSpawnManager.distanceDanger(1000,false)==2&&TGSpawnManager.distanceDanger(2500,false)==3,"Original Overworld danger thresholds");
         h.assertTrue(TGSpawnManager.distanceDanger(249,true)==0&&TGSpawnManager.distanceDanger(250,true)==1&&TGSpawnManager.distanceDanger(1250,true)==3,"Nether distance thresholds are halved");
         var random=net.minecraft.util.RandomSource.create(1729);var near=new HashSet<EntityType<?>>();var far=new HashSet<EntityType<?>>();
-        for(int i=0;i<2000;i++){near.add(TGSpawnManager.choose(false,0,random));far.add(TGSpawnManager.choose(false,3,random));h.assertTrue(Set.of(TGNpcs.ZOMBIEPIGMANSOLDIER.get(),TGNpcs.CYBERDEMON.get()).contains(TGSpawnManager.choose(true,3,random)),"Nether spawn table must stay separate");}
+        for(int i=0;i<2000;i++){near.add(TGSpawnManager.choose(false,0,random));far.add(TGSpawnManager.choose(false,3,random));h.assertTrue(Set.of(TGNpcs.ZOMBIEPIGMANSOLDIER.get(),TGNpcs.CYBERDEMON.get(),TGSpecialNpcs.GHASTLING.get()).contains(TGSpawnManager.choose(true,3,random)),"Nether spawn table must stay separate");}
         h.assertTrue(near.equals(Set.of(TGNpcs.ZOMBIEFARMER.get(),TGNpcs.ZOMBIEMINER.get())),"Low-danger Overworld uses source farmer/miner bucket");
         h.assertTrue(far.size()==6&&far.contains(TGNpcs.BANDIT.get())&&far.contains(TGNpcs.PSYCHOSTEVE.get()),"High-danger Overworld unlocks all six configured source types");h.succeed();
     }

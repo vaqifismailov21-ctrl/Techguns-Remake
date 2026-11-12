@@ -17,8 +17,8 @@ public final class AttackHelicopter extends GenericFlyingMob {
     private static final EntityDataAccessor<Boolean> ATTACKING=SynchedEntityData.defineId(AttackHelicopter.class,EntityDataSerializers.BOOLEAN);
     public static final int MAX_DEATH_TIME=100;
     private int ambientSoundTick;
-    public AttackHelicopter(EntityType<? extends AttackHelicopter> type,Level level){super(type,level);xpReward=5;}
-    public static AttributeSupplier.Builder attributes(){return Mob.createMobAttributes().add(Attributes.MAX_HEALTH,100).add(Attributes.FOLLOW_RANGE,128).add(Attributes.ARMOR,16).add(Attributes.ARMOR_TOUGHNESS,5);}
+    public AttackHelicopter(EntityType<? extends AttackHelicopter> type,Level level){super(type,level);xpReward=35;}
+    public static AttributeSupplier.Builder attributes(){return Mob.createMobAttributes().add(Attributes.MAX_HEALTH,250).add(Attributes.FOLLOW_RANGE,192).add(Attributes.ARMOR,16).add(Attributes.ARMOR_TOUGHNESS,5);}
     @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(ATTACKING,false);}
     public boolean isAttacking(){return entityData.get(ATTACKING);}public void setAttacking(boolean value){entityData.set(ATTACKING,value);}
     @Override protected void registerGoals(){goalSelector.addGoal(5,new RandomFly(this));goalSelector.addGoal(7,new LookAround(this));goalSelector.addGoal(7,new HelicopterAttack(this));targetSelector.addGoal(1,new NearestAttackableTargetGoal<>(this,Player.class,true){
@@ -34,9 +34,15 @@ public final class AttackHelicopter extends GenericFlyingMob {
             var target=host.getTarget();if(target==null)return;
             if(host.distanceToSqr(target)<4096&&host.getSensing().hasLineOfSight(target)){
                 ++timer;
-                if(timer>=14&&timer<24&&timer%2==0){if(timer==14)host.playSound(TGSounds.HELICOPTER_BURST.get(),8,1);var bullet=new GenericProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,EnumBulletFirePos.CENTER);aim(bullet,target,8);host.level().addFreshEntity(bullet);}
-                else if(timer==35){host.playSound(TGSounds.ROCKET_FIRE.get(),8,1);var rocket=new RocketProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,"default");aim(rocket,target,4);host.level().addFreshEntity(rocket);}
-                else if(timer>35)timer=-30;
+                // a short machine gun burst, then a salvo of five rockets, every second one a fast one
+                if(timer>=8&&timer<18&&timer%2==0){if(timer==8)host.playSound(TGSounds.HELICOPTER_BURST.get(),8,1);var bullet=new GenericProjectile(host.level(),host,12,1,100,.05f,30,40,8,.25f,false,EnumBulletFirePos.CENTER);aim(bullet,target,8);host.level().addFreshEntity(bullet);}
+                else if(timer>=40&&timer<=65&&timer%5==0){
+                    boolean fast=timer==45||timer==60;
+                    host.playSound(TGSounds.ROCKET_FIRE.get(),8,1);
+                    var rocket=new RocketProjectile(host.level(),host,12,fast?1.2f:1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,fast?"high_velocity":"default");
+                    aim(rocket,target,4);host.level().addFreshEntity(rocket);
+                }
+                else if(timer>65)timer=-60;
             }else if(timer>0)--timer;
             host.setAttacking(timer>10);
         }
@@ -76,9 +82,19 @@ public final class AttackHelicopter extends GenericFlyingMob {
     @Override protected ResourceLocation getDefaultLootTable(){return ResourceLocation.parse("techguns:entities/attackhelicopter");}
     @Override protected SoundEvent getHurtSound(DamageSource source){return TGSounds.HELICOPTER_HIT.get();}
     @Override protected SoundEvent getDeathSound(){return TGSounds.HELICOPTER_HIT.get();}
-    @Override protected float getSoundVolume(){return 10;}
-    @Override protected int getTargetFlyHeight(){return 24;}
-    @Override public int getMaxSpawnClusterSize(){return 1;}
+    @Override protected float getSoundVolume(){return 8;}
+    @Override protected int getTargetFlyHeight(){return 16;}
+    @Override public int getMaxSpawnClusterSize(){return 2;}
+    /** Rockets of other hostile NPCs (and its own) do not bring it down. */
+    @Override public boolean hurt(DamageSource source,float amount){
+        if(hostile(source.getEntity())||hostile(source.getDirectEntity()))return false;
+        return super.hurt(source,amount);
+    }
+    private boolean hostile(net.minecraft.world.entity.Entity e){
+        if(e==null)return false;if(e==this)return true;
+        if(e instanceof GenericProjectile p&&p.getShooter()!=null&&p.getShooter()!=e)return hostile(p.getShooter());
+        return e instanceof techguns.api.npc.factions.ITGNpcTeam t&&t.getTGFaction()==techguns.api.npc.factions.TGNpcFaction.HOSTILE;
+    }
     @Override public float getTotalArmorAgainstType(TGDamageSource source){return switch(source.damageType){case LIGHTNING,ENERGY->10;case FIRE,ICE,PHYSICAL,PROJECTILE,POISON,RADIATION->20;default->0;};}
     @Override public float getPenetrationResistance(TGDamageSource source){return source.damageType==techguns.api.damagesystem.DamageType.PROJECTILE?.5f:0;}
     @Override public float getBulletOffsetSide(){return 2;}

@@ -12,6 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original Outcast; equipment branches and damage values are retained. */
 public class Outcast extends GenericNPCGearSpecificStats {
 public Outcast(EntityType<? extends GenericNPC> type,Level level){super(type,level);}
+@Override protected boolean hears(){return true;}
 public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/outcast");
 protected void addRandomArmor(int difficulty) {
 

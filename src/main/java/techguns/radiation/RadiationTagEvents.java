@@ -15,10 +15,12 @@ import techguns.TGRadiationSystem;
 public final class RadiationTagEvents {
     @SubscribeEvent public static void tags(TagsUpdatedEvent event) {
         if (!TGRadiationSystem.isEnabled()) return;
-        for (String name : new String[]{"ores/uranium", "ingots/uranium"}) {
-            TagKey<Item> tag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("forge", name));
+        // ore 1, ingot 2, block 5 radiation per check
+        String[] names = {"ores/uranium", "ingots/uranium", "storage_blocks/uranium"};int[] levels = {1, 2, 5};
+        for (int i = 0; i < names.length; i++) {
+            TagKey<Item> tag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("forge", names[i]));
             for (Item item : ForgeRegistries.ITEMS.tags().getTag(tag)) {
-                if (ItemRadiationRegistry.getRadiationDataFor(item, (short) 0) == null) ItemRadiationRegistry.addRadiationData(item, 0, 1, 100);
+                if (ItemRadiationRegistry.getRadiationDataFor(item, (short) 0) == null) ItemRadiationRegistry.addRadiationData(item, 0, levels[i], 100);
             }
         }
     }

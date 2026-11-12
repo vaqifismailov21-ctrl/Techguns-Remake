@@ -12,6 +12,8 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original ArmySoldier; equipment branches and damage values are retained. */
 public class ArmySoldier extends GenericNPC {
 public ArmySoldier(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(8.0f, 0f);}
+@Override protected boolean hears(){return true;}
+{setPathfindingMalus(net.minecraft.world.level.pathfinder.BlockPathTypes.WATER,-1);}
 public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/armysoldier");
 protected void addRandomArmor(int difficulty) {
 

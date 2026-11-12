@@ -17,10 +17,10 @@ import techguns.damagesystem.TGDamageSource;
 import techguns.entities.projectiles.*;
 
 /** Original active AIFireballAttack (the unused AIGhastlingAttack is deliberately not substituted). */
-public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCTechgunsShooter {
+public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCTechgunsShooter,techguns.api.npc.factions.ITGNpcTeam {
     private static final EntityDataAccessor<Boolean> ATTACKING=SynchedEntityData.defineId(Ghastling.class,EntityDataSerializers.BOOLEAN);
     public Ghastling(EntityType<? extends Ghastling> type,Level level){super(type,level);xpReward=10;setPathfindingMalus(BlockPathTypes.WATER,-1);setPathfindingMalus(BlockPathTypes.LAVA,8);setPathfindingMalus(BlockPathTypes.DANGER_FIRE,0);setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE,0);}
-    public static AttributeSupplier.Builder attributes(){return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH,20).add(Attributes.FOLLOW_RANGE,64).add(Attributes.ARMOR,10).add(Attributes.ARMOR_TOUGHNESS,0);}
+    public static AttributeSupplier.Builder attributes(){return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH,20).add(Attributes.FOLLOW_RANGE,72).add(Attributes.ARMOR,10).add(Attributes.ARMOR_TOUGHNESS,0);}
     @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(ATTACKING,false);}
     public boolean isAttacking(){return entityData.get(ATTACKING);}
     public void setAttacking(boolean value){entityData.set(ATTACKING,value);}
@@ -41,7 +41,7 @@ public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCT
             else if(distance<host.getAttributeValue(Attributes.FOLLOW_RANGE)*host.getAttributeValue(Attributes.FOLLOW_RANGE)){
                 if(time<=0){
                     ++step;if(step==1){time=30;host.setAttacking(true);}else if(step<=4)time=6;else{time=50;step=0;host.setAttacking(false);}
-                    if(step>1){host.level().levelEvent(null,1018,host.blockPosition(),0);host.level().addFreshEntity(new EnergyProjectile(host.level(),host,EnergyProjectile.Mode.ALIEN,6,1.5f,200,.05f,200,200,6,0,false,EnumBulletFirePos.CENTER));}
+                    if(step>1){host.level().levelEvent(null,1018,host.blockPosition(),0);host.level().addFreshEntity(new RocketProjectile(host.level(),host,15,1,100,.05f,30,40,8,.25f,false,host.random.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT,"default"));}
                 }
                 host.getLookControl().setLookAt(target,10,10);
             }else{host.getNavigation().stop();host.getMoveControl().setWantedPosition(target.getX(),target.getY(),target.getZ(),1);}
@@ -52,8 +52,10 @@ public final class Ghastling extends Monster implements INpcTGDamageSystem,INPCT
     @Override protected SoundEvent getAmbientSound(){return SoundEvents.GHAST_AMBIENT;}
     @Override protected SoundEvent getHurtSound(DamageSource source){return SoundEvents.GHAST_HURT;}
     @Override protected SoundEvent getDeathSound(){return SoundEvents.GHAST_DEATH;}
-    @Override protected float getSoundVolume(){return 10;}
-    @Override public float getTotalArmorAgainstType(TGDamageSource source){return 0;}
-    @Override public float getPenetrationResistance(TGDamageSource source){return 0;}
+    @Override protected float getSoundVolume(){return 5;}
+    @Override public MobType getMobType(){return MobType.UNDEAD;}
+    @Override public techguns.api.npc.factions.TGNpcFaction getTGFaction(){return techguns.api.npc.factions.TGNpcFaction.HOSTILE;}
+    @Override public float getTotalArmorAgainstType(TGDamageSource source){return switch(source.damageType){case EXPLOSION->30;case LIGHTNING,ENERGY,FIRE->10;default->0;};}
+    @Override public float getPenetrationResistance(TGDamageSource source){return switch(source.damageType){case PROJECTILE->.1f;case EXPLOSION->.9f;default->0;};}
     @Override public float getWeaponPosX(){return 0;}@Override public float getWeaponPosY(){return 0;}@Override public float getWeaponPosZ(){return 0;}
 }

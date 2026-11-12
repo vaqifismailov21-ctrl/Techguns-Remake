@@ -12,6 +12,7 @@ import techguns.damagesystem.TGDamageSource;
 /** Adapted from original PsychoSteve; equipment branches and damage values are retained. */
 public class PsychoSteve extends GenericNPC {
 public PsychoSteve(EntityType<? extends GenericNPC> type,Level level){super(type,level);setTGArmorStats(5.0f, 0f);}
+@Override protected boolean hears(){return true;}
 public static final ResourceLocation LOOT=ResourceLocation.fromNamespaceAndPath(Techguns.MODID,"entities/psychosteve");
 protected void addRandomArmor(int difficulty) {
 
