@@ -275,6 +275,50 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
             level.playSound(player,position.x,position.y,position.z,rechamberSound.get(),net.minecraft.sounds.SoundSource.PLAYERS,1,1);
         }
     }
+    /** Name of the ammunition switch key, filled in by the client. */
+    public static java.util.function.Supplier<Component> ammoSwitchKey = () -> Component.literal("G");
+    /**
+     * Unloads the gun and loads the next ammunition type the player carries (community edition key). Ammunition in the
+     * gun goes back to the inventory: a full magazine as a magazine, a part-used one as an empty magazine and rounds.
+     */
+    public boolean toggleAmmoType(ItemStack stack, Player player, InteractionHand hand) {
+        var type = getAmmoType();
+        if (!type.hasMultipleVariants() || player.isSpectator() || !player.isAlive()) return false;
+        var state = TGExtendedPlayer.get(player);
+        if (state.getFireDelay(hand) > 0) return false;
+        var variants = type.getVariants();
+        int current = getCurrentAmmoVariant(stack), next = -1;
+        for (int step = 1; step < variants.size() && next < 0; step++) {
+            int candidate = (current + step) % variants.size();
+            boolean carried = true;
+            for (var ammo : type.getAmmo(candidate)) if (!ammo.isEmpty() && !InventoryUtil.canConsumeAmmoPlayer(player, ammo)) carried = false;
+            if (carried) next = candidate;
+        }
+        if (next < 0) {
+            player.displayClientMessage(Component.translatable("techguns.msg.noammotype").withStyle(net.minecraft.ChatFormatting.RED), true);
+            return false;
+        }
+        int old = getCurrentAmmo(stack);
+        if (old > 0) {
+            if (ammoPerReload > 1) {
+                for (var ammo : type.getAmmo(current)) if (!ammo.isEmpty()) giveOrDrop(player, ammo.copyWithCount(old));
+            } else if (old >= clipsize) {
+                for (var ammo : type.getAmmo(current)) if (!ammo.isEmpty()) giveOrDrop(player, ammo.copyWithCount(1));
+            } else {
+                ItemStack[] empties = type.getEmptyMag();
+                for (int i = 0; i < empties.length; i++) if (!empties[i].isEmpty()) {
+                    giveOrDrop(player, empties[i].copyWithCount(1));
+                    int bullets = (int) Math.floor(old / type.getShotsPerBullet(clipsize, old));
+                    if (bullets > 0) giveOrDrop(player, type.getBullet(current)[i].copyWithCount(bullets));
+                }
+            }
+        }
+        setAmmo(stack, 0);
+        stack.getOrCreateTag().putString("ammovariant", variants.get(next).getKey());
+        tryForcedReload(stack, player.level(), player, hand);
+        player.displayClientMessage(Component.translatable("techguns.msg.ammotype").append(": ").append(type.getAmmo(next)[0].getHoverName()), true);
+        return true;
+    }
     public boolean tryForcedReload(ItemStack stack, Level level, Player player, InteractionHand hand) {
         if (player.isSpectator() || !player.isAlive() || player.getItemInHand(hand) != stack || stack.getItem() != this) return false;
         var state = level.isClientSide ? TGExtendedPlayer.find(player).orElse(null) : TGExtendedPlayer.get(player);
@@ -328,7 +372,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         float modifier = incendiary ? 1.1F : getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_EXPLOSIVE)?1.15F:projectileKind==ProjectileKind.ROCKET&&getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_NUKE)?5:1;
         for (var ammo : getAmmoType().getAmmo(variant)) tooltip.add(Component.translatable("techguns.gun.tooltip.ammo").append(": "+(ammoPerReload>1?ammoPerReload+"x ":"")).append(ammo.getHoverName()));
         tooltip.add(Component.translatable("techguns.gun.tooltip.damage").append((isShotgun()?"(x"+getPelletCount()+")":"")+": " + damage * modifier));
-        if(getAmmoType().hasMultipleVariants()) tooltip.add(Component.translatable("techguns.gun.tooltip.ammoswitch").withStyle(net.minecraft.ChatFormatting.GRAY));
+        if(getAmmoType().hasMultipleVariants()) tooltip.add(Component.translatable("techguns.gun.tooltip.ammoswitch.key",ammoSwitchKey.get()).withStyle(net.minecraft.ChatFormatting.GRAY));
         if (net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("techguns.gun.tooltip.handtype").append(": ").append(handType.displayName()));
             var type=incendiary||projectileKind==ProjectileKind.FLAME?techguns.api.damagesystem.DamageType.FIRE:
@@ -337,6 +381,10 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
             if(energyMode!=null)type=switch(energyMode){case TESLA->techguns.api.damagesystem.DamageType.LIGHTNING;case NDR->techguns.api.damagesystem.DamageType.RADIATION;case ALIEN,NETHER->techguns.api.damagesystem.DamageType.FIRE;case GAUSS->techguns.api.damagesystem.DamageType.PROJECTILE;case SONIC->techguns.api.damagesystem.DamageType.PHYSICAL;default->techguns.api.damagesystem.DamageType.ENERGY;};
             tooltip.add(Component.translatable("techguns.gun.tooltip.damageType").append(": ").append(type.displayName()));
             tooltip.add(Component.translatable("techguns.gun.tooltip.spread").append(": " + accuracy));
+            if(canZoom){
+                tooltip.add(Component.translatable("techguns.gun.tooltip.zoom").append(": x"+String.format(java.util.Locale.ROOT,"%.2f",1f/Math.max(zoomMult,0.0001f))+" (").append(Component.translatable(toggleZoom?"techguns.gun.tooltip.zoom.toogle":"techguns.gun.tooltip.zoom.hold")).append(")").withStyle(net.minecraft.ChatFormatting.YELLOW));
+                if(zoomBonus!=1f)tooltip.add(Component.translatable("techguns.gun.tooltip.spread.scoped").append(": "+String.format(java.util.Locale.ROOT,"%.4f",zoomBonus*accuracy)));
+            }
             tooltip.add(Component.translatable("techguns.gun.tooltip.clipsize").append(": " + getClipDisplayCount()));
             tooltip.add(Component.translatable("techguns.gun.tooltip.reloadTime").append(": " + reloadtime * 0.05F + "s"));
         } else tooltip.add(Component.translatable("techguns.gun.tooltip.shift1").append(" ")

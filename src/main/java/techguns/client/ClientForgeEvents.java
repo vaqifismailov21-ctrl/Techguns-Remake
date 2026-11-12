@@ -29,6 +29,7 @@ public final class ClientForgeEvents {
         while (ClientModEvents.SAFE_MODE.consumeClick()) TGPackets.sendKey(TGKeybindsID.TOGGLE_SAFEMODE, true);
         while (ClientModEvents.STEP_ASSIST.consumeClick()) TGPackets.sendKey(TGKeybindsID.TOGGLE_STEP_ASSIST, true);
         while (ClientModEvents.JETPACK.consumeClick()) TGPackets.sendKey(TGKeybindsID.TOGGLE_JETPACK, true);
+        while (ClientModEvents.SWITCH_AMMO.consumeClick()) TGPackets.sendKey(TGKeybindsID.TOGGLE_AMMO_TYPE, true);
     }
     private ClientForgeEvents() {}
 }

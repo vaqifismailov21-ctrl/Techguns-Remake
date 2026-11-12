@@ -1737,5 +1737,12 @@
   "block.techguns.fluid_pipe": "Fluid Pipe",
   "block.techguns.uranium_energy_cable": "Uranium Energy Cable",
   "techguns.tooltip.windowframe": "Right-click with a glass pane to glaze, with an empty hand to take it out",
-  "techguns.tooltip.fluid_pipe": "Moves up to %s mB/t from tanks to other tanks"
+  "techguns.tooltip.fluid_pipe": "Moves up to %s mB/t from tanks to other tanks",
+  "techguns.key.shoot": "Fire Gun",
+  "techguns.key.shootSecondary": "Aim / Fire Off-hand Gun",
+  "techguns.key.switchAmmo": "Switch Ammunition Type",
+  "techguns.gun.tooltip.ammoswitch.key": "Press %s to switch ammunition type (or combine the weapon with the rounds in crafting)",
+  "techguns.gun.tooltip.spread.scoped": "Spread when aiming",
+  "techguns.msg.noammotype": "No other ammunition type in the inventory",
+  "techguns.msg.ammotype": "Ammunition"
 }

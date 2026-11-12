@@ -23,10 +23,23 @@ public final class ClientModEvents {
     public static final KeyMapping STEP_ASSIST = key("toggleStepassist", GLFW.GLFW_KEY_V);
     public static final KeyMapping JETPACK = key("toggleJetpack", GLFW.GLFW_KEY_J);
     public static final KeyMapping RELOAD = key("forceReload", GLFW.GLFW_KEY_R);
+    public static final KeyMapping SWITCH_AMMO = key("switchAmmo", GLFW.GLFW_KEY_G);
+    /** Active only while a gun is held, so the default mouse buttons do not show as clashing with attack and use. */
+    public static final net.minecraftforge.client.settings.IKeyConflictContext GUN_HELD = new net.minecraftforge.client.settings.IKeyConflictContext() {
+        @Override public boolean isActive() {
+            var player = net.minecraft.client.Minecraft.getInstance().player;
+            return net.minecraftforge.client.settings.KeyConflictContext.IN_GAME.isActive() && player != null
+                    && (player.getMainHandItem().getItem() instanceof techguns.items.guns.GenericGun || player.getOffhandItem().getItem() instanceof techguns.items.guns.GenericGun);
+        }
+        @Override public boolean conflicts(net.minecraftforge.client.settings.IKeyConflictContext other) { return false; }
+    };
+    /** Fire (main hand) and aim / fire off hand; mouse buttons by default, any key or button can be bound. */
+    public static final KeyMapping SHOOT = new KeyMapping("techguns.key.shoot", GUN_HELD, InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, "techguns.key.categories.techguns");
+    public static final KeyMapping AIM = new KeyMapping("techguns.key.shootSecondary", GUN_HELD, InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, "techguns.key.categories.techguns");
     private static KeyMapping key(String name, int code) { return new KeyMapping("techguns.key." + name, InputConstants.Type.KEYSYM, code, "techguns.key.categories.techguns"); }
     @SubscribeEvent public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(NIGHT_VISION); event.register(SAFE_MODE); event.register(STEP_ASSIST); event.register(JETPACK);
-        event.register(RELOAD);
+        event.register(RELOAD); event.register(SWITCH_AMMO); event.register(SHOOT); event.register(AIM);
     }
     @SubscribeEvent public static void setup(FMLClientSetupEvent event) { event.enqueueWork(() -> {
         MenuScreens.register(TGMenuTypes.PLAYER_INVENTORY.get(), TGPlayerInventoryScreen::new);
@@ -34,6 +47,7 @@ public final class ClientModEvents {
         MenuScreens.register(techguns.power.PowerBlocks.GENERATOR_MENU.get(),techguns.client.gui.GeneratorScreen::new);
         MenuScreens.register(techguns.power.plant.PlantBlocks.MENU.get(),techguns.client.gui.PlantScreen::new);
         techguns.power.PowerBlocks.clientTick=techguns.client.audio.PowerSounds::tick;
+        techguns.items.guns.GenericGun.ammoSwitchKey=SWITCH_AMMO::getTranslatedKeyMessage;
         MenuScreens.register(TGMenuTypes.TURRET.get(),techguns.client.gui.TurretScreen::new);
         MenuScreens.register(TGMenuTypes.ORE_DRILL.get(),techguns.client.gui.OreDrillScreen::new);
         MenuScreens.register(TGMenuTypes.BENCH.get(),techguns.client.gui.BenchScreen::new);

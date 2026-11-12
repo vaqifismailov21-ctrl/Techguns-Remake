@@ -119,6 +119,13 @@ public final class TGPackets {
                 data.showTGHudElements = !data.showTGHudElements;
                 label = "techguns.tgguitooltip.togglehud"; state = data.showTGHudElements;
             }
+            case TGKeybindsID.TOGGLE_AMMO_TYPE -> {
+                for (var hand : net.minecraft.world.InteractionHand.values()) {
+                    var stack = player.getItemInHand(hand);
+                    if (stack.getItem() instanceof techguns.items.guns.GenericGun gun) { gun.toggleAmmoType(stack, player, hand); return; }
+                }
+                return;
+            }
             case TGKeybindsID.JETPACK_BOOST_START -> { data.setJumpkeyPressed(true); return; }
             case TGKeybindsID.JETPACK_BOOST_STOP -> { data.setJumpkeyPressed(false); return; }
             case TGKeybindsID.JETPACK_FORWARD_START -> { data.isForwardKeyPressed = true; return; }

@@ -21,9 +21,9 @@ public final class ClientWeaponEvents {
     @SubscribeEvent public static void mouse(InputEvent.MouseButton.Pre event) {
         var game = Minecraft.getInstance();
         if (game.player == null || game.screen != null || !game.mouseHandler.isMouseGrabbed() || game.player.isSpectator()) return;
-        InteractionHand hand = event.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT ? InteractionHand.MAIN_HAND
-                : event.getButton() == GLFW.GLFW_MOUSE_BUTTON_RIGHT ? InteractionHand.OFF_HAND : null;
-        if(event.getButton()==GLFW.GLFW_MOUSE_BUTTON_RIGHT
+        boolean shootButton = boundTo(ClientModEvents.SHOOT, event.getButton()), aimButton = boundTo(ClientModEvents.AIM, event.getButton());
+        InteractionHand hand = shootButton ? InteractionHand.MAIN_HAND : aimButton ? InteractionHand.OFF_HAND : null;
+        if(aimButton
                 && game.player.getMainHandItem().getItem() instanceof GenericGun aimed && aimed.canZoom()
                 && (game.player.isShiftKeyDown() || !(game.player.getOffhandItem().getItem() instanceof GenericGun)
                     || !techguns.api.guns.GunManager.canUseOffhand(game.player))) {
@@ -40,6 +40,37 @@ public final class ClientWeaponEvents {
             event.setCanceled(true);
             if (hand == InteractionHand.MAIN_HAND) fireMain = event.getAction() == GLFW.GLFW_PRESS;
             else fireOff = event.getAction() == GLFW.GLFW_PRESS;
+        }
+    }
+    /** True if the binding is the given mouse button (the default for fire and aim). */
+    private static boolean boundTo(net.minecraft.client.KeyMapping key, int button) {
+        var bound = key.getKey();
+        return bound.getType() == com.mojang.blaze3d.platform.InputConstants.Type.MOUSE && bound.getValue() == button;
+    }
+    private static boolean shootKeyDown, aimKeyDown;
+    /** Fire and aim bound to keyboard keys: their presses and releases are turned into the same mouse events. */
+    @SubscribeEvent public static void keyboardFire(TickEvent.ClientTickEvent event) {
+        var game = Minecraft.getInstance();
+        if (event.phase != TickEvent.Phase.START) return;
+        boolean ingame = game.player != null && game.screen == null && game.mouseHandler.isMouseGrabbed();
+        boolean shoot = ingame && ClientModEvents.SHOOT.getKey().getType() == com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM && ClientModEvents.SHOOT.isDown();
+        boolean aim = ingame && ClientModEvents.AIM.getKey().getType() == com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM && ClientModEvents.AIM.isDown();
+        if (shoot != shootKeyDown) { shootKeyDown = shoot; keyAsMouse(ClientModEvents.SHOOT, shoot); }
+        if (aim != aimKeyDown) { aimKeyDown = aim; keyAsMouse(ClientModEvents.AIM, aim); }
+    }
+    private static void keyAsMouse(net.minecraft.client.KeyMapping key, boolean pressed) {
+        var game = Minecraft.getInstance();
+        if (game.player == null) return;
+        boolean primary = key == ClientModEvents.SHOOT;
+        InteractionHand hand = primary ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+        if (!primary && pressed && game.player.getMainHandItem().getItem() instanceof GenericGun aimed && aimed.canZoom()
+                && (game.player.isShiftKeyDown() || !(game.player.getOffhandItem().getItem() instanceof GenericGun) || !techguns.api.guns.GunManager.canUseOffhand(game.player))) {
+            if (!aimed.isHoldZoom()) ClientZoom.toggle(aimed);
+            return;
+        }
+        if (!pressed) { if (primary) fireMain = false; else fireOff = false; return; }
+        if ((primary || !game.player.isShiftKeyDown()) && game.player.getItemInHand(hand).getItem() instanceof GenericGun gun && gun.canFireInHand(game.player, hand) && (!primary || gun.shootsWithLeftClick())) {
+            if (primary) fireMain = true; else fireOff = true;
         }
     }
     /** Original TGTickHandler: consume a semi-auto press once, even if pressed during cooldown. */

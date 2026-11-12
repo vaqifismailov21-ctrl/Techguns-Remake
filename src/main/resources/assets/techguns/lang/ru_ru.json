@@ -1734,5 +1734,12 @@
   "block.techguns.fluid_pipe": "Труба для жидкостей",
   "block.techguns.uranium_energy_cable": "Урановый энергокабель",
   "techguns.tooltip.windowframe": "ПКМ стеклянной панелью — вставить стекло, пустой рукой — вынуть",
-  "techguns.tooltip.fluid_pipe": "Перекачивает до %s мБ/т из баков в другие баки"
+  "techguns.tooltip.fluid_pipe": "Перекачивает до %s мБ/т из баков в другие баки",
+  "techguns.key.shoot": "Выстрел",
+  "techguns.key.shootSecondary": "Прицел / выстрел из левой руки",
+  "techguns.key.switchAmmo": "Сменить тип патронов",
+  "techguns.gun.tooltip.ammoswitch.key": "%s — сменить тип патронов (или скрафтить оружие с нужными патронами)",
+  "techguns.gun.tooltip.spread.scoped": "Разброс в прицеле",
+  "techguns.msg.noammotype": "В инвентаре нет патронов другого типа",
+  "techguns.msg.ammotype": "Патроны"
 }
