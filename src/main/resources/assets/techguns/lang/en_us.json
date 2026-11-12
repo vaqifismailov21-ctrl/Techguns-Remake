@@ -1632,5 +1632,18 @@
   "techguns.wire.tip.bare": "Bare: shocks under load, armour does not help",
   "techguns.power.jei.wire_coil_copper_insulated": "Copper wire in rubber insulation: 2,048 FE/t, up to 16 blocks, never shocks.",
   "techguns.power.jei.wire_coil_steel_insulated": "Insulated steel wire: 16,384 FE/t, up to 24 blocks, never shocks.",
-  "itemGroup.techguns_multiblocks": "Techguns: Multiblocks"
+  "itemGroup.techguns_multiblocks": "Techguns: Multiblocks",
+  "item.techguns.machine_upgrade_template": "Machine Upgrade Template",
+  "item.techguns.machine_upgrade_steam": "Steam Machine Upgrade",
+  "item.techguns.cyberdemon_flesh": "Cyberdemon Flesh",
+  "item.techguns.blueprints": "Cybernetics Blueprints",
+  "item.techguns.cybernetic_wiring": "Cybernetic Wiring",
+  "techguns.tooltip.blueprints": "Use to learn how to fabricate cybernetic parts",
+  "techguns.blueprints.learned": "You learned how to fabricate cybernetic parts",
+  "techguns.blueprints.known": "You already know these blueprints",
+  "techguns.tooltip.needblueprints": "The machine owner must study the cybernetics blueprints",
+  "techguns.container.metalpress.pressure": "Pressure: %s/%s",
+  "techguns.fluid.steam": "Steam",
+  "techguns.tooltip.steamupgrade": "Chemical Laboratory: boils water into steam. Metal Press: steam tank, builds pressure",
+  "techguns.jei.steam": "Steam: %s mB, pressure %s"
 }

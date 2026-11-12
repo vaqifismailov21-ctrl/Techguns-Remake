@@ -18,6 +18,8 @@ import static techguns.client.gui.LegacyMachineGui.*;
  */
 public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     public static final int TANK_Y=17,INPUT_TANK_X=18,OUTPUT_TANK_X=157,TANK_W=10,TANK_H=50;
+    private static final int STEAM_TANK_X=95;
+    private boolean steamShown(){return menu.machine.steamUpgrade()||!menu.machine.inputTank.isEmpty();}
     private static final ResourceLocation CHEM_LAB=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/chem_lab_gui.png");
     private final ResourceLocation texture;
     public MachineScreen(MachineMenu menu,Inventory inventory,Component title){super(menu,inventory,title);texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+menu.machine.kind.texture()+"_gui.png");imageHeight=166;}
@@ -52,7 +54,9 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         if(kind.upgrade>=0){var xy=kind.slots[kind.upgrade];graphics.blit(MACHINE,k+xy[0]-1,l+xy[1]-1,119,59,20,20);}
         boolean working=machine.running();float fraction=machine.totalTime>0?Math.min(1,machine.progress/(float)machine.totalTime):0;
         switch(kind){
-            case AMMO_PRESS,METAL_PRESS->{if(working)graphics.blit(texture,k+119,l+36,176,0,19,scaled(21)+1);}
+            case AMMO_PRESS->{if(working)graphics.blit(texture,k+119,l+36,176,0,19,scaled(21)+1);}
+            case METAL_PRESS->{if(working)graphics.blit(texture,k+119,l+36,176,0,19,scaled(21)+1);
+                if(steamShown()){graphics.fill(k+STEAM_TANK_X-1,l+TANK_Y-1,k+STEAM_TANK_X+TANK_W+1,l+TANK_Y+TANK_H+1,0xFF373737);graphics.fill(k+STEAM_TANK_X,l+TANK_Y,k+STEAM_TANK_X+TANK_W,l+TANK_Y+TANK_H,0xFF8B8B8B);tank(graphics,machine.inputTank,k+STEAM_TANK_X,l+TANK_Y);}}
             case BLAST_FURNACE->{if(working)graphics.blit(texture,k+19,l+53,0,167,scaled(90)+1,11);}
             case FABRICATOR->{if(working)graphics.blit(texture,k+21,l+53,0,167,scaled(90)+1,11);}
             case CHARGING_STATION->{if(working)graphics.blit(texture,k+39,l+19,0,167,scaled(26)+1,10);}
@@ -91,7 +95,7 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         graphics.drawString(font,playerInventoryTitle,8,imageHeight-96+2,color,false);
         switch(machine.kind){
             case AMMO_PRESS->{String[] names={"pistolrounds","shotgunrounds","riflerounds","sniperrounds"};graphics.drawString(font,Component.translatable("techguns.gui.ammopress.build").append(":"),20,30,color,false);GuiText.fitted(graphics,font,Component.translatable("item.techguns."+names[machine.plan]),20,40,94,color);}
-            case METAL_PRESS->{graphics.drawString(font,Component.translatable("techguns.container.metalpress.autosplit").append(":"),20,30,color,false);graphics.drawString(font,Component.translatable(machine.autoSplitMode==0?"techguns.container.info.off":"techguns.container.info.on"),20,40,color,false);}
+            case METAL_PRESS->{graphics.drawString(font,Component.translatable("techguns.container.metalpress.autosplit").append(":"),20,30,color,false);graphics.drawString(font,Component.translatable(machine.autoSplitMode==0?"techguns.container.info.off":"techguns.container.info.on"),20,40,color,false);if(steamShown())graphics.drawString(font,Component.translatable("techguns.container.metalpress.pressure",machine.pressure,ProcessingMachine.MAX_PRESSURE),20,56,color,false);}
             case REACTION->{graphics.drawString(font,(machine.reactor.liquidLevel*10)+"%",34,50,color,false);graphics.drawString(font,""+machine.reactor.intensity,121,18,color,false);}
             default->{}
         }
@@ -107,6 +111,8 @@ public final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             if(in(mx,my,20,7,8,8))return List.of(Component.translatable("techguns.chemlab.dumpinput"),Component.translatable("techguns.chemlab.dumpinput.tooltip"));
             if(in(mx,my,159,7,8,8))return List.of(Component.translatable("techguns.chemlab.dumpoutput"),Component.translatable("techguns.chemlab.dumpoutput.tooltip"));
             if(in(mx,my,156,68,14,14))return List.of(Component.translatable("techguns.chemlab.toogledrain"),Component.translatable("techguns.chemlab.toogledrain.tooltip."+(machine.drainInput?1:0)));
+        }else if(machine.kind==MachineKind.METAL_PRESS&&steamShown()){
+            if(in(mx,my,STEAM_TANK_X-1,TANK_Y-1,TANK_W+2,TANK_H+2))return tankTooltip(machine.inputTank);
         }else if(machine.kind==MachineKind.REACTION){
             if(in(mx,my,18,16,11,51))return tankTooltip(machine.inputTank);
             if(in(mx,my,20,7,8,8))return List.of(Component.translatable("techguns.chemlab.dumpinput"),Component.translatable("techguns.chemlab.dumpinput.tooltip"));

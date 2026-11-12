@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pnp",
+    "ncn",
+    "pnp"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/copper"
+    },
+    "n": {
+      "item": "techguns:compressedairtankempty"
+    },
+    "c": {
+      "item": "techguns:machine_upgrade_template"
+    }
+  },
+  "result": {
+    "item": "techguns:machine_upgrade_steam"
+  }
+}

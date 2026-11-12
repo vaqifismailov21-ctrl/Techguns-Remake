@@ -133,6 +133,11 @@ public final class TGItems {
     public static final RegistryObject<SharedMaterialItem> REINFORCED_ELECTRIC_ENGINE = shared("reinforced_electric_engine", 158, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> INGOT_HELLISH = shared("ingothellish", 159, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> UV_ELEMENT = shared("uvelement", 160, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> MACHINE_UPGRADE_TEMPLATE = shared("machine_upgrade_template", 161, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> MACHINE_UPGRADE_STEAM = shared("machine_upgrade_steam", 162, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> CYBERDEMON_FLESH = shared("cyberdemon_flesh", 163, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> BLUEPRINTS = shared("blueprints", 164, TGSlotType.NORMAL, 16, () -> true);
+    public static final RegistryObject<SharedMaterialItem> CYBERNETIC_WIRING = shared("cybernetic_wiring", 165, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SHOTGUN_ROUNDS_INCENDIARY = shared("shotgunrounds_incendiary", 106, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> AS50_MAGAZINE_INCENDIARY = shared("as50magazine_incendiary", 107, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SNIPER_ROUNDS_INCENDIARY = shared("sniperrounds_incendiary", 108, TGSlotType.AMMOSLOT, 64, () -> true);

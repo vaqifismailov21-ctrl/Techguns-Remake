@@ -1629,5 +1629,18 @@
   "techguns.wire.tip.bare": "Голый: под нагрузкой бьёт током, броня не спасает",
   "techguns.power.jei.wire_coil_copper_insulated": "Медный провод в резиновой изоляции: 2 048 FE/т, до 16 блоков, током не бьёт.",
   "techguns.power.jei.wire_coil_steel_insulated": "Стальной провод в изоляции: 16 384 FE/т, до 24 блоков, током не бьёт.",
-  "itemGroup.techguns_multiblocks": "Techguns: мультиблоки"
+  "itemGroup.techguns_multiblocks": "Techguns: мультиблоки",
+  "item.techguns.machine_upgrade_template": "Шаблон улучшения машины",
+  "item.techguns.machine_upgrade_steam": "Паровое улучшение машины",
+  "item.techguns.cyberdemon_flesh": "Плоть кибердемона",
+  "item.techguns.blueprints": "Чертежи кибернетики",
+  "item.techguns.cybernetic_wiring": "Кибернетическая проводка",
+  "techguns.tooltip.blueprints": "Используйте, чтобы научиться делать кибернетические детали",
+  "techguns.blueprints.learned": "Вы научились делать кибернетические детали",
+  "techguns.blueprints.known": "Вы уже изучили эти чертежи",
+  "techguns.tooltip.needblueprints": "Владелец машины должен изучить чертежи кибернетики",
+  "techguns.container.metalpress.pressure": "Давление: %s/%s",
+  "techguns.fluid.steam": "Пар",
+  "techguns.tooltip.steamupgrade": "Хим. лаборатория: кипятит воду в пар. Пресс: паровой бак, набирает давление",
+  "techguns.jei.steam": "Пар: %s мБ, давление %s"
 }

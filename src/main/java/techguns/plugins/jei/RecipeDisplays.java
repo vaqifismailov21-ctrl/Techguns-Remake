@@ -37,11 +37,11 @@ public final class RecipeDisplays {
     public static Map<Kind,List<Display>> all(){
         var result=new EnumMap<Kind,List<Display>>(Kind.class);for(var kind:Kind.values())result.put(kind,new ArrayList<>());
         var processing=new ArrayList<>(MachineRecipes.all());for(int plan=0;plan<4;plan++)processing.add(MachineRecipes.ammo(plan));int index=0;
-        for(var recipe:processing){var slots=new ArrayList<Slot>();for(int i=0;i<recipe.ingredients().length;i++){int[] p=recipe.kind().slots[i];slots.add(input(p[0],p[1],recipe.ingredients()[i],recipe.amounts()[i]));}int[] out=recipe.kind().slots[recipe.kind().output];slots.add(output(out[0],out[1],recipe.result()));add(result,new Display("processing_"+index++,Kind.machine(recipe.kind()),slots,recipe.ticks(),recipe.power(),List.of()));}
+        for(var recipe:processing){var slots=new ArrayList<Slot>();for(int i=0;i<recipe.ingredients().length;i++){int[] p=recipe.kind().slots[i];slots.add(input(p[0],p[1],recipe.ingredients()[i],recipe.amounts()[i]));}int[] out=recipe.kind().slots[recipe.kind().output];slots.add(output(out[0],out[1],recipe.result()));var steam=MachineRecipes.steam(recipe);add(result,new Display("processing_"+index++,Kind.machine(recipe.kind()),slots,recipe.ticks(),recipe.power(),steam!=null?List.of(Component.translatable("item.techguns.machine_upgrade_steam"),Component.translatable("techguns.jei.steam",steam[0],steam[1])):recipe.kind()==MachineKind.FABRICATOR&&recipe.result().is(techguns.TGItems.CYBERNETIC_PARTS.get())?List.of(Component.translatable("techguns.tooltip.needblueprints")):List.of()));}
         index=0;for(var recipe:ChemicalRecipes.all()){
             var slots=new ArrayList<Slot>();for(int i=0;i<recipe.inputs().length;i++)if(recipe.amounts()[i]>0){int[] p=MachineKind.CHEM_LAB.slots[i];slots.add(input(p[0],p[1],recipe.inputs()[i],recipe.amounts()[i]));}
             if(!recipe.output().isEmpty())slots.add(output(135,17,recipe.output()));if(!recipe.fluidInput().isEmpty())slots.add(fluid(Role.INPUT,19,17,recipe.fluidInput(),null));if(!recipe.fluidOutput().isEmpty())slots.add(fluid(Role.OUTPUT,158,17,recipe.fluidOutput(),null));
-            add(result,new Display("chemical_"+index++,Kind.CHEM,slots,100,recipe.power(),List.of()));
+            add(result,new Display("chemical_"+index++,Kind.CHEM,slots,100,recipe.power(),ChemicalRecipes.needsSteamUpgrade(recipe)?List.of(Component.translatable("item.techguns.machine_upgrade_steam")):List.of()));
         }
         for(var recipe:ReactionRecipe.all()){
             var slots=new ArrayList<Slot>();slots.add(input(35,17,recipe.input(),1));slots.add(item(Role.CATALYST,93,17,List.of(recipe.focus().getDefaultInstance()),Component.translatable("techguns.jei.catalyst")));

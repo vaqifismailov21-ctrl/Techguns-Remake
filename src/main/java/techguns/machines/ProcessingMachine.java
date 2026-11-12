@@ -29,7 +29,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     private LazyOptional<IFluidHandler> fluidHandle;
     public final ReactionControl reactor=new ReactionControl(this);
     long nextChargeSound;
-    public final FluidTank inputTank=new FluidTank(8000){@Override protected void onContentsChanged(){inputsChanged=true;changed();}@Override public int fill(FluidStack resource,IFluidHandler.FluidAction action){if(kind==MachineKind.REACTION){int space=Math.max(0,reactor.liquidLevel*1000-getFluidAmount());if(space==0)return 0;resource=new FluidStack(resource,Math.min(resource.getAmount(),space));}return super.fill(resource,action);}};
+    public final FluidTank inputTank=new FluidTank(8000){@Override protected void onContentsChanged(){inputsChanged=true;changed();}@Override public int fill(FluidStack resource,IFluidHandler.FluidAction action){if(kind==MachineKind.REACTION){int space=Math.max(0,reactor.liquidLevel*1000-getFluidAmount());if(space==0)return 0;resource=new FluidStack(resource,Math.min(resource.getAmount(),space));}if(kind==MachineKind.METAL_PRESS&&resource.getFluid()!=TGFluids.STEAM.get())return 0;return super.fill(resource,action);}};
     public final FluidTank outputTank=new FluidTank(16000){@Override protected void onContentsChanged(){inputsChanged=true;changed();}};
     private FluidStack pendingFluid=FluidStack.EMPTY;
     public boolean drainInput;
@@ -39,13 +39,14 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     private final List<ItemStack> pendingMultiple=new ArrayList<>();
     public int progress,totalTime,powerPerTick,plan,redstoneMode,autoSplitMode;
     public final ContainerData data=new ContainerData(){
-        public int getCount(){return 15;}
-        public int get(int i){return switch(i){case 0->progress;case 1->totalTime;case 2->energy.getEnergyStored()&65535;case 3->energy.getEnergyStored()>>>16;case 4->plan;case 5->redstoneMode;case 6->autoSplitMode;case 7->powerPerTick;case 8->running()?1:0;case 9->drainInput?1:0;case 10->reactor.intensity;case 11->reactor.liquidLevel;case 12->reactor.completion;case 13->reactor.requiredIntensity;case 14->reactor.nextTick;default->0;};}
-        public void set(int i,int value){switch(i){case 0->progress=value;case 1->totalTime=value;case 2->setEnergy((energy.getEnergyStored()&0xffff0000)|(value&65535));case 3->setEnergy((energy.getEnergyStored()&65535)|((value&65535)<<16));case 4->plan=value;case 5->redstoneMode=value;case 6->autoSplitMode=value;case 7->powerPerTick=value;case 9->drainInput=value!=0;case 10->reactor.intensity=value;case 11->reactor.liquidLevel=value;case 12->reactor.completion=value;case 13->reactor.requiredIntensity=value;case 14->reactor.nextTick=value;}}
+        public int getCount(){return 16;}
+        public int get(int i){return switch(i){case 0->progress;case 1->totalTime;case 2->energy.getEnergyStored()&65535;case 3->energy.getEnergyStored()>>>16;case 4->plan;case 5->redstoneMode;case 6->autoSplitMode;case 7->powerPerTick;case 8->running()?1:0;case 9->drainInput?1:0;case 10->reactor.intensity;case 11->reactor.liquidLevel;case 12->reactor.completion;case 13->reactor.requiredIntensity;case 14->reactor.nextTick;case 15->pressure;default->0;};}
+        public void set(int i,int value){switch(i){case 0->progress=value;case 1->totalTime=value;case 2->setEnergy((energy.getEnergyStored()&0xffff0000)|(value&65535));case 3->setEnergy((energy.getEnergyStored()&65535)|((value&65535)<<16));case 4->plan=value;case 5->redstoneMode=value;case 6->autoSplitMode=value;case 7->powerPerTick=value;case 9->drainInput=value!=0;case 10->reactor.intensity=value;case 11->reactor.liquidLevel=value;case 12->reactor.completion=value;case 13->reactor.requiredIntensity=value;case 14->reactor.nextTick=value;case 15->pressure=value;}}
     };
     public ProcessingMachine(BlockPos pos,BlockState state){
         super(TGMachines.ENTITY.get(),pos,state);kind=((MachineBlock)state.getBlock()).kind;
         if(kind==MachineKind.REACTION)inputTank.setCapacity(10000);
+        if(kind==MachineKind.METAL_PRESS)inputTank.setCapacity(STEAM_CAPACITY);
         inventory=new ItemStackHandler(kind.slots.length){@Override protected void onContentsChanged(int slot){inputsChanged=true;changed();}@Override public boolean isItemValid(int slot,ItemStack stack){return accepts(slot,stack);}};
         energy=new EnergyStorage(kind.capacity,kind.capacity,kind.capacity){@Override public int receiveEnergy(int amount,boolean simulate){int n=super.receiveEnergy(amount,simulate);if(n>0&&!simulate){setChanged();energyDirty=true;}return n;}@Override public int extractEnergy(int amount,boolean simulate){int n=super.extractEnergy(amount,simulate);if(n>0&&!simulate)setChanged();return n;}};
         createHandles();
@@ -56,7 +57,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
         fluidHandle=LazyOptional.of(()->new IFluidHandler(){public int getTanks(){return kind==MachineKind.REACTION?1:2;}public FluidStack getFluidInTank(int tank){return (tank==0?inputTank:outputTank).getFluid();}public int getTankCapacity(int tank){return (tank==0?inputTank:outputTank).getCapacity();}public boolean isFluidValid(int tank,FluidStack stack){return tank==0;}public int fill(FluidStack stack,FluidAction action){return inputTank.fill(stack,action);}public FluidStack drain(FluidStack stack,FluidAction action){if(kind==MachineKind.REACTION)return inputTank.getFluid().isFluidEqual(stack)?drain(stack.getAmount(),action):FluidStack.EMPTY;return (drainInput?inputTank:outputTank).drain(stack,action);}public FluidStack drain(int amount,FluidAction action){if(kind==MachineKind.REACTION)return inputTank.drain(Math.min(amount,Math.max(0,inputTank.getFluidAmount()-reactor.liquidLevel*1000)),action);return (drainInput?inputTank:outputTank).drain(amount,action);}});
     }
     public boolean accepts(int slot,ItemStack stack){
-        if(kind.outputSlot(slot)||stack.isEmpty())return false;if(slot==kind.upgrade)return stack.is(TGItems.MACHINE_UPGRADE_STACK.get());
+        if(kind.outputSlot(slot)||stack.isEmpty())return false;if(slot==kind.upgrade)return stack.is(TGItems.MACHINE_UPGRADE_STACK.get())||steamCapable()&&stack.is(TGItems.MACHINE_UPGRADE_STEAM.get());
         if(kind==MachineKind.CHEM_LAB)return ChemicalRecipes.accepts(slot,stack);
         if(kind==MachineKind.GRINDER)return slot==0&&GrindingRecipe.find(stack)!=null;
         if(kind==MachineKind.REACTION){boolean focus=stack.is(TGItems.RC_HEAT_RAY.get())||stack.is(TGItems.RC_UV_EMITTER.get());return slot==1?focus:slot==0&&!focus;}
@@ -72,6 +73,34 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     private boolean energyDirty;
     /** A part of the multiblock was in an unloaded chunk at the last check. */
     private boolean partsUnloaded;
+    /** Pressure level of the metal press steam system, 0..MAX_PRESSURE. */
+    public int pressure;
+    public static final int MAX_PRESSURE=12,PRESSURE_TICKS=40,STEAM_CAPACITY=16000;
+    public boolean steamCapable(){return kind==MachineKind.CHEM_LAB||kind==MachineKind.METAL_PRESS;}
+    public boolean steamUpgrade(){return kind.upgrade>=0&&inventory.getStackInSlot(kind.upgrade).is(TGItems.MACHINE_UPGRADE_STEAM.get());}
+    /** Stack upgrades in the upgrade slot; a steam upgrade gives no extra batches. */
+    public int stackUpgrades(){if(kind.upgrade<0)return 0;var stack=inventory.getStackInSlot(kind.upgrade);return stack.is(TGItems.MACHINE_UPGRADE_STACK.get())?stack.getCount():0;}
+    /** The steam tank builds pressure one level every two seconds, up to one level per stored bucket; it falls without the upgrade or steam. */
+    private void tickPressure(){
+        if(steamUpgrade()&&Math.floorMod(level.getGameTime()+worldPosition.asLong(),10L)==0)pullSteam();
+        if(Math.floorMod(level.getGameTime()+worldPosition.asLong(),(long)PRESSURE_TICKS)!=0)return;
+        int target=steamUpgrade()?Math.min(MAX_PRESSURE,inputTank.getFluidAmount()/1000):0;
+        int next=pressure<target?pressure+1:pressure>target?pressure-1:pressure;
+        if(next!=pressure){pressure=next;inputsChanged=true;setChanged();}
+    }
+    /** Takes steam from neighbouring tanks (a chemical laboratory next to the press), so no pipes are needed. */
+    private void pullSteam(){
+        for(var side:Direction.values()){
+            int space=inputTank.getCapacity()-inputTank.getFluidAmount();if(space<=0)return;
+            var pos=worldPosition.relative(side);if(!level.hasChunkAt(pos))continue;var other=level.getBlockEntity(pos);if(other==null)continue;
+            other.getCapability(net.minecraftforge.common.capabilities.ForgeCapabilities.FLUID_HANDLER,side.getOpposite()).ifPresent(handler->{
+                var wanted=new FluidStack(TGFluids.STEAM.get(),Math.min(1000,inputTank.getCapacity()-inputTank.getFluidAmount()));
+                var drained=handler.drain(wanted,IFluidHandler.FluidAction.SIMULATE);if(drained.isEmpty()||drained.getFluid()!=TGFluids.STEAM.get())return;
+                int accepted=inputTank.fill(drained,IFluidHandler.FluidAction.SIMULATE);if(accepted<=0)return;
+                inputTank.fill(handler.drain(new FluidStack(TGFluids.STEAM.get(),accepted),IFluidHandler.FluidAction.EXECUTE),IFluidHandler.FluidAction.EXECUTE);
+            });
+        }
+    }
     private boolean inputsEmpty(){
         for(int i=0;i<inventory.getSlots();i++)if(!kind.outputSlot(i)&&i!=kind.upgrade&&!inventory.getStackInSlot(i).isEmpty())return false;
         return inputTank.isEmpty();
@@ -92,7 +121,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
             if(partsUnloaded)return;
         }
         if(kind==MachineKind.REACTION){reactor.tick();return;}
-        if(kind==MachineKind.METAL_PRESS&&autoSplitMode>0&&!running())split();
+        if(kind==MachineKind.METAL_PRESS){tickPressure();if(autoSplitMode>0&&!running())split();}
         if(!running()){
             if(chargeItem())return;
             // nothing to work on: no recipe search; a failed search is repeated when something changed, else twice a second
@@ -114,14 +143,15 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
         if(kind==MachineKind.CHEM_LAB){startChemical();return;}
         if(kind==MachineKind.GRINDER){startGrinding();return;}
         var recipe=MachineRecipes.find(this);if(recipe==null)return;var amounts=recipe.match(inventory);if(amounts==null)return;
-        int max=1+inventory.getStackInSlot(kind.upgrade).getCount();for(int i=0;i<amounts.length;i++)if(amounts[i]>0)max=Math.min(max,inventory.getStackInSlot(i).getCount()/amounts[i]);
+        int max=1+stackUpgrades();for(int i=0;i<amounts.length;i++)if(amounts[i]>0)max=Math.min(max,inventory.getStackInSlot(i).getCount()/amounts[i]);
+        var steam=MachineRecipes.steam(recipe);if(steam!=null)max=Math.min(max,inputTank.getFluidAmount()/steam[0]);if(max<=0)return;
         var out=inventory.getStackInSlot(kind.output);if(!out.isEmpty()&&!ItemStack.isSameItemSameTags(out,recipe.result()))return;
         max=Math.min(max,(recipe.result().getMaxStackSize()-out.getCount())/recipe.result().getCount());if(max<=0)return;
-        pending=recipe.result().copyWithCount(recipe.result().getCount()*max);consumed.clear();for(int i=0;i<amounts.length;i++){var stack=inventory.getStackInSlot(i);consumed.add(stack.copyWithCount(amounts[i]*max));stack.shrink(amounts[i]*max);}
+        if(steam!=null)inputTank.drain(steam[0]*max,IFluidHandler.FluidAction.EXECUTE);pending=recipe.result().copyWithCount(recipe.result().getCount()*max);consumed.clear();for(int i=0;i<amounts.length;i++){var stack=inventory.getStackInSlot(i);consumed.add(stack.copyWithCount(amounts[i]*max));stack.shrink(amounts[i]*max);}
         totalTime=recipe.ticks();powerPerTick=recipe.power()*max;progress=0;changed();
     }
     private void startChemical(){
-        var recipe=ChemicalRecipes.all().stream().filter(r->r.match(this)!=null).findFirst().orElse(null);if(recipe==null)return;var amounts=recipe.match(this);int max=1+inventory.getStackInSlot(kind.upgrade).getCount();
+        var recipe=ChemicalRecipes.all().stream().filter(r->r.match(this)!=null&&(steamUpgrade()||!ChemicalRecipes.needsSteamUpgrade(r))).findFirst().orElse(null);if(recipe==null)return;var amounts=recipe.match(this);int max=1+stackUpgrades();
         for(int i=0;i<amounts.length;i++)if(amounts[i]>0)max=Math.min(max,inventory.getStackInSlot(i).getCount()/amounts[i]);
         if(!recipe.fluidInput().isEmpty())max=Math.min(max,inputTank.getFluidAmount()/recipe.fluidInput().getAmount());
         if(!recipe.output().isEmpty()){if(!fits(recipe.output()))return;var out=inventory.getStackInSlot(kind.output);max=Math.min(max,(recipe.output().getMaxStackSize()-out.getCount())/recipe.output().getCount());}
@@ -131,7 +161,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
         totalTime=100;powerPerTick=recipe.power()*max;progress=0;changed();
     }
     private boolean fits(ItemStack stack){if(stack.isEmpty())return true;var out=inventory.getStackInSlot(kind.output);return out.isEmpty()||ItemStack.isSameItemSameTags(out,stack)&&out.getCount()+stack.getCount()<=out.getMaxStackSize();}
-    private void startGrinding(){var input=inventory.getStackInSlot(0);var recipe=GrindingRecipe.find(input);if(recipe==null)return;int max=Math.min(input.getCount(),1+inventory.getStackInSlot(kind.upgrade).getCount());while(max>0&&mergeGrinding(recipe.maximum(max))==null)max--;if(max==0)return;pendingMultiple.clear();pendingMultiple.addAll(recipe.roll(level.random,max));consumed.clear();consumed.add(input.copyWithCount(max));input.shrink(max);progress=0;totalTime=100;powerPerTick=5*max;changed();}
+    private void startGrinding(){var input=inventory.getStackInSlot(0);var recipe=GrindingRecipe.find(input);if(recipe==null)return;int max=Math.min(input.getCount(),1+stackUpgrades());while(max>0&&mergeGrinding(recipe.maximum(max))==null)max--;if(max==0)return;pendingMultiple.clear();pendingMultiple.addAll(recipe.roll(level.random,max));consumed.clear();consumed.add(input.copyWithCount(max));input.shrink(max);progress=0;totalTime=100;powerPerTick=5*max;changed();}
     /** Plan the complete merge on copies. A changed output inventory can never partially commit a recipe. */
     private List<ItemStack> mergeGrinding(List<ItemStack> outputs){var planned=new ArrayList<ItemStack>();for(int i=2;i<inventory.getSlots();i++)planned.add(inventory.getStackInSlot(i).copy());for(var output:outputs){int left=output.getCount();for(var stack:planned)if(ItemStack.isSameItemSameTags(stack,output)){int n=Math.min(left,stack.getMaxStackSize()-stack.getCount());stack.grow(n);left-=n;}for(int i=0;i<planned.size()&&left>0;i++)if(planned.get(i).isEmpty()){int n=Math.min(left,output.getMaxStackSize());planned.set(i,output.copyWithCount(n));left-=n;}if(left>0)return null;}return planned;}
     private void finish(){
@@ -161,7 +191,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     public void changed(){setChanged();sync();}private void sync(){if(level!=null&&!level.isClientSide)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);}
     @Override protected void saveAdditional(CompoundTag tag){
         super.saveAdditional(tag);tag.put("inventory",inventory.serializeNBT());tag.putInt("energy",energy.getEnergyStored());tag.putInt("progress",progress);tag.putInt("total",totalTime);tag.putInt("power",powerPerTick);tag.putInt("plan",plan);tag.putInt("redstone",redstoneMode);tag.putInt("autoSplit",autoSplitMode);tag.put("pending",pending.save(new CompoundTag()));var list=new ListTag();for(var stack:consumed)list.add(stack.save(new CompoundTag()));tag.put("consumed",list);
-        tag.put("inputTank",inputTank.writeToNBT(new CompoundTag()));tag.put("outputTank",outputTank.writeToNBT(new CompoundTag()));tag.put("pendingFluid",pendingFluid.writeToNBT(new CompoundTag()));tag.putBoolean("drainInput",drainInput);
+        tag.putInt("pressure",pressure);tag.put("inputTank",inputTank.writeToNBT(new CompoundTag()));tag.put("outputTank",outputTank.writeToNBT(new CompoundTag()));tag.put("pendingFluid",pendingFluid.writeToNBT(new CompoundTag()));tag.putBoolean("drainInput",drainInput);
         access.save(tag);
         tag.putBoolean("formed",formed);
         reactor.save(tag);
@@ -169,7 +199,7 @@ public final class ProcessingMachine extends BlockEntity implements MenuProvider
     }
     @Override public void load(CompoundTag tag){
         super.load(tag);inventory.deserializeNBT(tag.getCompound("inventory"));setEnergy(tag.getInt("energy"));progress=tag.getInt("progress");totalTime=tag.getInt("total");powerPerTick=tag.getInt("power");plan=Math.floorMod(tag.getInt("plan"),4);redstoneMode=Math.floorMod(tag.getInt("redstone"),3);autoSplitMode=Math.floorMod(tag.getInt("autoSplit"),2);pending=ItemStack.of(tag.getCompound("pending"));consumed.clear();for(var entry:tag.getList("consumed",Tag.TAG_COMPOUND))consumed.add(ItemStack.of((CompoundTag)entry));
-        inputTank.readFromNBT(tag.getCompound("inputTank"));outputTank.readFromNBT(tag.getCompound("outputTank"));pendingFluid=FluidStack.loadFluidStackFromNBT(tag.getCompound("pendingFluid"));drainInput=tag.getBoolean("drainInput");
+        pressure=tag.getInt("pressure");inputTank.readFromNBT(tag.getCompound("inputTank"));outputTank.readFromNBT(tag.getCompound("outputTank"));pendingFluid=FluidStack.loadFluidStackFromNBT(tag.getCompound("pendingFluid"));drainInput=tag.getBoolean("drainInput");
         access.load(tag);
         formed=tag.getBoolean("formed");
         reactor.load(tag);

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pnp",
+    "ncn",
+    "pnp"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:plates/tin"
+    },
+    "n": {
+      "tag": "forge:dyes/green"
+    },
+    "c": {
+      "tag": "forge:circuits/basic"
+    }
+  },
+  "result": {
+    "item": "techguns:machine_upgrade_template",
+    "count": 2
+  }
+}

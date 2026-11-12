@@ -7,13 +7,13 @@
   ],
   "key": {
     "p": {
-      "tag": "forge:plates/iron"
-    },
-    "c": {
-      "item": "minecraft:chest"
+      "tag": "forge:wires/gold"
     },
     "g": {
-      "tag": "forge:dyes/green"
+      "item": "minecraft:chest"
+    },
+    "c": {
+      "item": "techguns:machine_upgrade_template"
     },
     "n": {
       "tag": "forge:ingots/gold"

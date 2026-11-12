@@ -45,6 +45,16 @@ public final class TGFluids {
         /** BucketItem only attaches the bucket fluid handler to its own class, not to subclasses. */
         @Override public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack,@org.jetbrains.annotations.Nullable net.minecraft.nbt.CompoundTag tag){return new net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper(stack);}
     });
+    /** Steam from the chemical laboratory; only kept in tanks, it has no block and no bucket. */
+    public static final RegistryObject<FluidType> STEAM_TYPE=TYPES.register("steam",()->new FluidType(FluidType.Properties.create().density(-1000).viscosity(200).temperature(373).lightLevel(0).canSwim(false).canDrown(false).canPushEntity(false).canExtinguish(false).descriptionId("techguns.fluid.steam")){
+        @Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer){consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions(){
+            public ResourceLocation getStillTexture(){return ResourceLocation.fromNamespaceAndPath("techguns","blocks/steam_still");}
+            public ResourceLocation getFlowingTexture(){return ResourceLocation.fromNamespaceAndPath("techguns","blocks/steam_flow");}
+        });}
+    });
+    public static final RegistryObject<FlowingFluid> STEAM=FLUIDS.register("steam",()->new ForgeFlowingFluid.Source(steamProperties()));
+    public static final RegistryObject<FlowingFluid> STEAM_FLOWING=FLUIDS.register("flowing_steam",()->new ForgeFlowingFluid.Flowing(steamProperties()));
+    private static ForgeFlowingFluid.Properties steamProperties(){return new ForgeFlowingFluid.Properties(STEAM_TYPE,STEAM,STEAM_FLOWING);}
     private static ForgeFlowingFluid.Properties oilProperties(){return new ForgeFlowingFluid.Properties(OIL_TYPE,OIL,OIL_FLOWING).bucket(OIL_BUCKET).block(OIL_BLOCK).slopeFindDistance(2).levelDecreasePerBlock(2).tickRate(20).explosionResistance(100f);}
     private static ForgeFlowingFluid.Properties properties(){return new ForgeFlowingFluid.Properties(ACID_TYPE,ACID,ACID_FLOWING).bucket(ACID_BUCKET).block(ACID_BLOCK);}
     public static void init(IEventBus bus){net.minecraftforge.common.ForgeMod.enableMilkFluid();TYPES.register(bus);FLUIDS.register(bus);}

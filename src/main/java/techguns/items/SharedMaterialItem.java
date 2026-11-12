@@ -67,6 +67,18 @@ public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
+        if (this == TGItems.BLUEPRINTS.get()) {
+            if (!level.isClientSide && level.getServer() != null) {
+                boolean fresh = techguns.items.blueprint.BlueprintKnowledge.get(level.getServer()).learn(player.getUUID());
+                player.displayClientMessage(Component.translatable(fresh ? "techguns.blueprints.learned" : "techguns.blueprints.known")
+                        .withStyle(fresh ? ChatFormatting.GREEN : ChatFormatting.GRAY), true);
+                if (fresh) {
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(), net.minecraft.sounds.SoundEvents.BOOK_PAGE_TURN, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+                    if (!player.getAbilities().instabuild) held.shrink(1);
+                }
+            }
+            return InteractionResultHolder.sidedSuccess(held, level.isClientSide);
+        }
         if (player.isShiftKeyDown() && !bullet.isEmpty() && bulletsPerMagazine > 0) {
             if (!level.isClientSide) {
                 // Only the logical server creates the returned items or consumes the magazine.
@@ -104,6 +116,8 @@ public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
         super.appendHoverText(stack, level, tooltip, flags);
+        if (this == TGItems.MACHINE_UPGRADE_STEAM.get()) tooltip.add(Component.translatable("techguns.tooltip.steamupgrade").withStyle(ChatFormatting.GRAY));
+        if (this == TGItems.BLUEPRINTS.get()) tooltip.add(Component.translatable("techguns.tooltip.blueprints").withStyle(ChatFormatting.GRAY));
         if (slot != TGSlotType.NORMAL) {
             tooltip.add(Component.translatable("techguns.tooltip.slot")
                     .append(": ").append(slot.displayName()).withStyle(ChatFormatting.GRAY));

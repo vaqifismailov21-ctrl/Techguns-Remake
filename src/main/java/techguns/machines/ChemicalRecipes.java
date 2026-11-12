@@ -36,7 +36,11 @@ public final class ChemicalRecipes {
         recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(TGItems.SHOTGUN_ROUNDS.get())),Ingredient.of(new ItemStack(Items.BLAZE_POWDER,1)),Ingredient.EMPTY},new int[]{8,1,0},new FluidStack(Fluids.LAVA,250),FluidStack.EMPTY,new ItemStack(TGItems.SHOTGUN_ROUNDS_INCENDIARY.get(),8),false,25));
         recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.SUGAR,1)),Ingredient.of(new ItemStack(Items.GLISTERING_MELON_SLICE,1)),Ingredient.of(new ItemStack(Items.GLASS_BOTTLE,1))},new int[]{4,1,1},new FluidStack(net.minecraftforge.common.ForgeMod.MILK.get(),1000),FluidStack.EMPTY,new ItemStack(TGItems.RAD_PILLS.get(),4),true,20));
         recipes.add(new ChemicalRecipe(new Ingredient[]{Ingredient.of(new ItemStack(Items.NETHER_WART,1)),Ingredient.of(new ItemStack(Items.GLISTERING_MELON_SLICE,1)),Ingredient.of(new ItemStack(TGItems.INFUSION_BAG.get(),1))},new int[]{1,1,1},new FluidStack(TGFluids.ACID.get(),250),FluidStack.EMPTY,new ItemStack(TGItems.RAD_AWAY.get(),1),true,25));
+        recipes.add(steam());
 }return Collections.unmodifiableList(recipes);}
+ /** Water boiled into steam; it needs the steam upgrade and empty item slots. */
+ public static ChemicalRecipe steam(){return new ChemicalRecipe(new Ingredient[]{Ingredient.EMPTY,Ingredient.EMPTY,Ingredient.EMPTY},new int[]{0,0,0},new FluidStack(Fluids.WATER,1000),new FluidStack(TGFluids.STEAM.get(),1500),ItemStack.EMPTY,false,5);}
+ public static boolean needsSteamUpgrade(ChemicalRecipe recipe){return !recipe.fluidOutput().isEmpty()&&recipe.fluidOutput().getFluid()==TGFluids.STEAM.get();}
  public static boolean accepts(int slot,ItemStack stack){for(var r:all()){if(slot<r.inputs().length&&r.amounts()[slot]>0&&r.inputs()[slot].test(stack))return true;if(r.swap()&&slot<2&&r.amounts()[1-slot]>0&&r.inputs()[1-slot].test(stack))return true;}return false;}
  private ChemicalRecipes(){}
 }
