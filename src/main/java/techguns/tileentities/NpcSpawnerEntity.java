@@ -27,6 +27,12 @@ public final class NpcSpawnerEntity extends BlockEntity {
     public void setWeaponOverride(ItemStack weapon){weaponOverride=weapon.copy();setChanged();}
     public void addMobType(EntityType<?> type,int weight){if(weight<=0)return;var tag=new CompoundTag();tag.putString("id",ForgeRegistries.ENTITY_TYPES.getKey(type).toString());types.add(new MobEntry(tag,weight));setChanged();}
     public void addMobType(CompoundTag entity,int weight){if(weight>0){types.add(new MobEntry(entity.copy(),weight));setChanged();}}
+    /** Set once the block's look was compared with the guards (not saved: checked again after loading). */
+    public boolean lookChecked;
+    /** Entity id and spawn weight of every guard kind. */
+    public java.util.Map<String,Integer> mobWeights(){var map=new java.util.LinkedHashMap<String,Integer>();for(var t:types)map.merge(t.entity.getString("id"),t.weight,Integer::sum);return map;}
+    /** Takes over the living guards of the spawner this one replaces. */
+    public void adoptActive(NpcSpawnerEntity old){active.putAll(old.active);}
     public void relink(Mob mob){active.putIfAbsent(mob.getUUID(),mob);}
     public void killed(Mob mob){if(active.remove(mob.getUUID())!=null){--mobsLeft;setChanged();}}
     public void despawned(Mob mob){active.remove(mob.getUUID());}
