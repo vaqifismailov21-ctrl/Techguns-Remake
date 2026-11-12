@@ -1645,5 +1645,14 @@
   "techguns.container.metalpress.pressure": "Pressure: %s/%s",
   "techguns.fluid.steam": "Steam",
   "techguns.tooltip.steamupgrade": "Chemical Laboratory: boils water into steam. Metal Press: steam tank, builds pressure",
-  "techguns.jei.steam": "Steam: %s mB, pressure %s"
+  "techguns.jei.steam": "Steam: %s mB, pressure %s",
+  "techguns.item.steam_armor.camoname.4": "Parasite",
+  "techguns.item.steam_armor.camoname.5": "Blizzard",
+  "techguns.item.steam_armor.camoname.6": "Miner",
+  "techguns.item.powerarmor.camoname.3": "Desert",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.0": "Dark Grey",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.1": "Standard",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.2": "Black",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.3": "White",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.4": "Olive"
 }

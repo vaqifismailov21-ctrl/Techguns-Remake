@@ -1642,5 +1642,14 @@
   "techguns.container.metalpress.pressure": "Давление: %s/%s",
   "techguns.fluid.steam": "Пар",
   "techguns.tooltip.steamupgrade": "Хим. лаборатория: кипятит воду в пар. Пресс: паровой бак, набирает давление",
-  "techguns.jei.steam": "Пар: %s мБ, давление %s"
+  "techguns.jei.steam": "Пар: %s мБ, давление %s",
+  "techguns.item.steam_armor.camoname.4": "Паразит",
+  "techguns.item.steam_armor.camoname.5": "Метель",
+  "techguns.item.steam_armor.camoname.6": "Шахтёр",
+  "techguns.item.powerarmor.camoname.3": "Пустыня",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.0": "Тёмно-серый",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.1": "Стандарт",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.2": "Чёрный",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.3": "Белый",
+  "techguns.item.powerarmor_mk2_darkgrey.camoname.4": "Олива"
 }

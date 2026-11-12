@@ -13,7 +13,7 @@ public final class GenericGrenade extends Item {
     public final float damage,innerRadius,minimum,outerRadius;
     public final float fullChargeTime=30;
     private final boolean frag;
-    public GenericGrenade(boolean frag) {super(new Properties().stacksTo(16));this.frag=frag;damage=frag?12:10;innerRadius=frag?3.5F:3;minimum=frag?6:5;outerRadius=frag?7:5;}
+    public GenericGrenade(boolean frag) {super(new Properties().stacksTo(16));this.frag=frag;damage=frag?20:16;innerRadius=frag?3F:2;minimum=frag?8:5;outerRadius=frag?5:4;}
     @Override public int getUseDuration(ItemStack stack) {return 72000;}
     @Override public void appendHoverText(ItemStack stack,Level level,java.util.List<net.minecraft.network.chat.Component> tooltip,TooltipFlag flags) {
         tooltip.add(net.minecraft.network.chat.Component.translatable("techguns.gun.tooltip.damage").append(": "+damage));
