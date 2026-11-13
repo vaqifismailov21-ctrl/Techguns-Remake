@@ -147,6 +147,9 @@ public final class TGConfig {
     private static final IntValue cl_sortPassesPerTick_VALUE;
     public static boolean WIP_disableRadiationSystem = false;
     private static final BooleanValue WIP_disableRadiationSystem_VALUE;
+    private static final IntValue configVersion_VALUE;
+    /** Bumped when defaults change; an older file gets the values it still had at their old defaults moved to the new ones. */
+    private static final int CONFIG_VERSION = 2;
     public static String[] fluidListFuel = new String[]{"fuel", "refined_fuel", "biofuel", "biodiesel", "diesel", "gasoline", "fluiddiesel", "fluidnitrodiesel", "fliudnitrofuel", "refined_biofuel", "fire_water", "rocket_fuel"};
     private static final ConfigValue<java.util.List<? extends String>> fluidListFuel_VALUE;
     public static String[] fluidListOil = new String[]{"oil", "tree_oil", "crude_oil", "fluidoil", "seed_oil"};
@@ -277,6 +280,7 @@ public final class TGConfig {
         spawnOreClusterStructures_VALUE = builder.comment("When worldgen is enabled, include structure spawns that contain ore clusters.").define(java.util.List.of("World Generation", "SpawnOreClusterStructures"), true);
         explosiveChargeMaxBlockHardness_VALUE = builder.comment("Highest blockHardness normal explosive charges can break, obsidian is 50.0)").defineInRange(java.util.List.of("general", "ExplosiveChargeMaxHardness"), (double) 30.0f, (double) 0.0f, (double) Float.MAX_VALUE);
         explosiveChargeAdvancedMaxBlockHardness_VALUE = builder.comment("Highest blockHardness advanced explosive charges can break, obsidian is 50.0)").defineInRange(java.util.List.of("general", "ExplosiveChargeAdvancedMaxHardness"), (double) 100.0f, (double) 0.0f, (double) Float.MAX_VALUE);
+        configVersion_VALUE = builder.comment("Internal: version of the defaults this file was written with. Do not change.").defineInRange(java.util.List.of("general", "ConfigVersion"), 0, 0, 1000);
         WIP_disableRadiationSystem_VALUE = builder.comment("Disable Radiation for players.").define(java.util.List.of("general", "WIP_disableRadiationSystem"), false);
         fluidListFuel_VALUE = builder.comment("Fluids that can be used to fill up fuel tanks").defineListAllowEmpty(java.util.List.of("Fluid Recipes", "FluidListFuel"), () -> java.util.List.of("fuel", "refined_fuel", "biofuel", "biodiesel", "diesel", "gasoline", "fluiddiesel", "fluidnitrodiesel", "fliudnitrofuel", "refined_biofuel", "fire_water", "rocket_fuel"), value -> value instanceof String);
         fluidListOil_VALUE = builder.comment("Fluids that are treated as oil.").defineListAllowEmpty(java.util.List.of("Fluid Recipes", "FluidListOil"), () -> java.util.List.of("oil", "tree_oil", "crude_oil", "fluidoil", "seed_oil"), value -> value instanceof String);
@@ -329,9 +333,25 @@ public final class TGConfig {
         cl_textMagGap_VALUE = builder.comment("How many pixels should the mag count text be away from the ammo count text? (note: it's always moved LOWER from the a.c. text)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "TextMagGap"), 3, 0, 1000);
         CLIENT = builder.build();
     }
+    /** Community edition balance (version 2): richer clusters, cheaper drilling, radiation on. Only values left at the old defaults move. */
+    private static void migrate(ModConfig config) {
+        if (configVersion_VALUE.get() >= CONFIG_VERSION) return;
+        DoubleValue[] ores = {oremult_coal_VALUE, oremult_common_metal_VALUE, oremult_rare_metal_VALUE, oremult_shiny_metal_VALUE, oremult_uranium_VALUE, oremult_common_gem_VALUE, oremult_shiny_gem_VALUE, oremult_nether_crystal_VALUE, oremult_oil_VALUE};
+        float[] oldOres = {10f, 5f, 2.5f, 1f, 0.5f, 5f, 0.2f, 4f, 4f};
+        DoubleValue[] power = {powermult_coal_VALUE, powermult_common_metal_VALUE, powermult_rare_metal_VALUE, powermult_shiny_metal_VALUE, powermult_uranium_VALUE, powermult_common_gem_VALUE, powermult_shiny_gem_VALUE, powermult_nether_crystal_VALUE, powermult_oil_VALUE};
+        float[] oldPower = {0.1f, 0.2f, 0.4f, 1f, 1f, 0.2f, 1f, 0.5f, 1f};
+        for (int i = 0; i < ores.length; i++) {
+            if (Math.abs(ores[i].get() - (double) oldOres[i]) < 1e-6) ores[i].set(ores[i].getDefault());
+            if (Math.abs(power[i].get() - (double) oldPower[i]) < 1e-6) power[i].set(power[i].getDefault());
+        }
+        if (WIP_disableRadiationSystem_VALUE.get()) WIP_disableRadiationSystem_VALUE.set(false);
+        configVersion_VALUE.set(CONFIG_VERSION);
+        config.save();
+    }
     public static void onConfigEvent(ModConfigEvent event) {
         if (!event.getConfig().getModId().equals(Techguns.MODID)) return;
         if (event.getConfig().getType() == ModConfig.Type.COMMON) {
+            if (event instanceof ModConfigEvent.Loading) migrate(event.getConfig());
             debug = debug_VALUE.get();
             upgrade_xp_cost = upgrade_xp_cost_VALUE.get();
             limitUnsafeModeToOP = limitUnsafeModeToOP_VALUE.get();

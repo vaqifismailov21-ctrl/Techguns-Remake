@@ -40,7 +40,8 @@ public final class TechgunsJeiPlugin implements IModPlugin {
             @Override public Collection<IGuiClickableArea> getGuiClickableAreas(MachineScreen screen,double x,double y){Kind kind=Kind.machine(screen.getMenu().machine.kind);int[] area=switch(kind){case AMMO,METAL->new int[]{119,36,19,22};case CHEM->new int[]{69,21,71,31};case GRINDER->new int[]{51,29,52,31};case CHARGING->new int[]{38,18,28,12};case REACTION->new int[]{61,89,58,11};case FABRICATOR->new int[]{18,58,140,50};default->new int[]{20,52,96,12};};return List.of(IGuiClickableArea.createBasic(area[0],area[1],area[2],area[3],TYPES.get(kind)));}
             @Override public List<Rect2i> getGuiExtraAreas(MachineScreen screen){return List.of(new Rect2i(screen.getGuiLeft()-27,screen.getGuiTop(),27,95));}
         });
-        registration.addRecipeClickArea(OreDrillScreen.class,73,17,25,36,TYPES.get(Kind.ORE_DRILL));
+        // on the title: the progress cone has its own tooltip (ores per hour, power) that the JEI hint would cover
+        registration.addRecipeClickArea(OreDrillScreen.class,80,3,40,11,TYPES.get(Kind.ORE_DRILL));
         registration.addGuiContainerHandler(BenchScreen.class,new IGuiContainerHandler<BenchScreen>(){
             @Override public Collection<IGuiClickableArea> getGuiClickableAreas(BenchScreen screen,double x,double y){var kind=switch(screen.getMenu().bench.kind){case CAMO->Kind.CAMO;case REPAIR->Kind.REPAIR;case UPGRADE->Kind.UPGRADE;};return kind==Kind.UPGRADE?List.of(IGuiClickableArea.createBasic(73,40,38,30,TYPES.get(kind))):List.of();}
             @Override public List<Rect2i> getGuiExtraAreas(BenchScreen screen){return List.of(new Rect2i(screen.getGuiLeft()-46,screen.getGuiTop(),45,145));}
