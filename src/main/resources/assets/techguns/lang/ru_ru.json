@@ -2045,5 +2045,9 @@
   "techguns.blueprint.generators.learned": "Вы научились строить генераторы",
   "techguns.blueprint.power_plants.learned": "Вы научились строить электростанции",
   "techguns.blueprint.reactors.learned": "Вы научились строить реакторы",
-  "techguns.blueprint.required": "Для крафта нужно изучить: %s"
+  "techguns.blueprint.required": "Для крафта нужно изучить: %s",
+  "block.techguns.fluid_tank": "Резервуар",
+  "techguns.tooltip.fluid_tank": "Хранит любую жидкость. Вёдра, машины и трубы для жидкостей наливают и забирают её с любой стороны; при разрушении жидкость сохраняется.",
+  "techguns.tooltip.fluid_tank.empty": "Пусто (0/%s мВ)",
+  "techguns.tooltip.fluid_tank.contents": "%s: %s/%s мВ"
 }

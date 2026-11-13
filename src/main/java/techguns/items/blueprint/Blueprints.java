@@ -16,9 +16,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 public final class Blueprints {
     public static final String GENERATORS = "generators", POWER_PLANTS = "power_plants", REACTORS = "reactors";
     private static final Map<String, List<String>> UNLOCKS = Map.of(
-            GENERATORS, List.of("fuel_generator", "liquid_generator", "solar_panel", "geothermal_generator", "wind_turbine"),
+            GENERATORS, List.of("fuel_generator", "liquid_generator", "solar_panel"),
             POWER_PLANTS, List.of("solar_panel_advanced", "solar_panel_industrial", "wind_plant", "geothermal_plant"),
-            REACTORS, List.of("fission_reactor", "fusion_reactor", "nuclear_generator"));
+            REACTORS, List.of("fission_reactor", "fusion_reactor"));
 
     public static List<ResourceLocation> unlocks(String blueprint) {
         return UNLOCKS.getOrDefault(blueprint, List.of()).stream().map(path -> new ResourceLocation("techguns", path)).filter(ForgeRegistries.ITEMS::containsKey).toList();

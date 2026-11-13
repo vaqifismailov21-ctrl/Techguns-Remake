@@ -182,6 +182,7 @@
     "techguns:windowframe_rusty",
     "techguns:windowframe_carbon",
     "techguns:fluid_pipe",
-    "techguns:uranium_energy_cable"
+    "techguns:uranium_energy_cable",
+    "techguns:fluid_tank"
   ]
 }

@@ -18,6 +18,11 @@ public final class FluidPipes {
     public static final RegistryObject<BlockEntityType<FluidPipeEntity>> ENTITY = TGWeaponBlocks.BLOCK_ENTITIES.register("fluid_pipe",
             () -> BlockEntityType.Builder.of(FluidPipeEntity::new, PIPE.get()).build(null));
 
+    public static final RegistryObject<Block> TANK = TGWeaponBlocks.BLOCKS.register("fluid_tank", FluidTankBlock::new);
+    public static final RegistryObject<Item> TANK_ITEM = TGItems.ITEMS.register("fluid_tank", () -> new BlockItem(TANK.get(), new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<BlockEntityType<FluidTankEntity>> TANK_ENTITY = TGWeaponBlocks.BLOCK_ENTITIES.register("fluid_tank",
+            () -> BlockEntityType.Builder.of(FluidTankEntity::new, TANK.get()).build(null));
+
     public static void init() {}
     private FluidPipes() {}
 }

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "side": "techguns:blocks/fluid_tank",
+    "top": "techguns:blocks/fluid_tank_top",
+    "bottom": "techguns:blocks/fluid_tank_top",
+    "particle": "techguns:blocks/fluid_tank_top"
+  }
+}

@@ -64,6 +64,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(techguns.TGSpecialNpcs.HELICOPTER.get(),techguns.client.render.entities.npcs.HelicopterRenderer::new);
         techguns.TGNpcs.TYPES.forEach((id,type)->event.registerEntityRenderer(type.get(),context->new techguns.client.render.entities.npcs.NpcRenderer(context,id)));
         event.registerBlockEntityRenderer(techguns.TGDoors.ENTITY.get(),techguns.client.render.tileentities.LargeDoorRenderer::new);
+        event.registerBlockEntityRenderer(techguns.fluids.FluidPipes.TANK_ENTITY.get(),techguns.client.render.tileentities.FluidTankRenderer::new);
         event.registerBlockEntityRenderer(techguns.TGMachines.ENTITY.get(),techguns.client.render.tileentities.ProcessingMachineRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.FUEL_GENERATOR_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);
         event.registerBlockEntityRenderer(techguns.power.PowerBlocks.LIQUID_GENERATOR_ENTITY.get(),techguns.client.render.tileentities.PowerRenderer::new);

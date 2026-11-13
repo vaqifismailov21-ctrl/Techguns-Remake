@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": ["IPI", "G G", "IPI"],
+  "key": {
+    "I": {"tag": "forge:ingots/iron"},
+    "P": {"tag": "forge:plates/iron"},
+    "G": {"tag": "forge:glass"}
+  },
+  "result": {"item": "techguns:fluid_tank"}
+}

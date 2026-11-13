@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "techguns:fluid_tank",
+          "functions": [
+            {"function": "minecraft:copy_nbt", "source": "block_entity", "ops": [{"source": "Tank", "target": "BlockEntityTag.Tank", "op": "replace"}]}
+          ]
+        }
+      ],
+      "conditions": [{"condition": "minecraft:survives_explosion"}]
+    }
+  ]
+}

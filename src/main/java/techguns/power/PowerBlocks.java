@@ -94,7 +94,7 @@ public final class PowerBlocks {
     public static java.util.List<RegistryObject<Item>> tabItems(){
         // the single wind turbine, geothermal and nuclear generators are replaced by the multiblock plants; the old blocks stay for existing worlds
         var list=new java.util.ArrayList<RegistryObject<Item>>(java.util.List.of(FUEL_GENERATOR_ITEM,LIQUID_GENERATOR_ITEM,SOLAR_PANEL_ITEM,
-                SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,URANIUM_ENERGY_CABLE_ITEM,techguns.fluids.FluidPipes.PIPE_ITEM,POWER_BUS_ITEM,FLOODLIGHT_ITEM));
+                SOLAR_PANEL_ADVANCED_ITEM,SOLAR_PANEL_INDUSTRIAL_ITEM,ENERGY_CELL_ITEM,ENERGY_BANK_ITEM,ENERGY_CABLE_ITEM,URANIUM_ENERGY_CABLE_ITEM,techguns.fluids.FluidPipes.PIPE_ITEM,techguns.fluids.FluidPipes.TANK_ITEM,POWER_BUS_ITEM,FLOODLIGHT_ITEM));
         list.addAll(2,techguns.power.plant.PlantBlocks.tabItems());list.addAll(list.indexOf(ENERGY_CABLE_ITEM)+1,techguns.power.wire.WireBlocks.tabItems());return list;
     }
 

@@ -2048,5 +2048,9 @@
   "techguns.blueprint.generators.learned": "You learned how to build generators",
   "techguns.blueprint.power_plants.learned": "You learned how to build power plants",
   "techguns.blueprint.reactors.learned": "You learned how to build reactors",
-  "techguns.blueprint.required": "Crafting requires studied %s"
+  "techguns.blueprint.required": "Crafting requires studied %s",
+  "block.techguns.fluid_tank": "Fluid Tank",
+  "techguns.tooltip.fluid_tank": "Holds any fluid. Buckets, machines and fluid pipes fill and drain it from every side; keeps its contents when broken.",
+  "techguns.tooltip.fluid_tank.empty": "Empty (0/%s mB)",
+  "techguns.tooltip.fluid_tank.contents": "%s: %s/%s mB"
 }
