@@ -122,6 +122,22 @@ public final class ScannedStructure {
             if(entry.has("vanillaSpawner"))throw new IllegalStateException("Unadapted native vanilla spawner plan: "+id);
         }
         mergeChests(plan);
+        mergeDoors(new ArrayList<>(plan.blocks().keySet()),plan::getBlockState,(pos,state)->plan.setBlockState(pos,state,2));
+    }
+    /**
+     * Old doors kept facing and open on the lower half and hinge on the upper one; a modern door needs all of them on both
+     * halves, or the neighbour update copies the missing values over and the leaf ends up turned and on the wrong hinge.
+     */
+    private static void mergeDoors(List<BlockPos> placed,java.util.function.Function<BlockPos,BlockState> get,java.util.function.BiConsumer<BlockPos,BlockState> set){
+        for(var pos:placed){
+            var lower=get.apply(pos);
+            if(!(lower.getBlock() instanceof net.minecraft.world.level.block.DoorBlock)||lower.getValue(net.minecraft.world.level.block.DoorBlock.HALF)!=net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER)continue;
+            var top=pos.above();var upper=get.apply(top);
+            if(!upper.is(lower.getBlock())||upper.getValue(net.minecraft.world.level.block.DoorBlock.HALF)!=net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER)continue;
+            var hinge=upper.getValue(net.minecraft.world.level.block.DoorBlock.HINGE);
+            set.accept(pos,lower.setValue(net.minecraft.world.level.block.DoorBlock.HINGE,hinge).setValue(net.minecraft.world.level.block.DoorBlock.POWERED,false));
+            set.accept(top,upper.setValue(net.minecraft.world.level.block.DoorBlock.FACING,lower.getValue(net.minecraft.world.level.block.DoorBlock.FACING)).setValue(net.minecraft.world.level.block.DoorBlock.OPEN,lower.getValue(net.minecraft.world.level.block.DoorBlock.OPEN)).setValue(net.minecraft.world.level.block.DoorBlock.POWERED,false));
+        }
     }
     /** Old adjacent chests formed double inventories dynamically; modern chest type is stored in block state. */
     private static void mergeChests(techguns.world.structures.LegacyStructurePlan plan){
@@ -144,6 +160,7 @@ public final class ScannedStructure {
             }
         }
         for(int pass=0;pass<2;pass++)for(var element:blocks){var block=element.getAsJsonArray();var entry=palette.get(block.get(3).getAsInt()).getAsJsonObject();if(placementPass(entry)!=pass)continue;var pos=base.offset(rotate(new BlockPos(block.get(0).getAsInt(),block.get(1).getAsInt(),block.get(2).getAsInt()),cx,cz,turns));place(world,pos,entry,turns,random,structureRandom,biome,index);placed.add(pos);}
+        mergeDoors(placed,world::get,world::set);
         world.neighbourShapes(placed);
         if(entities!=null)for(var element:entities){var row=element.getAsJsonArray();var kind=entityPalette.get(row.get(3).getAsInt()).getAsJsonObject();
             var pos=base.offset(rotate(new BlockPos(row.get(0).getAsInt(),row.get(1).getAsInt(),row.get(2).getAsInt()),cx,cz,turns));if(pos.getY()<1||world.outside(pos))continue;

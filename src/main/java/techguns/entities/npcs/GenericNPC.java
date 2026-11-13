@@ -29,7 +29,7 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
     public static AttributeSupplier.Builder attributes(){return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED,.25).add(Attributes.ATTACK_DAMAGE,2).add(Attributes.FOLLOW_RANGE,16);}
     @Override protected void registerGoals(){
         goalSelector.addGoal(1,new FloatGoal(this));
-        goalSelector.addGoal(3,new OpenDoorGoal(this,true));
+        goalSelector.addGoal(3,new techguns.entities.ai.OpenTGDoorGoal(this));
         goalSelector.addGoal(5,new RandomStrollGoal(this,1));
         goalSelector.addGoal(6,new LookAtPlayerGoal(this,Player.class,8));
         goalSelector.addGoal(6,new RandomLookAroundGoal(this));
@@ -94,7 +94,9 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
     @Override public void readAdditionalSaveData(CompoundTag tag){super.readAdditionalSaveData(tag);setCombatTask();}
     /** Opens doors on its way; never walks off a ledge higher than one block. */
     @Override protected net.minecraft.world.entity.ai.navigation.PathNavigation createNavigation(Level level){
-        var nav=new net.minecraft.world.entity.ai.navigation.GroundPathNavigation(this,level);nav.setCanOpenDoors(true);nav.setCanPassDoors(true);nav.setCanFloat(true);return nav;
+        var nav=new net.minecraft.world.entity.ai.navigation.GroundPathNavigation(this,level){
+            @Override protected net.minecraft.world.level.pathfinder.PathFinder createPathFinder(int maxNodes){nodeEvaluator=new techguns.entities.ai.TGWalkNodeEvaluator();nodeEvaluator.setCanPassDoors(true);return new net.minecraft.world.level.pathfinder.PathFinder(nodeEvaluator,maxNodes);}
+        };nav.setCanOpenDoors(true);nav.setCanPassDoors(true);nav.setCanFloat(true);return nav;
     }
     @Override public int getMaxFallDistance(){return 1;}
     /** NPCs of one faction do not hurt each other (stray bullets, rocket splash) or themselves. */
