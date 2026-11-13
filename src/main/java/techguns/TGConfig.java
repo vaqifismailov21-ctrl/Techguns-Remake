@@ -63,6 +63,8 @@ public final class TGConfig {
     public static boolean disableArmorDrops = false;
     /** Chance that a Techguns NPC killed by a player drops its gun / each worn armour piece (looting adds 1% per level). */
     public static float npcGunDropChance = 0.05f, npcArmorDropChance = 0.03f;
+    public static boolean npcFactionWars = true;
+    private static final BooleanValue npcFactionWars_VALUE;
     private static final DoubleValue npcGunDropChance_VALUE, npcArmorDropChance_VALUE;
     private static final BooleanValue disableArmorDrops_VALUE;
     public static int spawnWeightGhastling = 10;
@@ -242,6 +244,7 @@ public final class TGConfig {
         spawnWeightCyberDemon_VALUE = builder.comment("Spawn weight for spawning Cyber Demons (Nether only), at 0 spawn will not be registered").defineInRange(java.util.List.of("NPC Spawn", "SpawnWeightCyberDemon"), 30, 0, 10000);
         disableGunDrops_VALUE = builder.comment("NPCs never drop the gun they carry").define(java.util.List.of("general", "DisableGunDrops"), false);
         disableArmorDrops_VALUE = builder.comment("NPCs never drop the armor they wear").define(java.util.List.of("general", "DisableArmorDrops"), false);
+        npcFactionWars_VALUE = builder.comment("Soldiers, bandits and the undead fight each other on sight").define(java.util.List.of("general", "NpcFactionWars"), true);
         npcGunDropChance_VALUE = builder.comment("Chance that an NPC killed by a player drops its gun; the gun keeps only part of its ammo").defineInRange(java.util.List.of("general", "NpcGunDropChance"), 0.05, 0.0, 1.0);
         npcArmorDropChance_VALUE = builder.comment("Chance per worn armour piece that an NPC killed by a player drops it; dropped armour is worn").defineInRange(java.util.List.of("general", "NpcArmorDropChance"), 0.03, 0.0, 1.0);
         spawnWeightGhastling_VALUE = builder.comment("Spawn weight for spawning Ghastlings (Nether only), at 0 spawn will not be registered").defineInRange(java.util.List.of("NPC Spawn", "SpawnWeightGhastling"), 10, 0, 10000);
@@ -356,6 +359,7 @@ public final class TGConfig {
             spawnWeightCyberDemon = spawnWeightCyberDemon_VALUE.get();
             disableGunDrops = disableGunDrops_VALUE.get();
             disableArmorDrops = disableArmorDrops_VALUE.get();
+            npcFactionWars = npcFactionWars_VALUE.get();
             npcGunDropChance = (float) (double) npcGunDropChance_VALUE.get();
             npcArmorDropChance = (float) (double) npcArmorDropChance_VALUE.get();
             spawnWeightGhastling = spawnWeightGhastling_VALUE.get();

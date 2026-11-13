@@ -35,6 +35,7 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
         goalSelector.addGoal(6,new RandomLookAroundGoal(this));
         targetSelector.addGoal(1,new HurtByTargetGoal(this){@Override public boolean canUse(){var attacker=mob.getLastHurtByMob();return attacker!=null&&techguns.factions.TGNpcFactions.canRetaliate(mob,attacker)&&super.canUse();}});
         targetSelector.addGoal(2,new NearestAttackableTargetGoal<>(this,Player.class,true));
+        targetSelector.addGoal(3,new NearestAttackableTargetGoal<>(this,LivingEntity.class,10,true,false,e->techguns.factions.NpcWarGroup.enemies(this,e)));
     }
     public void setCombatTask(){
         if(level().isClientSide)return;
@@ -108,6 +109,7 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
         if(entity==null)return false;if(entity==this)return true;
         if(entity instanceof net.minecraft.world.entity.projectile.Projectile p&&p.getOwner()!=null&&p.getOwner()!=entity)return friendly(p.getOwner());
         if(entity instanceof techguns.entities.projectiles.GenericProjectile p&&p.getShooter()!=null&&p.getShooter()!=entity)return friendly(p.getShooter());
+        if(techguns.factions.NpcWarGroup.enemies(this,entity))return false;
         return entity instanceof ITGNpcTeam team&&team.getTGFaction()==getTGFaction();
     }
     /** Living soldiers hear players: running, falling and shooting carry far, sneaking hardly at all. */
