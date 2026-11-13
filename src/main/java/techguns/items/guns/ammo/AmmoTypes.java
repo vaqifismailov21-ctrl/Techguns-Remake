@@ -81,7 +81,7 @@ public class AmmoTypes{
 		ROCKETS_NO_NUKES = new AmmoType(TGItems.ROCKET.get().getDefaultInstance());
 		ROCKETS_NO_NUKES.addVariant(TYPE_HV, TGItems.ROCKET_HIGH_VELOCITY.get().getDefaultInstance());
 		
-		NETHER_CHARGE = new AmmoType(TGItems.NETHER_CHARGE.get().getDefaultInstance());
+		NETHER_CHARGE = new AmmoType(TGItems.NETHER_CHARGE.get().getDefaultInstance(), TGItems.NETHERCHARGE_EMPTY.get().getDefaultInstance(), ItemStack.EMPTY, 0);
 		GRENADES_40MM = new AmmoType(TGItems.GRENADE_40MM.get().getDefaultInstance());
 		NUCLEAR_POWER_CELL = new AmmoType(TGItems.NUCLEAR_POWERCELL.get().getDefaultInstance(), TGItems.NUCLEAR_POWERCELL_EMPTY.get().getDefaultInstance(), ItemStack.EMPTY,0);
 		

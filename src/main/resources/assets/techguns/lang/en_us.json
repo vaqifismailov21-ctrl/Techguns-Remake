@@ -1744,5 +1744,6 @@
   "techguns.gun.tooltip.ammoswitch.key": "Press %s to switch ammunition type (or combine the weapon with the rounds in crafting)",
   "techguns.gun.tooltip.spread.scoped": "Spread when aiming",
   "techguns.msg.noammotype": "No other ammunition type in the inventory",
-  "techguns.msg.ammotype": "Ammunition"
+  "techguns.msg.ammotype": "Ammunition",
+  "item.techguns.nethercharge_empty": "Empty Nether Charge"
 }

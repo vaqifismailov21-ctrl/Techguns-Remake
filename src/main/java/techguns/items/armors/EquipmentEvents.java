@@ -17,10 +17,11 @@ import techguns.util.InventoryUtil;
 @Mod.EventBusSubscriber(modid="techguns")
 public final class EquipmentEvents {
     private static UUID key(String name){return UUID.nameUUIDFromBytes(("techguns."+name).getBytes(java.nio.charset.StandardCharsets.UTF_8));}
-    private static void attribute(Player p,Attribute type,String name,float value,AttributeModifier.Operation operation){
+    private static void attribute(Player p,Attribute type,String name,float value,AttributeModifier.Operation operation){attribute(p,type,name,value,operation,false);}
+    private static void attribute(Player p,Attribute type,String name,float value,AttributeModifier.Operation operation,boolean signed){
         var a=p.getAttribute(type);if(a==null)return;var id=key(name);var previous=a.getModifier(id);
         if(previous!=null&&previous.getAmount()==value)return;
-        if(previous!=null)a.removeModifier(id);if(value>0)a.addTransientModifier(new AttributeModifier(id,name,value,operation));
+        if(previous!=null)a.removeModifier(id);if(signed?value!=0:value>0)a.addTransientModifier(new AttributeModifier(id,name,value,operation));
     }
     @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){
         if(event.phase!=TickEvent.Phase.END||!event.player.isAlive())return;var player=event.player;
@@ -40,8 +41,8 @@ public final class EquipmentEvents {
         if(player.isOnFire()&&TGEquipmentBonuses.getBonus(player,TGArmorBonus.COOLING_SYSTEM,false)>=1)player.clearFire();
         float speed=TGEquipmentBonuses.getBonus(player,TGArmorBonus.SPEED,false);
         if(player.isInWater()||player.isInLava())speed+=TGEquipmentBonuses.getBonus(player,TGArmorBonus.SPEED_WATER,false);
-        if(player.isSprinting())speed*=2;
-        attribute(player,Attributes.MOVEMENT_SPEED,"equipment_speed",speed,AttributeModifier.Operation.MULTIPLY_TOTAL);
+        if(player.isSprinting())speed=speed>0?speed*2:speed/2;
+        attribute(player,Attributes.MOVEMENT_SPEED,"equipment_speed",speed,AttributeModifier.Operation.MULTIPLY_TOTAL,true);
         attribute(player,Attributes.MAX_HEALTH,"equipment_health",TGEquipmentBonuses.getBonus(player,TGArmorBonus.EXTRA_HEART,false),AttributeModifier.Operation.ADDITION);
         attribute(player,Attributes.KNOCKBACK_RESISTANCE,"equipment_knockback",TGEquipmentBonuses.getBonus(player,TGArmorBonus.KNOCKBACK_RESISTANCE,false),AttributeModifier.Operation.ADDITION);
         if(player.getHealth()>player.getMaxHealth())player.setHealth(player.getMaxHealth());

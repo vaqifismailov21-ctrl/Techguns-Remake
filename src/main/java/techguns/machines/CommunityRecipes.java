@@ -20,7 +20,7 @@ public final class CommunityRecipes {
             new int[]{4,4,2,2},new ItemStack(TGItems.DOOM_PLATE.get(),2),100,80,false));
     }
     public static void reaction(List<ReactionRecipe> recipes){
-        recipes.add(new ReactionRecipe("RC_HELLISHINGOT",MachineRecipes.tag("forge:ingots/titanium"),TGItems.RC_UV_EMITTER.get(),Fluids.LAVA,
+        recipes.add(new ReactionRecipe("RC_HELLISHINGOT",MachineRecipes.tag("forge:ingots/titanium"),TGItems.RC_UV_EMITTER.get(),ReactionRecipe.externalOrLava("deuterium"),
             new ItemStack[]{new ItemStack(TGItems.INGOT_HELLISH.get(),1)},5,3,6,0,7,2000,0f,ReactionRecipe.Risk.EXPLOSION_MEDIUM,100000));
     }
 }

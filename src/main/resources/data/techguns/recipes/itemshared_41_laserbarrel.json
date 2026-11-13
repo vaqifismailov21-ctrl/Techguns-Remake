@@ -7,7 +7,7 @@
   ],
   "key": {
     "f": {
-      "type": "techguns:electrum_or_gold"
+      "tag": "forge:ingots/gold"
     },
     "g": {
       "type": "techguns:hardened_glass_or_glass"

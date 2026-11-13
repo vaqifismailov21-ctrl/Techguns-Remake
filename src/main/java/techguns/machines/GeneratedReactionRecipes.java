@@ -6,7 +6,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import techguns.*;
 public final class GeneratedReactionRecipes {public static void add(List<ReactionRecipe> recipes){
-recipes.add(new ReactionRecipe("RC_UV_WHEAT",Ingredient.of(new ItemStack(Items.WHEAT_SEEDS,1)),TGItems.RC_UV_EMITTER.get(),Fluids.WATER,new ItemStack[]{new ItemStack(Items.WHEAT,1),new ItemStack(Items.WHEAT_SEEDS,2)},10,5,3,1,1,1000,0.5f,ReactionRecipe.Risk.EXPLOSION_LOW,50000));
+recipes.add(new ReactionRecipe("RC_UV_WHEAT",Ingredient.of(new ItemStack(Items.WHEAT_SEEDS,1)),TGItems.RC_UV_EMITTER.get(),Fluids.WATER,new ItemStack[]{new ItemStack(Items.WHEAT,3),new ItemStack(Items.WHEAT_SEEDS,6)},10,5,3,1,1,1000,0.5f,ReactionRecipe.Risk.EXPLOSION_LOW,30000));
+recipes.add(new ReactionRecipe("RC_UV_CARROT",Ingredient.of(new ItemStack(Items.CARROT,1)),TGItems.RC_UV_EMITTER.get(),Fluids.WATER,new ItemStack[]{new ItemStack(Items.CARROT,8)},10,5,3,1,1,1000,0.5f,ReactionRecipe.Risk.EXPLOSION_LOW,30000));
+recipes.add(new ReactionRecipe("RC_UV_POTATO",Ingredient.of(new ItemStack(Items.POTATO,1)),TGItems.RC_UV_EMITTER.get(),Fluids.WATER,new ItemStack[]{new ItemStack(Items.POTATO,8)},10,5,3,1,1,1000,0.5f,ReactionRecipe.Risk.EXPLOSION_LOW,30000));
+recipes.add(new ReactionRecipe("RC_UV_POTATOPOISONED",Ingredient.of(new ItemStack(Items.POISONOUS_POTATO,1)),TGItems.RC_UV_EMITTER.get(),Fluids.WATER,new ItemStack[]{new ItemStack(Items.POTATO,4)},10,5,3,1,1,1000,0.5f,ReactionRecipe.Risk.EXPLOSION_LOW,30000));
 recipes.add(new ReactionRecipe("RC_LASER_FOCUS",MachineRecipes.tag("forge:gems/diamond"),TGItems.RC_HEAT_RAY.get(),ReactionRecipe.externalOrLava("redstone"),new ItemStack[]{new ItemStack(TGItems.LASER_FOCUS.get(),1)},10,5,3,1,4,4000,0.5f,ReactionRecipe.Risk.BREAK_ITEM,100000));
 recipes.add(new ReactionRecipe("RC_TITANIUM",MachineRecipes.tag("forge:ores/titanium"),TGItems.RC_HEAT_RAY.get(),TGFluids.ACID.get(),new ItemStack[]{new ItemStack(TGItems.ORE_TITANIUM.get(),2),new ItemStack(Blocks.IRON_ORE,1)},2,1,5,0,3,100,0f,ReactionRecipe.Risk.BREAK_ITEM,25000));
 recipes.add(new ReactionRecipe("RC_BLAZEROD",Ingredient.of(new ItemStack(TGItems.QUARTZ_ROD.get(),1)),TGItems.RC_HEAT_RAY.get(),Fluids.LAVA,new ItemStack[]{new ItemStack(Items.BLAZE_ROD,1)},5,3,7,2,4,1000,0.5f,ReactionRecipe.Risk.BREAK_ITEM,250000));

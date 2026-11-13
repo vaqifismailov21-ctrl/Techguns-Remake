@@ -138,6 +138,7 @@ public final class TGItems {
     public static final RegistryObject<SharedMaterialItem> CYBERDEMON_FLESH = shared("cyberdemon_flesh", 163, TGSlotType.NORMAL, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> BLUEPRINTS = shared("blueprints", 164, TGSlotType.NORMAL, 16, () -> true);
     public static final RegistryObject<SharedMaterialItem> CYBERNETIC_WIRING = shared("cybernetic_wiring", 165, TGSlotType.NORMAL, 64, () -> true);
+    public static final RegistryObject<SharedMaterialItem> NETHERCHARGE_EMPTY = shared("nethercharge_empty", 166, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SHOTGUN_ROUNDS_INCENDIARY = shared("shotgunrounds_incendiary", 106, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> AS50_MAGAZINE_INCENDIARY = shared("as50magazine_incendiary", 107, TGSlotType.AMMOSLOT, 64, () -> true);
     public static final RegistryObject<SharedMaterialItem> SNIPER_ROUNDS_INCENDIARY = shared("sniperrounds_incendiary", 108, TGSlotType.AMMOSLOT, 64, () -> true);

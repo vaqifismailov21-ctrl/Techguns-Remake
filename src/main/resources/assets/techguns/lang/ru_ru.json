@@ -1741,5 +1741,6 @@
   "techguns.gun.tooltip.ammoswitch.key": "%s — сменить тип патронов (или скрафтить оружие с нужными патронами)",
   "techguns.gun.tooltip.spread.scoped": "Разброс в прицеле",
   "techguns.msg.noammotype": "В инвентаре нет патронов другого типа",
-  "techguns.msg.ammotype": "Патроны"
+  "techguns.msg.ammotype": "Патроны",
+  "item.techguns.nethercharge_empty": "Пустая адская ячейка"
 }
