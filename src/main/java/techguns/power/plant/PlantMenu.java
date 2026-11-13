@@ -16,7 +16,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 /** Power plant GUI: energy, output, state and (reactor) fuel slots, water and heat. Values sync as 16-bit halves. */
 public final class PlantMenu extends AbstractContainerMenu {
-    public static final int FUEL_X=152,FUEL_Y=18,SPENT_Y=56;
+    public static final int FUEL_X=151,FUEL_Y=40,SPENT_Y=92;
+    /** Techguns CE layouts: wind and geothermal use the grey panel, the reactors the white one with the tall energy column. */
+    public static boolean advanced(PlantKind kind){return kind==PlantKind.FISSION||kind==PlantKind.FUSION;}
     private static final int DATA=14;
     public final PlantKind kind;
     public final PlantController plant;
@@ -34,8 +36,9 @@ public final class PlantMenu extends AbstractContainerMenu {
         access=plant==null||plant.getLevel()==null?ContainerLevelAccess.NULL:ContainerLevelAccess.create(plant.getLevel(),plant.getBlockPos());
         var slots=plant==null?null:plant.slots();slotted=slots!=null;
         if(slotted){addSlot(new SlotItemHandler(slots,0,FUEL_X,FUEL_Y));addSlot(new SlotItemHandler(slots,1,FUEL_X,SPENT_Y){@Override public boolean mayPlace(ItemStack stack){return false;}});}
-        for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(inventory,col+row*9+9,8+col*18,84+row*18));
-        for(int col=0;col<9;col++)addSlot(new Slot(inventory,col,8+col*18,142));
+        int invX=advanced(kind)?8:19,invY=advanced(kind)?156:106;
+        for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(inventory,col+row*9+9,invX+col*18,invY+row*18));
+        for(int col=0;col<9;col++)addSlot(new Slot(inventory,col,invX+col*18,invY+58));
         data=plant!=null&&!plant.getLevel().isClientSide?server(plant):new SimpleContainerData(DATA);
         addDataSlots(data);
     }

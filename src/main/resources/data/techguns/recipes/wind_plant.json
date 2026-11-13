@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "techguns:blueprint_shaped",
+  "blueprint": "power_plants",
   "category": "misc",
   "pattern": [
     "SCS",

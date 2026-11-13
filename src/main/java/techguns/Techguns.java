@@ -34,6 +34,7 @@ public final class Techguns {
                     .icon(() -> TGItems.PISTOL_ROUNDS.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
                         TGItems.SHARED_ITEMS.forEach((id, item) -> { if (TGItems.enabled(id)) output.accept(item.get()); });
+                        output.accept(TGItems.BLUEPRINT_GENERATORS.get());output.accept(TGItems.BLUEPRINT_POWER_PLANTS.get());output.accept(TGItems.BLUEPRINT_REACTORS.get());
                         output.accept(TGItems.RAD_AWAY.get()); output.accept(TGItems.RAD_PILLS.get()); output.accept(TGItems.BANDAGES.get()); output.accept(TGItems.MEDKIT.get());
                         TGArmors.SHIELDS.values().forEach(item -> output.accept(item.get()));
                         TGuns.guns().forEach(gun -> output.accept(gun.get().getDefaultInstance()));

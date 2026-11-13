@@ -19,10 +19,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 /** Fuel slot or fluid container slot, energy, burn progress and (liquid generator) tank. Values sync as 16-bit halves. */
 public final class GeneratorMenu extends AbstractContainerMenu {
-    public static final int SLOT_X=18,SLOT_Y=17;
+    public static final int SLOT_X=26,SLOT_Y=18;
     private static final int DATA=8;
     public final boolean liquid,nuclear;
-    public static final int OUT_Y=58;
+    public static final int OUT_Y=58,INVENTORY_Y=116;
     private final ContainerData data;
     private final ContainerLevelAccess access;
     private final net.minecraft.world.level.block.Block block;
@@ -42,8 +42,8 @@ public final class GeneratorMenu extends AbstractContainerMenu {
         ItemStackHandler handler=entity instanceof FuelGeneratorEntity fuel?fuel.fuel:entity instanceof LiquidGeneratorEntity tank?tank.container:entity instanceof NuclearGeneratorEntity reactor?reactor.slots:new ItemStackHandler(nuclear?2:1);
         addSlot(new SlotItemHandler(handler,0,SLOT_X,SLOT_Y));
         if(nuclear)addSlot(new SlotItemHandler(handler,1,SLOT_X,OUT_Y){@Override public boolean mayPlace(ItemStack stack){return false;}});
-        for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(inventory,col+row*9+9,8+col*18,84+row*18));
-        for(int col=0;col<9;col++)addSlot(new Slot(inventory,col,8+col*18,142));
+        for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(inventory,col+row*9+9,8+col*18,INVENTORY_Y+row*18));
+        for(int col=0;col<9;col++)addSlot(new Slot(inventory,col,8+col*18,INVENTORY_Y+58));
         data=entity instanceof EnergySource source&&!entity.getLevel().isClientSide?serverData(source):new SimpleContainerData(DATA);
         addDataSlots(data);
     }

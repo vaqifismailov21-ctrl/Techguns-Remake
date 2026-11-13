@@ -1,63 +1,51 @@
 package techguns.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import java.util.ArrayList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import techguns.power.GeneratorMenu;
+import techguns.power.PowerBlocks;
 
-/** Generator interface in the style of the Techguns machines: energy bar, fuel slot, flame or tank, readouts. */
+/** Generators in the Techguns CE machine style: bronze panel, energy column, fuel slot and flame, tank or heat column, read-out screen. */
 public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
-    private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/generator_gui.png");
-    private static final ResourceLocation FURNACE=ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");
-    private static final int TANK_X=40,TANK_Y=17,TANK_W=16,TANK_H=48;
-    public GeneratorScreen(GeneratorMenu menu,Inventory inventory,Component title){super(menu,inventory,title);}
-    @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float partial){renderBackground(graphics);super.render(graphics,mouseX,mouseY,partial);renderTooltip(graphics,mouseX,mouseY);
-        int x=mouseX-leftPos,y=mouseY-topPos;
-        if(x>=7&&x<13&&y>=16&&y<66)graphics.renderTooltip(font,Component.translatable("techguns.power.energy",menu.energy(),menu.capacity()),mouseX,mouseY);
-        if(menu.nuclear&&x>=TANK_X-1&&x<TANK_X+TANK_W+1&&y>=TANK_Y-1&&y<TANK_Y+TANK_H+1)graphics.renderTooltip(font,java.util.List.of(Component.translatable("techguns.power.heat",menu.heat()*100/techguns.power.PowerBlocks.NUCLEAR_HEAT_MAX),Component.translatable(menu.overheated()?"techguns.power.overheated":menu.cooled()?"techguns.power.cooled":"techguns.power.not_cooled")),java.util.Optional.empty(),mouseX,mouseY);
-        if(menu.liquid&&x>=TANK_X-1&&x<TANK_X+TANK_W+1&&y>=TANK_Y-1&&y<TANK_Y+TANK_H+1)graphics.renderTooltip(font,menu.tankAmount()>0?Component.translatable("techguns.power.tank",menu.tankFluid().getFluidType().getDescription(),menu.tankAmount(),techguns.power.PowerBlocks.LIQUID_TANK):Component.translatable("techguns.power.tank_empty"),mouseX,mouseY);
+    private static final int TANK_X=46,TANK_Y=18,TANK_W=10,TANK_H=50;
+    private final ResourceLocation texture;
+    public GeneratorScreen(GeneratorMenu menu,Inventory inventory,Component title){
+        super(menu,inventory,title);imageWidth=176;imageHeight=198;inventoryLabelY=imageHeight-96+2;
+        texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/ce_generator_"+(menu.nuclear?"nuclear":menu.liquid?"liquid":"fuel")+"_gui.png");
     }
-    @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
-        int k=leftPos,l=topPos;graphics.blit(TEXTURE,k,l,0,0,imageWidth,imageHeight);
-        int capacity=Math.max(1,menu.capacity()),power=(int)((long)menu.energy()*48/capacity),diff=48-power;
-        graphics.blit(LegacyMachineGui.MACHINE,k+8,l+17+diff,251,1+diff,4,48);
+    private Component cooling(){return Component.translatable(menu.overheated()?"techguns.power.overheated":menu.cooled()?"techguns.power.cooled":"techguns.power.not_cooled");}
+    private boolean tank(){return menu.liquid||menu.nuclear;}
+
+    @Override protected void renderBg(GuiGraphics g,float partial,int mouseX,int mouseY){
+        int k=leftPos,l=topPos;g.blit(texture,k,l,0,0,imageWidth,imageHeight);
+        LegacyMachineGui.drawEnergy(g,LegacyMachineGui.MACHINE,k,l,8,17,251,1,4,59,menu.energy(),Math.max(1,menu.capacity()));
         int burn=menu.burn();
-        if(menu.nuclear){
-            graphics.fill(k+TANK_X-1,l+TANK_Y-1,k+TANK_X+TANK_W+1,l+TANK_Y+TANK_H+1,0xFF373737);graphics.fill(k+TANK_X,l+TANK_Y,k+TANK_X+TANK_W,l+TANK_Y+TANK_H,0xFF8B8B8B);
-            int h=Math.min(TANK_H,menu.heat()*TANK_H/techguns.power.PowerBlocks.NUCLEAR_HEAT_MAX);
-            if(h>0)graphics.fill(k+TANK_X,l+TANK_Y+TANK_H-h,k+TANK_X+TANK_W,l+TANK_Y+TANK_H,menu.overheated()?0xFFE02020:0xFFE08020);
-            for(int mark=1;mark<4;mark++)graphics.fill(k+TANK_X,l+TANK_Y+mark*TANK_H/4,k+TANK_X+5,l+TANK_Y+mark*TANK_H/4+1,0xFF373737);
-            int sx=k+GeneratorMenu.SLOT_X-1,sy=l+GeneratorMenu.OUT_Y-1;graphics.fill(sx,sy,sx+18,sy+18,0xFF373737);graphics.fill(sx+1,sy+1,sx+18,sy+18,0xFFFFFFFF);graphics.fill(sx+1,sy+1,sx+17,sy+17,0xFF8B8B8B);
-            graphics.blit(FURNACE,k+19,l+40,57,37,14,13);
-            if(burn>0){int fh=Math.max(1,burn*13/1000);graphics.blit(FURNACE,k+19,l+40+13-fh,176,13-fh,14,fh);}
-        }else if(menu.liquid){
-            graphics.fill(k+TANK_X-1,l+TANK_Y-1,k+TANK_X+TANK_W+1,l+TANK_Y+TANK_H+1,0xFF373737);graphics.fill(k+TANK_X,l+TANK_Y,k+TANK_X+TANK_W,l+TANK_Y+TANK_H,0xFF8B8B8B);
-            int amount=menu.tankAmount();var fluid=menu.tankFluid();
-            if(amount>0&&fluid!=Fluids.EMPTY){
-                var ext=IClientFluidTypeExtensions.of(fluid);var sprite=minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(ext.getStillTexture());int color=ext.getTintColor();
-                int height=Math.max(1,amount*TANK_H/techguns.power.PowerBlocks.LIQUID_TANK);
-                RenderSystem.setShaderColor((color>>16&255)/255f,(color>>8&255)/255f,(color&255)/255f,1f);
-                for(int drawn=0;drawn<height;drawn+=16){int h=Math.min(16,height-drawn);graphics.blit(k+TANK_X,l+TANK_Y+TANK_H-drawn-h,0,TANK_W,h,sprite);}
-                RenderSystem.setShaderColor(1f,1f,1f,1f);
-            }
-            for(int mark=1;mark<4;mark++)graphics.fill(k+TANK_X,l+TANK_Y+mark*TANK_H/4,k+TANK_X+5,l+TANK_Y+mark*TANK_H/4+1,0xFF373737);
-            graphics.blit(FURNACE,k+19,l+40,57,37,14,13);if(burn>0)graphics.blit(FURNACE,k+19,l+40,176,0,14,13);
-        }else{
-            graphics.blit(FURNACE,k+19,l+40,57,37,14,13);
-            if(burn>0){int h=Math.max(1,burn*13/1000);graphics.blit(FURNACE,k+19,l+40+13-h,176,13-h,14,h);}
-        }
+        if(burn>0){int h=menu.liquid?14:Math.max(1,Math.min(14,burn*14/1000));g.blit(texture,k+27,l+39+14-h,176,14-h,14,h);}
+        if(menu.liquid&&menu.tankAmount()>0&&menu.tankFluid()!=Fluids.EMPTY)
+            CePowerGui.fluid(g,menu.tankFluid(),k+TANK_X,l+TANK_Y,TANK_W,TANK_H,Math.max(1,menu.tankAmount()*TANK_H/PowerBlocks.LIQUID_TANK));
+        if(menu.nuclear)CePowerGui.column(g,k+TANK_X,l+TANK_Y,TANK_W,TANK_H,menu.heat(),PowerBlocks.NUCLEAR_HEAT_MAX,menu.overheated()?0xFFFF3020:0xFFFFC040,menu.overheated()?0xFF901010:0xFFE06010);
     }
-    @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
-        graphics.drawString(font,title,8,6,0x404040,false);graphics.drawString(font,playerInventoryTitle,8,imageHeight-94,0x404040,false);
-        int x=menu.liquid||menu.nuclear?62:40;
-        graphics.drawString(font,Component.translatable("techguns.power.stored",menu.energy()),x,22,0x404040,false);
-        graphics.drawString(font,Component.translatable("techguns.power.max",menu.capacity()),x,34,0x404040,false);
-        graphics.drawString(font,menu.burn()>0?Component.translatable("techguns.power.rate",menu.rate()):Component.translatable("techguns.power.idle"),x,50,menu.burn()>0?0x207020:0x804040,false);
+    @Override protected void renderLabels(GuiGraphics g,int mouseX,int mouseY){
+        GuiText.centered(g,font,title,15,imageWidth-15,6,4210752);
+        g.drawString(font,playerInventoryTitle,8,inventoryLabelY,4210752,false);
+        var lines=new ArrayList<Component>();
+        lines.add(Component.translatable("techguns.power.stored",menu.energy()));
+        lines.add(Component.translatable("techguns.power.max",menu.capacity()));
+        lines.add(menu.burn()>0?Component.translatable("techguns.power.rate",menu.rate()):Component.translatable("techguns.power.idle").withStyle(s->s.withColor(CePowerGui.SCREEN_WARN)));
+        if(menu.liquid)lines.add(menu.tankAmount()>0?Component.translatable("techguns.power.tank",menu.tankFluid().getFluidType().getDescription(),menu.tankAmount(),PowerBlocks.LIQUID_TANK):Component.translatable("techguns.gui.empty"));
+        if(menu.nuclear){lines.add(Component.translatable("techguns.power.heat",menu.heat()*100/PowerBlocks.NUCLEAR_HEAT_MAX).withStyle(s->s.withColor(menu.overheated()?CePowerGui.SCREEN_WARN:CePowerGui.SCREEN_TEXT)));lines.add(cooling().copy().withStyle(s->s.withColor(menu.overheated()||!menu.cooled()?CePowerGui.SCREEN_WARN:CePowerGui.SCREEN_DIM)));}
+        int x0=tank()?66:48;CePowerGui.screen(g,font,lines,x0,20,164,72);
+    }
+    @Override public void render(GuiGraphics g,int mouseX,int mouseY,float partial){
+        renderBackground(g);super.render(g,mouseX,mouseY,partial);renderTooltip(g,mouseX,mouseY);
+        int x=mouseX-leftPos,y=mouseY-topPos;
+        if(CePowerGui.in(x,y,7,17,6,59))g.renderTooltip(font,Component.translatable("techguns.power.energy",menu.energy(),menu.capacity()),mouseX,mouseY);
+        if(menu.nuclear&&CePowerGui.in(x,y,TANK_X-1,TANK_Y-1,TANK_W+3,TANK_H+3))g.renderComponentTooltip(font,java.util.List.of(Component.translatable("techguns.power.heat",menu.heat()*100/PowerBlocks.NUCLEAR_HEAT_MAX),cooling()),mouseX,mouseY);
+        if(menu.liquid&&CePowerGui.in(x,y,TANK_X-1,TANK_Y-1,TANK_W+3,TANK_H+3))g.renderTooltip(font,menu.tankAmount()>0?Component.translatable("techguns.power.tank",menu.tankFluid().getFluidType().getDescription(),menu.tankAmount(),PowerBlocks.LIQUID_TANK):Component.translatable("techguns.gui.empty"),mouseX,mouseY);
     }
 }

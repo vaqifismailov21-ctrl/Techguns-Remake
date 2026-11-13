@@ -2035,5 +2035,15 @@
   "config.techguns.ore_drills.powermult_oil.tooltip": "Множитель энергии для нефтяных кластеров.",
   "config.techguns.spawner_block": "§e§lБлок спавнера",
   "config.techguns.spawner_block.spawnerBlockUseCustomEntitySpawn": "Использовать кастомный спавн существ",
-  "config.techguns.spawner_block.spawnerBlockUseCustomEntitySpawn.tooltip": "false = режим TG по умолчанию (создает только мобов ITGSpawnerNPC из предустановленных наборов). true = пользовательский режим (создает любых EntityLiving из NBT-идентификатора типов мобов этого спавнера; используйте это при редактировании NBT-идентификатора спавнера, чтобы он указывал на сущности из других модов)."
+  "config.techguns.spawner_block.spawnerBlockUseCustomEntitySpawn.tooltip": "false = режим TG по умолчанию (создает только мобов ITGSpawnerNPC из предустановленных наборов). true = пользовательский режим (создает любых EntityLiving из NBT-идентификатора типов мобов этого спавнера; используйте это при редактировании NBT-идентификатора спавнера, чтобы он указывал на сущности из других модов).",
+  "item.techguns.blueprint_generators": "Чертежи генераторов",
+  "item.techguns.blueprint_power_plants": "Чертежи электростанций",
+  "item.techguns.blueprint_reactors": "Чертежи реакторов",
+  "techguns.blueprint.generators.tooltip": "Используйте, чтобы научиться строить:",
+  "techguns.blueprint.power_plants.tooltip": "Используйте, чтобы научиться строить:",
+  "techguns.blueprint.reactors.tooltip": "Используйте, чтобы научиться строить:",
+  "techguns.blueprint.generators.learned": "Вы научились строить генераторы",
+  "techguns.blueprint.power_plants.learned": "Вы научились строить электростанции",
+  "techguns.blueprint.reactors.learned": "Вы научились строить реакторы",
+  "techguns.blueprint.required": "Для крафта нужно изучить: %s"
 }

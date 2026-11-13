@@ -2038,5 +2038,15 @@
   "config.techguns.ore_drills.powermult_oil.tooltip": "Power Multiplier for oil clusters",
   "config.techguns.spawner_block": "§e§lSpawner block",
   "config.techguns.spawner_block.spawnerBlockUseCustomEntitySpawn": "Use custom entity spawn",
-  "config.techguns.spawner_block.spawnerBlockUseCustomEntitySpawn.tooltip": "false = default TG mode (spawns only ITGSpawnerNPC mobs from presets). true = custom mode (spawns any EntityLiving from this spawner's mobtypes NBT id; use this when editing spawner NBT to point at entities from other mods)."
+  "config.techguns.spawner_block.spawnerBlockUseCustomEntitySpawn.tooltip": "false = default TG mode (spawns only ITGSpawnerNPC mobs from presets). true = custom mode (spawns any EntityLiving from this spawner's mobtypes NBT id; use this when editing spawner NBT to point at entities from other mods).",
+  "item.techguns.blueprint_generators": "Generator Blueprints",
+  "item.techguns.blueprint_power_plants": "Power Plant Blueprints",
+  "item.techguns.blueprint_reactors": "Reactor Blueprints",
+  "techguns.blueprint.generators.tooltip": "Use to learn how to build:",
+  "techguns.blueprint.power_plants.tooltip": "Use to learn how to build:",
+  "techguns.blueprint.reactors.tooltip": "Use to learn how to build:",
+  "techguns.blueprint.generators.learned": "You learned how to build generators",
+  "techguns.blueprint.power_plants.learned": "You learned how to build power plants",
+  "techguns.blueprint.reactors.learned": "You learned how to build reactors",
+  "techguns.blueprint.required": "Crafting requires studied %s"
 }
