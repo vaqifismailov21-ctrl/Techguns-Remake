@@ -20,7 +20,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "techguns:oredrill_4_controller",
-      "text": "Чтобы начать строить рудный бур, найдите $(l:oredrills/ore_clusters)рудный кластер$(/l) и сначала поставьте стержень(и). Чтобы собрать многоблочную конструкцию, нажмите $(thing)ПКМ$() по контроллеру."
+      "text": "Найдите $(l:oredrills/ore_clusters)рудный кластер$(/l). Обычно бур ставят сверху: стержни идут вниз к кластеру, над ними двигатели, сверху контроллер. Бур работает в любом направлении (вниз, вверх, вбок), главное — стержни упираются в кластер. Вокруг стержней внутри рамы должно быть пусто (воздух) — землю придётся выкопать. Чтобы собрать бур, нажмите $(thing)ПКМ$() по контроллеру."
     },
     {
       "type": "patchouli:multiblock",
@@ -34,13 +34,13 @@
         },
         "pattern": [
           [
-            "C"
+            "R"
           ],
           [
             "0"
           ],
           [
-            "R"
+            "C"
           ]
         ],
         "enable_visualize": false
@@ -66,23 +66,8 @@
         "pattern": [
           [
             "   ",
-            " C ",
+            " 0 ",
             "   "
-          ],
-          [
-            "FFF",
-            "FRF",
-            "FFF"
-          ],
-          [
-            "FSF",
-            "SRS",
-            "FSF"
-          ],
-          [
-            "FSF",
-            "SES",
-            "FSF"
           ],
           [
             "FFF",
@@ -90,8 +75,23 @@
             "FFF"
           ],
           [
+            "FSF",
+            "SES",
+            "FSF"
+          ],
+          [
+            "FSF",
+            "SRS",
+            "FSF"
+          ],
+          [
+            "FFF",
+            "FRF",
+            "FFF"
+          ],
+          [
             "   ",
-            " 0 ",
+            " C ",
             "   "
           ]
         ],
@@ -168,11 +168,176 @@
             "         ",
             "         ",
             "         ",
-            "    C    ",
+            "    0    ",
             "         ",
             "         ",
             "         ",
             "         "
+          ],
+          [
+            "FFFFFFFFF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FEEEEEEEF",
+            "FFFFFFFFF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "SEEEEEEES",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
+          ],
+          [
+            "FSSSSSSSF",
+            "S       S",
+            "S       S",
+            "S       S",
+            "S   R   S",
+            "S       S",
+            "S       S",
+            "S       S",
+            "FSSSSSSSF"
           ],
           [
             "FFFFFFFFF",
@@ -186,176 +351,11 @@
             "FFFFFFFFF"
           ],
           [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "S       S",
-            "S       S",
-            "S       S",
-            "S   R   S",
-            "S       S",
-            "S       S",
-            "S       S",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "FSSSSSSSF"
-          ],
-          [
-            "FSSSSSSSF",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "SEEEEEEES",
-            "FSSSSSSSF"
-          ],
-          [
-            "FFFFFFFFF",
-            "FEEEEEEEF",
-            "FEEEEEEEF",
-            "FEEEEEEEF",
-            "FEEEEEEEF",
-            "FEEEEEEEF",
-            "FEEEEEEEF",
-            "FEEEEEEEF",
-            "FFFFFFFFF"
-          ],
-          [
             "         ",
             "         ",
             "         ",
             "         ",
-            "    0    ",
+            "    C    ",
             "         ",
             "         ",
             "         ",

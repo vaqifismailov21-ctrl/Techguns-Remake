@@ -1,0 +1,15 @@
+{
+  "name": "Ore Drill",
+  "icon": "techguns:oredrill_controller",
+  "category": "techguns:multiblock_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The ore drill is a multiblock machine that mines ore clusters endlessly. How to build it and which drill heads, fuel and power it needs is in $(l:oredrills/ore_drills)Ore Drills$(/l). Where to find clusters: $(l:oredrills/ore_clusters)here$(/l)."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:oredrill_4_controller"
+    }
+  ]
+}

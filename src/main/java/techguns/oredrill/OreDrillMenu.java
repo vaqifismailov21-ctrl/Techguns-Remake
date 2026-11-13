@@ -14,7 +14,7 @@ import techguns.api.tginventory.TGSlotType;
 
 /** Original OreDrillContainer: drill slot (30,17), furnace fuel slot (30,51), 3x3 outputs at (102,17). */
 public final class OreDrillMenu extends AbstractContainerMenu {
-    public static final int SLOT_DRILL_X=30, SLOTS_ROW1_Y=17, SLOTS_FURNACE_Y=51, SLOTS_OUTPUT_X=102;
+    public static final int SLOT_DRILL_X=41, SLOTS_ROW1_Y=17, SLOTS_FURNACE_Y=51, SLOTS_OUTPUT_X=113;
     public final OreDrillTileEntMaster tile;
     public OreDrillMenu(int id,Inventory inventory,FriendlyByteBuf buffer){this(id,inventory,require(inventory,buffer));}
     private static OreDrillTileEntMaster require(Inventory inventory,FriendlyByteBuf buffer){
@@ -35,8 +35,8 @@ public final class OreDrillMenu extends AbstractContainerMenu {
         for(int i=0;i<3;i++)for(int j=0;j<3;j++)addSlot(new SlotItemHandler(handler,OreDrillTileEntMaster.SLOT_OUTPUT1+i*3+j,SLOTS_OUTPUT_X+18*i,SLOTS_ROW1_Y+18*j){
             @Override public boolean mayPlace(ItemStack item){return false;}
         });
-        for(int row=0;row<3;row++)for(int column=0;column<9;column++)addSlot(new Slot(inventory,column+row*9+9,8+column*18,84+row*18));
-        for(int column=0;column<9;column++)addSlot(new Slot(inventory,column,8+column*18,142));
+        for(int row=0;row<3;row++)for(int column=0;column<9;column++)addSlot(new Slot(inventory,column+row*9+9,19+column*18,106+row*18));
+        for(int column=0;column<9;column++)addSlot(new Slot(inventory,column,19+column*18,164));
         addDataSlots(tile.data);
     }
     /** Original SlotDrill: only on a formed drill, and only the head size matching the drill radius. */

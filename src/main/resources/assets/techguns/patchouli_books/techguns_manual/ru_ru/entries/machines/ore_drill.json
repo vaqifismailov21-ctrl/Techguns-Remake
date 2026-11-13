@@ -1,0 +1,15 @@
+{
+  "name": "Рудный бур",
+  "icon": "techguns:oredrill_controller",
+  "category": "techguns:multiblock_machines",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Рудный бур — многоблочная машина, которая бесконечно добывает руду из рудных кластеров. Как его строить, какие нужны буровые головки, топливо и энергия — в разделе $(l:oredrills/ore_drills)Рудные буры$(/l). Где искать кластеры — $(l:oredrills/ore_clusters)здесь$(/l)."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "techguns:oredrill_4_controller"
+    }
+  ]
+}
