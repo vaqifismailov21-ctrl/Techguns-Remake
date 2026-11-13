@@ -1519,6 +1519,7 @@
   "block.techguns.fusion_reactor": "Fusion Reactor",
   "techguns.plant.missing": "Plant incomplete: %s needed (%s wrong blocks marked)",
   "techguns.plant.blocked": "Plant incomplete: %s blocks in the way (marked)",
+  "techguns.oredrill.formed": "Ore drill assembled",
   "techguns.plant.formed": "%s assembled",
   "techguns.plant.working": "Working",
   "techguns.plant.not_formed": "Not assembled",

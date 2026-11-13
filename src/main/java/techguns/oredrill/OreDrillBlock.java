@@ -56,7 +56,7 @@ public class OreDrillBlock extends BaseEntityBlock {
         if(tile instanceof OreDrillTileEntMaster master){
             if(!master.isUseableByPlayer(player)){player.displayClientMessage(net.minecraft.network.chat.Component.translatable("techguns.container.security.denied"),true);return InteractionResult.sidedSuccess(level.isClientSide);}
             if(!master.isFormed()&&!player.isShiftKeyDown()){
-                if(!level.isClientSide&&OreDrillDefinition.checkForm(level,player,pos))OreDrillDefinition.form(level,pos);
+                if(!level.isClientSide&&OreDrillDefinition.checkForm(level,player,pos)){OreDrillDefinition.form(level,pos);player.displayClientMessage(net.minecraft.network.chat.Component.translatable("techguns.oredrill.formed"),true);}
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             // Wrench: the controller can neither be dismantled nor rotated, the click does nothing.
