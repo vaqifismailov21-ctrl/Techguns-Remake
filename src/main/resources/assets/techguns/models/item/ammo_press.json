@@ -1,6 +1,6 @@
 {
   "parent": "builtin/entity",
   "textures": {
-    "particle": "techguns:blocks/ammopress"
+    "particle": "techguns:blocks/fabricator_housing"
   }
 }

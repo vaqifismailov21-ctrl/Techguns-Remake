@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "techguns:blocks/energy_cell_side"
+    "particle": "techguns:blocks/plant/plant_casing"
   }
 }

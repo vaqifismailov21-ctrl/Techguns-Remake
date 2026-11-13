@@ -1,7 +1,7 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "techguns:blocks/ammopress"
+    "particle": "techguns:blocks/fabricator_housing"
   },
   "elements": []
 }

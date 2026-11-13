@@ -3,7 +3,7 @@
   "ambientocclusion": false,
   "textures": {
     "0": "techguns:blocks/tnt_charge_armed",
-    "particle": "techguns:blocks/tnt_charge_armed"
+    "particle": "minecraft:block/tnt_side"
   },
   "elements": [
     {

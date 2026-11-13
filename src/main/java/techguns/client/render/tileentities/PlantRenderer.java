@@ -75,11 +75,24 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
     private static int lightAt(PlantController p,float x,float y,float z,int fallback){
         var f=p.facing();var r=f.getClockWise();var b=f.getOpposite();var o=p.getBlockPos();
         var pos=BlockPos.containing(o.getX()+0.5+r.getStepX()*x+b.getStepX()*z,o.getY()+y,o.getZ()+0.5+r.getStepZ()*x+b.getStepZ()*z);
-        int light=LevelRenderer.getLightColor(p.getLevel(),pos);
+        int light=brightest(p.getLevel(),pos);
         return light==0?fallback:light;
     }
+    /**
+     * Light of a spot that may lie inside the plant's own solid blocks (a tower's core, a wall): the brightest sky and block
+     * light of the spot and its six neighbours, so a part is lit like the air around it instead of going black.
+     */
+    static int brightest(net.minecraft.world.level.BlockAndTintGetter level,BlockPos pos){
+        int sky=0,block=0;
+        for(int i=-1;i<6;i++){
+            int l=LevelRenderer.getLightColor(level,i<0?pos:pos.relative(net.minecraft.core.Direction.from3DDataValue(i)));
+            sky=Math.max(sky,l>>20&15);block=Math.max(block,l>>4&15);
+        }
+        return net.minecraft.client.renderer.LightTexture.pack(block,sky);
+    }
 
-    @Override public void render(PlantController plant,float partial,PoseStack pose,MultiBufferSource buffers,int light,int overlay){
+    @Override public void render(PlantController plant,float partial,PoseStack pose,MultiBufferSource buffers,int blockLight,int overlay){
+        int light=plant.getLevel()!=null?brightest(plant.getLevel(),plant.getBlockPos()):blockLight;
         if(!plant.formed||plant.getLevel()==null)return;
         float time=plant.getLevel().getGameTime()+partial;
         float[] a=angles.computeIfAbsent(plant,p->new float[]{0,time});

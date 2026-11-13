@@ -27,10 +27,10 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
     private static final EquipmentSlot[] ARMOR={EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET};
     private static final String[] DYE_FAMILIES={"wool","concrete","concrete_powder","terracotta","stained_glass","stained_glass_pane","carpet"};
     private static final String[] COLORS={"white","orange","magenta","light_blue","yellow","lime","pink","gray","light_gray","cyan","purple","blue","brown","green","red","black"};
-    private final ResourceLocation texture;
+    private final ResourceLocation texture,background;
     private final int securityY;
     public BenchScreen(BenchMenu menu,Inventory inventory,Component title){
-        super(menu,inventory,title);texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+menu.bench.kind.texture()+"_gui.png");imageHeight=166;
+        super(menu,inventory,title);texture=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/"+menu.bench.kind.texture()+"_gui.png");background=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/ce_"+menu.bench.kind.texture()+"_gui.png");imageHeight=198;
         securityY=switch(menu.bench.kind){case CAMO->95+25;case REPAIR->10;default->SECURITY_Y;};
     }
     private void send(int id){minecraft.gameMode.handleInventoryButtonClick(menu.containerId,id);}
@@ -60,7 +60,7 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
 
     @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
         int k=leftPos,l=topPos;
-        graphics.blit(texture,k,l,0,0,imageWidth,imageHeight);
+        graphics.blit(background,k,l,0,0,imageWidth,imageHeight);
         drawSecurityPanel(graphics,k,l,securityY);
         switch(menu.bench.kind){
             case CAMO->{

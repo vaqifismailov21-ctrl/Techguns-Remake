@@ -1,77 +1,77 @@
 {
- "parent": "block/block",
- "textures": {
-  "atlas": "techguns:blocks/wire/painted/power_bus",
-  "particle": "techguns:blocks/wire/painted/power_bus"
- },
- "elements": [
-  {
-   "from": [
-    2,
-    2,
-    2
-   ],
-   "to": [
-    14,
-    14,
-    14
-   ],
-   "faces": {
-    "north": {
-     "uv": [
-      0.125,
-      0.125,
-      3.125,
-      3.125
-     ],
-     "texture": "#atlas"
-    },
-    "south": {
-     "uv": [
-      3.375,
-      0.125,
-      6.375,
-      3.125
-     ],
-     "texture": "#atlas"
-    },
-    "east": {
-     "uv": [
-      6.625,
-      0.125,
-      9.625,
-      3.125
-     ],
-     "texture": "#atlas"
-    },
-    "west": {
-     "uv": [
-      9.875,
-      0.125,
-      12.875,
-      3.125
-     ],
-     "texture": "#atlas"
-    },
-    "up": {
-     "uv": [
-      0.125,
-      3.375,
-      3.125,
-      6.375
-     ],
-     "texture": "#atlas"
-    },
-    "down": {
-     "uv": [
-      3.375,
-      3.375,
-      6.375,
-      6.375
-     ],
-     "texture": "#atlas"
+  "parent": "block/block",
+  "textures": {
+    "atlas": "techguns:blocks/wire/painted/power_bus",
+    "particle": "techguns:blocks/plant/frame_dark"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        14,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.125,
+            0.125,
+            3.125,
+            3.125
+          ],
+          "texture": "#atlas"
+        },
+        "south": {
+          "uv": [
+            3.375,
+            0.125,
+            6.375,
+            3.125
+          ],
+          "texture": "#atlas"
+        },
+        "east": {
+          "uv": [
+            6.625,
+            0.125,
+            9.625,
+            3.125
+          ],
+          "texture": "#atlas"
+        },
+        "west": {
+          "uv": [
+            9.875,
+            0.125,
+            12.875,
+            3.125
+          ],
+          "texture": "#atlas"
+        },
+        "up": {
+          "uv": [
+            0.125,
+            3.375,
+            3.125,
+            6.375
+          ],
+          "texture": "#atlas"
+        },
+        "down": {
+          "uv": [
+            3.375,
+            3.375,
+            6.375,
+            6.375
+          ],
+          "texture": "#atlas"
+        }
+      }
     }
-   }
-  }
- ]
+  ]
 }

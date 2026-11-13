@@ -17,7 +17,7 @@ import static techguns.client.gui.LegacyMachineGui.*;
  * redstone setting.
  */
 public final class DoorScreen extends AbstractContainerScreen<DoorMenu> {
-    private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/dungeon_scanner_gui.png");
+    private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/ce_dungeon_scanner_gui.png");
     // Menu button ids of the port: 0 mode, 1 auto close, 2 redstone mode, 3 security.
     private Button autoClose;
     public DoorScreen(DoorMenu menu,Inventory inventory,Component title){super(menu,inventory,title);imageWidth=176;imageHeight=166;}

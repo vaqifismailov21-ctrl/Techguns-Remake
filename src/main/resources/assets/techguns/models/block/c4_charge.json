@@ -2,7 +2,7 @@
   "parent": "block/block",
   "textures": {
     "0": "techguns:blocks/c4_charge",
-    "particle": "techguns:blocks/c4_charge"
+    "particle": "techguns:blocks/plant/plant_casing_dark"
   },
   "elements": [
     {

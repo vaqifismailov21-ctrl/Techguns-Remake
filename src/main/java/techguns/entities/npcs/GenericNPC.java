@@ -52,8 +52,33 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
         boolean dressed=false;
         for(var slot:EquipmentSlot.values())if(slot.getType()==EquipmentSlot.Type.ARMOR&&!getItemBySlot(slot).isEmpty())dressed=true;
         if(!dressed)addRandomArmor(difficulty);
-        if(TGConfig.disableGunDrops)setDropChance(EquipmentSlot.MAINHAND,0);
-        if(TGConfig.disableArmorDrops)for(var slot:EquipmentSlot.values())if(slot.getType()==EquipmentSlot.Type.ARMOR)setDropChance(slot,0);
+        // equipment drops are decided in dropCustomDeathLoot
+        for(var slot:EquipmentSlot.values())setDropChance(slot,0);
+    }
+    /**
+     * A player's kill may leave the NPC's gun (rarely, with only part of a magazine left) and pieces of its armour (worn).
+     * Chances come from the config; looting adds one percent per level.
+     */
+    /** False for NPCs whose weapon comes from their loot table instead. */
+    protected boolean dropsGun(){return true;}
+    @Override protected void dropCustomDeathLoot(net.minecraft.world.damagesource.DamageSource source,int looting,boolean recentlyHit){
+        super.dropCustomDeathLoot(source,looting,recentlyHit);
+        if(!recentlyHit)return;
+        var gun=getItemBySlot(EquipmentSlot.MAINHAND);
+        if(!TGConfig.disableGunDrops&&dropsGun()&&gun.getItem() instanceof GenericGun g&&random.nextFloat()<TGConfig.npcGunDropChance+looting*0.01f){
+            var drop=gun.copy();int clip=g.getClipDisplayCount()>0?g.getCurrentAmmo(drop):0;
+            g.setAmmo(drop,clip<=0?0:random.nextInt(Math.max(1,clip*3/5)+1));
+            spawnAtLocation(drop);setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
+        }
+        if(TGConfig.disableArmorDrops)return;
+        for(var slot:EquipmentSlot.values()){
+            if(slot.getType()!=EquipmentSlot.Type.ARMOR)continue;
+            var armor=getItemBySlot(slot);
+            if(armor.isEmpty()||random.nextFloat()>=TGConfig.npcArmorDropChance+looting*0.01f)continue;
+            var drop=armor.copy();
+            if(drop.isDamageableItem())drop.setDamageValue(Math.min(drop.getMaxDamage()-1,(int)(drop.getMaxDamage()*(0.35f+random.nextFloat()*0.5f))));
+            spawnAtLocation(drop);setItemSlot(slot,ItemStack.EMPTY);
+        }
     }
     protected void addRandomArmor(int difficulty){setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(TGuns.revolver.get()));}
     protected void setTGArmorStats(float armor,float penetration){this.armor=armor;this.penetrationResistance=penetration;}

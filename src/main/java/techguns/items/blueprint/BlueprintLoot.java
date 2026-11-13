@@ -23,16 +23,16 @@ public final class BlueprintLoot {
     private static final ResourceLocation NETHER_BRIDGE = new ResourceLocation("minecraft", "chests/nether_bridge");
     private record Drop(RegistryObject<? extends Item> item, float chance) {}
     private static final Map<String, Drop[]> CHESTS = Map.ofEntries(
-            Map.entry("gasstation", generators(0.20F)), Map.entry("survivor_hideout", generators(0.25F)), Map.entry("small_trainstation", generators(0.20F)),
-            Map.entry("policestation", generators(0.15F)), Map.entry("train_green", generators(0.15F)), Map.entry("train_orange", generators(0.15F)),
-            Map.entry("train_red", generators(0.15F)), Map.entry("train_head", new Drop[]{new Drop(TGItems.BLUEPRINT_GENERATORS, 0.25F), new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.10F)}),
-            Map.entry("factory_building", new Drop[]{new Drop(TGItems.BLUEPRINT_GENERATORS, 0.25F), new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.15F)}),
-            Map.entry("factory_building_big", new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.30F), new Drop(TGItems.BLUEPRINT_REACTORS, 0.05F)}),
-            Map.entry("militarybase_barracks", plants(0.12F)), Map.entry("militarybase_bunker", new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.20F), new Drop(TGItems.BLUEPRINT_REACTORS, 0.08F)}),
-            Map.entry("aircraftcarrier", new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.20F), new Drop(TGItems.BLUEPRINT_REACTORS, 0.10F)}),
-            Map.entry("castle", plants(0.15F)),
-            Map.entry("nether_building_common", reactors(0.12F)), Map.entry("nether_submarine_common", reactors(0.10F)), Map.entry("nether_submarine_rare", reactors(0.30F)),
-            Map.entry("nether_cluster_secret", reactors(0.35F)), Map.entry("end_building", reactors(0.25F)), Map.entry("end_floating_ship", reactors(0.40F)));
+            Map.entry("gasstation", generators(0.11F)), Map.entry("survivor_hideout", generators(0.14F)), Map.entry("small_trainstation", generators(0.11F)),
+            Map.entry("policestation", generators(0.08F)), Map.entry("train_green", generators(0.08F)), Map.entry("train_orange", generators(0.08F)),
+            Map.entry("train_red", generators(0.08F)), Map.entry("train_head", new Drop[]{new Drop(TGItems.BLUEPRINT_GENERATORS, 0.14F), new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.06F)}),
+            Map.entry("factory_building", new Drop[]{new Drop(TGItems.BLUEPRINT_GENERATORS, 0.14F), new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.08F)}),
+            Map.entry("factory_building_big", new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.17F), new Drop(TGItems.BLUEPRINT_REACTORS, 0.03F)}),
+            Map.entry("militarybase_barracks", plants(0.07F)), Map.entry("militarybase_bunker", new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.11F), new Drop(TGItems.BLUEPRINT_REACTORS, 0.04F)}),
+            Map.entry("aircraftcarrier", new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, 0.11F), new Drop(TGItems.BLUEPRINT_REACTORS, 0.06F)}),
+            Map.entry("castle", plants(0.08F)),
+            Map.entry("nether_building_common", reactors(0.07F)), Map.entry("nether_submarine_common", reactors(0.06F)), Map.entry("nether_submarine_rare", reactors(0.17F)),
+            Map.entry("nether_cluster_secret", reactors(0.19F)), Map.entry("end_building", reactors(0.14F)), Map.entry("end_floating_ship", reactors(0.22F)));
     private static Drop[] generators(float chance) { return new Drop[]{new Drop(TGItems.BLUEPRINT_GENERATORS, chance)}; }
     private static Drop[] plants(float chance) { return new Drop[]{new Drop(TGItems.BLUEPRINT_POWER_PLANTS, chance)}; }
     private static Drop[] reactors(float chance) { return new Drop[]{new Drop(TGItems.BLUEPRINT_REACTORS, chance)}; }

@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "techguns:blocks/liquid_generator_side"
+    "particle": "techguns:blocks/plant/plant_casing"
   }
 }

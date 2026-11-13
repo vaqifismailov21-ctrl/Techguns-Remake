@@ -1,6 +1,6 @@
 {
   "parent": "builtin/entity",
   "textures": {
-    "particle": "techguns:blocks/charging_station"
+    "particle": "techguns:blocks/fabricator_housing"
   }
 }
