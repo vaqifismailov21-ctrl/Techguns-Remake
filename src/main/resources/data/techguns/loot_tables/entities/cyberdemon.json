@@ -2,13 +2,11 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "name": "cyberdemon_flesh",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 1,
-          "name": "techguns:cyberdemon_flesh",
+          "name": "techguns:blueprints",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -30,12 +28,10 @@
       ]
     },
     {
-      "name": "blaze_rod",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 1,
           "name": "minecraft:blaze_rod",
           "functions": [
             {
@@ -66,12 +62,10 @@
       ]
     },
     {
-      "name": "ghast_tear",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 1,
           "name": "minecraft:ghast_tear",
           "functions": [
             {

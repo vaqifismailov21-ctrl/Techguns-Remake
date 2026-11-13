@@ -37,6 +37,23 @@ public final class LegacySurfaceStructure extends Structure {
         return !kind.equals("desert_oil_cluster")||TGOreClusters.worldOil()!=null;
     }
     /** Lowest rotated corner of a scan, as the original rotated placement computes its origin. */
+    /** Community edition BlockUtils.isAreaClear: every 4th block of the volume is air. */
+    private static boolean areaClear(NoiseTerrain terrain,int x,int y,int z,int sx,int sy,int sz){
+        for(int i=0;i<=sx;i+=4)for(int j=0;j<=sy;j+=4)for(int k=0;k<=sz;k+=4)if(!terrain.block(x+Math.min(i,sx-1),y+Math.min(j,sy-1),z+Math.min(k,sz-1)).isAir())return false;
+        return true;
+    }
+    /** Community edition getValidEndIslandSpawnY: top end stone every step blocks; a third must be island, at most 2*limit apart. */
+    private static int endIslandY(NoiseTerrain terrain,int x,int z,int sx,int sz,int limit,int step){
+        int count=0,valid=0,min=255,max=0,sum=0;
+        for(int ix=0;;ix=Math.min(ix+step,sx)){
+            for(int iz=0;;iz=Math.min(iz+step,sz)){count++;int h=-1;
+                for(int y=255;y>0;y--){var b=terrain.block(x+ix,y,z+iz);if(b.is(net.minecraft.world.level.block.Blocks.END_STONE)||b.is(net.minecraft.world.level.block.Blocks.END_STONE_BRICKS)){h=y;break;}}
+                if(h>0){valid++;min=Math.min(min,h);max=Math.max(max,h);sum+=h;}
+                if(iz>=sz)break;}
+            if(ix>=sx)break;}
+        if(valid<2||valid<count/3||max-min>limit*2)return -1;
+        return sum/valid;
+    }
     private static int[] minCorner(ScannedStructure scan,int turns){
         int minX=Integer.MAX_VALUE,minZ=Integer.MAX_VALUE;
         for(var corner:List.of(new BlockPos(0,0,0),new BlockPos(scan.sizeX,0,0),new BlockPos(0,0,scan.sizeZ),new BlockPos(scan.sizeX,0,scan.sizeZ))){var point=ScannedStructure.rotate(corner,scan.sizeX/2,scan.sizeZ/2,turns);minX=Math.min(minX,point.getX());minZ=Math.min(minZ,point.getZ());}
@@ -52,18 +69,19 @@ public final class LegacySurfaceStructure extends Structure {
     }
     private Optional<GenerationStub> findGenerationPoint0(GenerationContext context){
         int cx=context.chunkPos().x,cz=context.chunkPos().z,x=cx*16,z=cz*16;
-        if(!TGConfig.doWorldspawn||cx%TGConfig.spawnWeightTGStructureSmall!=0||cz%TGConfig.spawnWeightTGStructureSmall!=0)return Optional.empty();
+        boolean ownGrid=NetherStructuresFeature.IDS.contains(kind)||techguns.world.EndStructures.IDS.contains(kind);
+        // Nether and End use their own grids (community edition); their choose() checks the site.
+        if(!TGConfig.doWorldspawn||!ownGrid&&(cx%TGConfig.spawnWeightTGStructureSmall!=0||cz%TGConfig.spawnWeightTGStructureSmall!=0))return Optional.empty();
         var terrain=new NoiseTerrain(context.chunkGenerator(),context.randomState(),context.heightAccessor());
         var random=SurfaceStructuresFeature.selectionRandom(context.seed(),cx,cz);
         if(techguns.world.EndStructures.IDS.contains(kind)){
             var selected=techguns.world.EndStructures.choose(cx,cz,random);if(!kind.equals(selected))return Optional.empty();NaturalGenerationVerifier.considered("the_end",cx,cz,selected);
             var scan=ScannedStructure.load(selected);int turns=random.nextInt(4);var corner=minCorner(scan,turns);int sx=x+corner[0],sz=z+corner[1];
-            int y;
-            if(selected.equals("end_floating_ship"))y=70+random.nextInt(30);
-            else y=SurfaceStructuresFeature.surfaceHeight(new SurfaceStructuresFeature.HeightProbe(){
-                @Override public int height(int px,int pz){return terrain.height(px,pz,Heightmap.Types.WORLD_SURFACE_WG);}
-                @Override public boolean dry(int px,int py,int pz){return terrain.block(px,py,pz).getFluidState().isEmpty();}
-            },sx,sz,turns%2==0?scan.sizeX:scan.sizeZ,turns%2==0?scan.sizeZ:scan.sizeX,4);
+            int w=turns%2==0?scan.sizeX:scan.sizeZ,d=turns%2==0?scan.sizeZ:scan.sizeX,y;
+            // Community edition: the ship at y 150 and the cluster at y 80 in open air; the station on an island (8 high tolerance, every 6 blocks).
+            if(selected.equals("end_floating_ship"))y=areaClear(terrain,sx,150,sz,w,scan.sizeY,d)?151:-1;
+            else if(selected.equals("end_cluster"))y=areaClear(terrain,sx,80,sz,w,scan.sizeY,d)?81:-1;
+            else{int h=endIslandY(terrain,sx,sz,w,d,8,6);y=h<0?-1:h+1;}
             if(y<=0){NaturalGenerationVerifier.skipped("the_end",selected,cx,cz);return Optional.empty();}
             var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);
             scan.place(plan,context.heightAccessor(),new BlockPos(sx,y-1,sz),turns,plan.random,RandomSource.create(random.nextLong()),0);
@@ -72,7 +90,10 @@ public final class LegacySurfaceStructure extends Structure {
         if(NetherStructuresFeature.IDS.contains(kind)){
             var selected=NetherStructuresFeature.choose(cx,cz,random);if(!kind.equals(selected))return Optional.empty();NaturalGenerationVerifier.considered("the_nether",cx,cz,selected);
             var scan=ScannedStructure.load(selected);int turns=random.nextInt(4);var corner=minCorner(scan,turns);
-            int height="nether_submarine".equals(selected)?NetherStructuresFeature.lavaSurface(terrain::block,cx,cz):NetherStructuresFeature.caveHeight(terrain::block,cx,cz);if(height<0){NaturalGenerationVerifier.skipped("the_nether",selected,cx,cz);return Optional.empty();}
+            int height;
+            // Submarine: base 3 below the lava surface (community edition LAVA_SUBMERGE_DEPTH 4).
+            if("nether_submarine".equals(selected)){int lava=NetherStructuresFeature.lavaSurface(terrain::block,x+corner[0],z+corner[1],turns%2==0?scan.sizeX:scan.sizeZ,turns%2==0?scan.sizeZ:scan.sizeX);height=lava<0?-1:lava-2;}
+            else height=NetherStructuresFeature.caveHeight(terrain::block,cx,cz);if(height<0){NaturalGenerationVerifier.skipped("the_nether",selected,cx,cz);return Optional.empty();}
             var plan=new LegacyStructurePlan(RandomSource.create(random.nextLong()),terrain::block);
             var origin=new BlockPos(x+corner[0],height-1,z+corner[1]);scan.place(plan,context.heightAccessor(),origin,turns,plan.random,plan.random,0);
             return stub(plan,origin.above());

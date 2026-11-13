@@ -35,7 +35,9 @@ public final class StructureLocateGameTests {
         h.assertTrue(value instanceof LegacySurfaceStructure s&&s.kind.equals(id),"Missing native structure techguns:"+id);return value;
     }
     private static int gridOf(String id){
-        if(Set.of("military_base","castle","aircraftcarrier","train","end_floating_ship","end_building","end_cluster").contains(id))return TGConfig.spawnWeightTGStructureBig;
+        if(techguns.world.EndStructures.IDS.contains(id))return TGConfig.spawnWeightTGStructureBigEnd;
+        if(NetherStructuresFeature.IDS.contains(id))return Set.of("nether_altar_small","nether_soul_platform","nether_loot_01","nether_acid_hole","nether_orecluster_small").contains(id)?TGConfig.spawnWeightTGStructureSmallNether:TGConfig.spawnWeightTGStructureMediumNether;
+        if(Set.of("military_base","castle","aircraftcarrier","train").contains(id))return TGConfig.spawnWeightTGStructureBig;
         if(Set.of("alien_bug_nest","policestation","survivor_hideout","orecluster_spike","orecluster_meteorbase","desert_oil_cluster","nether_altar_medium","nether_ghast_spawner","nether_orecluster_castle","factory_big","nether_building","nether_submarine","nether_orecluster_medium").contains(id))return TGConfig.spawnWeightTGStructureMedium;
         return TGConfig.spawnWeightTGStructureSmall;
     }
@@ -70,7 +72,7 @@ public final class StructureLocateGameTests {
                 var structure=structure(h,id);int grid=gridOf(id);StructureStart start=StructureStart.INVALID_START;ChunkPos chunk=null;long seed=0;
                 // Rare entries (Nether altar: 10 of 1020 weight) need many sites; only chosen sites are generated.
                 for(;seed<20000&&!start.isValid();seed++){
-                    int cx=grid*(1+(int)(seed%5)),cz=grid*(1+(int)(seed/5%5));for(int coarser:new int[]{TGConfig.spawnWeightTGStructureMedium,TGConfig.spawnWeightTGStructureBig})if(grid<coarser&&cx%coarser==0&&cz%coarser==0)cx+=grid;
+                    int cx=grid*(1+(int)(seed%5)),cz=grid*(1+(int)(seed/5%5));for(int coarser:nether?new int[]{TGConfig.spawnWeightTGStructureMediumNether,TGConfig.spawnWeightTGStructureBigNether}:new int[]{TGConfig.spawnWeightTGStructureMedium,TGConfig.spawnWeightTGStructureBig})if(grid!=coarser&&cx%coarser==0&&cz%coarser==0)cx+=grid;
                     var random=SurfaceStructuresFeature.selectionRandom(seed,cx,cz);
                     String chosen=nether?NetherStructuresFeature.choose(cx,cz,random):SurfaceStructuresFeature.choose(cx,cz,false,desert,true,random);if(!id.equals(chosen))continue;
                     chunk=new ChunkPos(cx,cz);start=structure.generate(access,generator,source,RandomState.create(settings.value(),access.registryOrThrow(Registries.NOISE).asLookup(),seed),level.getStructureManager(),seed,chunk,0,level,b->true);
@@ -101,7 +103,7 @@ public final class StructureLocateGameTests {
             var result=level.getChunkSource().getGenerator().findNearestMapStructure(level,HolderSet.direct(holders),new BlockPos(0,64,0),100,false);
             h.assertTrue(result!=null,"/locate must find a Techguns structure in "+dimension.location());
             var pos=result.getFirst();var id=result.getSecond().unwrapKey().orElseThrow().location().getPath();int cx=pos.getX()>>4,cz=pos.getZ()>>4;
-            h.assertTrue(cx%TGConfig.spawnWeightTGStructureSmall==0&&cz%TGConfig.spawnWeightTGStructureSmall==0,"Located "+id+" must be at an original grid site, got chunk "+cx+","+cz);
+            h.assertTrue(dimension==Level.NETHER?java.util.stream.IntStream.of(TGConfig.spawnWeightTGStructureSmallNether,TGConfig.spawnWeightTGStructureMediumNether).anyMatch(g->cx%g==0&&cz%g==0):cx%TGConfig.spawnWeightTGStructureSmall==0&&cz%TGConfig.spawnWeightTGStructureSmall==0,"Located "+id+" must be at a grid site, got chunk "+cx+","+cz);
             var start=level.getChunk(cx,cz).getStartForStructure(result.getSecond().value());h.assertTrue(start!=null&&start.isValid(),"The located chunk holds the real start of "+id);
             found.put(dimension.location().getPath(),id+" @ "+pos.toShortString());
         }

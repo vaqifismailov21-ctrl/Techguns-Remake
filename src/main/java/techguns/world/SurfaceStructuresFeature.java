@@ -48,8 +48,7 @@ public final class SurfaceStructuresFeature extends Feature<NoneFeatureConfigura
         },x,z,sizeX,sizeZ);
     }
     public static int surfaceHeight(HeightProbe probe,int x,int z,int sizeX,int sizeZ){return surfaceHeight(probe,x,z,sizeX,sizeZ,3);}
-    /** Long structures (the train) accept a little more slope; the gaps are filled by their foundation. */
-    public static int flatness(String id){return "train".equals(id)?6:3;}
+    public static int flatness(String id){return 3;}
     public static int surfaceHeight(HeightProbe probe,int x,int z,int sizeX,int sizeZ,int tolerance){
         int min=Integer.MAX_VALUE,max=Integer.MIN_VALUE,sum=0,count=0;
         // Source samples by four; a non-multiple final edge is not sampled.

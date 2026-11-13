@@ -5,17 +5,17 @@ import java.util.Set;
 import net.minecraft.util.RandomSource;
 import techguns.TGConfig;
 
-/** End structures of the community edition: on the big grid, only far from the main island. */
+/** End structures of the community edition: on the End big grid (medium and small End tables are empty), 1300 blocks or more from the centre. */
 public final class EndStructures {
     private record Spawn(String id, int weight, boolean cluster) {}
     private static final List<Spawn> BIG = List.of(new Spawn("end_floating_ship", 10, false), new Spawn("end_building", 10, false), new Spawn("end_cluster", 10, true));
     public static final Set<String> IDS = Set.of("end_floating_ship", "end_building", "end_cluster");
     /** Blocks from the world centre inside which nothing is placed (the dragon island). */
-    public static final int MIN_DISTANCE = 1024;
+    public static final int MIN_DISTANCE = 1300;
 
     public static String choose(int cx, int cz, RandomSource random) {
         if (!TGConfig.doWorldspawn) return null;
-        int big = Math.max(1, TGConfig.spawnWeightTGStructureBig);
+        int big = Math.max(1, TGConfig.spawnWeightTGStructureBigEnd);
         if (cx % big != 0 || cz % big != 0) return null;
         long x = cx * 16L, z = cz * 16L;
         if (x * x + z * z < (long) MIN_DISTANCE * MIN_DISTANCE) return null;

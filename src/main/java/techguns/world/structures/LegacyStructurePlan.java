@@ -22,6 +22,10 @@ public class LegacyStructurePlan {
     public boolean resolvesAllShapes(){return resolveAllShapes;}
     public Map<BlockPos,BlockState> blocks(){return Collections.unmodifiableMap(blocks);}
     public Map<BlockPos,CompoundTag> blockData(){return Collections.unmodifiableMap(blockData);}
+    private final List<CompoundTag> entities=new ArrayList<>();
+    /** Entities of the scan (shulkers, crystals, item frames), each saved with id and Pos. */
+    public void addEntity(CompoundTag tag){entities.add(tag.copy());}
+    public List<CompoundTag> entities(){return Collections.unmodifiableList(entities);}
     public Set<Long> cleanupColumns(){return Set.of();}
     public BlockState getBlockState(BlockPos pos){var state=blocks.get(pos);return state!=null?state:terrain.apply(pos);}
     public boolean isAirBlock(BlockPos pos){return getBlockState(pos).isAir();}

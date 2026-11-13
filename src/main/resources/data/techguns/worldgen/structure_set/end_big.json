@@ -15,7 +15,7 @@
   ],
   "placement": {
     "type": "techguns:legacy_grid",
-    "grid": "big",
+    "grid": "end_big",
     "salt": 1729341
   }
 }

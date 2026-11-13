@@ -22,6 +22,8 @@ public final class PlannedStructurePiece extends StructurePiece {
     private final long[] cleanupColumns;
     /** Every non-air block is updated from its neighbours when the chunk is finished (scans placed like the live feature). */
     private final boolean resolveAllShapes;
+    /** Entities that stand in this piece's chunk; spawned once when the chunk is finished. */
+    private final List<CompoundTag> entities=new ArrayList<>();
     public PlannedStructurePiece(Map<BlockPos,BlockState> blocks,Map<BlockPos,CompoundTag> data,Set<Long> cleanup){this(blocks,data,cleanup,false);}
     public PlannedStructurePiece(Map<BlockPos,BlockState> blocks,Map<BlockPos,CompoundTag> data,Set<Long> cleanup,boolean resolveAllShapes){
         super(TGWorld.PLANNED_PIECE.get(),0,BoundingBox.encapsulatingPositions(blocks.keySet()).orElseThrow());
@@ -34,16 +36,19 @@ public final class PlannedStructurePiece extends StructurePiece {
         cleanupColumns=tag.getLongArray("SourceCleanupColumns");resolveAllShapes=tag.getBoolean("SourceResolveShapes");
         for(var row:tag.getList("SourcePalette",Tag.TAG_COMPOUND))palette.add(NbtUtils.readBlockState(context.registryAccess().registryOrThrow(Registries.BLOCK).asLookup(),(CompoundTag)row));
         for(var row:tag.getList("SourceBlockData",Tag.TAG_COMPOUND)){var entry=(CompoundTag)row;int index=entry.getInt("Cell");if(index<0||index>=cells.length/4)throw new IllegalStateException("Invalid source block data index");blockData.put(index,entry.getCompound("Data").copy());}
+        for(var row:tag.getList("SourceEntities",Tag.TAG_COMPOUND))entities.add(((CompoundTag)row).copy());
         if(cells.length%4!=0)throw new IllegalStateException("Invalid source plan cell array");
         for(int i=3;i<cells.length;i+=4)if(cells[i]<0||cells[i]>=palette.size())throw new IllegalStateException("Invalid source plan palette index");
     }
     @Override protected void addAdditionalSaveData(StructurePieceSerializationContext context,CompoundTag tag){
-        var states=new ListTag();for(var state:palette)states.add(NbtUtils.writeBlockState(state));tag.put("SourcePalette",states);tag.putIntArray("SourceCells",cells);tag.putLongArray("SourceCleanupColumns",cleanupColumns);if(resolveAllShapes)tag.putBoolean("SourceResolveShapes",true);var data=new ListTag();for(var entry:new TreeMap<>(blockData).entrySet()){var row=new CompoundTag();row.putInt("Cell",entry.getKey());row.put("Data",entry.getValue().copy());data.add(row);}tag.put("SourceBlockData",data);
+        var states=new ListTag();for(var state:palette)states.add(NbtUtils.writeBlockState(state));tag.put("SourcePalette",states);tag.putIntArray("SourceCells",cells);tag.putLongArray("SourceCleanupColumns",cleanupColumns);if(!entities.isEmpty()){var list=new ListTag();entities.forEach(e->list.add(e.copy()));tag.put("SourceEntities",list);}if(resolveAllShapes)tag.putBoolean("SourceResolveShapes",true);var data=new ListTag();for(var entry:new TreeMap<>(blockData).entrySet()){var row=new CompoundTag();row.putInt("Cell",entry.getKey());row.put("Data",entry.getValue().copy());data.add(row);}tag.put("SourceBlockData",data);
     }
     public static List<PlannedStructurePiece> split(LegacyStructurePlan plan){
         var chunks=new TreeMap<Long,Map<BlockPos,BlockState>>();
         for(var entry:plan.blocks().entrySet())chunks.computeIfAbsent(ChunkPos.asLong(entry.getKey().getX()>>4,entry.getKey().getZ()>>4),key->new LinkedHashMap<>()).put(entry.getKey(),entry.getValue());
-        return chunks.values().stream().map(blocks->new PlannedStructurePiece(blocks,plan.blockData(),plan.cleanupColumns(),plan.resolvesAllShapes())).toList();
+        var pieces=new TreeMap<Long,PlannedStructurePiece>();for(var e:chunks.entrySet())pieces.put(e.getKey(),new PlannedStructurePiece(e.getValue(),plan.blockData(),plan.cleanupColumns(),plan.resolvesAllShapes()));
+        for(var entity:plan.entities()){var pos=entity.getList("Pos",Tag.TAG_DOUBLE);var piece=pieces.get(ChunkPos.asLong(((int)Math.floor(pos.getDouble(0)))>>4,((int)Math.floor(pos.getDouble(2)))>>4));if(piece!=null)piece.entities.add(entity.copy());}
+        return List.copyOf(pieces.values());
     }
     public int cellCount(){return cells.length/4;}
     /** Planned block of every cell, in write order. */
@@ -60,5 +65,6 @@ public final class PlannedStructurePiece extends StructurePiece {
             boolean postprocess=resolveAllShapes&&!state.isAir()&&state.getFluidState().isEmpty()||trail&&!state.is(TGWorld.SLIMY_TRAIL.get())||state.is(net.minecraft.tags.BlockTags.FENCES)||state.getBlock() instanceof net.minecraft.world.level.block.IronBarsBlock||state.getBlock() instanceof net.minecraft.world.level.block.DoorBlock||state.getBlock() instanceof net.minecraft.world.level.block.StairBlock||state.getBlock() instanceof techguns.blocks.DecorSandbagsBlock||state.getBlock() instanceof techguns.blocks.DecorNetBlock;
             var chunkAccess=world.getChunk(pos);if(postprocess&&chunkAccess.getStatus()!=net.minecraft.world.level.chunk.ChunkStatus.FULL)chunkAccess.markPosForPostprocessing(pos);
         }
+        for(var entity:entities){var p=entity.getList("Pos",Tag.TAG_DOUBLE);var pos=BlockPos.containing(p.getDouble(0),p.getDouble(1),p.getDouble(2));if(clip.isInside(pos))techguns.world.ScannedStructure.spawnEntity(world,entity);}
     }
 }

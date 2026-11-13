@@ -26,12 +26,12 @@ public final class LegacyGridPlacement extends RandomSpreadStructurePlacement {
     private final String grid;
     public LegacyGridPlacement(String grid,int salt){
         super(Vec3i.ZERO,StructurePlacement.FrequencyReductionMethod.DEFAULT,1f,salt,Optional.empty(),2,1,RandomSpreadType.LINEAR);
-        if(!grid.equals("small")&&!grid.equals("medium")&&!grid.equals("big"))throw new IllegalArgumentException("Unknown Techguns structure grid "+grid);
+        if(!java.util.Set.of("small","medium","big","nether_small","nether_medium","nether_big","end_small","end_medium","end_big").contains(grid))throw new IllegalArgumentException("Unknown Techguns structure grid "+grid);
         this.grid=grid;
     }
     private int saltValue(){return salt();}
     /** Current config value, read on every call like the original generator. */
-    @Override public int spacing(){return Math.max(1,switch(grid){case "small"->TGConfig.spawnWeightTGStructureSmall;case "medium"->TGConfig.spawnWeightTGStructureMedium;default->TGConfig.spawnWeightTGStructureBig;});}
+    @Override public int spacing(){return Math.max(1,switch(grid){case "small"->TGConfig.spawnWeightTGStructureSmall;case "medium"->TGConfig.spawnWeightTGStructureMedium;case "nether_small"->TGConfig.spawnWeightTGStructureSmallNether;case "nether_medium"->TGConfig.spawnWeightTGStructureMediumNether;case "nether_big"->TGConfig.spawnWeightTGStructureBigNether;case "end_small"->TGConfig.spawnWeightTGStructureSmallEnd;case "end_medium"->TGConfig.spawnWeightTGStructureMediumEnd;case "end_big"->TGConfig.spawnWeightTGStructureBigEnd;default->TGConfig.spawnWeightTGStructureBig;});}
     @Override public int separation(){return 0;}
     @Override public ChunkPos getPotentialStructureChunk(long seed,int x,int z){int size=spacing();return new ChunkPos(Math.floorDiv(x,size)*size,Math.floorDiv(z,size)*size);}
     @Override protected boolean isPlacementChunk(ChunkGeneratorStructureState state,int x,int z){return TGConfig.doWorldspawn&&Math.floorMod(x,spacing())==0&&Math.floorMod(z,spacing())==0;}

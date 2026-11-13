@@ -22,8 +22,8 @@ public final class ScannedStructure {
     private final boolean netherFoundation;
     private int indexCount;
     public final String id;
-    private final JsonArray palette,blocks,indexWeights;
-    private ScannedStructure(String id,JsonObject data){this.id=id;var size=data.getAsJsonArray("size");sizeX=size.get(0).getAsInt();sizeY=size.get(1).getAsInt();sizeZ=size.get(2).getAsInt();heightOffset=data.get("heightOffset").getAsInt();foundation=data.get("foundation").getAsInt();cleanup=data.has("cleanup")?data.get("cleanup").getAsInt():0;netherFoundation=!data.has("foundationMode")||data.get("foundationMode").getAsString().equals("nether");palette=data.getAsJsonArray("palette");blocks=data.getAsJsonArray("blocks");indexWeights=data.getAsJsonArray("indexWeights");indexCount=data.has("indexCount")?data.get("indexCount").getAsInt():0;}
+    private final JsonArray palette,blocks,indexWeights,entities,entityPalette;
+    private ScannedStructure(String id,JsonObject data){this.id=id;var size=data.getAsJsonArray("size");sizeX=size.get(0).getAsInt();sizeY=size.get(1).getAsInt();sizeZ=size.get(2).getAsInt();heightOffset=data.get("heightOffset").getAsInt();foundation=data.get("foundation").getAsInt();cleanup=data.has("cleanup")?data.get("cleanup").getAsInt():0;netherFoundation=!data.has("foundationMode")||data.get("foundationMode").getAsString().equals("nether");palette=data.getAsJsonArray("palette");blocks=data.getAsJsonArray("blocks");indexWeights=data.getAsJsonArray("indexWeights");indexCount=data.has("indexCount")?data.get("indexCount").getAsInt():0;entities=data.getAsJsonArray("entities");entityPalette=data.getAsJsonArray("entityPalette");}
     public static synchronized ScannedStructure load(String id){return CACHE.computeIfAbsent(id,key->{try(var input=ScannedStructure.class.getResourceAsStream("/data/techguns/legacy_structures/"+key+".json");var reader=new java.io.InputStreamReader(Objects.requireNonNull(input,"Missing original scan "+key),java.nio.charset.StandardCharsets.UTF_8)){return new ScannedStructure(key,JsonParser.parseReader(reader).getAsJsonObject());}catch(java.io.IOException error){throw new IllegalStateException("Cannot load original scan "+key,error);}});}
     public int blockCount(){return blocks.size();}
     public static BlockPos rotate(BlockPos point,int centerX,int centerZ,int turns){int x=point.getX()-centerX,z=point.getZ()-centerZ;for(int i=0;i<turns;i++){int old=x;x=z;z=-old;}return new BlockPos(x+centerX,point.getY(),z+centerZ);}
@@ -36,6 +36,8 @@ public final class ScannedStructure {
             var property=state.getBlock().getStateDefinition().getProperty(entry.getKey());if(property==null)throw new IllegalStateException("Missing structure property "+id+"/"+entry.getKey());state=property(state,property,entry.getValue().getAsString());
         }
         // Original BlockRotator rotates skull FACING but leaves a standing skull's tile rotation alone.
+        // Community edition skulls turn their tile rotation with the structure (rotation + turns*4).
+        if(state.getBlock() instanceof SkullBlock&&data.has("turnRotation")&&state.hasProperty(SkullBlock.ROTATION))return state.setValue(SkullBlock.ROTATION,Math.floorMod(state.getValue(SkullBlock.ROTATION)+4*turns,16));
         return state.getBlock() instanceof SkullBlock?state:state.rotate(rotation(turns));
     }
     public static BlockState sourceState(JsonObject data){return state(data,0);}
@@ -64,6 +66,8 @@ public final class ScannedStructure {
         BlockEntity blockEntity(BlockPos pos);
         void saveBlockEntity(BlockPos pos,BlockEntity entity);
         void neighbourShapes(List<BlockPos> placed);
+        /** Spawns an entity saved as NBT (with id and Pos), or keeps it in the plan for the chunk that holds it. */
+        void entity(net.minecraft.nbt.CompoundTag tag);
     }
     private static Target worldTarget(WorldGenLevel world){return new Target(){
         @Override public boolean outside(BlockPos pos){return world.isOutsideBuildHeight(pos);}
@@ -73,6 +77,7 @@ public final class ScannedStructure {
         @Override public void saveBlockEntity(BlockPos pos,BlockEntity entity){}
         // Old fences/panes derived connections at render time; modern states store them explicitly.
         @Override public void neighbourShapes(List<BlockPos> placed){for(var pos:placed){var state=world.getBlockState(pos);var updated=Block.updateFromNeighbourShapes(state,world,pos);if(updated!=state)world.setBlock(pos,updated,2);}}
+        @Override public void entity(net.minecraft.nbt.CompoundTag tag){spawnEntity(world,tag);}
     };}
     private static Target planTarget(techguns.world.structures.LegacyStructurePlan plan,net.minecraft.world.level.LevelHeightAccessor height){return new Target(){
         @Override public boolean outside(BlockPos pos){return height.isOutsideBuildHeight(pos);}
@@ -82,12 +87,15 @@ public final class ScannedStructure {
         @Override public void saveBlockEntity(BlockPos pos,BlockEntity entity){plan.setBlockData(pos,entity.saveWithoutMetadata());}
         // Connections are resolved when each chunk is finished (PlannedStructurePiece marks every block for post-processing).
         @Override public void neighbourShapes(List<BlockPos> placed){}
+        @Override public void entity(net.minecraft.nbt.CompoundTag tag){plan.addEntity(tag);}
     };}
     private void place(Target world,BlockPos pos,JsonObject original,int turns,RandomSource random,RandomSource structureRandom,int biome,int index){
         if(pos.getY()<1||world.outside(pos))return;
         var entry=choose(original,random,structureRandom,biome,index);var state=state(entry.getAsJsonObject("state"),turns);world.set(pos,state);
-        if(!entry.has("spawner")&&!entry.has("lootTable")&&!entry.has("vanillaSpawner"))return;
+        if(entry.has("itemFrame"))world.entity(itemFrame(entry.getAsJsonObject("itemFrame"),pos,turns));
+        if(!entry.has("spawner")&&!entry.has("lootTable")&&!entry.has("vanillaSpawner")&&!entry.has("nbt"))return;
         var be=world.blockEntity(pos);boolean changed=false;
+        if(entry.has("nbt")&&be!=null){try{var tag=be.saveWithoutMetadata();tag.merge(net.minecraft.nbt.TagParser.parseTag(entry.get("nbt").getAsString()));be.load(tag);changed=true;}catch(com.mojang.brigadier.exceptions.CommandSyntaxException e){throw new IllegalStateException("Bad block data in "+id,e);}}
         if(entry.has("spawner")&&be instanceof NpcSpawnerEntity spawner){
             var data=entry.getAsJsonObject("spawner");spawner.setParams(data.get("remaining").getAsInt(),data.get("maxActive").getAsInt(),data.get("delay").getAsInt(),data.get("range").getAsInt());
             for(var type:data.getAsJsonArray("mobs")){var mob=type.getAsJsonObject();var key=ResourceLocation.parse(mob.get("entity").getAsString());if(!ForgeRegistries.ENTITY_TYPES.containsKey(key))throw new IllegalStateException("Missing structure guard "+key);spawner.addMobType(ForgeRegistries.ENTITY_TYPES.getValue(key),mob.get("weight").getAsInt());}
@@ -137,6 +145,29 @@ public final class ScannedStructure {
         }
         for(int pass=0;pass<2;pass++)for(var element:blocks){var block=element.getAsJsonArray();var entry=palette.get(block.get(3).getAsInt()).getAsJsonObject();if(placementPass(entry)!=pass)continue;var pos=base.offset(rotate(new BlockPos(block.get(0).getAsInt(),block.get(1).getAsInt(),block.get(2).getAsInt()),cx,cz,turns));place(world,pos,entry,turns,random,structureRandom,biome,index);placed.add(pos);}
         world.neighbourShapes(placed);
+        if(entities!=null)for(var element:entities){var row=element.getAsJsonArray();var kind=entityPalette.get(row.get(3).getAsInt()).getAsJsonObject();
+            var pos=base.offset(rotate(new BlockPos(row.get(0).getAsInt(),row.get(1).getAsInt(),row.get(2).getAsInt()),cx,cz,turns));if(pos.getY()<1||world.outside(pos))continue;
+            var offset=kind.getAsJsonArray("offset");var tag=new net.minecraft.nbt.CompoundTag();tag.putString("id",kind.get("type").getAsString());
+            tag.put("Pos",doubles(pos.getX()+offset.get(0).getAsDouble(),pos.getY()+offset.get(1).getAsDouble(),pos.getZ()+offset.get(2).getAsDouble()));tag.putBoolean("PersistenceRequired",true);
+            if(kind.has("attach")){var face=net.minecraft.core.Direction.byName(kind.get("attach").getAsString());if(face.getAxis().isHorizontal())face=rotation(turns).rotate(face);tag.putByte("AttachFace",(byte)face.get3DDataValue());}
+            if(kind.has("showBottom"))tag.putBoolean("ShowBottom",kind.get("showBottom").getAsBoolean());
+            world.entity(tag);
+        }
         return placed;
+    }
+    private static net.minecraft.nbt.ListTag doubles(double... values){var list=new net.minecraft.nbt.ListTag();for(double v:values)list.add(net.minecraft.nbt.DoubleTag.valueOf(v));return list;}
+    /** Item frame of a community edition scan: facing turns with the structure; the displayed item keeps its data. */
+    private net.minecraft.nbt.CompoundTag itemFrame(JsonObject data,BlockPos pos,int turns){
+        var facing=net.minecraft.core.Direction.byName(data.get("facing").getAsString());if(facing.getAxis().isHorizontal())facing=rotation(turns).rotate(facing);
+        var tag=new net.minecraft.nbt.CompoundTag();tag.putString("id","minecraft:item_frame");tag.put("Pos",doubles(pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5));
+        tag.putInt("TileX",pos.getX());tag.putInt("TileY",pos.getY());tag.putInt("TileZ",pos.getZ());tag.putByte("Facing",(byte)facing.get3DDataValue());tag.putBoolean("PersistenceRequired",true);
+        if(data.has("item")&&!data.get("item").isJsonNull()){var item=new net.minecraft.nbt.CompoundTag();item.putString("id",data.get("item").getAsString());item.putByte("Count",(byte)Math.max(1,data.get("count").getAsInt()));
+            if(data.has("nbt")&&!data.get("nbt").isJsonNull())try{item.put("tag",net.minecraft.nbt.TagParser.parseTag(data.get("nbt").getAsString()));}catch(com.mojang.brigadier.exceptions.CommandSyntaxException e){throw new IllegalStateException("Bad item frame data in "+id,e);}
+            tag.put("Item",item);tag.putByte("ItemRotation",(byte)data.get("rotation").getAsInt());}
+        return tag;
+    }
+    /** Spawns a saved entity into the generating world (structure pieces and the live feature use the same path). */
+    public static void spawnEntity(net.minecraft.world.level.ServerLevelAccessor world,net.minecraft.nbt.CompoundTag tag){
+        EntityType.create(tag.copy(),world.getLevel()).ifPresent(entity->{if(entity instanceof net.minecraft.world.entity.Mob mob)mob.setPersistenceRequired();world.addFreshEntityWithPassengers(entity);});
     }
 }

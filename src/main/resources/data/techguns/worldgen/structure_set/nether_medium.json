@@ -27,7 +27,7 @@
   ],
   "placement": {
     "type": "techguns:legacy_grid",
-    "grid": "medium",
+    "grid": "nether_medium",
     "salt": 1729340
   }
 }
