@@ -94,7 +94,7 @@ public final class FirstPersonGunArms {
     }
 
     /** Called by the gun renderer with the pose its model was just drawn with. */
-    static void render(GenericGun gun, boolean leftHandContext, PoseStack pose, MultiBufferSource buffers, int light) {
+    static void render(GenericGun gun, boolean leftHandContext, PoseStack pose, MultiBufferSource buffers, int light, float fire, float reload) {
         if (!TGConfig.cl_firstPersonArms) return;
         var game = Minecraft.getInstance();
         AbstractClientPlayer player = game.player;
@@ -114,11 +114,43 @@ public final class FirstPersonGunArms {
                 player.isModelPartShown(main == HumanoidArm.RIGHT ? PlayerModelPart.RIGHT_SLEEVE : PlayerModelPart.LEFT_SLEEVE));
         boolean twoHanded = gun.getGunHandType() != GunHandType.ONE_HANDED && grip.length >= 6 && player.getOffhandItem().isEmpty();
         if (twoHanded) {
-            arm(buffers, skin, light, slim, main != HumanoidArm.RIGHT, model.transformPosition(new Vector3f(grip[3], grip[4], grip[5])),
+            float foreX = grip[3];
+            // the pump of the combat shotgun slides back after each shot and at the end of a reload; the hand rides on it
+            if (gun == techguns.TGuns.combatshotgun.get()) foreX -= 0.8F * pumpProgress(fire, reload);
+            Vector3f fore = model.transformPosition(new Vector3f(foreX, grip[4], grip[5]));
+            if (reload > 0) fore = reloadHand(model, grip, fore, o, reload);
+            arm(buffers, skin, light, slim, main != HumanoidArm.RIGHT, fore,
                     mirror(FRONT_SHOULDER, o), inside(FRONT_INSIDE, o),
                     player.isModelPartShown(main == HumanoidArm.RIGHT ? PlayerModelPart.LEFT_SLEEVE : PlayerModelPart.RIGHT_SLEEVE));
         }
     }
+
+
+    /** Same pump travel as the combat shotgun model. */
+    private static float pumpProgress(float fire, float reload) {
+        float pump = 0;
+        if (fire >= 0.65F && fire <= 0.95F) pump = (fire - 0.65F) * 3.333333F;
+        else if (reload >= 0.9F) pump = (reload - 0.9F) * 10F;
+        return pump > 0.5F ? 1 - pump : pump;
+    }
+
+    /**
+     * While reloading the front hand lets go of the gun: it goes to the magazine, takes it away below the screen,
+     * brings the new one back, pushes it in and returns to the handguard. The shooting hand stays on the grip.
+     */
+    private static Vector3f reloadHand(Matrix4f model, float[] grip, Vector3f fore, float o, float t) {
+        Vector3f mag = model.transformPosition(new Vector3f(
+                grip[0] + (grip[3] - grip[0]) * 0.45F, grip[1] + (grip[4] - grip[1]) * 0.45F, grip[2] + (grip[5] - grip[2]) * 0.45F));
+        mag.add(0, -0.12F, 0);
+        Vector3f away = new Vector3f(-0.3F * o, -0.85F, -0.5F);
+        if (t < 0.15F) return lerp(fore, mag, ease(t / 0.15F));
+        if (t < 0.4F) return lerp(mag, away, ease((t - 0.15F) / 0.25F));
+        if (t < 0.6F) return lerp(away, mag, ease((t - 0.4F) / 0.2F));
+        if (t < 0.82F) return mag.add(0, 0.03F * (float) Math.sin((t - 0.6F) / 0.22F * Math.PI), 0);
+        return lerp(mag, fore, ease((t - 0.82F) / 0.18F));
+    }
+    private static float ease(float x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
+    private static Vector3f lerp(Vector3f a, Vector3f b, float t) { return new Vector3f(a).lerp(b, t); }
 
     private static Vector3f mirror(Vector3f v, float o) { return new Vector3f(v.x * o, v.y, v.z); }
     /** The arm's +x is its inside for the right arm and its outside for the left one, so mirroring flips y and z. */

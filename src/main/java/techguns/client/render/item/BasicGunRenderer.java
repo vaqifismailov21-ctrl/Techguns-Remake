@@ -183,6 +183,6 @@ public final class BasicGunRenderer extends RenderItemBase {
             }
             model.renderModel(pose,vertices,light,overlay,context,context.firstPerson()?Minecraft.getInstance().player:GunRenderContext.holder(),gun.getCurrentAmmo(stack),reload,part,fire,charge);
         }
-        if(context.firstPerson()&&!verification)FirstPersonGunArms.render(gun,context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND,pose,buffers,light);
+        if(context.firstPerson()&&!verification)FirstPersonGunArms.render(gun,context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND,pose,buffers,light,fire,reload);
     }
 }
