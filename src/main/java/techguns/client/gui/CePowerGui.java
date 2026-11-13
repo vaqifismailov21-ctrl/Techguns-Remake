@@ -20,7 +20,14 @@ final class CePowerGui {
     /** Lines inside the read-out screen, shrunk until they fit (long translations, big fonts). */
     static void screen(GuiGraphics g,Font font,List<Component> lines,int x0,int y0,int x1,int y1){
         int width=x1-x0,height=y1-y0;float scale=1;List<FormattedCharSequence> parts=List.of();
-        for(float s:new float[]{1F,0.85F,0.75F,0.66F,0.58F,0.5F}){
+        // the largest size at which every line fits on one row; otherwise the largest at which the wrapped text fits
+        boolean found=false;
+        for(float s:new float[]{1F,0.85F,0.75F,0.66F,0.58F}){
+            var list=new ArrayList<FormattedCharSequence>();
+            for(var line:lines)list.addAll(font.split(line,(int)(width/s)));
+            if(list.size()==lines.size()&&list.size()*(font.lineHeight+1)*s<=height){scale=s;parts=list;found=true;break;}
+        }
+        if(!found)for(float s:new float[]{1F,0.85F,0.75F,0.66F,0.58F,0.5F}){
             scale=s;var list=new ArrayList<FormattedCharSequence>();
             for(var line:lines)list.addAll(font.split(line,(int)(width/s)));
             parts=list;if(list.size()*(font.lineHeight+1)*s<=height)break;

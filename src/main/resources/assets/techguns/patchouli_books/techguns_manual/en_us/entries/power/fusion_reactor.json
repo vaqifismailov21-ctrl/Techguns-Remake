@@ -13,7 +13,7 @@
       "name": "Fusion Reactor",
       "multiblock": {
         "mapping": {
-          "0": "techguns:fusion_reactor[facing=north]",
+          "0": "techguns:fusion_reactor[facing=west]",
           "C": "techguns:plant_casing",
           "K": "techguns:fusion_coil"
         },

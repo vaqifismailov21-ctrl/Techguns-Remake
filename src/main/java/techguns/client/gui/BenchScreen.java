@@ -113,7 +113,11 @@ public final class BenchScreen extends AbstractContainerScreen<BenchMenu> {
     /** UpgradeBenchGui.drawXPText: three darkened copies behind the coloured text, like the anvil. */
     private void xpText(GuiGraphics graphics,String s,int x,int y,int color){
         int j=-16777216|(color&16579836)>>2|color&-16777216;
-        graphics.drawString(font,s,x,y+1,j,false);graphics.drawString(font,s,x+1,y,j,false);graphics.drawString(font,s,x+1,y+1,j,false);graphics.drawString(font,s,x,y,color,false);
+        // long translations are shrunk to stay inside the panel
+        int room=imageWidth-7-x,width=font.width(s);var pose=graphics.pose();pose.pushPose();pose.translate(x,y,0);
+        if(width>room){float f=room/(float)width;pose.translate(0,(1-f)*font.lineHeight/2,0);pose.scale(f,f,1);}
+        graphics.drawString(font,s,0,1,j,false);graphics.drawString(font,s,1,0,j,false);graphics.drawString(font,s,1,1,j,false);graphics.drawString(font,s,0,0,color,false);
+        pose.popPose();
     }
     private static int camoNumber(ItemStack stack){return !stack.isEmpty()&&stack.getItem() instanceof ICamoChangeable camo?camo.getCurrentCamoIndex(stack)+1:0;}
     /** Original metadata of the sixteen-colour blocks handled by the plain camo bench recipes. */

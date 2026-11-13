@@ -20,22 +20,22 @@
           [
             "HHH",
             "HHH",
-            "H0H"
-          ],
-          [
-            "GGG",
-            "GGG",
-            "GGG"
-          ],
-          [
-            "GGG",
-            "GGG",
-            "GGG"
-          ],
-          [
-            "HHH",
-            "HHH",
             "HHH"
+          ],
+          [
+            "GGG",
+            "GGG",
+            "GGG"
+          ],
+          [
+            "GGG",
+            "GGG",
+            "GGG"
+          ],
+          [
+            "HHH",
+            "HHH",
+            "H0H"
           ]
         ],
         "enable_visualize": false

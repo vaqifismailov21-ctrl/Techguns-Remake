@@ -13,7 +13,7 @@
       "name": "Geothermal Power Plant",
       "multiblock": {
         "mapping": {
-          "0": "techguns:geothermal_plant[facing=north]",
+          "0": "techguns:geothermal_plant[facing=west]",
           "C": "techguns:plant_casing"
         },
         "pattern": [

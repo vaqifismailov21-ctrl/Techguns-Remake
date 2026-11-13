@@ -18,12 +18,12 @@
         },
         "pattern": [
           [
-            "H0",
-            "HH"
-          ],
-          [
             "GG",
             "GG"
+          ],
+          [
+            "0H",
+            "HH"
           ]
         ],
         "enable_visualize": false

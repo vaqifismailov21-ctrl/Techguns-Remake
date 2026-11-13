@@ -13,10 +13,10 @@
       "name": "Wind Power Plant",
       "multiblock": {
         "mapping": {
-          "0": "techguns:wind_plant[facing=north]",
+          "0": "techguns:wind_plant[facing=west]",
           "C": "techguns:plant_casing",
           "T": "techguns:turbine_tower",
-          "H": "techguns:rotor_hub[facing=north]"
+          "H": "techguns:rotor_hub[facing=west]"
         },
         "pattern": [
           [
