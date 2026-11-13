@@ -142,7 +142,7 @@ public final class TGConfig {
     private static final BooleanValue cl_enableLegacyHud_VALUE;
     public static boolean cl_firstPersonArms = true;
     /** First-person arms on guns: offsets of the right (grip) and left (fore grip) hand from the vanilla empty-hand place, and the left arm's turn. */
-    public static float cl_armRightX = 0f, cl_armRightY = -0.1f, cl_armRightZ = 0.05f, cl_armLeftX = 0.84f, cl_armLeftY = 0.3f, cl_armLeftZ = -0.28f, cl_armLeftYaw = 25f;
+    public static float cl_armRightX = 0f, cl_armRightY = 0f, cl_armRightZ = 0f, cl_armLeftX = 0f, cl_armLeftY = 0f, cl_armLeftZ = 0f, cl_armLeftYaw = 0f;
     private static final BooleanValue cl_firstPersonArms_VALUE;
     private static final DoubleValue cl_armRightX_VALUE, cl_armRightY_VALUE, cl_armRightZ_VALUE, cl_armLeftX_VALUE, cl_armLeftY_VALUE, cl_armLeftZ_VALUE, cl_armLeftYaw_VALUE;
     public static float cl_ammoTextScale = 1.0f, cl_ammoIconScale = 1.0f, cl_ammoMagTextScale = 0.65f;
@@ -329,14 +329,14 @@ public final class TGConfig {
         cl_fixedSprintFov_VALUE = builder.comment("Multiply the FOV while sprinting by this value independent from the actual speed, has no effect when LockSpeedDependantFov is false, pure clientside check.").defineInRange(java.util.List.of("Clientside", "FixedSprintFovMultiplier"), (double) 1.15f, (double) 1.0f, (double) 10.0f);
         cl_sortPassesPerTick_VALUE = builder.comment("How many bubble sort passes should be performed each tick on particles. 0=off. Clientside").defineInRange(java.util.List.of("Clientside", "ParticleDepthSortPasses"), 10, 0, 20);
         cl_enableLegacyHud_VALUE = builder.comment("Use the old one-line ammo counter instead of the ammo HUD with icons.").define(java.util.List.of("Clientside", "AmmoHud", "EnableLegacyHud"), false);
-        cl_firstPersonArms_VALUE = builder.comment("Show the player's arms holding guns in first person: both arms on two-handed guns, the right arm on one-handed ones").define(java.util.List.of("Clientside", "FirstPersonArms2", "Enabled"), true);
-        cl_armRightX_VALUE = builder.comment("Right hand offset, x (right)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "RightX"), 0.0, -3.0, 3.0);
-        cl_armRightY_VALUE = builder.comment("Right hand offset, y (up)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "RightY"), -0.1, -3.0, 3.0);
-        cl_armRightZ_VALUE = builder.comment("Right hand offset, z (towards the camera)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "RightZ"), 0.05, -3.0, 3.0);
-        cl_armLeftX_VALUE = builder.comment("Left hand offset, x (right)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "LeftX"), 0.84, -3.0, 3.0);
-        cl_armLeftY_VALUE = builder.comment("Left hand offset, y (up)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "LeftY"), 0.3, -3.0, 3.0);
-        cl_armLeftZ_VALUE = builder.comment("Left hand offset, z (towards the camera)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "LeftZ"), -0.28, -3.0, 3.0);
-        cl_armLeftYaw_VALUE = builder.comment("Left arm turn towards the middle, degrees").defineInRange(java.util.List.of("Clientside", "FirstPersonArms2", "LeftYaw"), 25.0, -180.0, 180.0);
+        cl_firstPersonArms_VALUE = builder.comment("Show the player's arms holding guns in first person: both arms on two-handed guns, the right arm on one-handed ones").define(java.util.List.of("Clientside", "FirstPersonArms3", "Enabled"), true);
+        cl_armRightX_VALUE = builder.comment("Nudge of both arms, x (right)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "RightX"), 0.0, -3.0, 3.0);
+        cl_armRightY_VALUE = builder.comment("Nudge of both arms, y (up)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "RightY"), 0.0, -3.0, 3.0);
+        cl_armRightZ_VALUE = builder.comment("Nudge of both arms, z (towards the camera)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "RightZ"), 0.0, -3.0, 3.0);
+        cl_armLeftX_VALUE = builder.comment("Nudge of the front hand, x").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "LeftX"), 0.0, -3.0, 3.0);
+        cl_armLeftY_VALUE = builder.comment("Nudge of the front hand, y").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "LeftY"), 0.0, -3.0, 3.0);
+        cl_armLeftZ_VALUE = builder.comment("Nudge of the front hand, z").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "LeftZ"), 0.0, -3.0, 3.0);
+        cl_armLeftYaw_VALUE = builder.comment("Left arm turn towards the middle, degrees").defineInRange(java.util.List.of("Clientside", "FirstPersonArms3", "LeftYaw"), 0.0, -180.0, 180.0);
         cl_ammoTextScale_VALUE = builder.comment("Changes the scale of the ammo text (e.g. 30/30 on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoTextScale"), 1.0, 0.1, 10.0);
         cl_ammoIconScale_VALUE = builder.comment("Changes the scale of the ammo icon (e.g. rifle ammo on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoIconScale"), 1.0, 0.1, 10.0);
         cl_ammoMagTextScale_VALUE = builder.comment("Changes the scale of the magazine count text (e.g. x19)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoMagTextScale"), 0.65, 0.1, 10.0);

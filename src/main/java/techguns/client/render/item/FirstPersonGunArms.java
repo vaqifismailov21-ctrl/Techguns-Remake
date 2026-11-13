@@ -19,11 +19,14 @@ import techguns.api.guns.GunHandType;
 import techguns.items.guns.GenericGun;
 
 /**
- * The player's own arms on a gun in first person: the right hand on the grip, and on two-handed guns the left hand under
- * the barrel. Drawn in the same hand space as vanilla's empty-hand arm, so they move with view bobbing and equipping.
+ * The player's arms on a gun in first person, posed the way gun mods usually do it (MrCrayfish's Gun Mod grip poses):
+ * from the vanilla held-item spot, turned to face the camera, the back hand on the grip and on two-handed guns the
+ * front hand under the barrel. They share the item's bobbing and equip motion.
  */
 @Mod.EventBusSubscriber(modid = Techguns.MODID, value = Dist.CLIENT)
 public final class FirstPersonGunArms {
+    private static final float PX = 0.0625F;
+
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void hand(RenderHandEvent event) {
         if (event.isCanceled() || !TGConfig.cl_firstPersonArms || event.getHand() != InteractionHand.MAIN_HAND) return;
@@ -32,34 +35,58 @@ public final class FirstPersonGunArms {
         if (player == null || player.isInvisible() || !(event.getItemStack().getItem() instanceof GenericGun gun)) return;
         if (techguns.client.ClientZoom.isZoomed(player, gun) && GunItemRenderer.get().hasScope(gun)) return;
         if (!(game.getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer renderer)) return;
-        boolean rightHanded = player.getMainArm() == HumanoidArm.RIGHT;
-        HumanoidArm main = rightHanded ? HumanoidArm.RIGHT : HumanoidArm.LEFT;
+        HumanoidArm main = player.getMainArm();
+        float o = main == HumanoidArm.RIGHT ? 1 : -1;
+        int side = main.getOpposite() == HumanoidArm.RIGHT ? 1 : -1;
+        float armWidth = "slim".equals(player.getModelName()) ? 3F : 4F;
         var pose = event.getPoseStack();
-        float equip = event.getEquipProgress();
-        arm(pose, event.getMultiBufferSource(), event.getPackedLight(), equip, main, renderer, player, TGConfig.cl_armRightX, TGConfig.cl_armRightY, TGConfig.cl_armRightZ, 0);
-        // the other hand only when it is free: a gun or anything else in the off hand keeps its own place
-        if (gun.getGunHandType() != GunHandType.ONE_HANDED && player.getOffhandItem().isEmpty())
-            arm(pose, event.getMultiBufferSource(), event.getPackedLight(), equip, main.getOpposite(), renderer, player, TGConfig.cl_armLeftX, TGConfig.cl_armLeftY, TGConfig.cl_armLeftZ, TGConfig.cl_armLeftYaw);
+        var buffers = event.getMultiBufferSource();
+        int light = event.getPackedLight();
+        pose.pushPose();
+        // vanilla first-person item spot, so the arms move with the gun's equip and bob
+        pose.translate(0.56F * o, -0.52F + event.getEquipProgress() * -0.6F, -0.72F);
+        pose.translate(TGConfig.cl_armRightX * o, TGConfig.cl_armRightY, TGConfig.cl_armRightZ);
+        pose.mulPose(Axis.YP.rotationDegrees(180F));
+        boolean twoHanded = gun.getGunHandType() != GunHandType.ONE_HANDED && player.getOffhandItem().isEmpty();
+        if (twoHanded) {
+            // front hand holding the barrel
+            pose.pushPose();
+            pose.translate(TGConfig.cl_armLeftX * side, TGConfig.cl_armLeftY, TGConfig.cl_armLeftZ);
+            pose.scale(0.5F, 0.5F, 0.5F);
+            pose.translate(4F * PX * side, 0, 0);
+            pose.translate(armWidth / 2F * PX * side, 0, 0);
+            pose.translate(-0.3125F * side, -0.1F, -0.4375F);
+            pose.mulPose(Axis.XP.rotationDegrees(80F));
+            pose.mulPose(Axis.YP.rotationDegrees(15F * -side));
+            pose.mulPose(Axis.ZP.rotationDegrees(15F * -side));
+            pose.mulPose(Axis.XP.rotationDegrees(-35F));
+            arm(renderer, main.getOpposite(), pose, buffers, light, player);
+            pose.popPose();
+            // back hand on the grip
+            pose.pushPose();
+            pose.translate(0, 0.1F, -0.675F);
+            pose.scale(0.5F, 0.5F, 0.5F);
+            pose.translate(-4F * PX * side, 0, 0);
+            pose.translate(-armWidth / 2F * PX * side, 0, 0);
+            pose.mulPose(Axis.XP.rotationDegrees(80F));
+            arm(renderer, main, pose, buffers, light, player);
+            pose.popPose();
+        } else {
+            pose.pushPose();
+            pose.scale(0.5F, 0.5F, 0.5F);
+            pose.translate(-4F * PX * side, 0, 0);
+            pose.translate(-armWidth / 2F * PX * side, 0, 0);
+            pose.translate(0, 0.15F, -1.3125F);
+            pose.mulPose(Axis.XP.rotationDegrees(75F));
+            arm(renderer, main, pose, buffers, light, player);
+            pose.popPose();
+        }
+        pose.popPose();
     }
 
-    /** Vanilla ItemInHandRenderer.renderPlayerArm without the swing, moved by the configured offset (mirrored for the left side). */
-    private static void arm(PoseStack pose, MultiBufferSource buffers, int light, float equip, HumanoidArm side, PlayerRenderer renderer, AbstractClientPlayer player,
-                            float dx, float dy, float dz, float yaw) {
-        boolean right = side == HumanoidArm.RIGHT;
-        float f = right ? 1 : -1;
-        pose.pushPose();
-        // offsets are given for the hand on the player's main side (right) and the other one (left); mirrored for left-handed players
-        float mainSign = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
-        pose.translate(f * 0.64000005F + dx * mainSign, -0.6F + equip * -0.6F + dy, -0.71999997F + dz);
-        pose.mulPose(Axis.YP.rotationDegrees(f * (45.0F - yaw)));
-        pose.translate(f * -1.0F, 3.6F, 3.5F);
-        pose.mulPose(Axis.ZP.rotationDegrees(f * 120.0F));
-        pose.mulPose(Axis.XP.rotationDegrees(200.0F));
-        pose.mulPose(Axis.YP.rotationDegrees(f * -135.0F));
-        pose.translate(f * 5.6F, 0.0F, 0.0F);
-        if (right) renderer.renderRightHand(pose, buffers, light, player);
+    private static void arm(PlayerRenderer renderer, HumanoidArm side, PoseStack pose, MultiBufferSource buffers, int light, AbstractClientPlayer player) {
+        if (side == HumanoidArm.RIGHT) renderer.renderRightHand(pose, buffers, light, player);
         else renderer.renderLeftHand(pose, buffers, light, player);
-        pose.popPose();
     }
     private FirstPersonGunArms() {}
 }

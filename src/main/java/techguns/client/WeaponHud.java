@@ -138,7 +138,10 @@ public final class WeaponHud {
             return true;
         }
         // Techguns CE ammo HUD: ammo text, its ammo picture beside it and the magazine count below, sized for the GUI scale.
-        float factor = 4F / Math.max(1, (int) game.getWindow().getGuiScale());
+        // CE sized it in screen pixels for a 1080p window (4 px per font pixel); keep that share of the window height,
+        // so a small or resized window gets a proportionally smaller counter instead of the same huge one
+        float pixels = 4F * game.getWindow().getHeight() / 1080F;
+        float factor = Math.max(0.5F, pixels / Math.max(1, (int) game.getWindow().getGuiScale()));
         float textScale = techguns.TGConfig.cl_ammoTextScale * factor, iconScale = techguns.TGConfig.cl_ammoIconScale * factor, magScale = techguns.TGConfig.cl_ammoMagTextScale * factor;
         int marginRight = (int) (techguns.TGConfig.cl_hudMarginRight * factor), marginBottom = (int) (techguns.TGConfig.cl_hudMarginBottom * factor);
         int iconGap = (int) (techguns.TGConfig.cl_iconTextGap * factor), magGap = (int) (techguns.TGConfig.cl_textMagGap * factor);
