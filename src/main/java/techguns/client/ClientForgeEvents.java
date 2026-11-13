@@ -21,6 +21,9 @@ public final class ClientForgeEvents {
             event.addListener(new TGGuiTabButton(screen.getGuiLeft() + 5, screen.getGuiTop() - 26, true, Items.CRAFTING_TABLE.getDefaultInstance(), () -> {}));
             event.addListener(new TGGuiTabButton(screen.getGuiLeft() + 33, screen.getGuiTop() - 26, false, TGItems.PISTOL_ROUNDS.get().getDefaultInstance(), TGPackets::requestInventory));
         }
+        // Techguns CE TGCreativeInventoryTab: the creative inventory gets a side tab to the Techguns inventory.
+        if (event.getScreen() instanceof net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen screen)
+            event.addListener(new techguns.client.gui.TGCreativeTabButton(screen.getGuiLeft() - 28, screen.getGuiTop() + 8, TGItems.PISTOL_ROUNDS.get().getDefaultInstance(), TGPackets::requestInventory));
     }
     @SubscribeEvent public static void keys(TickEvent.ClientTickEvent event) {
         var minecraft = Minecraft.getInstance();

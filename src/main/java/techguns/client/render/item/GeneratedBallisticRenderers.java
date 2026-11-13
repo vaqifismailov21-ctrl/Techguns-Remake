@@ -220,13 +220,13 @@ final class GeneratedBallisticRenderers {
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
 				},0.1F,4F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/laserflare02.png"),7,0F,0F,0.22F,-1.09F,0.75F,0F,0F,0F,0.14F,-0.82F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
-        result.put(TGuns.nucleardeathray.get(),new BasicGunRenderer(new ModelNDR(),"ndr",true,1.2F,0.4F,new float[]{1F,-0.2F,0.0037500000000000033F},new float[][]{
-					{0f,0.02f,0.09f}, 
-					{-0.01f,0.04f,0.3f}, 
-					{0.11f,-0.08f,0f}, 
+        result.put(TGuns.nucleardeathray.get(),new BasicGunRenderer(new ModelNDR(),"ndr",true,1.2F,0.32F,new float[]{1F,-0.2F,0.0037500000000000033F},new float[][]{
+					{0.1f,0.02f,-0.05f}, 
+					{-0.01f,0.04f,0.25f}, 
+					{0.11f,-0.08f,0.3f}, 
 					{0f,0f,0.15f}, 
 					{-0.23f,-0.08f,-0.05f} 
-				},0.025F,0.75F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/nukebeamflare.png"),16,0F,0F,0.19F,-0.91F,0.65F,0F,0F,0F,0.11F,-0.83F,4,4,false,false)).parts(1).recoil(GunAnimation.swayRecoil));
+				},0.025F,0.75F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/nukebeamflare.png"),16,0F,0F,0.19F,-0.8F,0.65F,0F,0F,0F,0.15F,-0.45F,4,4,false,false)).parts(1).recoil(GunAnimation.swayRecoil));
         result.put(TGuns.mac10.get(),new BasicGunRenderer(new ModelMac10(),"mac10texture",false,1.2F,0.55F,new float[]{0.03125F,-0.45F,-0.3F},new float[][]{
 					{0f,0f,-0.05f}, 
 					{0f,-0.10f,0.01f}, 

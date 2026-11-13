@@ -64,9 +64,12 @@ public class GenericShield extends ShieldItem implements ICamoChangeable {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("techguns.armorTooltip.durability").append(": " + (stack.getMaxDamage() - stack.getDamageValue()) + "/" + stack.getMaxDamage()));
             tooltip.add(Component.translatable("techguns.armorTooltip.resistances").withStyle(ChatFormatting.BLUE));
+            // Techguns CE: reduction in armour points (rate x 24) and their share of 25 points.
+            var percent = new java.text.DecimalFormat("#.##", java.text.DecimalFormatSymbols.getInstance(java.util.Locale.ENGLISH));
             for (var type : new DamageType[]{DamageType.PHYSICAL, DamageType.PROJECTILE, DamageType.EXPLOSION, DamageType.ENERGY,
-                    DamageType.FIRE, DamageType.ICE, DamageType.LIGHTNING, DamageType.POISON, DamageType.DARK, DamageType.RADIATION}) {
-                tooltip.add(type.displayName().copy().append(": " + FORMAT.format(stats.getReductionPercentAgainstType(type)) + "%"));
+                    DamageType.FIRE, DamageType.LIGHTNING, DamageType.POISON, DamageType.RADIATION}) {
+                float value = (float) (stats.getReductionPercentAgainstType(type) / 100d * 24);
+                tooltip.add(type.displayName().copy().append(": " + FORMAT.format(value) + " (" + percent.format(value / 25 * 100) + "%)"));
             }
         } else {
             tooltip.add(Component.translatable("techguns.gun.tooltip.shift1").append(" ")
