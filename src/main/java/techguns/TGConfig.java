@@ -140,6 +140,11 @@ public final class TGConfig {
     /** Techguns CE ammo HUD (icon, ammo text, magazine count); the legacy HUD is the original single text line. */
     public static boolean cl_enableLegacyHud = false;
     private static final BooleanValue cl_enableLegacyHud_VALUE;
+    public static boolean cl_firstPersonArms = true;
+    /** First-person arms on guns: offsets of the right (grip) and left (fore grip) hand from the vanilla empty-hand place, and the left arm's turn. */
+    public static float cl_armRightX = 0f, cl_armRightY = -0.1f, cl_armRightZ = 0.05f, cl_armLeftX = 0.45f, cl_armLeftY = 0.1f, cl_armLeftZ = -0.3f, cl_armLeftYaw = 25f;
+    private static final BooleanValue cl_firstPersonArms_VALUE;
+    private static final DoubleValue cl_armRightX_VALUE, cl_armRightY_VALUE, cl_armRightZ_VALUE, cl_armLeftX_VALUE, cl_armLeftY_VALUE, cl_armLeftZ_VALUE, cl_armLeftYaw_VALUE;
     public static float cl_ammoTextScale = 1.0f, cl_ammoIconScale = 1.0f, cl_ammoMagTextScale = 0.65f;
     private static final DoubleValue cl_ammoTextScale_VALUE, cl_ammoIconScale_VALUE, cl_ammoMagTextScale_VALUE;
     public static int cl_hudMarginRight = 40, cl_hudMarginBottom = 40, cl_iconTextGap = 6, cl_textMagGap = 3;
@@ -324,6 +329,14 @@ public final class TGConfig {
         cl_fixedSprintFov_VALUE = builder.comment("Multiply the FOV while sprinting by this value independent from the actual speed, has no effect when LockSpeedDependantFov is false, pure clientside check.").defineInRange(java.util.List.of("Clientside", "FixedSprintFovMultiplier"), (double) 1.15f, (double) 1.0f, (double) 10.0f);
         cl_sortPassesPerTick_VALUE = builder.comment("How many bubble sort passes should be performed each tick on particles. 0=off. Clientside").defineInRange(java.util.List.of("Clientside", "ParticleDepthSortPasses"), 10, 0, 20);
         cl_enableLegacyHud_VALUE = builder.comment("Use the old one-line ammo counter instead of the ammo HUD with icons.").define(java.util.List.of("Clientside", "AmmoHud", "EnableLegacyHud"), false);
+        cl_firstPersonArms_VALUE = builder.comment("Show the player's arms holding guns in first person: both arms on two-handed guns, the right arm on one-handed ones").define(java.util.List.of("Clientside", "FirstPersonArms", "Enabled"), true);
+        cl_armRightX_VALUE = builder.comment("Right hand offset, x (right)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "RightX"), 0.0, -3.0, 3.0);
+        cl_armRightY_VALUE = builder.comment("Right hand offset, y (up)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "RightY"), -0.1, -3.0, 3.0);
+        cl_armRightZ_VALUE = builder.comment("Right hand offset, z (towards the camera)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "RightZ"), 0.05, -3.0, 3.0);
+        cl_armLeftX_VALUE = builder.comment("Left hand offset, x (right)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "LeftX"), 0.45, -3.0, 3.0);
+        cl_armLeftY_VALUE = builder.comment("Left hand offset, y (up)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "LeftY"), 0.1, -3.0, 3.0);
+        cl_armLeftZ_VALUE = builder.comment("Left hand offset, z (towards the camera)").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "LeftZ"), -0.3, -3.0, 3.0);
+        cl_armLeftYaw_VALUE = builder.comment("Left arm turn towards the middle, degrees").defineInRange(java.util.List.of("Clientside", "FirstPersonArms", "LeftYaw"), 25.0, -180.0, 180.0);
         cl_ammoTextScale_VALUE = builder.comment("Changes the scale of the ammo text (e.g. 30/30 on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoTextScale"), 1.0, 0.1, 10.0);
         cl_ammoIconScale_VALUE = builder.comment("Changes the scale of the ammo icon (e.g. rifle ammo on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoIconScale"), 1.0, 0.1, 10.0);
         cl_ammoMagTextScale_VALUE = builder.comment("Changes the scale of the magazine count text (e.g. x19)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoMagTextScale"), 0.65, 0.1, 10.0);
@@ -454,6 +467,9 @@ public final class TGConfig {
             cl_fixedSprintFov = (float) (double) cl_fixedSprintFov_VALUE.get();
             cl_sortPassesPerTick = cl_sortPassesPerTick_VALUE.get();
             cl_enableLegacyHud = cl_enableLegacyHud_VALUE.get();
+            cl_firstPersonArms = cl_firstPersonArms_VALUE.get();
+            cl_armRightX = (float) (double) cl_armRightX_VALUE.get(); cl_armRightY = (float) (double) cl_armRightY_VALUE.get(); cl_armRightZ = (float) (double) cl_armRightZ_VALUE.get();
+            cl_armLeftX = (float) (double) cl_armLeftX_VALUE.get(); cl_armLeftY = (float) (double) cl_armLeftY_VALUE.get(); cl_armLeftZ = (float) (double) cl_armLeftZ_VALUE.get(); cl_armLeftYaw = (float) (double) cl_armLeftYaw_VALUE.get();
             cl_ammoTextScale = (float) (double) cl_ammoTextScale_VALUE.get();
             cl_ammoIconScale = (float) (double) cl_ammoIconScale_VALUE.get();
             cl_ammoMagTextScale = (float) (double) cl_ammoMagTextScale_VALUE.get();
