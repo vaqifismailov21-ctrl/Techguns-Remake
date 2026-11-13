@@ -129,10 +129,10 @@ final class GeneratedBallisticRenderers {
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
 				},0.2F,5F,new PistolMuzzleFlash.Specification(ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/teslaflare01.png"),14,0F,0F,0.26F,-0.67F,0.5F,0F,0F,0F,0.12F,-0.65F,4,4,false,false)).parts(1).recoil(GunAnimation.genericRecoil));
-        result.put(TGuns.m4_infiltrator.get(),new BasicGunRenderer(new ModelM4Infiltrator(),"m4_uq_texture",false,1F,0.35F,new float[]{0.03125F,-0.1F,0F},new float[][]{
+        result.put(TGuns.m4_infiltrator.get(),new BasicGunRenderer(new ModelM4Infiltrator(),"m4_uq_texture",false,1F,0.29F,new float[]{0.03125F,-0.1F,0F},new float[][]{
 					{0f,0f,-0.05f}, 
 					{0f,0.01f,-0.1f}, 
-					{0f,0f,0f}, 
+					{0.05f,-0.03f,0f}, 
 					{0f,0f,0f}, 
 					{0f,0f,-0.05f} 
 				},0.1F,4F,null).parts(1).recoil(GunAnimation.genericRecoil).scope("testscope",3F,false).scopeRecoil(GunAnimation.scopeRecoil,0.05F,1F));
