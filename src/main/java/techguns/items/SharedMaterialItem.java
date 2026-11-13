@@ -73,7 +73,7 @@ public final class SharedMaterialItem extends Item implements ITGSpecialSlot {
                 player.displayClientMessage(Component.translatable(fresh ? "techguns.blueprints.learned" : "techguns.blueprints.known")
                         .withStyle(fresh ? ChatFormatting.GREEN : ChatFormatting.GRAY), true);
                 if (fresh) {
-                    level.playSound(null, player.getX(), player.getY(), player.getZ(), net.minecraft.sounds.SoundEvents.BOOK_PAGE_TURN, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(), techguns.TGSounds.BLUEPRINT_UNLOCK.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.getAbilities().instabuild) held.shrink(1);
                 }
             }

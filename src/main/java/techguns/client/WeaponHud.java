@@ -112,12 +112,12 @@ public final class WeaponHud {
         var state = TGExtendedPlayer.find(game.player).orElse(null);
         if(state==null) return;
         var graphics = event.getGuiGraphics();
-        boolean held = drawAmmo(graphics, game.player.getMainHandItem(), 0, state);
-        if(techguns.api.guns.GunManager.canUseOffhand(game.player)) held |= drawAmmo(graphics, game.player.getOffhandItem(), -12, state);
+        boolean held = drawAmmo(graphics, game.player.getMainHandItem(), 0, state, false);
+        if(techguns.api.guns.GunManager.canUseOffhand(game.player)) held |= drawAmmo(graphics, game.player.getOffhandItem(), techguns.TGConfig.cl_enableLegacyHud ? -12 : 0, state, true);
         if (held && state.showTGHudElements)
             graphics.blit(INVENTORY, graphics.guiWidth()-10, graphics.guiHeight()-32, 242+7*(state.enableSafemode ? 1 : 0),14,7,7);
     }
-    private static boolean drawAmmo(GuiGraphics graphics, ItemStack stack, int offsetY, TGExtendedPlayer state) {
+    private static boolean drawAmmo(GuiGraphics graphics, ItemStack stack, int offsetY, TGExtendedPlayer state, boolean offhand) {
         if (!(stack.getItem() instanceof GenericGun gun)) return false;
         var game = Minecraft.getInstance(); var inventory = game.player.getInventory().items;
         var extra = state.tg_inventory.inventory;
@@ -128,9 +128,38 @@ public final class WeaponHud {
             if(gun.getAmmoCount()>1) available/=gun.getAmmoCount();
             if (available > count) count = available; // Original uses max for multiple components.
         }
-        String text = gun.getAmmoDisplayCount(stack) + "/" + gun.getClipDisplayCount() + ChatFormatting.YELLOW + "x" + count;
-        graphics.drawString(game.font, text, graphics.guiWidth()+1-text.length()*6,
-                graphics.guiHeight()-game.font.lineHeight-2+offsetY, 0xFFFFFFFF, false);
+        var ammo = gun.getAmmoType().getAmmo(gun.getCurrentAmmoVariant(stack));
+        var icon = techguns.client.hud.AmmoIcons.of(ammo.length > 0 ? ammo[0] : ItemStack.EMPTY);
+        if (icon == null) return true; // Techguns CE draws no counter for ammo without a picture
+        if (techguns.TGConfig.cl_enableLegacyHud) {
+            String text = gun.getAmmoDisplayCount(stack) + "/" + gun.getClipDisplayCount() + ChatFormatting.YELLOW + "x" + count;
+            graphics.drawString(game.font, text, graphics.guiWidth()+1-text.length()*6,
+                    graphics.guiHeight()-game.font.lineHeight-2+offsetY, 0xFFFFFFFF, false);
+            return true;
+        }
+        // Techguns CE ammo HUD: ammo text, its ammo picture beside it and the magazine count below, sized for the GUI scale.
+        float factor = 4F / Math.max(1, (int) game.getWindow().getGuiScale());
+        float textScale = techguns.TGConfig.cl_ammoTextScale * factor, iconScale = techguns.TGConfig.cl_ammoIconScale * factor, magScale = techguns.TGConfig.cl_ammoMagTextScale * factor;
+        int marginRight = (int) (techguns.TGConfig.cl_hudMarginRight * factor), marginBottom = (int) (techguns.TGConfig.cl_hudMarginBottom * factor);
+        int iconGap = (int) (techguns.TGConfig.cl_iconTextGap * factor), magGap = (int) (techguns.TGConfig.cl_textMagGap * factor);
+        String ammoText = gun.getAmmoDisplayCount(stack) + "/" + gun.getClipDisplayCount(), fullText = gun.getClipDisplayCount() + "/" + gun.getClipDisplayCount();
+        String magText = ChatFormatting.YELLOW + "x" + count;
+        int textWidth = Math.round(game.font.width(ammoText) * textScale), maxTextWidth = Math.round(game.font.width(fullText) * textScale);
+        int textHeight = Math.round(game.font.lineHeight * textScale), magWidth = Math.round(game.font.width(magText) * magScale);
+        float iconWidth = icon.width * iconScale, iconHeight = icon.height * iconScale;
+        int textY = graphics.guiHeight() - marginBottom - textHeight + offsetY;
+        int iconY = Math.round(textY + textHeight / 2 - iconHeight / 2F), magY = textY + textHeight + magGap;
+        int textX, iconX, magX;
+        if (!offhand) {
+            int right = graphics.guiWidth() - marginRight;
+            textX = right - textWidth; iconX = Math.round(right - maxTextWidth - iconGap - iconWidth); magX = right - magWidth;
+        } else {
+            textX = marginRight; iconX = Math.round(marginRight + maxTextWidth + iconGap); magX = marginRight;
+        }
+        var pose = graphics.pose();
+        pose.pushPose(); pose.translate(textX, textY, 0); pose.scale(textScale, textScale, 1); graphics.drawString(game.font, ammoText, 0, 0, 0xFFFFFFFF, true); pose.popPose();
+        pose.pushPose(); pose.translate(iconX, iconY, 0); pose.scale(iconScale, iconScale, 1); RenderSystem.enableBlend(); icon.draw(graphics, 0, 0); RenderSystem.disableBlend(); pose.popPose();
+        pose.pushPose(); pose.translate(magX, magY, 0); pose.scale(magScale, magScale, 1); graphics.drawString(game.font, magText, 0, 0, 0xFFFFFFFF, true); pose.popPose();
         return true;
     }
     private WeaponHud() {}

@@ -119,6 +119,9 @@ public final class TGSounds {
     public static final RegistryObject<SoundEvent> CHARGING_STATION_WORK = register("machines.chargingstationwork");
     public static final RegistryObject<SoundEvent> REACTION_CHAMBER_HEATRAY_WORK = register("machines.rc_heatraywork");
     public static final RegistryObject<SoundEvent> REACTION_CHAMBER_BEEP = register("machines.rc_beep");
+    public static final RegistryObject<SoundEvent> REACTION_CHAMBER_SELECT = register("machines.rc_sel");
+    public static final RegistryObject<SoundEvent> SWITCH_AMMO_TYPE = register("guns.switchammo");
+    public static final RegistryObject<SoundEvent> BLUEPRINT_UNLOCK = register("items.blueprint");
     public static final RegistryObject<SoundEvent> REACTION_CHAMBER_WARNING = register("machines.rc_warning");
     public static final RegistryObject<SoundEvent> FUEL_GENERATOR_RUN = register("power.fuel_generator");
     public static final RegistryObject<SoundEvent> LIQUID_GENERATOR_RUN = register("power.liquid_generator");

@@ -13,8 +13,8 @@ import net.minecraft.network.chat.Component;
 import techguns.plugins.jei.RecipeDisplays.*;
 
 public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
-    private final Kind kind;private final RecipeType<Display> type;private final IDrawable background,icon,panel,power;private final IGuiHelper gui;
-    TechgunsRecipeCategory(IGuiHelper gui,Kind kind,RecipeType<Display> type){this.gui=gui;this.kind=kind;this.type=type;background=gui.createBlankDrawable(162,123);panel=gui.createDrawable(kind.texture(),7,15,162,63);icon=gui.createDrawableItemStack(kind.icon());power=gui.createAnimatedDrawable(gui.createDrawable(Kind.AMMO.texture(),251,1,4,48),100,IDrawableAnimated.StartDirection.TOP,true);}
+    private final Kind kind;private final RecipeType<Display> type;private final IDrawable background,icon,panel,power;private final IGuiHelper gui;private final CeJeiLayouts ce;
+    TechgunsRecipeCategory(IGuiHelper gui,Kind kind,RecipeType<Display> type){this.gui=gui;this.kind=kind;this.type=type;ce=CeJeiLayouts.page(kind)!=null?new CeJeiLayouts(gui,kind):null;background=ce!=null?gui.createBlankDrawable(Math.max(162,ce.width()),ce.height()+46):gui.createBlankDrawable(162,123);panel=gui.createDrawable(kind.texture(),7,15,162,63);icon=gui.createDrawableItemStack(kind.icon());power=gui.createAnimatedDrawable(gui.createDrawable(Kind.AMMO.texture(),251,1,4,48),100,IDrawableAnimated.StartDirection.TOP,true);}
     @Override public RecipeType<Display> getRecipeType(){return type;}
     @Override public Component getTitle(){return kind.title();}
     @Override public IDrawable getBackground(){return background;}
@@ -23,7 +23,7 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
         for(var slot:recipe.slots()){
             RecipeIngredientRole role=switch(slot.role()){case INPUT->RecipeIngredientRole.INPUT;case OUTPUT->RecipeIngredientRole.OUTPUT;case CATALYST->RecipeIngredientRole.CATALYST;};
             var target=builder.addSlot(role,slot.x(),slot.y());if(!slot.items().isEmpty())target.addItemStacks(slot.items()).setStandardSlotBackground();
-            else if(!slot.fluid().isEmpty())target.addFluidStack(slot.fluid().getFluid(),slot.fluid().getAmount()).setFluidRenderer(capacity(slot),false,10,50).setOverlay(tankOverlay(slot),-1,0);
+            else if(!slot.fluid().isEmpty()){if(ce!=null)target.addFluidStack(slot.fluid().getFluid(),slot.fluid().getAmount()).setFluidRenderer(capacity(slot),false,ce.tankWidth(),ce.tankHeight()).setOverlay(ce.tankOverlay(gui),kind==Kind.REACTION?0:-1,kind==Kind.REACTION?0:-1);else target.addFluidStack(slot.fluid().getFluid(),slot.fluid().getAmount()).setFluidRenderer(capacity(slot),false,10,50).setOverlay(tankOverlay(slot),-1,0);}
             if(slot.note()!=null)target.addTooltipCallback((view,tooltip)->tooltip.add(slot.note()));
         }
     }
@@ -48,6 +48,7 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
     private List<Component> details(Display recipe){// the original JEI pages showed no time/energy lines
         var lines=new ArrayList<Component>();lines.addAll(recipe.details());return lines;}
     @Override public void draw(Display recipe,IRecipeSlotsView slots,GuiGraphics graphics,double mouseX,double mouseY){
+        if(ce!=null){ce.draw(recipe,graphics);int y=ce.height()+2;for(var line:details(recipe)){var font=Minecraft.getInstance().font;float scale=Math.min(1,background.getWidth()/(float)Math.max(1,font.width(line)));graphics.pose().pushPose();graphics.pose().translate(0,y,0);graphics.pose().scale(scale,scale,1);graphics.drawString(font,line,0,0,0x404040,false);graphics.pose().popPose();y+=11;}return;}
         if(kind==Kind.CAMO||kind==Kind.REPAIR){graphics.fill(0,0,162,63,0xffc6c6c6);graphics.drawString(Minecraft.getInstance().font,">",70,5,0x404040,false);}else panel.draw(graphics);
         if(recipe.power()>0)power.draw(graphics,1,2);drawProgress(graphics);
         int y=65;for(var line:details(recipe)){var font=Minecraft.getInstance().font;float scale=Math.min(1,162f/Math.max(1,font.width(line)));graphics.pose().pushPose();graphics.pose().translate(0,y,0);graphics.pose().scale(scale,scale,1);graphics.drawString(font,line,0,0,0x404040,false);graphics.pose().popPose();y+=11;}
@@ -67,5 +68,5 @@ public final class TechgunsRecipeCategory implements IRecipeCategory<Display> {
         }
         graphics.pose().popPose();
     }
-    @Override public List<Component> getTooltipStrings(Display recipe,IRecipeSlotsView slots,double x,double y){return List.of();}
+    @Override public List<Component> getTooltipStrings(Display recipe,IRecipeSlotsView slots,double x,double y){return ce!=null?ce.tooltip(recipe,x,y):List.of();}
 }

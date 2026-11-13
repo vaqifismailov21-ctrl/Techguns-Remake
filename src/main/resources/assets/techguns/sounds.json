@@ -1361,5 +1361,23 @@
       "techguns:items/jetpack_stop_b",
       "techguns:items/jetpack_stop_c"
     ]
+  },
+  "guns.switchammo": {
+    "category": "player",
+    "sounds": [
+      "techguns:guns/ammo_type_switch"
+    ]
+  },
+  "items.blueprint": {
+    "category": "player",
+    "sounds": [
+      "techguns:items/blueprint_sound"
+    ]
+  },
+  "machines.rc_sel": {
+    "category": "block",
+    "sounds": [
+      "techguns:machines/rc_sel"
+    ]
   }
 }

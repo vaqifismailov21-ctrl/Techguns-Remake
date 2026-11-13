@@ -30,7 +30,8 @@ public final class OreDrillScreen extends AbstractContainerScreen<OreDrillMenu> 
     @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
         int k=leftPos,l=topPos;
         graphics.blit(TEXTURE,k,l,0,0,imageWidth,imageHeight);
-        drawPowered(graphics,k,l,tile.isRedstoneEnabled(),tile.energy.getEnergyStored(),tile.energy.getMaxEnergyStored());
+        drawPowered(graphics,k,l,tile.isRedstoneEnabled(),tile.energy.getEnergyStored(),tile.energy.getMaxEnergyStored(),Look.REGULAR);
+        if(tile.isFormed()&&tile.getDrillItemMiningLevel()<0)graphics.blit(TEXTURE,k+52,l+14,203,0,6,20);
         tank(graphics,tile.inputTank,k+INPUT_TANK_X+1,l+TANK_Y);
         tank(graphics,tile.outputTank,k+OUTPUT_TANK_X+1,l+TANK_Y);
         graphics.blit(TEXTURE,k+INPUT_TANK_X,l+TANK_Y,176,40,TANK_W+2,TANK_H+2);
@@ -47,10 +48,6 @@ public final class OreDrillScreen extends AbstractContainerScreen<OreDrillMenu> 
         if(!tile.isFormed()){
             String s1=Component.translatable("techguns.container.oredrill.broken").getString();
             graphics.drawString(font,s1,imageWidth/2-(s1.length()*6)/2-16+30,44-20,red,false);
-        }else if(tile.getDrillItemMiningLevel()<0){
-            int rad=tile.getDrillRadius();String size=rad==0?"0":rad==1||rad==2?"1":"2";
-            String s2=Component.translatable("techguns.container.oredrill.drillrequired."+size).getString();
-            graphics.drawString(font,s2,imageWidth/2-(s2.length()*6)/2-16+30,44-20,red,false);
         }
     }
 
@@ -71,12 +68,16 @@ public final class OreDrillScreen extends AbstractContainerScreen<OreDrillMenu> 
                 tooltip=lines;
             }else if(in(mx,my,INPUT_TANK_X,TANK_Y-1,TANK_W+1,TANK_H+1))tooltip=tankTooltip(tile.inputTank);
             else if(in(mx,my,OUTPUT_TANK_X,TANK_Y-1,TANK_W+1,TANK_H+1))tooltip=tankTooltip(tile.outputTank);
-            else if(in(mx,my,34,36,8,14)){
+            else if(in(mx,my,27,35,15,15)){
                 if(tile.getCurrentFuelBufferMax()>0){
                     int buf=tile.getCurrentFuelBufferMax(),fuel=tile.getFuelBuffer(),pwrtick=tile.getPowerPerTick();float factor=TGConfig.oreDrillMultiplierFuel;
                     int ticksLeft=factor<=0||pwrtick<=0?-1:(int)(fuel/(pwrtick/factor));
                     tooltip=List.of(Component.translatable("techguns.oredrill.currentfuel").append(" "+fuel+"/"+buf),Component.translatable("techguns.oredrill.remaining").append(": "+ticksLeft+" ").append(Component.translatable("techguns.oredrill.ticks")));
                 }else tooltip=List.of(Component.translatable("techguns.oredrill.nofuel"));
+            }
+            else if(in(mx,my,52,14,6,20)&&tile.isFormed()&&tile.getDrillItemMiningLevel()<0){
+                int rad=tile.getDrillRadius();String size=rad==0?"0":rad==1||rad==2?"1":"2";
+                var lines=new ArrayList<Component>();for(var line:Component.translatable("techguns.container.oredrill.drillrequired."+size).getString().split("\\$"))lines.add(Component.literal(line));tooltip=lines;
             }
         }
         if(tooltip!=null)graphics.renderComponentTooltip(font,tooltip,mouseX,mouseY);

@@ -132,6 +132,13 @@ public final class TGConfig {
     public static float cl_fixedSprintFov = 1.15f;
     private static final DoubleValue cl_fixedSprintFov_VALUE;
     public static int cl_sortPassesPerTick = 10;
+    /** Techguns CE ammo HUD (icon, ammo text, magazine count); the legacy HUD is the original single text line. */
+    public static boolean cl_enableLegacyHud = false;
+    private static final BooleanValue cl_enableLegacyHud_VALUE;
+    public static float cl_ammoTextScale = 1.0f, cl_ammoIconScale = 1.0f, cl_ammoMagTextScale = 0.65f;
+    private static final DoubleValue cl_ammoTextScale_VALUE, cl_ammoIconScale_VALUE, cl_ammoMagTextScale_VALUE;
+    public static int cl_hudMarginRight = 40, cl_hudMarginBottom = 40, cl_iconTextGap = 6, cl_textMagGap = 3;
+    private static final IntValue cl_hudMarginRight_VALUE, cl_hudMarginBottom_VALUE, cl_iconTextGap_VALUE, cl_textMagGap_VALUE;
     private static final IntValue cl_sortPassesPerTick_VALUE;
     public static boolean WIP_disableRadiationSystem = false;
     private static final BooleanValue WIP_disableRadiationSystem_VALUE;
@@ -304,6 +311,14 @@ public final class TGConfig {
         cl_lockSpeedFov_VALUE = builder.comment("Counters the speed dependant FOV change. This also stops FOV changes while sprinting. Don't activate if another mod does this too, pure clientside check.").define(java.util.List.of("Clientside", "LockSpeedDependantFov"), true);
         cl_fixedSprintFov_VALUE = builder.comment("Multiply the FOV while sprinting by this value independent from the actual speed, has no effect when LockSpeedDependantFov is false, pure clientside check.").defineInRange(java.util.List.of("Clientside", "FixedSprintFovMultiplier"), (double) 1.15f, (double) 1.0f, (double) 10.0f);
         cl_sortPassesPerTick_VALUE = builder.comment("How many bubble sort passes should be performed each tick on particles. 0=off. Clientside").defineInRange(java.util.List.of("Clientside", "ParticleDepthSortPasses"), 10, 0, 20);
+        cl_enableLegacyHud_VALUE = builder.comment("Use the old one-line ammo counter instead of the ammo HUD with icons.").define(java.util.List.of("Clientside", "AmmoHud", "EnableLegacyHud"), false);
+        cl_ammoTextScale_VALUE = builder.comment("Changes the scale of the ammo text (e.g. 30/30 on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoTextScale"), 1.0, 0.1, 10.0);
+        cl_ammoIconScale_VALUE = builder.comment("Changes the scale of the ammo icon (e.g. rifle ammo on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoIconScale"), 1.0, 0.1, 10.0);
+        cl_ammoMagTextScale_VALUE = builder.comment("Changes the scale of the magazine count text (e.g. x19)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoMagTextScale"), 0.65, 0.1, 10.0);
+        cl_hudMarginRight_VALUE = builder.comment("How many pixels should the ammo counter be away from the right side of the screen?").defineInRange(java.util.List.of("Clientside", "AmmoHud", "HudMarginRight"), 40, 0, 1000);
+        cl_hudMarginBottom_VALUE = builder.comment("How many pixels should the ammo counter be away from the bottom side of the screen?").defineInRange(java.util.List.of("Clientside", "AmmoHud", "HudMarginBottom"), 40, 0, 1000);
+        cl_iconTextGap_VALUE = builder.comment("How many pixels should the ammo icon be away from the ammo count text? (note: it's always moved LEFT from the text)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "IconTextGap"), 6, 0, 1000);
+        cl_textMagGap_VALUE = builder.comment("How many pixels should the mag count text be away from the ammo count text? (note: it's always moved LOWER from the a.c. text)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "TextMagGap"), 3, 0, 1000);
         CLIENT = builder.build();
     }
     public static void onConfigEvent(ModConfigEvent event) {
@@ -407,6 +422,14 @@ public final class TGConfig {
             cl_lockSpeedFov = cl_lockSpeedFov_VALUE.get();
             cl_fixedSprintFov = (float) (double) cl_fixedSprintFov_VALUE.get();
             cl_sortPassesPerTick = cl_sortPassesPerTick_VALUE.get();
+            cl_enableLegacyHud = cl_enableLegacyHud_VALUE.get();
+            cl_ammoTextScale = (float) (double) cl_ammoTextScale_VALUE.get();
+            cl_ammoIconScale = (float) (double) cl_ammoIconScale_VALUE.get();
+            cl_ammoMagTextScale = (float) (double) cl_ammoMagTextScale_VALUE.get();
+            cl_hudMarginRight = cl_hudMarginRight_VALUE.get();
+            cl_hudMarginBottom = cl_hudMarginBottom_VALUE.get();
+            cl_iconTextGap = cl_iconTextGap_VALUE.get();
+            cl_textMagGap = cl_textMagGap_VALUE.get();
         }
     }
     private TGConfig() {}

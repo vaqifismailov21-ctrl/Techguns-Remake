@@ -20,6 +20,9 @@ import techguns.TGConfig;
 public final class LegacyMachineGui {
     public static final ResourceLocation MACHINE=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/ammo_press_gui.png");
     public static final int SECURITY_Y=40;
+    /** Russian label overlays of the Techguns CE machine screens. */
+    public static final ResourceLocation RU_LABELS=ResourceLocation.fromNamespaceAndPath("techguns","textures/gui/translations/ru_ru.png");
+    public static boolean russian(){return "ru_ru".equalsIgnoreCase(Minecraft.getInstance().getLanguageManager().getSelected());}
     private LegacyMachineGui(){}
 
     /** TGBaseGui.isInRect: inclusive on both edges. */
@@ -32,30 +35,48 @@ public final class LegacyMachineGui {
         };
     }
 
+    /** OwnedTileEntGui.EnumAppearanceType: v offsets of the side panel and of the lamp/upgrade-frame sprites on the machine sheet. */
+    public enum Look{BRONZISH(0,202),ADVANCED(30,220),REGULAR(60,238);final int panelV,spriteV;Look(int panelV,int spriteV){this.panelV=panelV;this.spriteV=spriteV;}}
+
     /** Side panels, redstone lamps and the 48 px power bar drawn by the original layers. */
-    public static void drawPowered(GuiGraphics graphics,int k,int l,boolean redstoneEnabled,int energy,int maxEnergy){
-        drawRedstone(graphics,k,l,redstoneEnabled);
-        int power=(int)((long)energy*48/maxEnergy),diff=TGConfig.machinesNeedNoPower?0:48-power;
-        graphics.blit(MACHINE,k+8,l+17+diff,251,1+diff,4,48);
+    public static void drawPowered(GuiGraphics graphics,int k,int l,boolean redstoneEnabled,int energy,int maxEnergy){drawPowered(graphics,k,l,redstoneEnabled,energy,maxEnergy,Look.BRONZISH);}
+    public static void drawPowered(GuiGraphics graphics,int k,int l,boolean redstoneEnabled,int energy,int maxEnergy,Look look){
+        drawRedstone(graphics,k,l,redstoneEnabled,look);
+        drawEnergy(graphics,MACHINE,k,l,8,17,251,1,4,48,energy,maxEnergy);
     }
+    /** PoweredTileEntGui.drawEnergyBar: filled from the bottom, full when machines need no power. */
+    public static void drawEnergy(GuiGraphics graphics,ResourceLocation texture,int k,int l,int x,int y,int u,int v,int width,int height,int energy,int maxEnergy){
+        int filled=TGConfig.machinesNeedNoPower?height:maxEnergy>0?(int)Math.round((double)energy*height/maxEnergy):0;
+        filled=Math.max(0,Math.min(height,filled));int offset=height-filled;
+        if(filled>0)graphics.blit(texture,k+x,l+y+offset,u,v+offset,width,filled);
+    }
+    /** PoweredTileEntGui upgrade slot frame, one pixel up and left of the slot. */
+    public static void drawUpgradeFrame(GuiGraphics graphics,int k,int l,int slotX,int slotY,Look look){graphics.blit(MACHINE,k+slotX-1,l+slotY-1,209,look.spriteV,18,18);}
 
     /** OwnedTileEntGui + RedstoneTileEntGui backgrounds: both side panels and the two redstone lamps. */
-    public static void drawRedstone(GuiGraphics graphics,int k,int l,boolean redstoneEnabled){
-        drawSecurityPanel(graphics,k,l,SECURITY_Y);
-        graphics.blit(MACHINE,k-22-5,l+10-5,195,0,22+5,30);
-        if(redstoneEnabled){graphics.blit(MACHINE,k+6,l+5,240,0,5,5);graphics.blit(MACHINE,k+6+5,l+5,245,5,5,5);}
-        else{graphics.blit(MACHINE,k+6,l+5,240,5,5,5);graphics.blit(MACHINE,k+6+5,l+5,245,0,5,5);}
+    public static void drawRedstone(GuiGraphics graphics,int k,int l,boolean redstoneEnabled){drawRedstone(graphics,k,l,redstoneEnabled,Look.BRONZISH);}
+    public static void drawRedstone(GuiGraphics graphics,int k,int l,boolean redstoneEnabled,Look look){
+        drawSecurityPanel(graphics,k,l,SECURITY_Y,look);
+        drawSecurityPanel(graphics,k,l,10,look);
+        int u=199,v=look.spriteV;
+        if(redstoneEnabled){graphics.blit(MACHINE,k+7,l+5,u,v,5,5);graphics.blit(MACHINE,k+7,l+10,u+5,v+5,5,5);}
+        else{graphics.blit(MACHINE,k+7,l+5,u,v+5,5,5);graphics.blit(MACHINE,k+7,l+10,u+5,v,5,5);}
+    }
+    /** PoweredTileEntGui energy tooltip over the given bar, or null. */
+    public static List<Component> energyTooltip(int mx,int my,int x,int y,int width,int height,int energy,int maxEnergy){
+        if(!in(mx,my,x,y,width,height))return null;
+        return List.of(TGConfig.machinesNeedNoPower?Component.translatable("techguns.container.power"):Component.translatable("techguns.container.power").append(": "+energy+"/"+maxEnergy+" FE"));
     }
 
     /** Tooltips of the power bar, redstone and security controls, or null. */
     public static List<Component> poweredTooltip(int mx,int my,boolean signal,int redstoneMode,byte security,UUID owner,int energy,int maxEnergy){
-        if(in(mx,my,7,17,5,49))return List.of(TGConfig.machinesNeedNoPower?Component.translatable("techguns.container.power"):Component.translatable("techguns.container.power").append(": "+energy+"/"+maxEnergy+" FE"));
+        var power=energyTooltip(mx,my,8,17,4,48,energy,maxEnergy);if(power!=null)return power;
         var redstone=redstoneTooltip(mx,my,signal,redstoneMode);if(redstone!=null)return redstone;
         return securityTooltip(mx,my,SECURITY_Y,security,owner);
     }
     /** RedstoneTileEntGui tooltip over the two lamps or the redstone button, or null. */
     public static List<Component> redstoneTooltip(int mx,int my,boolean signal,int redstoneMode){
-        if(!in(mx,my,6,5,10,5)&&!in(mx,my,-22,10,20,20))return null;
+        if(!in(mx,my,7,5,5,10)&&!in(mx,my,-22,10,20,20))return null;
         return List.of(Component.translatable("techguns.container.redstone"),
             Component.translatable("techguns.container.redstone.mode").append(": ").append(Component.translatable("techguns.redstonemode."+switch(redstoneMode){case 1->"high";case 2->"low";default->"ignore";})),
             Component.translatable("techguns.container.redstone.signal").append(": ").append(Component.translatable(signal?"techguns.redstonemode.signal.high":"techguns.redstonemode.signal.low")));
@@ -71,7 +92,8 @@ public final class LegacyMachineGui {
             Component.translatable("techguns.container.security.tooltip.descr2"));
     }
     /** OwnedTileEntGui side panel behind the security button. */
-    public static void drawSecurityPanel(GuiGraphics graphics,int k,int l,int buttonY){graphics.blit(MACHINE,k-22-5,l+buttonY-5,195,0,22+5,30);}
+    public static void drawSecurityPanel(GuiGraphics graphics,int k,int l,int buttonY){drawSecurityPanel(graphics,k,l,buttonY,Look.BRONZISH);}
+    public static void drawSecurityPanel(GuiGraphics graphics,int k,int l,int buttonY,Look look){graphics.blit(MACHINE,k-22-5,l+buttonY-5,195,look.panelV,22+5,30);}
     public static String name(UUID uuid){String name=UsernameCache.getLastKnownUsername(uuid);return name!=null?name:"UNKNOW_PLAYERNAME";}
 
     /** TGBaseGui.drawFluidWithTesselator: untinted still sprite stretched to the tank width, stacked from the bottom. */

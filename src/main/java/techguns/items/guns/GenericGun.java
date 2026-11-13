@@ -316,6 +316,7 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         setAmmo(stack, 0);
         stack.getOrCreateTag().putString("ammovariant", variants.get(next).getKey());
         tryForcedReload(stack, player.level(), player, hand);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), techguns.TGSounds.SWITCH_AMMO_TYPE.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
         player.displayClientMessage(Component.translatable("techguns.msg.ammotype").append(": ").append(type.getAmmo(next)[0].getHoverName()), true);
         return true;
     }
@@ -370,26 +371,51 @@ public class GenericGun extends Item implements techguns.items.armors.ICamoChang
         int variant = getCurrentAmmoVariant(stack);
         boolean incendiary = getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_INCENDIARY);
         float modifier = incendiary ? 1.1F : getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_EXPLOSIVE)?1.15F:projectileKind==ProjectileKind.ROCKET&&getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_NUKE)?5:1;
-        for (var ammo : getAmmoType().getAmmo(variant)) tooltip.add(Component.translatable("techguns.gun.tooltip.ammo").append(": "+(ammoPerReload>1?ammoPerReload+"x ":"")).append(ammo.getHoverName()));
-        tooltip.add(Component.translatable("techguns.gun.tooltip.damage").append((isShotgun()?"(x"+getPelletCount()+")":"")+": " + damage * modifier));
-        if(getAmmoType().hasMultipleVariants()) tooltip.add(Component.translatable("techguns.gun.tooltip.ammoswitch.key",ammoSwitchKey.get()).withStyle(net.minecraft.ChatFormatting.GRAY));
-        if (net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
-            tooltip.add(Component.translatable("techguns.gun.tooltip.handtype").append(": ").append(handType.displayName()));
+        boolean expanded = net.minecraft.client.gui.screens.Screen.hasShiftDown();
+        // Techguns CE GenericGun.addInformation
+        if (expanded) tooltip.add(Component.translatable("techguns.gun.tooltip.handtype").append(": ").append(handType.displayName()));
+        for (var ammo : getAmmoType().getAmmo(variant)) tooltip.add(Component.translatable("techguns.gun.tooltip.ammo").append(": "+(ammoPerReload>1?ammoPerReload+"x ":"")).append(ammo.getHoverName().copy().withStyle(net.minecraft.ChatFormatting.WHITE)));
+        Component typeName = null;
+        if (expanded) {
             var type=incendiary||projectileKind==ProjectileKind.FLAME?techguns.api.damagesystem.DamageType.FIRE:
                     projectileKind==ProjectileKind.ROCKET||projectileKind==ProjectileKind.GRENADE||getCurrentAmmoVariantKey(stack).equals(AmmoTypes.TYPE_EXPLOSIVE)?techguns.api.damagesystem.DamageType.EXPLOSION:
                     projectileKind==ProjectileKind.BIO?techguns.api.damagesystem.DamageType.POISON:this instanceof MiningGun tool?tool.tool()==MiningGun.Tool.SHISHKEBAP?techguns.api.damagesystem.DamageType.FIRE:techguns.api.damagesystem.DamageType.PHYSICAL:techguns.api.damagesystem.DamageType.PROJECTILE;
             if(energyMode!=null)type=switch(energyMode){case TESLA->techguns.api.damagesystem.DamageType.LIGHTNING;case NDR->techguns.api.damagesystem.DamageType.RADIATION;case ALIEN,NETHER->techguns.api.damagesystem.DamageType.FIRE;case GAUSS->techguns.api.damagesystem.DamageType.PROJECTILE;case SONIC->techguns.api.damagesystem.DamageType.PHYSICAL;default->techguns.api.damagesystem.DamageType.ENERGY;};
-            tooltip.add(Component.translatable("techguns.gun.tooltip.damageType").append(": ").append(type.displayName()));
-            tooltip.add(Component.translatable("techguns.gun.tooltip.spread").append(": " + accuracy));
-            if(canZoom){
-                tooltip.add(Component.translatable("techguns.gun.tooltip.zoom").append(": x"+String.format(java.util.Locale.ROOT,"%.2f",1f/Math.max(zoomMult,0.0001f))+" (").append(Component.translatable(toggleZoom?"techguns.gun.tooltip.zoom.toogle":"techguns.gun.tooltip.zoom.hold")).append(")").withStyle(net.minecraft.ChatFormatting.YELLOW));
-                if(zoomBonus!=1f)tooltip.add(Component.translatable("techguns.gun.tooltip.spread.scoped").append(": "+String.format(java.util.Locale.ROOT,"%.4f",zoomBonus*accuracy)));
-            }
-            tooltip.add(Component.translatable("techguns.gun.tooltip.clipsize").append(": " + getClipDisplayCount()));
-            tooltip.add(Component.translatable("techguns.gun.tooltip.reloadTime").append(": " + reloadtime * 0.05F + "s"));
+            typeName = type.displayName();
+        }
+        tooltip.add(damageLine(modifier, typeName));
+        if(getAmmoType().hasMultipleVariants()) tooltip.add(Component.translatable("techguns.gun.tooltip.ammoswitch.key",ammoSwitchKey.get()).withStyle(net.minecraft.ChatFormatting.GRAY));
+        if (expanded) {
+            float baseDps = 20f / Math.max(minFiretime, 1); if (isShotgun()) baseDps *= ammoPerReload;
+            float maxDps = baseDps * damage, minDps = baseDps * damageMin;
+            String dps = minDps != maxDps ? String.format(java.util.Locale.ROOT,"%.1f-%.1f", maxDps, minDps) : String.format(java.util.Locale.ROOT,"%.1f", maxDps);
+            tooltip.add(Component.translatable("techguns.gun.tooltip.damagePerSecond").append(": \u00a7f" + dps));
+            tooltip.add(Component.translatable("techguns.gun.tooltip.firerate").append(": \u00a7f" + String.format(java.util.Locale.ROOT,"%.0f", 20f / Math.max(minFiretime, 1) * 60) + " ").append(Component.translatable("techguns.gun.tooltip.firerate.measurement")));
+            tooltip.add(Component.translatable("techguns.gun.tooltip.clipsize").append(": \u00a7f" + getClipDisplayCount()));
+            tooltip.add(Component.translatable("techguns.gun.tooltip.reloadTime").append(": \u00a7f" + reloadtime * 0.05F + "s"));
+            tooltip.add(Component.translatable("techguns.gun.tooltip.range").append(": " + String.format(java.util.Locale.ROOT,"%.1f,%.1f,%d", damageDropStart, damageDropEnd, maxRange)).withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+            var spread = Component.translatable("techguns.gun.tooltip.spread").append(": " + String.format(java.util.Locale.ROOT,"%.1f%%", accuracy * 100));
+            if (zoomBonus != 1f) spread.append(" (").append(Component.translatable("techguns.gun.tooltip.spread.scoped")).append(": " + String.format(java.util.Locale.ROOT,"%.1f%%", zoomBonus * accuracy * 100) + ")");
+            tooltip.add(spread.withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.translatable("techguns.gun.tooltip.velocity").append(": " + String.format(java.util.Locale.ROOT,"%.1f", speed)).withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+            if (penetration > 0f) tooltip.add(Component.translatable("techguns.gun.tooltip.armorPen").append(": " + String.format(java.util.Locale.ROOT,"%.1f", penetration)));
+            if (canZoom) tooltip.add(Component.translatable("techguns.gun.tooltip.zoom").withStyle(net.minecraft.ChatFormatting.YELLOW).append(Component.literal(": x" + String.format(java.util.Locale.ROOT,"%.4f", 1f / Math.max(zoomMult, 0.0001f)) + " (").withStyle(net.minecraft.ChatFormatting.GRAY)).append(Component.translatable(toggleZoom?"techguns.gun.tooltip.zoom.toogle":"techguns.gun.tooltip.zoom.hold").withStyle(net.minecraft.ChatFormatting.GRAY)).append(Component.literal(")").withStyle(net.minecraft.ChatFormatting.GRAY)));
         } else tooltip.add(Component.translatable("techguns.gun.tooltip.shift1").append(" ")
                 .append(Component.translatable("techguns.gun.tooltip.shift2").withStyle(net.minecraft.ChatFormatting.GREEN)).append(" ")
                 .append(Component.translatable("techguns.gun.tooltip.shift3").withStyle(net.minecraft.ChatFormatting.GRAY)));
+    }
+    /** Techguns CE getTooltipTextDmg: damage range, coloured when the loaded ammo changes it, pellets as (xN). */
+    private Component damageLine(float modifier, Component typeName) {
+        String total;
+        if (modifier == 1f) total = damage + (damageMin != damage ? "-" + damageMin : "");
+        else {
+            float dmg = damage * modifier, dmgMin = damageMin * modifier;
+            String suffix = typeName != null ? " (" + (dmg < damage ? "-" : "+") + String.format(java.util.Locale.ROOT,"%.0f", (modifier - 1f) * 100f) + "%)" : "";
+            total = (dmg < damage ? net.minecraft.ChatFormatting.RED : net.minecraft.ChatFormatting.GREEN) + String.format(java.util.Locale.ROOT,"%.1f", dmg) + (dmgMin != dmg ? "-" + String.format(java.util.Locale.ROOT,"%.1f", dmgMin) : "") + suffix;
+        }
+        var line = Component.translatable("techguns.gun.tooltip.damage");
+        if (typeName != null) line.append(" (").append(Component.translatable("techguns.gun.tooltip.damageType")).append(": ").append(typeName).append("\u00a77)");
+        return line.append(": \u00a7f" + (isShotgun() ? " (x" + getPelletCount() + ") " : "") + total);
     }
     @Override public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
