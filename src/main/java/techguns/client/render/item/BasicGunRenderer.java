@@ -72,7 +72,7 @@ public final class BasicGunRenderer extends RenderItemBase {
             pose.pushPose();pose.translate(0.5,0.5,0.5);applyAnimation(pose,context);pose.popPose();
             pose.pushPose();pose.translate(0.5,0.5,0.5);
             boolean left=context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND;
-            if(fire>0) scopeAnimation.play(pose,fire,left,scopeTranslation,scopeAngle);
+            if(fire>0) scopeAnimation.play(pose,fire,left,scopeTranslation*0.4F,scopeAngle*0.6F);
             float x=left?0.56F:-0.56F,y=0.52F,h=scopeScale/2;
             var vertices=buffers.getBuffer(techguns.client.render.fx.LegacyFxRenderTypes.sprite(scopeTexture,false,true));
             var matrix=pose.last().pose();float top=scopeFlipY?0:1,bottom=1-top;
@@ -154,7 +154,8 @@ public final class BasicGunRenderer extends RenderItemBase {
         }
         if(first&&charge>0)pose.translate(0,0,chargeTranslation*charge);
         if(reload>0) (first?reloadAnimation:reloadThirdAnimation).play(pose,reload,left,first?reloadTranslation:reloadThirdTranslation,first?reloadAngle:reloadThirdAngle);
-        else if(fire>0) recoilAnimation.play(pose,fire,left,first?recoilTranslation:0,first?recoilAngle:5);
+        // first person: the muzzle kicks up but the weapon no longer slides back towards the camera
+        else if(fire>0) recoilAnimation.play(pose,fire,left,0,first?recoilAngle:5);
     }
     @Override protected void renderContents(ItemDisplayContext context,PoseStack pose,MultiBufferSource buffers,int light,int overlay) {
         var gun=(GenericGun)stack.getItem();var activeTexture=texture;

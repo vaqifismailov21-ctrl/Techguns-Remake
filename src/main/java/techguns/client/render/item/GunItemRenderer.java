@@ -77,7 +77,7 @@ public final class GunItemRenderer extends BlockEntityWithoutLevelRenderer {
             boolean left = context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
             if (verification) {
                 if (reload > 0) GunAnimation.genericReload.play(pose,reload,left,first?1:0,40);
-                else if (fire > 0) GunAnimation.genericRecoil.play(pose,fire,left,first?0.025F:0,first?12:5);
+                else if (fire > 0) GunAnimation.genericRecoil.play(pose,fire,left,0,first?12:5);
                 return;
             }
             fire = reload = muzzle = 0;
@@ -96,7 +96,7 @@ public final class GunItemRenderer extends BlockEntityWithoutLevelRenderer {
                 GunAnimation.genericReload.play(pose, reload, left, first?1:0, 40);
             } else if (attack.getRecoilTime() > now && attack.getRecoilTimeTotal() > 0) {
                 fire = 1 - (attack.getRecoilTime() - now) / (float) attack.getRecoilTimeTotal();
-                GunAnimation.genericRecoil.play(pose, fire, left, first?0.025F:0, first?12:5);
+                GunAnimation.genericRecoil.play(pose, fire, left, 0, first?12:5);
             } else if (first && offhand && player.isShiftKeyDown()) pose.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-35));
         }
         @Override protected void renderContents(ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {

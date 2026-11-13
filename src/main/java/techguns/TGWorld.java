@@ -61,9 +61,8 @@ public final class TGWorld {
     private static void spawnPlacements(net.minecraftforge.event.entity.SpawnPlacementRegisterEvent event){
         event.register(DUMMY.get(),net.minecraft.world.entity.SpawnPlacements.Type.ON_GROUND,net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,(type,level,reason,pos,random)->{
             if(level.getDifficulty()==net.minecraft.world.Difficulty.PEACEFUL)return false;
-            if(level.getBrightness(net.minecraft.world.level.LightLayer.SKY,pos)>random.nextInt(32))return false;
-            int light=level.getMaxLocalRawBrightness(pos,level.getLevel().isThundering()?10:level.getSkyDarken());
-            return light<=random.nextInt(8)&&net.minecraft.world.entity.Mob.checkMobSpawnRules(type,level,reason,pos,random);
+            // vanilla monster darkness rule: no spawns in torch or lamp light, so lit houses and bases stay free of NPCs
+            return net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn(level,pos,random)&&net.minecraft.world.entity.Mob.checkMobSpawnRules(type,level,reason,pos,random);
         },net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
     private TGWorld(){}
