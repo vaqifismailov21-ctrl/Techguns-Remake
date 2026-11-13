@@ -1044,7 +1044,7 @@
   "techguns.msg.error.multiblockinvalid": "Не удается сформировать мультиблок: неверное размещение блоков",
   "tile.techguns.oredrill.name": "Бур",
   "block.techguns.oredrill": "Бур",
-  "techguns.msg.error.oredrill.rodsize": "Стержень должен иметь длину сверления и размер двигателя. Высота двигателя должна быть не менее радиуса сверления.",
+  "techguns.msg.error.oredrill.rodsize": "Стержней должно быть не меньше, чем ширина блока двигателей и чем число слоёв двигателей; слоёв двигателей должно быть больше их радиуса.",
   "techguns.oredrill.drillsize": "Размер Сверла",
   "techguns.oredrill.drillradius": "Радиус Сверла",
   "techguns.oredrill.enginesize": "Двигатели",

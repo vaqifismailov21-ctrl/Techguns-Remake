@@ -1043,7 +1043,7 @@
   "techguns.msg.error.multiblockinvalid": "Can't form multiblock: Invalid block placement",
   "tile.techguns.oredrill.name": "Ore Drill",
   "block.techguns.oredrill": "Ore Drill",
-  "techguns.msg.error.oredrill.rodsize": "Rod must be at least as long as drill diameter and engine size. Engine height must be at least as high as drill radius.",
+  "techguns.msg.error.oredrill.rodsize": "There must be at least as many rods as the engine block is wide and as it has layers; it needs more engine layers than its radius.",
   "techguns.oredrill.drillsize": "Drill Size",
   "techguns.oredrill.drillradius": "Drill Radius",
   "techguns.oredrill.enginesize": "Engines",

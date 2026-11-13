@@ -211,6 +211,7 @@ public final class OreDrillDefinition {
             case MSG_ROD_SIZE->"techguns.msg.error.oredrill.rodsize";
             default->"techguns.msg.error.multiblockinvalid";
         };
-        player.displayClientMessage(Component.translatable(key),true);
+        // in chat: the longer explanations do not fit the action bar
+        player.displayClientMessage(Component.translatable(key).withStyle(net.minecraft.ChatFormatting.RED),false);
     }
 }
