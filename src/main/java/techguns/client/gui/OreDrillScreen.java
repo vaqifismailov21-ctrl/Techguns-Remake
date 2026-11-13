@@ -65,8 +65,10 @@ public final class OreDrillScreen extends AbstractContainerScreen<OreDrillMenu> 
         if(tooltip==null){
             if(in(mx,my,74+DX,16,27,39)){
                 var lines=new ArrayList<Component>();
-                lines.add(Component.literal(String.format("%.2f",tile.progress*1.0f/tile.totaltime*100.0f)+"%"));
-                lines.add(Component.translatable("techguns.gui.oredrill.orehour").append(": "+String.format("%.2f",1200.0/tile.totaltime*60.0)));
+                // no operation yet (no fitting drill head, no cluster): no division by a zero duration
+                boolean running=tile.totaltime>0;
+                lines.add(Component.literal(running?String.format("%.2f",tile.progress*1.0f/tile.totaltime*100.0f)+"%":"0.00%"));
+                lines.add(Component.translatable("techguns.gui.oredrill.orehour").append(": "+(running?String.format("%.2f",1200.0/tile.totaltime*60.0):"—")));
                 if(tile.getPowerPerTick()>0)lines.add(Component.translatable("techguns.gui.oredrill.rftick").append(": "+tile.getPowerPerTick()));
                 lines.add(Component.empty());
                 lines.add(Component.translatable("techguns.oredrill.drillsize").append(": "+(tile.getRods()+tile.getEngines())));

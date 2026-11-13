@@ -112,39 +112,74 @@
         },
         "pattern": [
           [
-            " FFFFFFFF ",
-            " FSSSSSSF ",
-            " FSSSSSSF ",
-            " FSSSSSSF ",
-            " FFFFFFFF "
+            "     ",
+            "     ",
+            "  0  ",
+            "     ",
+            "     "
           ],
           [
-            " FSSSSSSF ",
-            " S    EEE ",
-            " S    EEE ",
-            " S    EEE ",
-            " FSSSSSSF "
+            "FFFFF",
+            "FEEEF",
+            "FEEEF",
+            "FEEEF",
+            "FFFFF"
           ],
           [
-            " FSSSSSSF ",
-            " S    EEE ",
-            "CRRRRREEE0",
-            " S    EEE ",
-            " FSSSSSSF "
+            "FSSSF",
+            "SEEES",
+            "SEEES",
+            "SEEES",
+            "FSSSF"
           ],
           [
-            " FSSSSSSF ",
-            " S    EEE ",
-            " S    EEE ",
-            " S    EEE ",
-            " FSSSSSSF "
+            "FSSSF",
+            "SEEES",
+            "SEEES",
+            "SEEES",
+            "FSSSF"
           ],
           [
-            " FFFFFFFF ",
-            " FSSSSSSF ",
-            " FSSSSSSF ",
-            " FSSSSSSF ",
-            " FFFFFFFF "
+            "FSSSF",
+            "S   S",
+            "S R S",
+            "S   S",
+            "FSSSF"
+          ],
+          [
+            "FSSSF",
+            "S   S",
+            "S R S",
+            "S   S",
+            "FSSSF"
+          ],
+          [
+            "FSSSF",
+            "S   S",
+            "S R S",
+            "S   S",
+            "FSSSF"
+          ],
+          [
+            "FSSSF",
+            "S   S",
+            "S R S",
+            "S   S",
+            "FSSSF"
+          ],
+          [
+            "FFFFF",
+            "FSSSF",
+            "FSRSF",
+            "FSSSF",
+            "FFFFF"
+          ],
+          [
+            "     ",
+            "     ",
+            "  C  ",
+            "     ",
+            "     "
           ]
         ],
         "enable_visualize": false

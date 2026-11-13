@@ -4,16 +4,33 @@
   "pattern": [
     "pcg",
     "bms",
-    "e"
+    " e "
   ],
   "key": {
-    "p": {"item": "techguns:biomass"},
-    "c": {"tag": "forge:circuits/elite"},
-    "g": {"item": "techguns:antigravcore"},
-    "b": {"item": "techguns:laserbarrel"},
-    "m": {"item": "techguns:obsidiansteelreceiver"},
-    "s": {"item": "techguns:plasticstock"},
-    "e": {"item": "techguns:energycell"}
+    "p": {
+      "item": "techguns:biomass"
+    },
+    "c": {
+      "tag": "forge:circuits/elite"
+    },
+    "g": {
+      "item": "techguns:antigravcore"
+    },
+    "b": {
+      "item": "techguns:laserbarrel"
+    },
+    "m": {
+      "item": "techguns:obsidiansteelreceiver"
+    },
+    "s": {
+      "item": "techguns:plasticstock"
+    },
+    "e": {
+      "item": "techguns:energycell"
+    }
   },
-  "result": {"item": "techguns:alienblaster", "nbt": "{ammo:10s,ammovariant:\"default\",camo:0b}"}
+  "result": {
+    "item": "techguns:alienblaster",
+    "nbt": "{ammo:10s,ammovariant:\"default\",camo:0b}"
+  }
 }
