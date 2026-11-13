@@ -112,7 +112,7 @@ public final class PlantRenderer implements BlockEntityRenderer<PlantController>
         var baked=BAKED.get(plant);
         if(baked==null||baked.model!=model||baked.atlas!=atlas){baked=bake(plant,model,atlas);BAKED.put(plant,baked);}
         long now=plant.getLevel().getGameTime();
-        if(now-baked.lightTime>=10||now<baked.lightTime){
+        if(baked.lightTime==Long.MIN_VALUE||now-baked.lightTime>=10||now<baked.lightTime){
             for(int i=0;i<model.size();i++){var b=model.get(i);baked.light[i]=lightAt(plant,(b.x0()+b.x1())/2,(b.y0()+b.y1())/2+0.01F,(b.z0()+b.z1())/2,light);}
             baked.lightTime=now;
         }

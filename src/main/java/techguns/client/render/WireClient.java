@@ -73,7 +73,7 @@ public final class WireClient {
             if(mesh==null||!mesh.a.equals(a)||!mesh.b.equals(b)){mesh=new Mesh(a,b,w.tier(),w.insulated());MESHES.put(w,mesh);}
             if(mesh.box.distanceToSqr(cam)>far||frustum!=null&&!frustum.isVisible(mesh.box))continue;
             // light along the wire changes slowly: look it up twice a second
-            if(time-mesh.lightTime>=10||time<mesh.lightTime){for(int i=0;i<mesh.light.length;i++)mesh.light[i]=LevelRenderer.getLightColor(level,mesh.lightAt[i]);mesh.lightTime=time;}
+            if(mesh.lightTime==Long.MIN_VALUE||time-mesh.lightTime>=10||time<mesh.lightTime){for(int i=0;i<mesh.light.length;i++)mesh.light[i]=LevelRenderer.getLightColor(level,mesh.lightAt[i]);mesh.lightTime=time;}
             if(vc==null){type=RenderType.entityCutoutNoCull(TEXTURE);vc=mc.renderBuffers().bufferSource().getBuffer(type);m=pose.last().pose();nm=pose.last().normal();}
             int col=w.insulated()?(w.tier()==WireTier.COPPER?0xFF3B2E26:0xFF2C3034):w.tier().colour;
             int r=col>>16&255,g=col>>8&255,bl=col&255;
