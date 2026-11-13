@@ -2,7 +2,7 @@
   "parent": "block/block",
   "textures": {
     "atlas": "techguns:blocks/wire/painted/power_bus_item",
-    "particle": "techguns:blocks/plant/frame_dark"
+    "particle": "techguns:blocks/particle/power_bus_preview"
   },
   "elements": [
     {

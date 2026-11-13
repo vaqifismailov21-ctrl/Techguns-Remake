@@ -1,6 +1,6 @@
 {
-	"parent": "block/block",
-	"textures": {
-        "particle": "techguns:blocks/fabricator_housing"
-    }
+  "parent": "block/block",
+  "textures": {
+    "particle": "techguns:blocks/particle/fabricator_housing_formed"
+  }
 }

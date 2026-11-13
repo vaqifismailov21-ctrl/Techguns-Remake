@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "techguns:blocks/plant/plant_casing",
+    "particle": "techguns:blocks/particle/rotor_hub",
     "t": "techguns:blocks/plant/turbine_tower",
     "c": "techguns:blocks/plant/plant_casing",
     "d": "techguns:blocks/plant/plant_casing_dark"

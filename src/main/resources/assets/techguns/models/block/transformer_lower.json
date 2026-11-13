@@ -2,7 +2,7 @@
   "parent": "block/block",
   "textures": {
     "atlas": "techguns:blocks/wire/painted/transformer",
-    "particle": "techguns:blocks/plant/frame_dark"
+    "particle": "techguns:blocks/particle/transformer_lower"
   },
   "elements": [
     {

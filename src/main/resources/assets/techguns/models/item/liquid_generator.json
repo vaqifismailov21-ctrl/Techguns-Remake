@@ -1,6 +1,6 @@
 {
   "parent": "builtin/entity",
   "textures": {
-    "particle": "techguns:blocks/plant/plant_casing"
+    "particle": "techguns:blocks/particle/liquid_generator"
   }
 }

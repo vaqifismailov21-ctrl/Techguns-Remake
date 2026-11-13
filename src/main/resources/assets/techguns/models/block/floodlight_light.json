@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "techguns:blocks/plant/plant_casing"
+    "particle": "techguns:blocks/particle/floodlight_light"
   }
 }

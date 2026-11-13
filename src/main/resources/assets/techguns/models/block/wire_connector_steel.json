@@ -2,7 +2,7 @@
   "parent": "block/block",
   "textures": {
     "atlas": "techguns:blocks/wire/painted/wire_connector_steel",
-    "particle": "techguns:blocks/plant/frame_dark"
+    "particle": "techguns:blocks/particle/wire_connector_steel"
   },
   "elements": [
     {

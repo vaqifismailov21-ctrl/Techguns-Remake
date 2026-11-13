@@ -105,6 +105,6 @@
     }
   },
   "textures": {
-    "particle": "techguns:blocks/fabricator_housing"
+    "particle": "techguns:blocks/particle/turret"
   }
 }

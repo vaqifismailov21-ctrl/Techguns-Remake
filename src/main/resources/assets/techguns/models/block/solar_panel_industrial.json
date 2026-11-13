@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "techguns:blocks/solar_panel_top"
+    "particle": "techguns:blocks/particle/solar_panel_industrial"
   }
 }
