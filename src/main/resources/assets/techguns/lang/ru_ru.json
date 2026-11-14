@@ -2067,5 +2067,14 @@
   "techguns.jer.chest.train_green": "Techguns: Поезд, зелёный вагон",
   "techguns.jer.chest.train_head": "Techguns: Поезд, локомотив",
   "techguns.jer.chest.train_orange": "Techguns: Поезд, оранжевый вагон",
-  "techguns.jer.chest.train_red": "Techguns: Поезд, красный вагон"
+  "techguns.jer.chest.train_red": "Techguns: Поезд, красный вагон",
+  "techguns.jei.npc_gear": "Снаряжение NPC",
+  "techguns.jei.npc_gear.spawn": "Спавнится с этим: %s%%",
+  "techguns.jei.npc_gear.drop_gun": "Выпадает при убийстве игроком: %s%% (+1%% за уровень Добычи), с неполным магазином",
+  "techguns.jei.npc_gear.drop_armor": "Выпадает при убийстве игроком: %s%% (+1%% за уровень Добычи), поношенной",
+  "techguns.jei.npc_gear.gun_line": "Оружие в руках выпадает: %s%% при убийстве игроком",
+  "techguns.jei.npc_gear.gun_none": "Оружие в руках не выпадает",
+  "techguns.jei.npc_gear.armor_line": "Каждая часть брони выпадает: %s%% при убийстве игроком",
+  "techguns.jei.npc_gear.armor_none": "Броня не выпадает",
+  "techguns.jei.npc_gear.loot_hint": "Остальной дроп: страница моба в JER"
 }

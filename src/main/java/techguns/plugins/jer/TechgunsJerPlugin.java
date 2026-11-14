@@ -22,6 +22,8 @@ public final class TechgunsJerPlugin implements IJERPlugin {
     static final String[] CHESTS={"aircraftcarrier","castle","end_building","end_floating_ship","factory_building","factory_building_big","gasstation",
             "militarybase_barracks","militarybase_bunker","nether_building_common","nether_building_trap","nether_cluster_secret","nether_submarine_common",
             "nether_submarine_rare","policestation","small_trainstation","survivor_hideout","train_green","train_head","train_orange","train_red"};
+    /** Military crates found in the structures: breaking one drops its block loot table. */
+    static final String[] CRATES={"military_crate_ammo","military_crate_armor","military_crate_explosives","military_crate_generic","military_crate_gun","military_crate_medical"};
 
     private static boolean registered;
 
@@ -43,6 +45,11 @@ public final class TechgunsJerPlugin implements IJERPlugin {
             String category="techguns:chests/"+chest;
             dungeons.registerCategory(category,"techguns.jer.chest."+chest);
             dungeons.registerChest(category,new ResourceLocation("techguns","chests/"+chest));
+        }
+        for(String crate:CRATES){
+            String category="techguns:blocks/"+crate;
+            dungeons.registerCategory(category,"block.techguns."+crate);
+            dungeons.registerChest(category,new ResourceLocation("techguns","blocks/"+crate));
         }
         var worldGen=api.getWorldGenRegistry();
         for(OreKind kind:OreKind.values()){

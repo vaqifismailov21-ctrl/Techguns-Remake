@@ -21,9 +21,10 @@ public final class TechgunsJeiPlugin implements IModPlugin {
     public static final List<String> unavailable=new ArrayList<>();
     static{for(var kind:Kind.values())TYPES.put(kind,RecipeType.create("techguns",kind.id(),Display.class));}
     @Override public ResourceLocation getPluginUid(){return ResourceLocation.fromNamespaceAndPath("techguns","original_recipes");}
-    @Override public void registerCategories(IRecipeCategoryRegistration registration){for(var kind:Kind.values())registration.addRecipeCategories(new TechgunsRecipeCategory(registration.getJeiHelpers().getGuiHelper(),kind,TYPES.get(kind)));}
+    @Override public void registerCategories(IRecipeCategoryRegistration registration){for(var kind:Kind.values())registration.addRecipeCategories(new TechgunsRecipeCategory(registration.getJeiHelpers().getGuiHelper(),kind,TYPES.get(kind)));registration.addRecipeCategories(new NpcGearCategory(registration.getJeiHelpers().getGuiHelper()));}
     @Override public void registerRecipes(IRecipeRegistration registration){
         powerInfo(registration);
+        registration.addRecipes(NpcGearCategory.TYPE,NpcGearCategory.collect());
         recipes=RecipeDisplays.all();unavailable.clear();for(var kind:Kind.values()){var entries=recipes.get(kind);entries.stream().filter(r->!r.available()).forEach(r->unavailable.add(r.id()));registration.addRecipes(TYPES.get(kind),entries.stream().filter(Display::available).toList());}
         Techguns.LOGGER.info("TECHGUNS_JEI_REGISTERED: {} categories, {} available recipes; {} external-tag recipes unavailable",TYPES.size(),recipes.values().stream().flatMap(List::stream).filter(Display::available).count(),unavailable.size());
     }

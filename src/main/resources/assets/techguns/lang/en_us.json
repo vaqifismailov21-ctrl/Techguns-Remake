@@ -2070,5 +2070,14 @@
   "techguns.jer.chest.train_green": "Techguns: Train, green wagon",
   "techguns.jer.chest.train_head": "Techguns: Train, locomotive",
   "techguns.jer.chest.train_orange": "Techguns: Train, orange wagon",
-  "techguns.jer.chest.train_red": "Techguns: Train, red wagon"
+  "techguns.jer.chest.train_red": "Techguns: Train, red wagon",
+  "techguns.jei.npc_gear": "NPC gear",
+  "techguns.jei.npc_gear.spawn": "Spawns with it: %s%%",
+  "techguns.jei.npc_gear.drop_gun": "Dropped on a player's kill: %s%% (+1%% per Looting level), with part of a magazine",
+  "techguns.jei.npc_gear.drop_armor": "Dropped on a player's kill: %s%% (+1%% per Looting level), worn",
+  "techguns.jei.npc_gear.gun_line": "Carried gun drops: %s%% on a player's kill",
+  "techguns.jei.npc_gear.gun_none": "The carried weapon is not dropped",
+  "techguns.jei.npc_gear.armor_line": "Each armour piece drops: %s%% on a player's kill",
+  "techguns.jei.npc_gear.armor_none": "Worn armour is not dropped",
+  "techguns.jei.npc_gear.loot_hint": "Other drops: JER mob page"
 }

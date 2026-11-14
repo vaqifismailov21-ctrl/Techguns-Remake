@@ -82,6 +82,19 @@ public class GenericNPC extends Monster implements RangedAttackMob,INPCTechgunsS
         }
     }
     protected void addRandomArmor(int difficulty){setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(TGuns.revolver.get()));}
+    /** Rolls the random spawn gear many times, for the JEI gear page: item and how many of the rolls gave it. Leaves the NPC unequipped. */
+    public java.util.Map<net.minecraft.world.item.Item,Integer> sampleSpawnGear(int rolls){
+        var counts=new java.util.LinkedHashMap<net.minecraft.world.item.Item,Integer>();
+        for(int i=0;i<rolls;i++){
+            for(var slot:EquipmentSlot.values())setItemSlot(slot,ItemStack.EMPTY);
+            addRandomArmor(i%4);
+            for(var slot:EquipmentSlot.values()){var stack=getItemBySlot(slot);if(!stack.isEmpty())counts.merge(stack.getItem(),1,Integer::sum);}
+        }
+        for(var slot:EquipmentSlot.values())setItemSlot(slot,ItemStack.EMPTY);
+        return counts;
+    }
+    /** Whether a player's kill can leave the carried gun (see dropCustomDeathLoot). */
+    public boolean canDropCarriedGun(){return dropsGun();}
     protected void setTGArmorStats(float armor,float penetration){this.armor=armor;this.penetrationResistance=penetration;}
     @Override public float getTotalArmorAgainstType(TGDamageSource source){return DamageSystem.getArmorAgainstDamageTypeDefault(this,armor,source.damageType);}
     @Override public float getPenetrationResistance(TGDamageSource source){return penetrationResistance;}
