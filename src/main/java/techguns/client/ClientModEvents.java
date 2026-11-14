@@ -42,6 +42,7 @@ public final class ClientModEvents {
         event.register(RELOAD); event.register(SWITCH_AMMO); event.register(SHOOT); event.register(AIM);
     }
     @SubscribeEvent public static void setup(FMLClientSetupEvent event) { event.enqueueWork(() -> {
+        if(net.minecraftforge.fml.ModList.get().isLoaded("jeresources"))techguns.plugins.jer.TechgunsJerPlugin.registerDirectly();
         MenuScreens.register(TGMenuTypes.PLAYER_INVENTORY.get(), TGPlayerInventoryScreen::new);
         MenuScreens.register(TGMenuTypes.MACHINE.get(),techguns.client.gui.MachineScreen::new);
         MenuScreens.register(techguns.power.PowerBlocks.GENERATOR_MENU.get(),techguns.client.gui.GeneratorScreen::new);

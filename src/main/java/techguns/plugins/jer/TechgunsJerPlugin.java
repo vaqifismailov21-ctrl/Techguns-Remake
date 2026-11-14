@@ -11,7 +11,11 @@ import net.minecraft.world.item.ItemStack;
 import techguns.TGWorld;
 import techguns.world.OreKind;
 
-/** Just Enough Resources pages: what Techguns structure chests can hold and where Techguns ores generate. Loaded only by JER. */
+/**
+ * Just Enough Resources pages: what Techguns structure chests can hold and where Techguns ores generate.
+ * JER 1.4.0 for Forge looks its plugins up by the IJERPlugin interface instead of the JERPlugin annotation and so never finds them;
+ * client setup therefore also hands the plugin JER's API directly. Whichever path runs first registers, the other is skipped.
+ */
 @JERPlugin
 public final class TechgunsJerPlugin implements IJERPlugin {
     /** Every chest loot table the Techguns structures use. */
@@ -19,7 +23,21 @@ public final class TechgunsJerPlugin implements IJERPlugin {
             "militarybase_barracks","militarybase_bunker","nether_building_common","nether_building_trap","nether_cluster_secret","nether_submarine_common",
             "nether_submarine_rare","policestation","small_trainstation","survivor_hideout","train_green","train_head","train_orange","train_red"};
 
-    @Override public void receive(IJERAPI api){
+    private static boolean registered;
+
+    /** Called from client setup only when JER is loaded. */
+    public static void registerDirectly(){
+        try{
+            var api=(IJERAPI)Class.forName("jeresources.compatibility.api.JERAPI").getMethod("getInstance").invoke(null);
+            if(api!=null)new TechgunsJerPlugin().receive(api);
+        }catch(ReflectiveOperationException|LinkageError e){
+            techguns.Techguns.LOGGER.warn("Just Enough Resources found, but its API could not be reached: {}",e.toString());
+        }
+    }
+
+    @Override public synchronized void receive(IJERAPI api){
+        if(registered)return;
+        registered=true;
         var dungeons=api.getDungeonRegistry();
         for(String chest:CHESTS){
             String category="techguns:chests/"+chest;
