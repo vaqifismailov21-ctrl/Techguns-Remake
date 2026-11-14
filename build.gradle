@@ -35,6 +35,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly fg.deobf('mezz.jei:jei-1.20.1-common-api:15.74.0.227')
     compileOnly fg.deobf('mezz.jei:jei-1.20.1-forge-api:15.74.0.227')
+    // Just Enough Resources API (by way2muchnoise): compile only, for the optional chest loot and ore generation pages.
+    compileOnly files('libs/jer-api-1.20.1-1.4.0.247.jar')
     // Optional in the development client: gradlew runClient -PwithJei=true -PwithPatchouli=true
     if (flag('withJei')) { runtimeOnly fg.deobf('mezz.jei:jei-1.20.1-forge:15.74.0.227') }
     if (flag('withPatchouli')) { runtimeOnly fg.deobf('vazkii.patchouli:Patchouli:1.20.1-85-FORGE') }
