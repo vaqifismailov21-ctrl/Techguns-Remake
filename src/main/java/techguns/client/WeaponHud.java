@@ -143,14 +143,16 @@ public final class WeaponHud {
         float pixels = 4F * game.getWindow().getHeight() / 1080F;
         float factor = Math.max(0.5F, pixels / Math.max(1, (int) game.getWindow().getGuiScale()));
         float textScale = techguns.TGConfig.cl_ammoTextScale * factor, iconScale = techguns.TGConfig.cl_ammoIconScale * factor, magScale = techguns.TGConfig.cl_ammoMagTextScale * factor;
-        int marginRight = (int) (techguns.TGConfig.cl_hudMarginRight * factor), marginBottom = (int) (techguns.TGConfig.cl_hudMarginBottom * factor);
+        int marginRight = (int) (techguns.TGConfig.cl_hudMarginRight * factor), marginBottom = techguns.TGConfig.cl_hudMarginBottom;
         int iconGap = (int) (techguns.TGConfig.cl_iconTextGap * factor), magGap = (int) (techguns.TGConfig.cl_textMagGap * factor);
         String ammoText = gun.getAmmoDisplayCount(stack) + "/" + gun.getClipDisplayCount(), fullText = gun.getClipDisplayCount() + "/" + gun.getClipDisplayCount();
         String magText = ChatFormatting.YELLOW + "x" + count;
         int textWidth = Math.round(game.font.width(ammoText) * textScale), maxTextWidth = Math.round(game.font.width(fullText) * textScale);
         int textHeight = Math.round(game.font.lineHeight * textScale), magWidth = Math.round(game.font.width(magText) * magScale);
         float iconWidth = icon.width * iconScale, iconHeight = icon.height * iconScale;
-        int textY = graphics.guiHeight() - marginBottom - textHeight + offsetY;
+        // the counter sits level with the hotbar: centred on its 22 px band, the magazine count still inside the screen
+        int magHeight = Math.round(game.font.lineHeight * magScale), blockHeight = textHeight + magGap + magHeight;
+        int textY = Math.min(graphics.guiHeight() - 11 - blockHeight / 2, graphics.guiHeight() - 1 - blockHeight) - marginBottom + offsetY;
         int iconY = Math.round(textY + textHeight / 2 - iconHeight / 2F), magY = textY + textHeight + magGap;
         int textX, iconX, magX;
         if (!offhand) {

@@ -145,7 +145,7 @@ public final class TGConfig {
     private static final BooleanValue cl_firstPersonArms_VALUE;
     public static float cl_ammoTextScale = 1.0f, cl_ammoIconScale = 1.0f, cl_ammoMagTextScale = 0.65f;
     private static final DoubleValue cl_ammoTextScale_VALUE, cl_ammoIconScale_VALUE, cl_ammoMagTextScale_VALUE;
-    public static int cl_hudMarginRight = 40, cl_hudMarginBottom = 40, cl_iconTextGap = 6, cl_textMagGap = 3;
+    public static int cl_hudMarginRight = 40, cl_hudMarginBottom = 0, cl_iconTextGap = 6, cl_textMagGap = 3;
     private static final IntValue cl_hudMarginRight_VALUE, cl_hudMarginBottom_VALUE, cl_iconTextGap_VALUE, cl_textMagGap_VALUE;
     private static final IntValue cl_sortPassesPerTick_VALUE;
     public static boolean WIP_disableRadiationSystem = false;
@@ -332,7 +332,7 @@ public final class TGConfig {
         cl_ammoIconScale_VALUE = builder.comment("Changes the scale of the ammo icon (e.g. rifle ammo on AKM)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoIconScale"), 1.0, 0.1, 10.0);
         cl_ammoMagTextScale_VALUE = builder.comment("Changes the scale of the magazine count text (e.g. x19)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "AmmoMagTextScale"), 0.65, 0.1, 10.0);
         cl_hudMarginRight_VALUE = builder.comment("How many pixels should the ammo counter be away from the right side of the screen?").defineInRange(java.util.List.of("Clientside", "AmmoHud", "HudMarginRight"), 40, 0, 1000);
-        cl_hudMarginBottom_VALUE = builder.comment("How many pixels should the ammo counter be away from the bottom side of the screen?").defineInRange(java.util.List.of("Clientside", "AmmoHud", "HudMarginBottom"), 40, 0, 1000);
+        cl_hudMarginBottom_VALUE = builder.comment("How many GUI pixels the ammo counter is lifted above the hotbar level (0: level with the hotbar)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "HudLiftAboveHotbar"), 0, 0, 1000);
         cl_iconTextGap_VALUE = builder.comment("How many pixels should the ammo icon be away from the ammo count text? (note: it's always moved LEFT from the text)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "IconTextGap"), 6, 0, 1000);
         cl_textMagGap_VALUE = builder.comment("How many pixels should the mag count text be away from the ammo count text? (note: it's always moved LOWER from the a.c. text)").defineInRange(java.util.List.of("Clientside", "AmmoHud", "TextMagGap"), 3, 0, 1000);
         CLIENT = builder.build();
