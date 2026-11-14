@@ -22,7 +22,6 @@ import techguns.power.*;
 public final class PowerRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
     private record Look(PowerModel model,ResourceLocation texture){}
     private static Map<Block,Look> looks;
-    private static Look windBase,windMast,windHead;
     private static final Map<BlockEntity,float[]> angles=new WeakHashMap<>();
 
     private static ResourceLocation tex(String id){return ResourceLocation.fromNamespaceAndPath("techguns","textures/blocks/"+id+".png");}
@@ -39,15 +38,11 @@ public final class PowerRenderer<T extends BlockEntity> implements BlockEntityRe
             looks.put(PowerBlocks.ENERGY_CELL.get(),new Look(new ModelEnergyCell(),tex("energy_cell")));
             looks.put(PowerBlocks.ENERGY_BANK.get(),new Look(new ModelEnergyBank(),tex("energy_bank")));
             looks.put(PowerBlocks.FLOODLIGHT.get(),new Look(new ModelFloodlight(),tex("floodlight")));
-            windBase=new Look(new ModelWindTurbineBase(),tex("wind_turbine_base"));
-            windMast=new Look(new ModelWindTurbineMast(),tex("wind_turbine_mast"));
-            windHead=new Look(new ModelWindTurbineHead(),tex("wind_turbine_head"));
         }
         return looks;
     }
     private static Look look(BlockState state){
         var map=looks();
-        if(state.getBlock() instanceof WindTurbineBlock)return switch(state.getValue(WindTurbineBlock.PART)){case BASE->windBase;case MAST->windMast;case HEAD->windHead;};
         return map.get(state.getBlock());
     }
 
@@ -76,15 +71,11 @@ public final class PowerRenderer<T extends BlockEntity> implements BlockEntityRe
         boolean active=state.hasProperty(BlockStateProperties.LIT)&&state.getValue(BlockStateProperties.LIT);
         int charge=state.hasProperty(EnergyCellBlock.CHARGE)?state.getValue(EnergyCellBlock.CHARGE):0;
         float speed=active?0.25F:0;
-        if(entity instanceof WindTurbineEntity&&state.getValue(WindTurbineBlock.PART)==WindTurbineBlock.Part.HEAD){
-            var base=WindTurbineEntity.findBase(level,entity.getBlockPos());int rate=base==null?0:base.rate;active=rate>0;speed=rate/(float)PowerBlocks.WIND_RATE*0.35F;
-        }
         float time=level.getGameTime()+partial;
         float[] a=angles.computeIfAbsent(entity,e->new float[]{0,time});
         a[0]+=(time-a[1])*speed;a[1]=time;a[0]%=(float)(Math.PI*2000);
         float fill=entity instanceof LiquidGeneratorEntity liquid?liquid.fill():0;
         draw(state,pose,buffers,light,overlay,active,charge,a[0],fill);
     }
-    @Override public boolean shouldRenderOffScreen(T entity){return entity instanceof WindTurbineEntity;}
     @Override public int getViewDistance(){return 96;}
 }

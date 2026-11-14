@@ -8,7 +8,7 @@ public final class HighVoltage {
     /** A source of high-voltage power: generators and power plants. */
     public static boolean generator(BlockEntity be){
         return be instanceof FuelGeneratorEntity||be instanceof LiquidGeneratorEntity||be instanceof GeothermalGeneratorEntity||be instanceof NuclearGeneratorEntity
-            ||be instanceof WindTurbineEntity||be instanceof SolarPanelEntity||be instanceof techguns.power.plant.PlantController||be instanceof techguns.power.plant.PlantPartEntity;
+            ||be instanceof SolarPanelEntity||be instanceof techguns.power.plant.PlantController||be instanceof techguns.power.plant.PlantPartEntity;
     }
     /** Something a high-voltage line may be joined to: generators, transformers, bus ducts and high-voltage insulators. */
     public static boolean equipment(BlockEntity be){

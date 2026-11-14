@@ -24,8 +24,6 @@ public final class BasicGunRenderer extends RenderItemBase {
     private final float recoilTranslation,recoilAngle;
     private ItemStack stack;
     private float fire,reload,muzzle;
-    private boolean verification;
-    private boolean scopeVerification;
     private int parts=1;
     private GunAnimation reloadAnimation=GunAnimation.genericReload,reloadThirdAnimation=GunAnimation.genericReload;
     private GunAnimation recoilAnimation=GunAnimation.genericRecoil,scopeAnimation=GunAnimation.scopeRecoil;
@@ -57,18 +55,12 @@ public final class BasicGunRenderer extends RenderItemBase {
     BasicGunRenderer scope(String texture,float scale,boolean flipY) {scopeTexture=ResourceLocation.fromNamespaceAndPath("techguns","textures/fx/"+texture+".png");scopeScale=scale;scopeFlipY=flipY;return this;}
     BasicGunRenderer scopeRecoil(GunAnimation animation,float translation,float angle) {scopeAnimation=animation;scopeTranslation=translation;scopeAngle=angle;return this;}
     public boolean hasScope() {return scopeTexture!=null;}
-    public void verifyResources(net.minecraft.server.packs.resources.ResourceManager resources,GenericGun gun) {
-        var paths=new java.util.ArrayList<ResourceLocation>();paths.add(texture);
-        for(int i=1;i<gun.getCamoCount();i++)paths.add(ResourceLocation.fromNamespaceAndPath(texture.getNamespace(),texture.getPath().replace(".png","_"+i+".png")));
-        if(flash!=null)paths.add(flash.texture());if(scopeTexture!=null)paths.add(scopeTexture);
-        for(var path:paths)if(resources.getResource(path).isEmpty())throw new IllegalStateException("Missing original weapon texture "+path);
-    }
     public static Map<GenericGun,BasicGunRenderer> create() {
         return GeneratedBallisticRenderers.create();
     }
     public void renderWeapon(ItemStack stack,ItemDisplayContext context,PoseStack pose,MultiBufferSource buffers,int light,int overlay) {
         this.stack=stack;
-        if(context.firstPerson() && hasScope() && (scopeVerification||techguns.client.ClientZoom.isZoomed(Minecraft.getInstance().player,(GenericGun)stack.getItem()))) {
+        if(context.firstPerson() && hasScope() && (techguns.client.ClientZoom.isZoomed(Minecraft.getInstance().player,(GenericGun)stack.getItem()))) {
             pose.pushPose();pose.translate(0.5,0.5,0.5);applyAnimation(pose,context);pose.popPose();
             pose.pushPose();pose.translate(0.5,0.5,0.5);
             boolean left=context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND;
@@ -106,22 +98,6 @@ public final class BasicGunRenderer extends RenderItemBase {
             PistolMuzzleFlash.render(pilot,pose,buffers,(Minecraft.getInstance().level.getGameTime()%30)/30F,context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND||context==ItemDisplayContext.THIRD_PERSON_LEFT_HAND,third);pose.popPose();
         }
     }
-    public void renderVerification(ItemStack stack,PoseStack pose,MultiBufferSource buffers,float fire,float reload,float muzzle) {
-        renderVerification(stack,ItemDisplayContext.FIRST_PERSON_RIGHT_HAND,pose,buffers,fire,reload,muzzle);
-    }
-    public void renderVerification(ItemStack stack,ItemDisplayContext context,PoseStack pose,MultiBufferSource buffers,float fire,float reload,float muzzle) {
-        verification=true;this.fire=fire;this.reload=reload;this.muzzle=muzzle;this.charge=0;
-        try { renderWeapon(stack,context,pose,buffers,15728880,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY); }
-        finally { verification=false; }
-    }
-    public void renderScopeVerification(ItemStack stack,PoseStack pose,MultiBufferSource buffers) {
-        scopeVerification=true;try{renderVerification(stack,pose,buffers,0.35F,0,0);}finally{scopeVerification=false;}
-    }
-    public void renderChargeVerification(ItemStack stack,PoseStack pose,MultiBufferSource buffers) {
-        verification=true;fire=reload=muzzle=0;charge=1;
-        try{renderWeapon(stack,ItemDisplayContext.FIRST_PERSON_RIGHT_HAND,pose,buffers,15728880,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY);}
-        finally{verification=false;charge=0;}
-    }
     @Override protected void setBaseRotation(PoseStack pose,ItemDisplayContext context) {
         if(obj) {pose.mulPose(Axis.YP.rotationDegrees(objRotation));return;}
         pose.mulPose(Axis.XP.rotationDegrees(-180));pose.mulPose(Axis.YP.rotationDegrees(rotation90?-90:180));
@@ -132,7 +108,7 @@ public final class BasicGunRenderer extends RenderItemBase {
         var entity=first?Minecraft.getInstance().player:third?GunRenderContext.holder():null;
         // Original RenderGunBase turns the weapon into the hand for non-aiming NPC models (CyberDemon).
         if(third&&entity instanceof techguns.api.npc.INPCTechgunsShooter shooter&&!shooter.hasWeaponArmPose())pose.mulPose(Axis.XP.rotationDegrees(90));
-        if(!verification) {
+        {
             fire=reload=muzzle=charge=0;
             if(entity instanceof techguns.entities.npcs.GenericNPC npc){
                 var gun=(GenericGun)stack.getItem();float partial=Minecraft.getInstance().getFrameTime();
@@ -183,6 +159,6 @@ public final class BasicGunRenderer extends RenderItemBase {
             }
             model.renderModel(pose,vertices,light,overlay,context,context.firstPerson()?Minecraft.getInstance().player:GunRenderContext.holder(),gun.getCurrentAmmo(stack),reload,part,fire,charge);
         }
-        if(context.firstPerson()&&!verification)FirstPersonGunArms.render(gun,context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND,pose,buffers,light,fire,reload);
+        if(context.firstPerson())FirstPersonGunArms.render(gun,context==ItemDisplayContext.FIRST_PERSON_LEFT_HAND,pose,buffers,light,fire,reload);
     }
 }

@@ -30,7 +30,6 @@ public final class PowerBlocks {
     /** Nuclear generator: FE per tick, FE from one nuclear micro reactor, buffer, output and the heat that stops it. */
     public static final int NUCLEAR_RATE=400,NUCLEAR_CELL_ENERGY=4_800_000,NUCLEAR_CAPACITY=500_000,NUCLEAR_OUTPUT=2000,NUCLEAR_HEAT_MAX=1000;
     /** Wind turbine: best FE per tick (at Y 128 and above with free space), buffer, output, masts allowed. */
-    public static final int WIND_RATE=100,WIND_CAPACITY=50_000,WIND_OUTPUT=500,WIND_MAX_MASTS=6;
     /** Energy cable: FE moved per tick and kept in each piece. */
     public static final int CABLE_TRANSFER=5000;
     /** Floodlight: FE per tick, buffer and beam length. */
@@ -48,7 +47,6 @@ public final class PowerBlocks {
     public static final RegistryObject<Block> ENERGY_BANK=block("energy_bank",()->new EnergyCellBlock(true));
     public static final RegistryObject<Block> GEOTHERMAL_GENERATOR=block("geothermal_generator",GeothermalGeneratorBlock::new);
     public static final RegistryObject<Block> NUCLEAR_GENERATOR=block("nuclear_generator",NuclearGeneratorBlock::new);
-    public static final RegistryObject<Block> WIND_TURBINE=block("wind_turbine",WindTurbineBlock::new);
     public static final RegistryObject<Block> ENERGY_CABLE=block("energy_cable",EnergyCableBlock::new);
     /** Cable with enriched uranium: four times the rate of a plain cable. */
     public static final int URANIUM_CABLE_TRANSFER=20000;
@@ -63,7 +61,6 @@ public final class PowerBlocks {
     public static final RegistryObject<Item> LIQUID_GENERATOR_ITEM=item("liquid_generator",LIQUID_GENERATOR);
     public static final RegistryObject<Item> GEOTHERMAL_GENERATOR_ITEM=item("geothermal_generator",GEOTHERMAL_GENERATOR);
     public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM=item("nuclear_generator",NUCLEAR_GENERATOR);
-    public static final RegistryObject<Item> WIND_TURBINE_ITEM=item("wind_turbine",WIND_TURBINE);
     public static final RegistryObject<Item> SOLAR_PANEL_ITEM=item("solar_panel",SOLAR_PANEL);
     public static final RegistryObject<Item> SOLAR_PANEL_ADVANCED_ITEM=item("solar_panel_advanced",SOLAR_PANEL_ADVANCED);
     public static final RegistryObject<Item> SOLAR_PANEL_INDUSTRIAL_ITEM=item("solar_panel_industrial",SOLAR_PANEL_INDUSTRIAL);
@@ -80,7 +77,6 @@ public final class PowerBlocks {
     public static final RegistryObject<BlockEntityType<EnergyCellEntity>> ENERGY_CELL_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("energy_cell",()->BlockEntityType.Builder.of(EnergyCellEntity::new,ENERGY_CELL.get(),ENERGY_BANK.get()).build(null));
     public static final RegistryObject<BlockEntityType<GeothermalGeneratorEntity>> GEOTHERMAL_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("geothermal_generator",()->BlockEntityType.Builder.of(GeothermalGeneratorEntity::new,GEOTHERMAL_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NuclearGeneratorEntity>> NUCLEAR_GENERATOR_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("nuclear_generator",()->BlockEntityType.Builder.of(NuclearGeneratorEntity::new,NUCLEAR_GENERATOR.get()).build(null));
-    public static final RegistryObject<BlockEntityType<WindTurbineEntity>> WIND_TURBINE_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("wind_turbine",()->BlockEntityType.Builder.of(WindTurbineEntity::new,WIND_TURBINE.get()).build(null));
     public static final RegistryObject<BlockEntityType<EnergyCableEntity>> ENERGY_CABLE_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("energy_cable",()->BlockEntityType.Builder.of(EnergyCableEntity::new,ENERGY_CABLE.get(),URANIUM_ENERGY_CABLE.get(),POWER_BUS.get()).build(null));
     public static final RegistryObject<BlockEntityType<FloodlightEntity>> FLOODLIGHT_ENTITY=TGWeaponBlocks.BLOCK_ENTITIES.register("floodlight",()->BlockEntityType.Builder.of(FloodlightEntity::new,FLOODLIGHT.get()).build(null));
     public static final RegistryObject<net.minecraft.world.inventory.MenuType<GeneratorMenu>> GENERATOR_MENU=TGMenuTypes.MENUS.register("generator",()->IForgeMenuType.create(GeneratorMenu::new));

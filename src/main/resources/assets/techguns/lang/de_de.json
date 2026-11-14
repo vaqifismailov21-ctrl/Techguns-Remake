@@ -1027,7 +1027,6 @@
   "block.techguns.liquid_generator": "Flüssigbrennstoffgenerator",
   "block.techguns.geothermal_generator": "Geothermiegenerator",
   "block.techguns.nuclear_generator": "Kerngenerator",
-  "block.techguns.wind_turbine": "Windkraftanlage",
   "block.techguns.solar_panel": "Solarmodul",
   "block.techguns.solar_panel_advanced": "Verbessertes Solarmodul",
   "block.techguns.solar_panel_industrial": "Industrielles Solarmodul",

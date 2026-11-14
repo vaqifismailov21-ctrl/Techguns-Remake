@@ -1268,16 +1268,6 @@
       }
     ]
   },
-  "power.wind_turbine": {
-    "category": "block",
-    "subtitle": "subtitles.techguns.power.wind_turbine",
-    "sounds": [
-      {
-        "name": "techguns:power/wind_turbine",
-        "stream": false
-      }
-    ]
-  },
   "power.floodlight_on": {
     "category": "block",
     "subtitle": "subtitles.techguns.power.floodlight_on",

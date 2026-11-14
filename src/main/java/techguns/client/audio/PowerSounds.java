@@ -32,7 +32,7 @@ public final class PowerSounds {
             super(event,SoundSource.BLOCKS,RandomSource.create());this.entity=entity;
             var pos=entity.getBlockPos();x=pos.getX()+.5;y=pos.getY()+.5;z=pos.getZ()+.5;
             if(entity instanceof techguns.power.plant.PlantController plant&&plant.formed){
-                // from the middle of the plant; the wind turbine sounds from its rotor, high up the tower
+                // from the middle of the plant; the wind plant sounds from its rotor, high up the tower
                 float[] c=plant instanceof techguns.power.plant.WindPlant w?techguns.power.plant.PlantModel.rotorCentre(Math.max(1,w.towers)):switch(plant.kind){case FUSION->new float[]{0,0.5F,2};case WIND->new float[]{0,0.5F,0};default->new float[]{0,0.5F,1};};
                 var f=plant.facing();var r=f.getClockWise();var b=f.getOpposite();
                 x=pos.getX()+.5+r.getStepX()*c[0]+b.getStepX()*c[2];y=pos.getY()+c[1];z=pos.getZ()+.5+r.getStepZ()*c[0]+b.getStepZ()*c[2];
@@ -42,13 +42,10 @@ public final class PowerSounds {
         @Override public void tick(){
             if(entity.isRemoved()||!running(entity)){stop();loops.remove(entity.getBlockPos(),this);return;}
             if(entity instanceof techguns.power.plant.WindPlant wind){float k=wind.rate/(float)techguns.power.plant.WindPlant.RATE;volume=1.4F+1.2F*k;pitch=0.75F+0.35F*k;}
-            if(entity instanceof WindTurbineEntity){int rate=windRate(entity);volume=0.35F+0.5F*rate/PowerBlocks.WIND_RATE;pitch=0.8F+0.4F*rate/PowerBlocks.WIND_RATE;}
         }
     }
-    private static int windRate(BlockEntity entity){var base=WindTurbineEntity.findBase(entity.getLevel(),entity.getBlockPos());return base==null?0:base.rate;}
     private static boolean lit(BlockEntity entity){var state=entity.getBlockState();return state.hasProperty(BlockStateProperties.LIT)&&state.getValue(BlockStateProperties.LIT);}
     private static boolean running(BlockEntity entity){
-        if(entity instanceof WindTurbineEntity)return entity.getBlockState().getValue(WindTurbineBlock.PART)==WindTurbineBlock.Part.HEAD&&windRate(entity)>0;
         if(entity instanceof FloodlightEntity)return false;
         if(entity instanceof SolarPanelEntity panel)return panel.currentRate()>0;
         return lit(entity);
@@ -57,7 +54,6 @@ public final class PowerSounds {
         if(entity instanceof SolarPanelEntity||entity instanceof FuelGeneratorEntity||entity instanceof LiquidGeneratorEntity)return null;
         if(entity instanceof GeothermalGeneratorEntity)return TGSounds.GEOTHERMAL_GENERATOR_RUN.get();
         if(entity instanceof NuclearGeneratorEntity)return TGSounds.NUCLEAR_GENERATOR_RUN.get();
-        if(entity instanceof WindTurbineEntity)return TGSounds.WIND_TURBINE_RUN.get();
         if(entity instanceof techguns.power.plant.PlantController plant)return switch(plant.kind){case WIND->TGSounds.PLANT_WIND_RUN.get();case GEOTHERMAL->TGSounds.PLANT_GEOTHERMAL_RUN.get();case FISSION->TGSounds.PLANT_FISSION_RUN.get();case FUSION->TGSounds.PLANT_FUSION_RUN.get();};
         return null;
     }
@@ -72,12 +68,11 @@ public final class PowerSounds {
         effects(entity,state,level.getGameTime());
         if(entity instanceof techguns.power.plant.FissionReactor reactor&&reactor.overheated&&level.getGameTime()%40==0)once(entity,TGSounds.REACTION_CHAMBER_WARNING.get(),1F);
         if(entity instanceof NuclearGeneratorEntity reactor&&reactor.overheated&&level.getGameTime()%40==0)once(entity,TGSounds.REACTION_CHAMBER_WARNING.get(),0.8F);
-        if(entity instanceof WindTurbineEntity&&level.getGameTime()%10!=Math.floorMod(pos.asLong(),10L))return;
         var sound=loopSound(entity);if(sound==null)return;
         var loop=loops.get(pos);
         if(running(entity)&&(loop==null||loop.isStopped()||!Minecraft.getInstance().getSoundManager().isActive(loop))){
             if(loop!=null)Minecraft.getInstance().getSoundManager().stop(loop);
-            var next=new Loop(entity,sound,entity instanceof WindTurbineEntity?0.6F:0.55F,0.95F+level.random.nextFloat()*0.1F);
+            var next=new Loop(entity,sound,0.55F,0.95F+level.random.nextFloat()*0.1F);
             loops.put(pos,next);Minecraft.getInstance().getSoundManager().play(next);
         }
     }
