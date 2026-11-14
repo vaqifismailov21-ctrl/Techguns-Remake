@@ -4,6 +4,6 @@
     "top": "techguns:blocks/crate_top_red",
     "side": "minecraft:block/spruce_planks",
     "bottom": "minecraft:block/spruce_planks",
-    "particle": "minecraft:block/spruce_planks"
+    "particle": "techguns:blocks/crate_top_red"
   }
 }

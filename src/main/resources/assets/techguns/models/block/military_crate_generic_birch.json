@@ -4,6 +4,6 @@
     "top": "techguns:blocks/crate_top_blue",
     "side": "minecraft:block/birch_planks",
     "bottom": "minecraft:block/birch_planks",
-    "particle": "minecraft:block/birch_planks"
+    "particle": "techguns:blocks/crate_top_blue"
   }
 }

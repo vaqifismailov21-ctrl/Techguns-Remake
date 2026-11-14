@@ -4,6 +4,6 @@
     "top": "techguns:blocks/crate_top_red",
     "side": "techguns:blocks/medical_crate_side",
     "bottom": "minecraft:block/birch_planks",
-    "particle": "minecraft:block/birch_planks"
+    "particle": "techguns:blocks/crate_top_red"
   }
 }

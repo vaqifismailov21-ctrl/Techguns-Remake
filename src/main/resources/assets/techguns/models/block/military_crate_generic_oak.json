@@ -4,6 +4,6 @@
     "top": "techguns:blocks/crate_top",
     "side": "minecraft:block/oak_planks",
     "bottom": "minecraft:block/oak_planks",
-    "particle": "minecraft:block/oak_planks"
+    "particle": "techguns:blocks/crate_top"
   }
 }

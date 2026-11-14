@@ -161,6 +161,10 @@ public final class WeaponHud {
         } else {
             textX = marginRight; iconX = Math.round(marginRight + maxTextWidth + iconGap); magX = marginRight;
         }
+        // a window too narrow to fit it beside the hotbar gets the counter just above the hotbar instead
+        int hotbarRight = graphics.guiWidth() / 2 + 91, hotbarLeft = graphics.guiWidth() / 2 - 91;
+        boolean overlaps = !offhand ? Math.min(textX, iconX) < hotbarRight + 2 : Math.max(textX + maxTextWidth, Math.round(iconX + iconWidth)) > hotbarLeft - 2;
+        if (overlaps) { int lift = graphics.guiHeight() - 24 - (magY + Math.round(game.font.lineHeight * magScale)); if (lift < 0) { textY += lift; iconY += lift; magY += lift; } }
         var pose = graphics.pose();
         pose.pushPose(); pose.translate(textX, textY, 0); pose.scale(textScale, textScale, 1); graphics.drawString(game.font, ammoText, 0, 0, 0xFFFFFFFF, true); pose.popPose();
         pose.pushPose(); pose.translate(iconX, iconY, 0); pose.scale(iconScale, iconScale, 1); RenderSystem.enableBlend(); icon.draw(graphics, 0, 0); RenderSystem.disableBlend(); pose.popPose();
