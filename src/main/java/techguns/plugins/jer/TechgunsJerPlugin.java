@@ -13,8 +13,8 @@ import techguns.world.OreKind;
 
 /**
  * Just Enough Resources pages: what Techguns structure chests can hold and where Techguns ores generate.
- * JER 1.4.0 for Forge looks its plugins up by the IJERPlugin interface instead of the JERPlugin annotation and so never finds them;
- * client setup therefore also hands the plugin JER's API directly. Whichever path runs first registers, the other is skipped.
+ * JER may call the plugin while mods are still being constructed, before blocks exist, so client setup hands the plugin JER's API
+ * again: chests are registered by whichever call comes first, ores by the first call that finds the ore blocks registered.
  */
 @JERPlugin
 public final class TechgunsJerPlugin implements IJERPlugin {
@@ -25,9 +25,9 @@ public final class TechgunsJerPlugin implements IJERPlugin {
     /** Military crates found in the structures: breaking one drops its block loot table. */
     static final String[] CRATES={"military_crate_ammo","military_crate_armor","military_crate_explosives","military_crate_generic","military_crate_gun","military_crate_medical"};
 
-    private static boolean registered;
+    private static boolean chestsRegistered,oresRegistered;
 
-    /** Called from client setup only when JER is loaded. */
+    /** Called from client setup only when JER is loaded: by then every block exists, so the ore pages can be filled. */
     public static void registerDirectly(){
         try{
             var api=(IJERAPI)Class.forName("jeresources.compatibility.api.JERAPI").getMethod("getInstance").invoke(null);
@@ -37,27 +37,32 @@ public final class TechgunsJerPlugin implements IJERPlugin {
         }
     }
 
+    /** May come during mod construction, before the ore blocks are registered; the ores are then added at client setup. */
     @Override public synchronized void receive(IJERAPI api){
-        if(registered)return;
-        registered=true;
-        var dungeons=api.getDungeonRegistry();
-        for(String chest:CHESTS){
-            String category="techguns:chests/"+chest;
-            dungeons.registerCategory(category,"techguns.jer.chest."+chest);
-            dungeons.registerChest(category,new ResourceLocation("techguns","chests/"+chest));
+        if(!chestsRegistered){
+            chestsRegistered=true;
+            var dungeons=api.getDungeonRegistry();
+            for(String chest:CHESTS){
+                String category="techguns:chests/"+chest;
+                dungeons.registerCategory(category,"techguns.jer.chest."+chest);
+                dungeons.registerChest(category,new ResourceLocation("techguns","chests/"+chest));
+            }
+            for(String crate:CRATES){
+                String category="techguns:blocks/"+crate;
+                dungeons.registerCategory(category,"techguns.jer.crate."+crate);
+                dungeons.registerChest(category,new ResourceLocation("techguns","blocks/"+crate));
+            }
         }
-        for(String crate:CRATES){
-            String category="techguns:blocks/"+crate;
-            dungeons.registerCategory(category,"techguns.jer.crate."+crate);
-            dungeons.registerChest(category,new ResourceLocation("techguns","blocks/"+crate));
-        }
-        var worldGen=api.getWorldGenRegistry();
-        for(OreKind kind:OreKind.values()){
-            if(!kind.enabled())continue;
-            var ore=new ItemStack(TGWorld.ORES.get(kind).get());
-            int veinSize=kind.veinBase+(kind.veinRandom-1)/2;
-            // LegacyOreFeature: 'attempts' veins per chunk, vein centre uniformly in [minY, maxY), stone and its variants only.
-            worldGen.register(ore,new DistributionSquare(kind.attempts,veinSize,kind.minY,kind.maxY-1),Restriction.OVERWORLD,new LootDrop(ore));
+        if(!oresRegistered&&TGWorld.ORES.values().stream().allMatch(net.minecraftforge.registries.RegistryObject::isPresent)){
+            oresRegistered=true;
+            var worldGen=api.getWorldGenRegistry();
+            for(OreKind kind:OreKind.values()){
+                if(!kind.enabled())continue;
+                var ore=new ItemStack(TGWorld.ORES.get(kind).get());
+                int veinSize=kind.veinBase+(kind.veinRandom-1)/2;
+                // LegacyOreFeature: 'attempts' veins per chunk, vein centre uniformly in [minY, maxY), stone and its variants only.
+                worldGen.register(ore,new DistributionSquare(kind.attempts,veinSize,kind.minY,kind.maxY-1),new Restriction(jeresources.api.restrictions.DimensionRestriction.OVERWORLD),new LootDrop(ore));
+            }
         }
     }
 }
