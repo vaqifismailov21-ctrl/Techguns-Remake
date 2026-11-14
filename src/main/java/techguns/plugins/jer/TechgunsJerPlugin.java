@@ -18,7 +18,7 @@ import techguns.world.OreKind;
  */
 @JERPlugin
 public final class TechgunsJerPlugin implements IJERPlugin {
-    /** Every chest loot table the Techguns structures use. */
+    /** Every chest loot table the Techguns structures use. JER prints the name beside the chest in about 100 pixels, so the names are short. */
     static final String[] CHESTS={"aircraftcarrier","castle","end_building","end_floating_ship","factory_building","factory_building_big","gasstation",
             "militarybase_barracks","militarybase_bunker","nether_building_common","nether_building_trap","nether_cluster_secret","nether_submarine_common",
             "nether_submarine_rare","policestation","small_trainstation","survivor_hideout","train_green","train_head","train_orange","train_red"};
@@ -48,7 +48,7 @@ public final class TechgunsJerPlugin implements IJERPlugin {
         }
         for(String crate:CRATES){
             String category="techguns:blocks/"+crate;
-            dungeons.registerCategory(category,"block.techguns."+crate);
+            dungeons.registerCategory(category,"techguns.jer.crate."+crate);
             dungeons.registerChest(category,new ResourceLocation("techguns","blocks/"+crate));
         }
         var worldGen=api.getWorldGenRegistry();
