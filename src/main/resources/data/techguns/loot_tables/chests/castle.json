@@ -10,9 +10,54 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
+          "type": "minecraft:item",
           "weight": 1,
-          "name": "techguns:blocks/military_crate_gun"
+          "name": "techguns:revolver"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:thompson"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:ak47"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:boltaction"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:m4"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:pistol"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:combatshotgun"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:mac10"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:aug"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:flamethrower"
         }
       ]
     },
@@ -25,9 +70,185 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:iron_ingot",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:redstone",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:coal",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:gunpowder",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:gold_ingot",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
           "weight": 1,
-          "name": "techguns:blocks/military_crate_generic"
+          "name": "minecraft:diamond"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "minecraft:ender_pearl"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "entryName": "heavy_cloth",
+          "name": "techguns:heavycloth",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "entryName": "mech_parts_iron",
+          "name": "techguns:mechanicalpartsiron",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "mech_parts_obsidian",
+          "name": "techguns:mechanicalpartsobsidiansteel",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "plastic_sheet",
+          "name": "techguns:plasticsheet",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "rubber_bar",
+          "name": "techguns:rubberbar",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "ingot_obsidian",
+          "name": "techguns:ingotobsidiansteel",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
         }
       ]
     },
@@ -40,19 +261,360 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
-          "weight": 3,
-          "name": "techguns:blocks/military_crate_ammo"
+          "type": "minecraft:item",
+          "weight": 180,
+          "entryName": "pistol_rounds",
+          "name": "techguns:pistolrounds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
         },
         {
-          "type": "minecraft:loot_table",
-          "weight": 1,
-          "name": "techguns:blocks/military_crate_explosives"
+          "type": "minecraft:item",
+          "weight": 180,
+          "entryName": "shotgun_rounds",
+          "name": "techguns:shotgunrounds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4,
+                "max": 8
+              }
+            }
+          ]
         },
         {
-          "type": "minecraft:loot_table",
-          "weight": 2,
-          "name": "techguns:blocks/military_crate_armor"
+          "type": "minecraft:item",
+          "weight": 180,
+          "entryName": "rifle_rounds",
+          "name": "techguns:riflerounds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "sniper_rounds",
+          "name": "techguns:sniperrounds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 180,
+          "entryName": "smg_magazine",
+          "name": "techguns:smgmagazine",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "pistol_magazine",
+          "name": "techguns:pistolmagazine",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 180,
+          "entryName": "ar_magazine",
+          "name": "techguns:assaultriflemagazine",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "pistol_rounds_inc",
+          "name": "techguns:pistolrounds_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "shotgun_rounds_inc",
+          "name": "techguns:shotgunrounds_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "rifle_rounds_inc",
+          "name": "techguns:riflerounds_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "sniper_rounds_inc",
+          "name": "techguns:sniperrounds_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "smg_magazine_inc",
+          "name": "techguns:smgmagazine_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "pistol_magazine_inc",
+          "name": "techguns:pistolmagazine_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 90,
+          "entryName": "ar_magazine_inc",
+          "name": "techguns:assaultriflemagazine_incendiary",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 114,
+          "entryName": "rockets",
+          "name": "techguns:rocket",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 114,
+          "entryName": "grenade_40mm",
+          "name": "techguns:40mmgrenade",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 114,
+          "name": "techguns:stielgranate",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 114,
+          "name": "techguns:fraggrenade",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 57,
+          "name": "techguns:rocketlauncher"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 57,
+          "name": "techguns:grenadelauncher"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t1_combat_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t1_combat_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t1_combat_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t1_combat_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_combat_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_combat_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_combat_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_combat_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_commando_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_commando_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_commando_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 95,
+          "name": "techguns:t2_commando_boots"
         }
       ]
     }

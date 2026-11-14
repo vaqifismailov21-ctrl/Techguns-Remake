@@ -10,9 +10,79 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
+          "type": "minecraft:item",
           "weight": 1,
-          "name": "techguns:blocks/military_crate_medical"
+          "name": "minecraft:apple",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "minecraft:bread",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "minecraft:cooked_beef",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "techguns:radaway",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "techguns:radpills",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
         }
       ]
     },
@@ -25,9 +95,64 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
+          "type": "minecraft:item",
           "weight": 1,
-          "name": "techguns:blocks/military_crate_armor"
+          "name": "techguns:t1_combat_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t1_combat_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t1_combat_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t1_combat_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_combat_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_combat_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_combat_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_combat_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_commando_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_commando_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_commando_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:t2_commando_boots"
         }
       ]
     }

@@ -10,9 +10,54 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
+          "type": "minecraft:item",
           "weight": 1,
-          "name": "techguns:blocks/military_crate_gun"
+          "name": "techguns:revolver"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:thompson"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:ak47"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:boltaction"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:m4"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:pistol"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:combatshotgun"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:mac10"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:aug"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "techguns:flamethrower"
         }
       ]
     },
@@ -25,9 +70,185 @@
       },
       "entries": [
         {
-          "type": "minecraft:loot_table",
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:iron_ingot",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:redstone",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:coal",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:gunpowder",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:gold_ingot",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
           "weight": 1,
-          "name": "techguns:blocks/military_crate_generic"
+          "name": "minecraft:diamond"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "minecraft:ender_pearl"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "entryName": "heavy_cloth",
+          "name": "techguns:heavycloth",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "entryName": "mech_parts_iron",
+          "name": "techguns:mechanicalpartsiron",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "mech_parts_obsidian",
+          "name": "techguns:mechanicalpartsobsidiansteel",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "plastic_sheet",
+          "name": "techguns:plasticsheet",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "rubber_bar",
+          "name": "techguns:rubberbar",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "entryName": "ingot_obsidian",
+          "name": "techguns:ingotobsidiansteel",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
         }
       ]
     }
